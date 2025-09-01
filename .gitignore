@@ -82,7 +82,7 @@ temp/
 
 # gatsby files
 .cache/
-public/
+#public/
 
 # Mac bundle
 *.dmg
