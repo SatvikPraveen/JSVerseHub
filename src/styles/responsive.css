@@ -1,0 +1,886 @@
+/* src/styles/responsive.css - Mobile and Responsive Design Styles */
+
+/* ===== BREAKPOINTS ===== */
+/* 
+   xs: 0px (all devices)
+   sm: 576px (landscape phones)
+   md: 768px (tablets)
+   lg: 992px (desktops)
+   xl: 1200px (large desktops)
+   xxl: 1400px (extra large desktops)
+*/
+
+/* ===== BASE RESPONSIVE STYLES ===== */
+
+/* Ensure proper box-sizing and responsive images */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Container fluid behavior */
+.container-fluid {
+    width: 100%;
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+}
+
+/* ===== EXTRA SMALL DEVICES (Portrait phones, less than 576px) ===== */
+@media (max-width: 575.98px) {
+    /* Typography adjustments for very small screens */
+    html {
+        font-size: 14px;
+    }
+
+    /* Navbar mobile adjustments */
+    .navbar {
+        height: 60px;
+        padding: 0 var(--spacing-sm);
+    }
+
+    .nav-container {
+        padding: 0 var(--spacing-sm);
+        flex-wrap: wrap;
+    }
+
+    .nav-title {
+        font-size: 1.2rem !important;
+    }
+
+    .logo {
+        height: 32px !important;
+    }
+
+    .user-progress {
+        font-size: 0.7rem !important;
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        margin-top: var(--spacing-xs);
+    }
+
+    .nav-btn {
+        padding: 4px !important;
+    }
+
+    .nav-btn img {
+        width: 20px !important;
+        height: 20px !important;
+    }
+
+    /* Galaxy container adjustments */
+    .galaxy-container {
+        padding-top: 60px;
+        min-height: calc(100vh - 60px);
+    }
+
+    /* Planet adjustments for very small screens */
+    .planet {
+        width: 60px !important;
+        height: 60px !important;
+        font-size: 0.6rem !important;
+    }
+
+    .planet-icon {
+        width: 24px !important;
+        height: 24px !important;
+        margin-bottom: 2px !important;
+    }
+
+    .planet-title {
+        font-size: 0.6rem !important;
+        line-height: 1.1;
+    }
+
+    .planet-subtitle {
+        font-size: 0.5rem !important;
+        display: none; /* Hide subtitles on very small screens */
+    }
+
+    .planet-tooltip {
+        font-size: 0.7rem !important;
+        padding: 8px 10px !important;
+        white-space: normal;
+        max-width: 120px;
+    }
+
+    /* Galaxy controls mobile */
+    .galaxy-controls {
+        bottom: 15px !important;
+        gap: 0.25rem !important;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .control-btn {
+        width: 35px !important;
+        height: 35px !important;
+        font-size: 0.9rem !important;
+    }
+
+    /* Modal adjustments for very small screens */
+    .modal-content {
+        width: 95% !important;
+        margin: 0.5rem !important;
+        max-height: 95vh !important;
+    }
+
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 0.75rem !important;
+    }
+
+    .modal-title {
+        font-size: 1.3rem !important;
+    }
+
+    /* Floating UI panels - stack vertically on very small screens */
+    .floating-ui {
+        position: relative !important;
+        top: auto !important;
+        right: auto !important;
+        width: 100%;
+        padding: var(--spacing-sm);
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        background: rgba(26, 26, 46, 0.9);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(0, 212, 255, 0.2);
+        order: 10;
+    }
+
+    .achievement-panel,
+    .progress-panel {
+        flex: 1;
+        min-width: 150px;
+        padding: 1rem !important;
+    }
+
+    .achievement-panel h3,
+    .progress-panel h3 {
+        font-size: 0.9rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    /* Progress stats adjustments */
+    .progress-stats {
+        gap: 0.25rem !important;
+    }
+
+    .stat {
+        font-size: 0.8rem !important;
+    }
+
+    /* Button adjustments */
+    .btn {
+        padding: 10px 16px !important;
+        font-size: 0.9rem !important;
+    }
+
+    /* Loading overlay adjustments */
+    .loading-gif {
+        width: 60px !important;
+        height: 60px !important;
+    }
+
+    .loading-text {
+        font-size: 1rem !important;
+    }
+}
+
+/* ===== SMALL DEVICES (Landscape phones, 576px and up) ===== */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    html {
+        font-size: 15px;
+    }
+
+    /* Navbar improvements for small devices */
+    .navbar {
+        height: 65px;
+    }
+
+    .nav-title {
+        font-size: 1.4rem;
+    }
+
+    .logo {
+        height: 36px;
+    }
+
+    /* Planet adjustments */
+    .planet {
+        width: 70px;
+        height: 70px;
+    }
+
+    .planet-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .planet-title {
+        font-size: 0.65rem;
+    }
+
+    .planet-subtitle {
+        font-size: 0.55rem;
+    }
+
+    /* Galaxy controls */
+    .control-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    /* Floating UI adjustments */
+    .floating-ui {
+        top: 80px;
+        right: 15px;
+    }
+
+    .achievement-panel,
+    .progress-panel {
+        min-width: 200px;
+    }
+}
+
+/* ===== MEDIUM DEVICES (Tablets, 768px and up) ===== */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    html {
+        font-size: 16px;
+    }
+
+    /* Navbar for tablets */
+    .nav-container {
+        max-width: 100%;
+        padding: 0 var(--spacing-lg);
+    }
+
+    /* Planet adjustments for tablets */
+    .planet {
+        width: 90px;
+        height: 90px;
+    }
+
+    .planet-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .planet-title {
+        font-size: 0.75rem;
+    }
+
+    .planet-subtitle {
+        font-size: 0.6rem;
+    }
+
+    /* Modal adjustments for tablets */
+    .modal-content {
+        width: 85%;
+        max-width: 600px;
+    }
+
+    .modal-content.large {
+        max-width: 80%;
+    }
+
+    /* Floating UI for tablets */
+    .floating-ui {
+        top: 90px;
+        right: 20px;
+    }
+
+    /* Galaxy clusters adjustments */
+    .galaxy-cluster.beginner {
+        width: 350px;
+        height: 350px;
+    }
+
+    .galaxy-cluster.intermediate {
+        width: 450px;
+        height: 450px;
+    }
+
+    .galaxy-cluster.advanced {
+        width: 550px;
+        height: 550px;
+    }
+}
+
+/* ===== LARGE DEVICES (Desktops, 992px and up) ===== */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    /* Default desktop styles - minimal adjustments needed */
+    .nav-container {
+        max-width: 960px;
+    }
+
+    .modal-content.large {
+        max-width: 85%;
+    }
+
+    /* Planet hover effects work better on desktop */
+    .planet:hover .planet-tooltip {
+        bottom: 145px;
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+/* ===== EXTRA LARGE DEVICES (Large desktops, 1200px and up) ===== */
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+    .nav-container {
+        max-width: 1140px;
+    }
+
+    /* Larger planets for bigger screens */
+    .planet {
+        width: 130px;
+        height: 130px;
+    }
+
+    .planet-icon {
+        width: 52px;
+        height: 52px;
+    }
+
+    .planet-title {
+        font-size: 0.85rem;
+    }
+
+    .planet-subtitle {
+        font-size: 0.65rem;
+    }
+
+    /* Larger galaxy clusters */
+    .galaxy-cluster.beginner {
+        width: 450px;
+        height: 450px;
+    }
+
+    .galaxy-cluster.intermediate {
+        width: 550px;
+        height: 550px;
+    }
+
+    .galaxy-cluster.advanced {
+        width: 650px;
+        height: 650px;
+    }
+}
+
+/* ===== EXTRA EXTRA LARGE DEVICES (1400px and up) ===== */
+@media (min-width: 1400px) {
+    .nav-container {
+        max-width: 1320px;
+    }
+
+    /* Maximum planet sizes for very large screens */
+    .planet {
+        width: 140px;
+        height: 140px;
+    }
+
+    .planet-icon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .planet-title {
+        font-size: 0.9rem;
+    }
+
+    .planet-subtitle {
+        font-size: 0.7rem;
+    }
+
+    /* Maximum galaxy cluster sizes */
+    .galaxy-cluster.beginner {
+        width: 500px;
+        height: 500px;
+    }
+
+    .galaxy-cluster.intermediate {
+        width: 600px;
+        height: 600px;
+    }
+
+    .galaxy-cluster.advanced {
+        width: 700px;
+        height: 700px;
+    }
+
+    /* Floating UI positioning for very large screens */
+    .floating-ui {
+        right: 50px;
+    }
+
+    .achievement-panel,
+    .progress-panel {
+        min-width: 280px;
+    }
+}
+
+/* ===== ORIENTATION-SPECIFIC STYLES ===== */
+
+/* Landscape orientation adjustments */
+@media (orientation: landscape) and (max-height: 500px) {
+    /* Adjust navbar for landscape phones */
+    .navbar {
+        height: 50px;
+    }
+
+    .galaxy-container {
+        padding-top: 50px;
+    }
+
+    .nav-title {
+        font-size: 1.2rem;
+    }
+
+    .logo {
+        height: 30px;
+    }
+
+    /* Hide floating UI in landscape on small screens */
+    .floating-ui {
+        display: none;
+    }
+
+    /* Smaller planets in landscape mode */
+    .planet {
+        width: 60px;
+        height: 60px;
+    }
+
+    .planet-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .planet-title {
+        font-size: 0.6rem;
+    }
+
+    .planet-subtitle {
+        display: none;
+    }
+
+    /* Adjust galaxy controls for landscape */
+    .galaxy-controls {
+        bottom: 10px;
+        left: 10px;
+        transform: none;
+        flex-direction: column;
+    }
+
+    .control-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Portrait orientation - optimize for tall screens */
+@media (orientation: portrait) and (max-width: 768px) {
+    /* Stack floating UI vertically in portrait */
+    .floating-ui {
+        flex-direction: column;
+        max-height: 40vh;
+        overflow-y: auto;
+    }
+
+    .achievement-panel,
+    .progress-panel {
+        min-height: auto;
+    }
+
+    .achievement-list {
+        max-height: 150px;
+    }
+
+    /* Adjust galaxy for portrait phones */
+    .galaxy-map {
+        height: calc(100vh - 140px); /* Account for navbar and floating UI */
+    }
+}
+
+/* ===== TOUCH DEVICE OPTIMIZATIONS ===== */
+
+/* Touch-friendly sizing */
+@media (pointer: coarse) {
+    /* Larger touch targets */
+    .planet {
+        min-width: 80px;
+        min-height: 80px;
+    }
+
+    .btn {
+        min-height: 44px;
+        padding: 12px 20px;
+    }
+
+    .control-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    .nav-btn {
+        min-width: 44px;
+        min-height: 44px;
+        padding: 10px;
+    }
+
+    /* Remove hover effects on touch devices */
+    .planet:hover {
+        transform: none;
+    }
+
+    .btn:hover {
+        transform: none;
+    }
+
+    /* Adjust tooltips for touch */
+    .planet-tooltip {
+        display: none; /* Hide tooltips on touch devices */
+    }
+
+    /* Show planet info differently on touch */
+    .planet.touched .planet-info {
+        display: block;
+    }
+}
+
+/* Fine pointer devices (mouse) */
+@media (pointer: fine) {
+    /* Enable hover effects only for precise pointing devices */
+    .hover-effects-enabled .planet:hover {
+        transform: scale(1.15) rotateY(10deg);
+    }
+
+    .hover-effects-enabled .btn:hover {
+        transform: translateY(-2px);
+    }
+}
+
+/* ===== HIGH-DPI DISPLAYS ===== */
+
+/* Retina and high-DPI display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* Sharper borders and shadows */
+    .planet {
+        border-width: 1.5px;
+    }
+
+    .modal-content {
+        border-width: 1.5px;
+    }
+
+    /* Adjust font rendering */
+    body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+}
+
+/* ===== REDUCED MOTION PREFERENCES ===== */
+
+@media (prefers-reduced-motion: reduce) {
+    /* Disable animations for users who prefer reduced motion */
+    .planet {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .galaxy-cluster {
+        animation: none !important;
+    }
+
+    .modal {
+        transition: opacity 0.1s ease !important;
+    }
+
+    .modal-content {
+        transition: transform 0.1s ease !important;
+    }
+
+    /* Maintain functionality without motion */
+    .planet:focus {
+        outline: 3px solid var(--accent-color);
+        outline-offset: 2px;
+    }
+}
+
+/* ===== PRINT STYLES ===== */
+
+@media print {
+    /* Hide interactive elements when printing */
+    .navbar,
+    .galaxy-controls,
+    .floating-ui,
+    .modal,
+    .achievement-notification {
+        display: none !important;
+    }
+
+    /* Adjust layout for printing */
+    .galaxy-container {
+        padding-top: 0;
+    }
+
+    .galaxy-map {
+        height: auto;
+        min-height: auto;
+    }
+
+    /* Print-friendly planet styling */
+    .planet {
+        break-inside: avoid;
+        border: 2px solid #000;
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+    }
+
+    .planet-title,
+    .planet-subtitle {
+        color: black !important;
+    }
+
+    /* Hide decorative elements */
+    .galaxy-cluster {
+        display: none;
+    }
+
+    #stars-canvas {
+        display: none;
+    }
+}
+
+/* ===== ACCESSIBILITY IMPROVEMENTS ===== */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .planet {
+        border-width: 3px;
+        border-color: currentColor;
+    }
+
+    .btn {
+        border: 2px solid currentColor;
+    }
+
+    .modal-content {
+        border-width: 2px;
+    }
+
+    /* Ensure text remains readable */
+    .text-secondary {
+        color: var(--text-primary);
+    }
+}
+
+/* Focus indicators for keyboard navigation */
+@media (prefers-reduced-motion: no-preference) {
+    .planet:focus-visible {
+        animation: focusPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes focusPulse {
+        0%, 100% { 
+            box-shadow: 0 0 0 0 var(--accent-color);
+        }
+        50% { 
+            box-shadow: 0 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+    }
+}
+
+/* ===== DEVICE-SPECIFIC OPTIMIZATIONS ===== */
+
+/* iPhone X and newer - handle notch */
+@supports (padding: max(0px)) {
+    .navbar {
+        padding-left: max(var(--spacing-md), env(safe-area-inset-left));
+        padding-right: max(var(--spacing-md), env(safe-area-inset-right));
+    }
+
+    .floating-ui {
+        right: max(20px, env(safe-area-inset-right));
+    }
+
+    .galaxy-controls {
+        padding-bottom: max(30px, env(safe-area-inset-bottom));
+    }
+}
+
+/* iPad specific adjustments */
+@media (min-width: 768px) and (max-width: 1024px) and (-webkit-min-device-pixel-ratio: 2) {
+    /* iPad specific optimizations */
+    .planet {
+        width: 100px;
+        height: 100px;
+    }
+
+    .planet-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Better spacing for iPad */
+    .floating-ui {
+        top: 90px;
+        right: 30px;
+    }
+
+    .achievement-panel,
+    .progress-panel {
+        min-width: 240px;
+    }
+}
+
+/* ===== CONTAINER QUERIES (Future-proofing) ===== */
+
+/* When container queries are widely supported, we can use these */
+/*
+@container (max-width: 400px) {
+    .planet {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@container (min-width: 800px) {
+    .planet {
+        width: 120px;
+        height: 120px;
+    }
+}
+*/
+
+/* ===== UTILITY CLASSES FOR RESPONSIVE DESIGN ===== */
+
+/* Show/hide utilities */
+.d-none { display: none !important; }
+.d-block { display: block !important; }
+.d-inline { display: inline !important; }
+.d-inline-block { display: inline-block !important; }
+.d-flex { display: flex !important; }
+.d-grid { display: grid !important; }
+
+/* Responsive display utilities */
+@media (max-width: 575.98px) {
+    .d-xs-none { display: none !important; }
+    .d-xs-block { display: block !important; }
+    .d-xs-inline { display: inline !important; }
+    .d-xs-inline-block { display: inline-block !important; }
+    .d-xs-flex { display: flex !important; }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .d-sm-none { display: none !important; }
+    .d-sm-block { display: block !important; }
+    .d-sm-inline { display: inline !important; }
+    .d-sm-inline-block { display: inline-block !important; }
+    .d-sm-flex { display: flex !important; }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .d-md-none { display: none !important; }
+    .d-md-block { display: block !important; }
+    .d-md-inline { display: inline !important; }
+    .d-md-inline-block { display: inline-block !important; }
+    .d-md-flex { display: flex !important; }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .d-lg-none { display: none !important; }
+    .d-lg-block { display: block !important; }
+    .d-lg-inline { display: inline !important; }
+    .d-lg-inline-block { display: inline-block !important; }
+    .d-lg-flex { display: flex !important; }
+}
+
+@media (min-width: 1200px) {
+    .d-xl-none { display: none !important; }
+    .d-xl-block { display: block !important; }
+    .d-xl-inline { display: inline !important; }
+    .d-xl-inline-block { display: inline-block !important; }
+    .d-xl-flex { display: flex !important; }
+}
+
+/* Text alignment utilities */
+.text-left { text-align: left !important; }
+.text-center { text-align: center !important; }
+.text-right { text-align: right !important; }
+
+@media (max-width: 767.98px) {
+    .text-sm-left { text-align: left !important; }
+    .text-sm-center { text-align: center !important; }
+    .text-sm-right { text-align: right !important; }
+}
+
+/* Responsive spacing utilities */
+@media (max-width: 575.98px) {
+    .p-xs-0 { padding: 0 !important; }
+    .p-xs-1 { padding: var(--spacing-xs) !important; }
+    .p-xs-2 { padding: var(--spacing-sm) !important; }
+    .p-xs-3 { padding: var(--spacing-md) !important; }
+    
+    .m-xs-0 { margin: 0 !important; }
+    .m-xs-1 { margin: var(--spacing-xs) !important; }
+    .m-xs-2 { margin: var(--spacing-sm) !important; }
+    .m-xs-3 { margin: var(--spacing-md) !important; }
+}
+
+/* Flex utilities for responsive design */
+.flex-wrap { flex-wrap: wrap !important; }
+.flex-nowrap { flex-wrap: nowrap !important; }
+.flex-column { flex-direction: column !important; }
+.flex-row { flex-direction: row !important; }
+
+@media (max-width: 767.98px) {
+    .flex-sm-column { flex-direction: column !important; }
+    .flex-sm-row { flex-direction: row !important; }
+}
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+
+/* GPU acceleration for smooth animations on mobile */
+.planet,
+.modal-content,
+.galaxy-cluster {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* Optimize repaints */
+.galaxy-map {
+    will-change: transform;
+}
+
+.planet:hover {
+    will-change: transform;
+}
+
+/* ===== DARK MODE SPECIFIC RESPONSIVE ADJUSTMENTS ===== */
+
+@media (prefers-color-scheme: dark) {
+    /* Additional dark mode responsive adjustments if needed */
+    @media (max-width: 767.98px) {
+        .modal-content {
+            background: var(--primary-bg);
+        }
+    }
+}
+
+/* ===== END OF RESPONSIVE STYLES ===== */

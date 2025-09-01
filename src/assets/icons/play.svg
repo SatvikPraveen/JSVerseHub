@@ -1,0 +1,6 @@
+<!-- File: src/assets/icons/play.svg -->
+<!-- Play/Run button icon -->
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="12" cy="12" r="10" fill="#10B981" stroke="#059669" stroke-width="2"/>
+  <path d="M9 7.5l7 4.5-7 4.5V7.5z" fill="white"/>
+</svg>

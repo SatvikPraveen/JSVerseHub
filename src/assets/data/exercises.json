@@ -1,0 +1,339 @@
+// File: src/assets/data/exercises.json
+// Exercise metadata and configurations for the JavaScript learning platform
+
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-20",
+  "categories": {
+    "fundamentals": {
+      "name": "JavaScript Fundamentals",
+      "description": "Core JavaScript concepts and syntax",
+      "color": "#f1c40f",
+      "icon": "javascript"
+    },
+    "async": {
+      "name": "Asynchronous Programming", 
+      "description": "Promises, async/await, and event handling",
+      "color": "#3498db",
+      "icon": "clock"
+    },
+    "dom": {
+      "name": "DOM Manipulation",
+      "description": "Working with the Document Object Model",
+      "color": "#e74c3c",
+      "icon": "code"
+    },
+    "patterns": {
+      "name": "Design Patterns",
+      "description": "Common JavaScript design patterns",
+      "color": "#9b59b6",
+      "icon": "puzzle"
+    },
+    "storage": {
+      "name": "Data Storage",
+      "description": "Browser storage APIs and databases",
+      "color": "#2ecc71",
+      "icon": "database"
+    },
+    "algorithms": {
+      "name": "Algorithms & Data Structures",
+      "description": "Problem solving and optimization",
+      "color": "#e67e22",
+      "icon": "chart"
+    }
+  },
+  
+  "difficultyLevels": {
+    "beginner": {
+      "name": "Beginner",
+      "description": "New to programming or JavaScript",
+      "color": "#27ae60",
+      "requiredScore": 0
+    },
+    "intermediate": {
+      "name": "Intermediate", 
+      "description": "Comfortable with basic concepts",
+      "color": "#f39c12",
+      "requiredScore": 50
+    },
+    "advanced": {
+      "name": "Advanced",
+      "description": "Experienced JavaScript developer",
+      "color": "#e74c3c",
+      "requiredScore": 150
+    },
+    "expert": {
+      "name": "Expert",
+      "description": "Deep JavaScript knowledge",
+      "color": "#8e44ad",
+      "requiredScore": 300
+    }
+  },
+
+  "exercises": [
+    {
+      "id": "variables-basics",
+      "title": "Variable Declarations and Scope",
+      "category": "fundamentals",
+      "difficulty": "beginner",
+      "estimatedTime": 15,
+      "points": 10,
+      "tags": ["variables", "scope", "let", "const", "var"],
+      "objectives": [
+        "Understand different variable declaration methods",
+        "Learn about block scope vs function scope",
+        "Practice const vs let usage"
+      ],
+      "prerequisites": [],
+      "hints": [
+        "Remember that 'let' and 'const' are block-scoped",
+        "Use 'const' for values that won't be reassigned",
+        "Avoid 'var' in modern JavaScript"
+      ],
+      "testCases": [
+        {
+          "input": "const name = 'John'; let age = 25;",
+          "expectedOutput": "Variables declared correctly",
+          "description": "Basic variable declaration"
+        }
+      ],
+      "solution": {
+        "code": "// Use const for values that won't change\nconst PI = 3.14159;\nconst userName = 'Alice';\n\n// Use let for values that will change\nlet score = 0;\nlet isLoggedIn = false;\n\n// Demonstrate block scope\nif (true) {\n  let blockVariable = 'I am block-scoped';\n  const blockConstant = 'Me too';\n}\n\nconsole.log('Variables declared successfully');",
+        "explanation": "This solution demonstrates proper use of const and let, showing how block scope works and when to use each declaration type."
+      },
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "MDN: Variable Declarations", 
+          "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#Declarations"
+        }
+      ]
+    },
+
+    {
+      "id": "array-methods-practice",
+      "title": "Array Methods Mastery",
+      "category": "fundamentals", 
+      "difficulty": "intermediate",
+      "estimatedTime": 25,
+      "points": 20,
+      "tags": ["arrays", "map", "filter", "reduce", "methods"],
+      "objectives": [
+        "Master functional array methods",
+        "Learn method chaining techniques", 
+        "Practice data transformation"
+      ],
+      "prerequisites": ["variables-basics"],
+      "hints": [
+        "map() transforms each element",
+        "filter() selects elements based on condition",
+        "reduce() accumulates values into a single result"
+      ],
+      "testCases": [
+        {
+          "input": "[1, 2, 3, 4, 5]",
+          "expectedOutput": "[2, 4, 6, 8, 10]",
+          "description": "Double each number using map"
+        },
+        {
+          "input": "[1, 2, 3, 4, 5]", 
+          "expectedOutput": "[2, 4]",
+          "description": "Filter even numbers"
+        }
+      ],
+      "solution": {
+        "code": "const numbers = [1, 2, 3, 4, 5];\n\n// Transform data with map\nconst doubled = numbers.map(num => num * 2);\nconsole.log('Doubled:', doubled); // [2, 4, 6, 8, 10]\n\n// Filter data with filter\nconst evens = numbers.filter(num => num % 2 === 0);\nconsole.log('Evens:', evens); // [2, 4]\n\n// Aggregate with reduce\nconst sum = numbers.reduce((acc, num) => acc + num, 0);\nconsole.log('Sum:', sum); // 15\n\n// Method chaining\nconst result = numbers\n  .filter(num => num > 2)\n  .map(num => num * 2)\n  .reduce((acc, num) => acc + num, 0);\n\nconsole.log('Chained result:', result); // 24",
+        "explanation": "This solution demonstrates the three most important array methods and how they can be chained together for powerful data transformations."
+      },
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "MDN: Array Methods",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array"
+        }
+      ]
+    },
+
+    {
+      "id": "async-await-practice", 
+      "title": "Async/Await Error Handling",
+      "category": "async",
+      "difficulty": "intermediate",
+      "estimatedTime": 30,
+      "points": 25,
+      "tags": ["async", "await", "promises", "error-handling", "try-catch"],
+      "objectives": [
+        "Master async/await syntax",
+        "Learn proper error handling with try/catch",
+        "Practice API calls with error scenarios"
+      ],
+      "prerequisites": ["variables-basics"],
+      "hints": [
+        "Always use try/catch with async/await",
+        "Handle both network and parsing errors",
+        "Consider timeout scenarios"
+      ],
+      "testCases": [
+        {
+          "input": "Valid API URL",
+          "expectedOutput": "Data fetched successfully",
+          "description": "Successful API call"
+        },
+        {
+          "input": "Invalid API URL",
+          "expectedOutput": "Error handled gracefully", 
+          "description": "Failed API call with proper error handling"
+        }
+      ],
+      "solution": {
+        "code": "// Async function with proper error handling\nasync function fetchUserData(userId) {\n  try {\n    // Simulate API call\n    const response = await fetch(`/api/users/${userId}`);\n    \n    if (!response.ok) {\n      throw new Error(`HTTP error! status: ${response.status}`);\n    }\n    \n    const userData = await response.json();\n    return userData;\n    \n  } catch (error) {\n    console.error('Failed to fetch user data:', error.message);\n    \n    // Return fallback data or re-throw\n    return {\n      id: userId,\n      name: 'Unknown User',\n      error: true\n    };\n  }\n}\n\n// Multiple async operations\nasync function processUsers(userIds) {\n  const users = [];\n  \n  for (const id of userIds) {\n    try {\n      const user = await fetchUserData(id);\n      users.push(user);\n    } catch (error) {\n      console.error(`Skipping user ${id}:`, error.message);\n    }\n  }\n  \n  return users;\n}\n\n// Usage\n(async () => {\n  try {\n    const users = await processUsers([1, 2, 3]);\n    console.log('Processed users:', users);\n  } catch (error) {\n    console.error('Process failed:', error);\n  }\n})();",
+        "explanation": "This solution shows comprehensive error handling with async/await, including HTTP errors, JSON parsing errors, and graceful degradation strategies."
+      },
+      "resources": [
+        {
+          "type": "documentation",
+          "title": "MDN: async/await",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function"
+        }
+      ]
+    },
+
+    {
+      "id": "singleton-pattern-implementation",
+      "title": "Implement Singleton Pattern",
+      "category": "patterns",
+      "difficulty": "advanced", 
+      "estimatedTime": 45,
+      "points": 35,
+      "tags": ["singleton", "design-patterns", "classes", "instances"],
+      "objectives": [
+        "Implement a thread-safe singleton",
+        "Add lazy initialization",
+        "Include instance management methods"
+      ],
+      "prerequisites": ["variables-basics", "array-methods-practice"],
+      "hints": [
+        "Use static properties to store the instance",
+        "Implement lazy initialization for performance",
+        "Consider how to handle multiple constructors"
+      ],
+      "testCases": [
+        {
+          "input": "new Database(), new Database()",
+          "expectedOutput": "Same instance returned",
+          "description": "Singleton ensures single instance"
+        }
+      ],
+      "solution": {
+        "code": "class ConfigManager {\n  static instance = null;\n  \n  constructor() {\n    // Return existing instance if it exists\n    if (ConfigManager.instance) {\n      return ConfigManager.instance;\n    }\n    \n    // Initialize new instance\n    this.config = new Map();\n    this.observers = [];\n    \n    // Store instance\n    ConfigManager.instance = this;\n    \n    return this;\n  }\n  \n  static getInstance() {\n    if (!ConfigManager.instance) {\n      ConfigManager.instance = new ConfigManager();\n    }\n    return ConfigManager.instance;\n  }\n  \n  set(key, value) {\n    this.config.set(key, value);\n    this.notifyObservers(key, value);\n  }\n  \n  get(key, defaultValue = null) {\n    return this.config.get(key) ?? defaultValue;\n  }\n  \n  subscribe(callback) {\n    this.observers.push(callback);\n    return () => {\n      this.observers = this.observers.filter(obs => obs !== callback);\n    };\n  }\n  \n  notifyObservers(key, value) {\n    this.observers.forEach(callback => {\n      try {\n        callback(key, value);\n      } catch (error) {\n        console.error('Observer error:', error);\n      }\n    });\n  }\n  \n  static reset() {\n    ConfigManager.instance = null;\n  }\n}\n\n// Test the implementation\nconst config1 = new ConfigManager();\nconst config2 = ConfigManager.getInstance();\n\nconsole.log('Same instance?', config1 === config2); // true\n\nconfig1.set('theme', 'dark');\nconsole.log('Config from instance 2:', config2.get('theme')); // 'dark'",
+        "explanation": "This singleton implementation includes lazy initialization, observer pattern integration, and proper instance management with both constructor and getInstance() approaches."
+      },
+      "resources": [
+        {
+          "type": "article",
+          "title": "Singleton Pattern in JavaScript",
+          "url": "https://refactoring.guru/design-patterns/singleton/javascript/example"
+        }
+      ]
+    },
+
+    {
+      "id": "indexeddb-crud-operations",
+      "title": "IndexedDB CRUD Operations", 
+      "category": "storage",
+      "difficulty": "advanced",
+      "estimatedTime": 60,
+      "points": 40,
+      "tags": ["indexeddb", "storage", "database", "crud", "async"],
+      "objectives": [
+        "Set up IndexedDB database with object stores",
+        "Implement Create, Read, Update, Delete operations",
+        "Handle database versioning and migrations"
+      ],
+      "prerequisites": ["async-await-practice"],
+      "hints": [
+        "Use transactions for database operations",
+        "Handle database upgrade events properly",
+        "Wrap IndexedDB callbacks in Promises"
+      ],
+      "testCases": [
+        {
+          "input": "User data object",
+          "expectedOutput": "User stored and retrieved successfully",
+          "description": "CRUD operations work correctly"
+        }
+      ],
+      "solution": {
+        "code": "class UserDatabase {\n  constructor() {\n    this.dbName = 'UserDB';\n    this.version = 1;\n    this.db = null;\n  }\n  \n  async init() {\n    return new Promise((resolve, reject) => {\n      const request = indexedDB.open(this.dbName, this.version);\n      \n      request.onerror = () => reject(request.error);\n      request.onsuccess = () => {\n        this.db = request.result;\n        resolve(this.db);\n      };\n      \n      request.onupgradeneeded = (event) => {\n        const db = event.target.result;\n        \n        if (!db.objectStoreNames.contains('users')) {\n          const store = db.createObjectStore('users', {\n            keyPath: 'id',\n            autoIncrement: true\n          });\n          \n          store.createIndex('email', 'email', { unique: true });\n          store.createIndex('name', 'name');\n        }\n      };\n    });\n  }\n  \n  async create(userData) {\n    return new Promise((resolve, reject) => {\n      const transaction = this.db.transaction(['users'], 'readwrite');\n      const store = transaction.objectStore('users');\n      const request = store.add(userData);\n      \n      request.onsuccess = () => resolve(request.result);\n      request.onerror = () => reject(request.error);\n    });\n  }\n  \n  async read(id) {\n    return new Promise((resolve, reject) => {\n      const transaction = this.db.transaction(['users'], 'readonly');\n      const store = transaction.objectStore('users');\n      const request = store.get(id);\n      \n      request.onsuccess = () => resolve(request.result);\n      request.onerror = () => reject(request.error);\n    });\n  }\n  \n  async update(id, userData) {\n    return new Promise((resolve, reject) => {\n      const transaction = this.db.transaction(['users'], 'readwrite');\n      const store = transaction.objectStore('users');\n      \n      const getRequest = store.get(id);\n      getRequest.onsuccess = () => {\n        const user = getRequest.result;\n        if (user) {\n          Object.assign(user, userData);\n          const putRequest = store.put(user);\n          putRequest.onsuccess = () => resolve(user);\n          putRequest.onerror = () => reject(putRequest.error);\n        } else {\n          reject(new Error('User not found'));\n        }\n      };\n    });\n  }\n  \n  async delete(id) {\n    return new Promise((resolve, reject) => {\n      const transaction = this.db.transaction(['users'], 'readwrite');\n      const store = transaction.objectStore('users');\n      const request = store.delete(id);\n      \n      request.onsuccess = () => resolve(true);\n      request.onerror = () => reject(request.error);\n    });\n  }\n  \n  async getAll() {\n    return new Promise((resolve, reject) => {\n      const transaction = this.db.transaction(['users'], 'readonly');\n      const store = transaction.objectStore('users');\n      const request = store.getAll();\n      \n      request.onsuccess = () => resolve(request.result);\n      request.onerror = () => reject(request.error);\n    });\n  }\n}\n\n// Usage example\n(async () => {\n  const userDB = new UserDatabase();\n  await userDB.init();\n  \n  // Create\n  const userId = await userDB.create({\n    name: 'John Doe',\n    email: 'john@example.com',\n    age: 30\n  });\n  \n  // Read\n  const user = await userDB.read(userId);\n  console.log('Created user:', user);\n  \n  // Update\n  await userDB.update(userId, { age: 31 });\n  \n  // Get all\n  const allUsers = await userDB.getAll();\n  console.log('All users:', allUsers);\n  \n  // Delete\n  await userDB.delete(userId);\n})();",
+        "explanation": "This solution provides a complete IndexedDB wrapper with all CRUD operations, proper error handling, and database versioning support."
+      },
+      "resources": [
+        {
+          "type": "documentation", 
+          "title": "MDN: IndexedDB API",
+          "url": "https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API"
+        }
+      ]
+    }
+  ],
+  
+  "achievements": [
+    {
+      "id": "first-steps",
+      "title": "First Steps",
+      "description": "Complete your first exercise",
+      "icon": "medal",
+      "points": 5,
+      "condition": {
+        "type": "exercise_count",
+        "value": 1
+      }
+    },
+    {
+      "id": "pattern-master",
+      "title": "Pattern Master", 
+      "description": "Complete 5 design pattern exercises",
+      "icon": "crown",
+      "points": 50,
+      "condition": {
+        "type": "category_exercises",
+        "category": "patterns",
+        "value": 5
+      }
+    },
+    {
+      "id": "storage-expert",
+      "title": "Storage Expert",
+      "description": "Master all storage-related exercises",
+      "icon": "database",
+      "points": 100,
+      "condition": {
+        "type": "category_complete",
+        "category": "storage"
+      }
+    }
+  ],
+  
+  "progressTracking": {
+    "exerciseCompletion": {
+      "trackAttempts": true,
+      "trackTime": true,
+      "trackErrors": true,
+      "saveProgress": true
+    },
+    "scoring": {
+      "basePoints": 10,
+      "difficultyMultipliers": {
+        "beginner": 1.0,
+        "intermediate": 1.5,
+        "advanced": 2.0, 
+        "expert": 3.0
+      },
+      "bonusConditions": {
+        "firstTry": 1.2,
+        "underTime": 1.1,
+        "noHints": 1.3
+      }
+    }
+  }
+}

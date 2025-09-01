@@ -1,0 +1,1760 @@
+<!-- File: src/concepts/async/fetch-demo.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch API Demo - JSVerseHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .demo-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .demo-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .demo-card h3 {
+            color: #5a67d8;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .demo-card p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .controls {
+            margin-bottom: 20px;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .control-group input, .control-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .control-group input:focus, .control-group select:focus {
+            outline: none;
+            border-color: #5a67d8;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #5a67d8, #667eea);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 5px 5px 5px 0;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(90, 103, 216, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ed8936, #dd6b20);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #e53e3e, #c53030);
+        }
+
+        .output {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+        }
+
+        .output.loading {
+            background: #ebf8ff;
+            border-color: #90cdf4;
+            color: #2b6cb0;
+        }
+
+        .output.success {
+            background: #f0fff4;
+            border-color: #9ae6b4;
+            color: #22543d;
+        }
+
+        .output.error {
+            background: #fff5f5;
+            border-color: #feb2b2;
+            color: #742a2a;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #e2e8f0;
+            border-radius: 50%;
+            border-top-color: #5a67d8;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-indicator.idle {
+            background: #cbd5e0;
+        }
+
+        .status-indicator.loading {
+            background: #4299e1;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .status-indicator.success {
+            background: #48bb78;
+        }
+
+        .status-indicator.error {
+            background: #e53e3e;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            font-size: 12px;
+        }
+
+        .stat {
+            background: #edf2f7;
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            color: #5a67d8;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+        }
+
+        .request-history {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+
+        .request-item {
+            background: #f7fafc;
+            border-left: 4px solid #e2e8f0;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 0 6px 6px 0;
+            font-size: 12px;
+        }
+
+        .request-item.success {
+            border-left-color: #48bb78;
+        }
+
+        .request-item.error {
+            border-left-color: #e53e3e;
+        }
+
+        .request-header {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #5a67d8, #667eea);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 8px 8px 0 0;
+            overflow: hidden;
+        }
+
+        .tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            background: #f7fafc;
+            border: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: #718096;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .tab.active {
+            background: white;
+            color: #5a67d8;
+            border-bottom: 3px solid #5a67d8;
+        }
+
+        .tab:hover:not(.active) {
+            background: #edf2f7;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+        }
+
+        .json-viewer {
+            background: #1a202c;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow: auto;
+        }
+
+        .json-key {
+            color: #63b3ed;
+        }
+
+        .json-string {
+            color: #68d391;
+        }
+
+        .json-number {
+            color: #f6ad55;
+        }
+
+        .json-boolean {
+            color: #fc8181;
+        }
+
+        .json-null {
+            color: #a0aec0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌐 Fetch API Demonstration</h1>
+            <p>Explore modern JavaScript HTTP requests with the Fetch API</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('basic')">Basic Requests</button>
+            <button class="tab" onclick="switchTab('advanced')">Advanced Features</button>
+            <button class="tab" onclick="switchTab('error-handling')">Error Handling</button>
+            <button class="tab" onclick="switchTab('parallel')">Parallel Requests</button>
+        </div>
+
+        <!-- Basic Requests Tab -->
+        <div id="basic" class="tab-content active">
+            <div class="demo-grid">
+                <!-- GET Request Demo -->
+                <div class="demo-card">
+                    <h3>🔍 GET Requests</h3>
+                    <p>Fetch data from APIs using GET requests with different configurations.</p>
+                    
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="get-url">API Endpoint:</label>
+                            <select id="get-url">
+                                <option value="https://jsonplaceholder.typicode.com/posts/1">Single Post</option>
+                                <option value="https://jsonplaceholder.typicode.com/posts?_limit=5">Multiple Posts</option>
+                                <option value="https://jsonplaceholder.typicode.com/users/1">User Data</option>
+                                <option value="https://httpbin.org/json">JSON Response</option>
+                                <option value="https://httpbin.org/delay/2">Delayed Response (2s)</option>
+                            </select>
+                        </div>
+                        <button class="btn" onclick="performGetRequest()">
+                            <span class="status-indicator idle" id="get-status"></span>
+                            Fetch Data
+                        </button>
+                    </div>
+                    
+                    <div class="stats" id="get-stats">
+                        <div class="stat">
+                            <span class="stat-value" id="get-time">0ms</span>
+                            <span class="stat-label">Response Time</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="get-size">0KB</span>
+                            <span class="stat-label">Response Size</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="get-status-code">-</span>
+                            <span class="stat-label">Status Code</span>
+                        </div>
+                    </div>
+                    
+                    <div id="get-output" class="output">Click "Fetch Data" to make a GET request</div>
+                </div>
+
+                <!-- POST Request Demo -->
+                <div class="demo-card">
+                    <h3>📤 POST Requests</h3>
+                    <p>Send data to APIs using POST requests with JSON payloads.</p>
+                    
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="post-title">Post Title:</label>
+                            <input type="text" id="post-title" placeholder="Enter post title" value="My New Post">
+                        </div>
+                        <div class="control-group">
+                            <label for="post-body">Post Body:</label>
+                            <input type="text" id="post-body" placeholder="Enter post content" value="This is the content of my new post.">
+                        </div>
+                        <div class="control-group">
+                            <label for="post-userid">User ID:</label>
+                            <input type="number" id="post-userid" placeholder="Enter user ID" value="1">
+                        </div>
+                        <button class="btn btn-success" onclick="performPostRequest()">
+                            <span class="status-indicator idle" id="post-status"></span>
+                            Create Post
+                        </button>
+                    </div>
+                    
+                    <div class="stats" id="post-stats">
+                        <div class="stat">
+                            <span class="stat-value" id="post-time">0ms</span>
+                            <span class="stat-label">Response Time</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="post-size">0KB</span>
+                            <span class="stat-label">Response Size</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="post-status-code">-</span>
+                            <span class="stat-label">Status Code</span>
+                        </div>
+                    </div>
+                    
+                    <div id="post-output" class="output">Fill in the form and click "Create Post"</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Advanced Features Tab -->
+        <div id="advanced" class="tab-content">
+            <div class="demo-grid">
+                <!-- Headers and Authentication -->
+                <div class="demo-card">
+                    <h3>🔐 Headers & Auth</h3>
+                    <p>Demonstrate custom headers, authentication, and request configuration.</p>
+                    
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="auth-token">Authorization Token:</label>
+                            <input type="text" id="auth-token" placeholder="Bearer token or API key" value="demo-token-123">
+                        </div>
+                        <div class="control-group">
+                            <label for="custom-header">Custom Header:</label>
+                            <input type="text" id="custom-header" placeholder="X-Custom-Header: value" value="X-Demo-Client: JSVerseHub">
+                        </div>
+                        <button class="btn" onclick="performAuthRequest()">
+                            <span class="status-indicator idle" id="auth-status"></span>
+                            Send Authenticated Request
+                        </button>
+                    </div>
+                    
+                    <div id="auth-output" class="output">Configure headers and send request</div>
+                </div>
+
+                <!-- Request with Timeout -->
+                <div class="demo-card">
+                    <h3>⏱️ Timeout Handling</h3>
+                    <p>Handle request timeouts using AbortController and timeout configuration.</p>
+                    
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="timeout-duration">Timeout (seconds):</label>
+                            <input type="number" id="timeout-duration" min="1" max="30" value="5">
+                        </div>
+                        <div class="control-group">
+                            <label for="delay-duration">Server Delay (seconds):</label>
+                            <input type="number" id="delay-duration" min="1" max="30" value="3">
+                        </div>
+                        <button class="btn btn-warning" onclick="performTimeoutRequest()">
+                            <span class="status-indicator idle" id="timeout-status"></span>
+                            Test Timeout
+                        </button>
+                        <button class="btn btn-danger" onclick="cancelRequest()" disabled id="cancel-btn">
+                            Cancel Request
+                        </button>
+                    </div>
+                    
+                    <div class="progress-bar" style="display: none;" id="timeout-progress">
+                        <div class="progress-fill" id="timeout-progress-fill"></div>
+                    </div>
+                    
+                    <div id="timeout-output" class="output">Set timeout and delay, then test the request</div>
+                </div>
+
+                <!-- File Upload Simulation -->
+                <div class="demo-card">
+                    <h3>📁 FormData & Upload</h3>
+                    <p>Simulate file uploads and form data submission using FormData.</p>
+                    
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="file-name">File Name:</label>
+                            <input type="text" id="file-name" value="document.pdf">
+                        </div>
+                        <div class="control-group">
+                            <label for="file-size">File Size (KB):</label>
+                            <input type="number" id="file-size" value="1024">
+                        </div>
+                        <div class="control-group">
+                            <label for="upload-description">Description:</label>
+                            <input type="text" id="upload-description" value="Important document upload">
+                        </div>
+                        <button class="btn btn-success" onclick="performUploadRequest()">
+                            <span class="status-indicator idle" id="upload-status"></span>
+                            Simulate Upload
+                        </button>
+                    </div>
+                    
+                    <div id="upload-output" class="output">Configure upload parameters and simulate</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Handling Tab -->
+        <div id="error-handling" class="tab-content">
+            <div class="demo-grid">
+                <!-- Network Errors -->
+                <div class="demo-card">
+                    <h3>🚨 Error Scenarios</h3>
+                    <p>Demonstrate different types of errors and how to handle them properly.</p>
+                    
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="error-type">Error Type:</label>
+                            <select id="error-type">
+                                <option value="404">404 Not Found</option>
+                                <option value="500">500 Server Error</option>
+                                <option value="network">Network Error</option>
+                                <option value="timeout">Request Timeout</option>
+                                <option value="cors">CORS Error</option>
+                                <option value="invalid-json">Invalid JSON</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-danger" onclick="triggerError()">
+                            <span class="status-indicator idle" id="error-status"></span>
+                            Trigger Error
+                        </button>
+                    </div>
+                    
+                    <div id="error-output" class="output">Select an error type and trigger it</div>
+                </div>
+
+                <!-- Retry Mechanism -->
+                <div class="demo-card">
+                    <h3>🔄 Retry Logic</h3>
+                    <p>Implement automatic retry mechanisms with exponential backoff.</p>
+                    
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="retry-attempts">Max Retry Attempts:</label>
+                            <input type="number" id="retry-attempts" min="1" max="10" value="3">
+                        </div>
+                        <div class="control-group">
+                            <label for="retry-delay">Initial Delay (ms):</label>
+                            <input type="number" id="retry-delay" min="100" max="5000" value="1000">
+                        </div>
+                        <div class="control-group">
+                            <label for="failure-rate">Failure Rate (%):</label>
+                            <input type="number" id="failure-rate" min="0" max="100" value="70">
+                        </div>
+                        <button class="btn btn-warning" onclick="performRetryRequest()">
+                            <span class="status-indicator idle" id="retry-status"></span>
+                            Test Retry Logic
+                        </button>
+                    </div>
+                    
+                    <div id="retry-output" class="output">Configure retry parameters and test</div>
+                </div>
+
+                <!-- Circuit Breaker -->
+                <div class="demo-card">
+                    <h3>⚡ Circuit Breaker</h3>
+                    <p>Implement circuit breaker pattern to handle cascading failures.</p>
+                    
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="circuit-threshold">Failure Threshold:</label>
+                            <input type="number" id="circuit-threshold" min="2" max="10" value="3">
+                        </div>
+                        <div class="control-group">
+                            <label for="circuit-timeout">Circuit Timeout (s):</label>
+                            <input type="number" id="circuit-timeout" min="5" max="60" value="10">
+                        </div>
+                        <button class="btn" onclick="testCircuitBreaker()">
+                            <span class="status-indicator idle" id="circuit-status"></span>
+                            Test Circuit Breaker
+                        </button>
+                        <button class="btn btn-danger" onclick="resetCircuitBreaker()">
+                            Reset Circuit
+                        </button>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <span class="stat-value" id="circuit-state">CLOSED</span>
+                            <span class="stat-label">Circuit State</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="circuit-failures">0</span>
+                            <span class="stat-label">Failures</span>
+                        </div>
+                    </div>
+                    
+                    <div id="circuit-output" class="output">Test circuit breaker with simulated failures</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Parallel Requests Tab -->
+        <div id="parallel" class="tab-content">
+            <div class="demo-grid">
+                <!-- Promise.all Demo -->
+                <div class="demo-card">
+                    <h3>🎯 Parallel Execution</h3>
+                    <p>Execute multiple requests simultaneously and compare with sequential execution.</p>
+                    
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="parallel-count">Number of Requests:</label>
+                            <input type="number" id="parallel-count" min="2" max="10" value="5">
+                        </div>
+                        <div class="control-group">
+                            <label for="request-delay">Request Delay (ms):</label>
+                            <input type="number" id="request-delay" min="100" max="3000" value="1000">
+                        </div>
+                        <button class="btn btn-success" onclick="performParallelRequests()">
+                            <span class="status-indicator idle" id="parallel-status"></span>
+                            Execute Parallel
+                        </button>
+                        <button class="btn" onclick="performSequentialRequests()">
+                            <span class="status-indicator idle" id="sequential-status"></span>
+                            Execute Sequential
+                        </button>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <span class="stat-value" id="parallel-time">-</span>
+                            <span class="stat-label">Parallel Time</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="sequential-time">-</span>
+                            <span class="stat-label">Sequential Time</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="time-saved">-</span>
+                            <span class="stat-label">Time Saved</span>
+                        </div>
+                    </div>
+                    
+                    <div id="parallel-output" class="output">Compare parallel vs sequential request execution</div>
+                </div>
+
+                <!-- Race Condition Demo -->
+                <div class="demo-card">
+                    <h3>🏁 Request Racing</h3>
+                    <p>Race multiple requests and use the fastest response.</p>
+                    
+                    <div class="controls">
+                        <div class="control-group">
+                            <label>Race Endpoints:</label>
+                            <div style="font-size: 12px; color: #666; margin-top: 5px;">
+                                Multiple servers with different response times
+                            </div>
+                        </div>
+                        <button class="btn btn-warning" onclick="performRaceRequests()">
+                            <span class="status-indicator idle" id="race-status"></span>
+                            Start Race
+                        </button>
+                    </div>
+                    
+                    <div id="race-output" class="output">Start a race between multiple endpoints</div>
+                </div>
+
+                <!-- Batch Processing -->
+                <div class="demo-card">
+                    <h3>📦 Batch Processing</h3>
+                    <p>Process large datasets in batches with controlled concurrency.</p>
+                    
+                    <div class="controls">
+                        <div class="control-group">
+                            <label for="batch-size">Batch Size:</label>
+                            <input type="number" id="batch-size" min="2" max="20" value="5">
+                        </div>
+                        <div class="control-group">
+                            <label for="batch-concurrency">Max Concurrency:</label>
+                            <input type="number" id="batch-concurrency" min="1" max="10" value="3">
+                        </div>
+                        <div class="control-group">
+                            <label for="total-items">Total Items:</label>
+                            <input type="number" id="total-items" min="10" max="100" value="25">
+                        </div>
+                        <button class="btn" onclick="performBatchProcessing()">
+                            <span class="status-indicator idle" id="batch-status"></span>
+                            Start Batch Processing
+                        </button>
+                    </div>
+                    
+                    <div class="progress-bar" style="display: none;" id="batch-progress">
+                        <div class="progress-fill" id="batch-progress-fill"></div>
+                    </div>
+                    
+                    <div id="batch-output" class="output">Configure batch parameters and start processing</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Request History -->
+        <div class="demo-card" style="margin-top: 30px;">
+            <h3>📊 Request History</h3>
+            <div class="controls">
+                <button class="btn" onclick="clearHistory()">Clear History</button>
+                <button class="btn" onclick="exportHistory()">Export History</button>
+            </div>
+            <div class="request-history" id="request-history">
+                <div style="text-align: center; color: #666; padding: 20px;">
+                    Request history will appear here...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let requestHistory = [];
+        let currentAbortController = null;
+        let circuitBreakerState = {
+            state: 'CLOSED', // CLOSED, OPEN, HALF_OPEN
+            failures: 0,
+            threshold: 3,
+            timeout: 10000,
+            lastFailureTime: null
+        };
+
+        // Utility functions
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content and mark tab as active
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function updateStatus(elementId, status) {
+            const indicator = document.getElementById(elementId);
+            indicator.className = `status-indicator ${status}`;
+        }
+
+        function updateStats(prefix, time, size, statusCode) {
+            document.getElementById(`${prefix}-time`).textContent = `${time}ms`;
+            document.getElementById(`${prefix}-size`).textContent = `${(size / 1024).toFixed(1)}KB`;
+            document.getElementById(`${prefix}-status-code`).textContent = statusCode;
+        }
+
+        function addToHistory(request) {
+            requestHistory.unshift({
+                ...request,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Keep only last 50 requests
+            if (requestHistory.length > 50) {
+                requestHistory = requestHistory.slice(0, 50);
+            }
+            
+            updateHistoryDisplay();
+        }
+
+        function updateHistoryDisplay() {
+            const historyContainer = document.getElementById('request-history');
+            
+            if (requestHistory.length === 0) {
+                historyContainer.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">Request history will appear here...</div>';
+                return;
+            }
+            
+            historyContainer.innerHTML = requestHistory.map(req => `
+                <div class="request-item ${req.success ? 'success' : 'error'}">
+                    <div class="request-header">
+                        <span>${req.method} ${req.url}</span>
+                        <span>${req.duration}ms</span>
+                    </div>
+                    <div style="color: #666;">
+                        Status: ${req.statusCode || 'N/A'} | 
+                        Size: ${req.size ? (req.size / 1024).toFixed(1) + 'KB' : 'N/A'} | 
+                        ${new Date(req.timestamp).toLocaleTimeString()}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function formatJSON(obj) {
+            return JSON.stringify(obj, null, 2)
+                .replace(/"([^"]+)":/g, '<span class="json-key">"$1"</span>:')
+                .replace(/: "([^"]*)"/g, ': <span class="json-string">"$1"</span>')
+                .replace(/: (\d+)/g, ': <span class="json-number">$1</span>')
+                .replace(/: (true|false)/g, ': <span class="json-boolean">$1</span>')
+                .replace(/: null/g, ': <span class="json-null">null</span>');
+        }
+
+        // Basic GET request
+        async function performGetRequest() {
+            const url = document.getElementById('get-url').value;
+            const output = document.getElementById('get-output');
+            
+            updateStatus('get-status', 'loading');
+            output.className = 'output loading';
+            output.innerHTML = '<div class="loading-spinner"></div>Loading...';
+            
+            const startTime = Date.now();
+            
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const duration = Date.now() - startTime;
+                const data = await response.json();
+                const size = JSON.stringify(data).length;
+                
+                updateStatus('get-status', 'success');
+                output.className = 'output success';
+                output.innerHTML = `<div class="json-viewer">${formatJSON(data)}</div>`;
+                
+                updateStats('get', duration, size, response.status);
+                
+                addToHistory({
+                    method: 'GET',
+                    url,
+                    success: true,
+                    duration,
+                    size,
+                    statusCode: response.status
+                });
+                
+            } catch (error) {
+                const duration = Date.now() - startTime;
+                
+                updateStatus('get-status', 'error');
+                output.className = 'output error';
+                output.textContent = `Error: ${error.message}`;
+                
+                addToHistory({
+                    method: 'GET',
+                    url,
+                    success: false,
+                    duration,
+                    error: error.message
+                });
+            }
+        }
+
+        // POST request
+        async function performPostRequest() {
+            const title = document.getElementById('post-title').value;
+            const body = document.getElementById('post-body').value;
+            const userId = document.getElementById('post-userid').value;
+            const output = document.getElementById('post-output');
+            
+            const postData = {
+                title,
+                body,
+                userId: parseInt(userId)
+            };
+            
+            updateStatus('post-status', 'loading');
+            output.className = 'output loading';
+            output.innerHTML = '<div class="loading-spinner"></div>Creating post...';
+            
+            const startTime = Date.now();
+            
+            try {
+                const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(postData)
+                });
+                
+                const duration = Date.now() - startTime;
+                const responseData = await response.json();
+                const size = JSON.stringify(responseData).length;
+                
+                updateStatus('post-status', 'success');
+                output.className = 'output success';
+                output.innerHTML = `
+                    <div style="margin-bottom: 10px;"><strong>✅ Post created successfully!</strong></div>
+                    <div class="json-viewer">${formatJSON(responseData)}</div>
+                `;
+                
+                updateStats('post', duration, size, response.status);
+                
+                addToHistory({
+                    method: 'POST',
+                    url: 'https://jsonplaceholder.typicode.com/posts',
+                    success: true,
+                    duration,
+                    size,
+                    statusCode: response.status
+                });
+                
+            } catch (error) {
+                const duration = Date.now() - startTime;
+                
+                updateStatus('post-status', 'error');
+                output.className = 'output error';
+                output.textContent = `Error: ${error.message}`;
+                
+                addToHistory({
+                    method: 'POST',
+                    url: 'https://jsonplaceholder.typicode.com/posts',
+                    success: false,
+                    duration,
+                    error: error.message
+                });
+            }
+        }
+
+        // Authenticated request
+        async function performAuthRequest() {
+            const token = document.getElementById('auth-token').value;
+            const customHeader = document.getElementById('custom-header').value;
+            const output = document.getElementById('auth-output');
+            
+            updateStatus('auth-status', 'loading');
+            output.className = 'output loading';
+            output.innerHTML = '<div class="loading-spinner"></div>Sending authenticated request...';
+            
+            const startTime = Date.now();
+            
+            try {
+                const headers = {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json'
+                };
+                
+                // Parse custom header
+                if (customHeader && customHeader.includes(':')) {
+                    const [key, value] = customHeader.split(':').map(s => s.trim());
+                    headers[key] = value;
+                }
+                
+                const response = await fetch('https://httpbin.org/headers', {
+                    method: 'GET',
+                    headers
+                });
+                
+                const duration = Date.now() - startTime;
+                const data = await response.json();
+                const size = JSON.stringify(data).length;
+                
+                updateStatus('auth-status', 'success');
+                output.className = 'output success';
+                output.innerHTML = `
+                    <div style="margin-bottom: 10px;"><strong>✅ Request sent with headers:</strong></div>
+                    <div class="json-viewer">${formatJSON(data)}</div>
+                `;
+                
+                addToHistory({
+                    method: 'GET',
+                    url: 'https://httpbin.org/headers',
+                    success: true,
+                    duration,
+                    size,
+                    statusCode: response.status
+                });
+                
+            } catch (error) {
+                const duration = Date.now() - startTime;
+                
+                updateStatus('auth-status', 'error');
+                output.className = 'output error';
+                output.textContent = `Error: ${error.message}`;
+                
+                addToHistory({
+                    method: 'GET',
+                    url: 'https://httpbin.org/headers',
+                    success: false,
+                    duration,
+                    error: error.message
+                });
+            }
+        }
+
+        // Timeout request
+        async function performTimeoutRequest() {
+            const timeoutDuration = parseInt(document.getElementById('timeout-duration').value) * 1000;
+            const delayDuration = parseInt(document.getElementById('delay-duration').value);
+            const output = document.getElementById('timeout-output');
+            const progressBar = document.getElementById('timeout-progress');
+            const progressFill = document.getElementById('timeout-progress-fill');
+            const cancelBtn = document.getElementById('cancel-btn');
+            
+            // Create abort controller
+            currentAbortController = new AbortController();
+            
+            updateStatus('timeout-status', 'loading');
+            output.className = 'output loading';
+            output.innerHTML = '<div class="loading-spinner"></div>Testing timeout...';
+            progressBar.style.display = 'block';
+            cancelBtn.disabled = false;
+            
+            // Progress animation
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                progress += (100 / (timeoutDuration / 100));
+                progressFill.style.width = Math.min(progress, 100) + '%';
+            }, 100);
+            
+            const startTime = Date.now();
+            
+            try {
+                // Set up timeout
+                const timeoutPromise = new Promise((_, reject) => {
+                    setTimeout(() => reject(new Error('Request timed out')), timeoutDuration);
+                });
+                
+                const fetchPromise = fetch(`https://httpbin.org/delay/${delayDuration}`, {
+                    signal: currentAbortController.signal
+                });
+                
+                const response = await Promise.race([fetchPromise, timeoutPromise]);
+                const duration = Date.now() - startTime;
+                const data = await response.json();
+                
+                clearInterval(progressInterval);
+                updateStatus('timeout-status', 'success');
+                output.className = 'output success';
+                output.innerHTML = `
+                    <div style="margin-bottom: 10px;"><strong>✅ Request completed within timeout!</strong></div>
+                    <div>Duration: ${duration}ms (Timeout was ${timeoutDuration}ms)</div>
+                    <div class="json-viewer">${formatJSON(data)}</div>
+                `;
+                
+                addToHistory({
+                    method: 'GET',
+                    url: `https://httpbin.org/delay/${delayDuration}`,
+                    success: true,
+                    duration,
+                    statusCode: response.status
+                });
+                
+            } catch (error) {
+                const duration = Date.now() - startTime;
+                clearInterval(progressInterval);
+                
+                updateStatus('timeout-status', 'error');
+                output.className = 'output error';
+                
+                if (error.name === 'AbortError') {
+                    output.textContent = '❌ Request was cancelled by user';
+                } else {
+                    output.textContent = `❌ ${error.message} (after ${duration}ms)`;
+                }
+                
+                addToHistory({
+                    method: 'GET',
+                    url: `https://httpbin.org/delay/${delayDuration}`,
+                    success: false,
+                    duration,
+                    error: error.message
+                });
+            } finally {
+                progressBar.style.display = 'none';
+                progressFill.style.width = '0%';
+                cancelBtn.disabled = true;
+                currentAbortController = null;
+            }
+        }
+
+        function cancelRequest() {
+            if (currentAbortController) {
+                currentAbortController.abort();
+            }
+        }
+
+        // Continue with more functions in next part...
+        
+        // Upload simulation
+        async function performUploadRequest() {
+            const fileName = document.getElementById('file-name').value;
+            const fileSize = parseInt(document.getElementById('file-size').value);
+            const description = document.getElementById('upload-description').value;
+            const output = document.getElementById('upload-output');
+            
+            updateStatus('upload-status', 'loading');
+            output.className = 'output loading';
+            output.innerHTML = '<div class="loading-spinner"></div>Simulating file upload...';
+            
+            const startTime = Date.now();
+            
+            try {
+                // Create FormData
+                const formData = new FormData();
+                formData.append('file', new Blob(['x'.repeat(fileSize * 1024)], { type: 'application/octet-stream' }), fileName);
+                formData.append('description', description);
+                formData.append('upload_time', new Date().toISOString());
+                
+                const response = await fetch('https://httpbin.org/post', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const duration = Date.now() - startTime;
+                const data = await response.json();
+                
+                updateStatus('upload-status', 'success');
+                output.className = 'output success';
+                output.innerHTML = `
+                    <div style="margin-bottom: 10px;"><strong>✅ File upload simulated successfully!</strong></div>
+                    <div>File: ${fileName} (${fileSize}KB)</div>
+                    <div>Upload time: ${duration}ms</div>
+                    <div class="json-viewer">${formatJSON(data.files || {})}</div>
+                `;
+                
+                addToHistory({
+                    method: 'POST',
+                    url: 'https://httpbin.org/post',
+                    success: true,
+                    duration,
+                    size: fileSize * 1024,
+                    statusCode: response.status
+                });
+                
+            } catch (error) {
+                const duration = Date.now() - startTime;
+                
+                updateStatus('upload-status', 'error');
+                output.className = 'output error';
+                output.textContent = `Error: ${error.message}`;
+                
+                addToHistory({
+                    method: 'POST',
+                    url: 'https://httpbin.org/post',
+                    success: false,
+                    duration,
+                    error: error.message
+                });
+            }
+        }
+
+        // Error scenarios
+        async function triggerError() {
+            const errorType = document.getElementById('error-type').value;
+            const output = document.getElementById('error-output');
+            
+            updateStatus('error-status', 'loading');
+            output.className = 'output loading';
+            output.innerHTML = '<div class="loading-spinner"></div>Triggering error...';
+            
+            const startTime = Date.now();
+            let url, options = {};
+            
+            try {
+                switch (errorType) {
+                    case '404':
+                        url = 'https://httpbin.org/status/404';
+                        break;
+                    case '500':
+                        url = 'https://httpbin.org/status/500';
+                        break;
+                    case 'network':
+                        url = 'https://this-domain-does-not-exist-12345.com/api';
+                        break;
+                    case 'timeout':
+                        url = 'https://httpbin.org/delay/10';
+                        options.signal = AbortSignal.timeout(2000);
+                        break;
+                    case 'cors':
+                        url = 'https://example.com/api'; // Will likely cause CORS error
+                        break;
+                    case 'invalid-json':
+                        url = 'https://httpbin.org/html';
+                        break;
+                }
+                
+                const response = await fetch(url, options);
+                const duration = Date.now() - startTime;
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                if (errorType === 'invalid-json') {
+                    // This will fail when trying to parse HTML as JSON
+                    await response.json();
+                }
+                
+                // If we get here, the error didn't trigger as expected
+                updateStatus('error-status', 'success');
+                output.className = 'output success';
+                output.textContent = 'Unexpected: No error occurred!';
+                
+            } catch (error) {
+                const duration = Date.now() - startTime;
+                
+                updateStatus('error-status', 'error');
+                output.className = 'output error';
+                
+                let errorMessage = '';
+                switch (errorType) {
+                    case '404':
+                        errorMessage = `❌ 404 Not Found Error\nDuration: ${duration}ms\nMessage: ${error.message}`;
+                        break;
+                    case '500':
+                        errorMessage = `❌ 500 Server Error\nDuration: ${duration}ms\nMessage: ${error.message}`;
+                        break;
+                    case 'network':
+                        errorMessage = `❌ Network Error\nDuration: ${duration}ms\nMessage: ${error.message}\nCause: Domain does not exist`;
+                        break;
+                    case 'timeout':
+                        errorMessage = `❌ Request Timeout\nDuration: ${duration}ms\nMessage: ${error.message}\nCause: Request took longer than 2 seconds`;
+                        break;
+                    case 'cors':
+                        errorMessage = `❌ CORS Error\nDuration: ${duration}ms\nMessage: ${error.message}\nCause: Cross-origin request blocked`;
+                        break;
+                    case 'invalid-json':
+                        errorMessage = `❌ JSON Parse Error\nDuration: ${duration}ms\nMessage: ${error.message}\nCause: Response was HTML, not JSON`;
+                        break;
+                    default:
+                        errorMessage = `❌ ${error.message}`;
+                }
+                
+                output.textContent = errorMessage;
+                
+                addToHistory({
+                    method: 'GET',
+                    url,
+                    success: false,
+                    duration,
+                    error: error.message
+                });
+            }
+        }
+
+        // Retry mechanism
+        async function performRetryRequest() {
+            const maxRetries = parseInt(document.getElementById('retry-attempts').value);
+            const initialDelay = parseInt(document.getElementById('retry-delay').value);
+            const failureRate = parseInt(document.getElementById('failure-rate').value);
+            const output = document.getElementById('retry-output');
+            
+            updateStatus('retry-status', 'loading');
+            output.className = 'output loading';
+            output.innerHTML = '<div class="loading-spinner"></div>Testing retry logic...';
+            
+            const startTime = Date.now();
+            let attempt = 0;
+            let totalDuration = 0;
+            
+            const retryWithBackoff = async () => {
+                while (attempt <= maxRetries) {
+                    attempt++;
+                    const attemptStart = Date.now();
+                    
+                    try {
+                        // Simulate unreliable service
+                        const shouldFail = Math.random() * 100 < failureRate;
+                        
+                        if (shouldFail) {
+                            throw new Error(`Simulated failure (${failureRate}% failure rate)`);
+                        }
+                        
+                        // Simulate successful response
+                        await new Promise(resolve => setTimeout(resolve, 200));
+                        const attemptDuration = Date.now() - attemptStart;
+                        totalDuration = Date.now() - startTime;
+                        
+                        updateStatus('retry-status', 'success');
+                        output.className = 'output success';
+                        output.textContent = `✅ Success on attempt ${attempt}!\n` +
+                            `Total duration: ${totalDuration}ms\n` +
+                            `Final attempt duration: ${attemptDuration}ms\n` +
+                            `Failure rate: ${failureRate}%`;
+                        
+                        addToHistory({
+                            method: 'GET',
+                            url: 'simulated-unreliable-endpoint',
+                            success: true,
+                            duration: totalDuration,
+                            statusCode: 200
+                        });
+                        
+                        return;
+                        
+                    } catch (error) {
+                        const attemptDuration = Date.now() - attemptStart;
+                        
+                        if (attempt <= maxRetries) {
+                            const delay = initialDelay * Math.pow(2, attempt - 1); // Exponential backoff
+                            
+                            output.innerHTML = `<div class="loading-spinner"></div>Attempt ${attempt} failed, retrying in ${delay}ms...\n` +
+                                `Error: ${error.message}\n` +
+                                `Next attempt: ${attempt + 1}/${maxRetries + 1}`;
+                            
+                            await new Promise(resolve => setTimeout(resolve, delay));
+                        } else {
+                            totalDuration = Date.now() - startTime;
+                            
+                            updateStatus('retry-status', 'error');
+                            output.className = 'output error';
+                            output.textContent = `❌ All ${maxRetries + 1} attempts failed!\n` +
+                                `Total duration: ${totalDuration}ms\n` +
+                                `Last error: ${error.message}\n` +
+                                `Failure rate: ${failureRate}%`;
+                            
+                            addToHistory({
+                                method: 'GET',
+                                url: 'simulated-unreliable-endpoint',
+                                success: false,
+                                duration: totalDuration,
+                                error: `Failed after ${maxRetries + 1} attempts`
+                            });
+                        }
+                    }
+                }
+            };
+            
+            await retryWithBackoff();
+        }
+
+        // Circuit breaker
+        function resetCircuitBreaker() {
+            circuitBreakerState.state = 'CLOSED';
+            circuitBreakerState.failures = 0;
+            circuitBreakerState.lastFailureTime = null;
+            
+            document.getElementById('circuit-state').textContent = 'CLOSED';
+            document.getElementById('circuit-failures').textContent = '0';
+            
+            const output = document.getElementById('circuit-output');
+            output.className = 'output';
+            output.textContent = 'Circuit breaker has been reset to CLOSED state';
+        }
+
+        async function testCircuitBreaker() {
+            const threshold = parseInt(document.getElementById('circuit-threshold').value);
+            const timeout = parseInt(document.getElementById('circuit-timeout').value) * 1000;
+            const output = document.getElementById('circuit-output');
+            
+            circuitBreakerState.threshold = threshold;
+            circuitBreakerState.timeout = timeout;
+            
+            updateStatus('circuit-status', 'loading');
+            output.className = 'output loading';
+            output.innerHTML = '<div class="loading-spinner"></div>Testing circuit breaker...';
+            
+            const startTime = Date.now();
+            
+            try {
+                // Check circuit state
+                if (circuitBreakerState.state === 'OPEN') {
+                    if (Date.now() - circuitBreakerState.lastFailureTime > timeout) {
+                        circuitBreakerState.state = 'HALF_OPEN';
+                        document.getElementById('circuit-state').textContent = 'HALF_OPEN';
+                    } else {
+                        throw new Error('Circuit breaker is OPEN - request blocked');
+                    }
+                }
+                
+                // Simulate request (70% failure rate)
+                const shouldFail = Math.random() < 0.7;
+                
+                if (shouldFail) {
+                    throw new Error('Simulated service failure');
+                }
+                
+                // Success - reset circuit breaker if in HALF_OPEN state
+                if (circuitBreakerState.state === 'HALF_OPEN') {
+                    circuitBreakerState.state = 'CLOSED';
+                    circuitBreakerState.failures = 0;
+                    document.getElementById('circuit-state').textContent = 'CLOSED';
+                    document.getElementById('circuit-failures').textContent = '0';
+                }
+                
+                const duration = Date.now() - startTime;
+                
+                updateStatus('circuit-status', 'success');
+                output.className = 'output success';
+                output.textContent = `✅ Request succeeded!\n` +
+                    `Duration: ${duration}ms\n` +
+                    `Circuit state: ${circuitBreakerState.state}\n` +
+                    `Failures: ${circuitBreakerState.failures}/${threshold}`;
+                
+            } catch (error) {
+                const duration = Date.now() - startTime;
+                circuitBreakerState.failures++;
+                circuitBreakerState.lastFailureTime = Date.now();
+                
+                if (circuitBreakerState.failures >= threshold) {
+                    circuitBreakerState.state = 'OPEN';
+                }
+                
+                document.getElementById('circuit-state').textContent = circuitBreakerState.state;
+                document.getElementById('circuit-failures').textContent = circuitBreakerState.failures.toString();
+                
+                updateStatus('circuit-status', 'error');
+                output.className = 'output error';
+                output.textContent = `❌ ${error.message}\n` +
+                    `Duration: ${duration}ms\n` +
+                    `Circuit state: ${circuitBreakerState.state}\n` +
+                    `Failures: ${circuitBreakerState.failures}/${threshold}\n` +
+                    (circuitBreakerState.state === 'OPEN' ? `Circuit will reset in ${timeout/1000}s` : '');
+            }
+        }
+
+        // Parallel requests
+        async function performParallelRequests() {
+            const count = parseInt(document.getElementById('parallel-count').value);
+            const delay = parseInt(document.getElementById('request-delay').value);
+            const output = document.getElementById('parallel-output');
+            
+            updateStatus('parallel-status', 'loading');
+            output.className = 'output loading';
+            output.innerHTML = '<div class="loading-spinner"></div>Executing parallel requests...';
+            
+            const startTime = Date.now();
+            
+            try {
+                // Create array of fetch promises
+                const promises = Array.from({ length: count }, (_, i) => 
+                    fetch(`https://httpbin.org/delay/${delay/1000}?request=${i+1}`)
+                        .then(response => response.json())
+                );
+                
+                // Execute all requests in parallel
+                const results = await Promise.all(promises);
+                const duration = Date.now() - startTime;
+                
+                updateStatus('parallel-status', 'success');
+                output.className = 'output success';
+                output.innerHTML = `✅ All ${count} parallel requests completed!\n` +
+                    `Total time: ${duration}ms\n` +
+                    `Average time per request: ${(duration/count).toFixed(0)}ms\n` +
+                    `Results: ${results.length} responses received`;
+                
+                document.getElementById('parallel-time').textContent = `${duration}ms`;
+                
+                addToHistory({
+                    method: 'GET',
+                    url: `parallel-requests (${count} requests)`,
+                    success: true,
+                    duration,
+                    statusCode: 200
+                });
+                
+            } catch (error) {
+                const duration = Date.now() - startTime;
+                
+                updateStatus('parallel-status', 'error');
+                output.className = 'output error';
+                output.textContent = `❌ Parallel requests failed: ${error.message}`;
+            }
+        }
+
+        // Sequential requests
+        async function performSequentialRequests() {
+            const count = parseInt(document.getElementById('parallel-count').value);
+            const delay = parseInt(document.getElementById('request-delay').value);
+            const output = document.getElementById('parallel-output');
+            
+            updateStatus('sequential-status', 'loading');
+            output.className = 'output loading';
+            output.innerHTML = '<div class="loading-spinner"></div>Executing sequential requests...';
+            
+            const startTime = Date.now();
+            
+            try {
+                const results = [];
+                
+                // Execute requests sequentially
+                for (let i = 0; i < count; i++) {
+                    const response = await fetch(`https://httpbin.org/delay/${delay/1000}?request=${i+1}`);
+                    const data = await response.json();
+                    results.push(data);
+                    
+                    // Update progress
+                    output.innerHTML = `<div class="loading-spinner"></div>Executing sequential requests...\n` +
+                        `Progress: ${i+1}/${count} completed`;
+                }
+                
+                const duration = Date.now() - startTime;
+                
+                updateStatus('sequential-status', 'success');
+                output.className = 'output success';
+                output.innerHTML = `✅ All ${count} sequential requests completed!\n` +
+                    `Total time: ${duration}ms\n` +
+                    `Average time per request: ${(duration/count).toFixed(0)}ms\n` +
+                    `Results: ${results.length} responses received`;
+                
+                document.getElementById('sequential-time').textContent = `${duration}ms`;
+                
+                // Calculate time saved
+                const parallelTime = parseInt(document.getElementById('parallel-time').textContent);
+                if (parallelTime > 0) {
+                    const timeSaved = duration - parallelTime;
+                    document.getElementById('time-saved').textContent = `${timeSaved}ms`;
+                }
+                
+                addToHistory({
+                    method: 'GET',
+                    url: `sequential-requests (${count} requests)`,
+                    success: true,
+                    duration,
+                    statusCode: 200
+                });
+                
+            } catch (error) {
+                const duration = Date.now() - startTime;
+                
+                updateStatus('sequential-status', 'error');
+                output.className = 'output error';
+                output.textContent = `❌ Sequential requests failed: ${error.message}`;
+            }
+        }
+
+        // Race requests
+        async function performRaceRequests() {
+            const output = document.getElementById('race-output');
+            
+            updateStatus('race-status', 'loading');
+            output.className = 'output loading';
+            output.innerHTML = '<div class="loading-spinner"></div>Racing multiple endpoints...';
+            
+            const startTime = Date.now();
+            
+            // Different endpoints with varying delays
+            const endpoints = [
+                { name: 'Fast Server', url: 'https://httpbin.org/delay/1', delay: 1 },
+                { name: 'Medium Server', url: 'https://httpbin.org/delay/2', delay: 2 },
+                { name: 'Slow Server', url: 'https://httpbin.org/delay/3', delay: 3 },
+                { name: 'Variable Server', url: 'https://httpbin.org/delay/1.5', delay: 1.5 }
+            ];
+            
+            try {
+                const promises = endpoints.map(async (endpoint) => {
+                    const requestStart = Date.now();
+                    try {
+                        const response = await fetch(endpoint.url);
+                        const data = await response.json();
+                        const requestDuration = Date.now() - requestStart;
+                        
+                        return {
+                            name: endpoint.name,
+                            success: true,
+                            duration: requestDuration,
+                            data
+                        };
+                    } catch (error) {
+                        const requestDuration = Date.now() - requestStart;
+                        return {
+                            name: endpoint.name,
+                            success: false,
+                            duration: requestDuration,
+                            error: error.message
+                        };
+                    }
+                });
+                
+                // Race the promises
+                const winner = await Promise.race(promises);
+                const totalDuration = Date.now() - startTime;
+                
+                updateStatus('race-status', 'success');
+                output.className = 'output success';
+                output.innerHTML = `🏆 Winner: ${winner.name}!\n` +
+                    `Response time: ${winner.duration}ms\n` +
+                    `Total race time: ${totalDuration}ms\n` +
+                    `Status: ${winner.success ? 'Success' : 'Failed'}\n` +
+                    (winner.error ? `Error: ${winner.error}` : 'Data received successfully');
+                
+                addToHistory({
+                    method: 'GET',
+                    url: `race-requests (winner: ${winner.name})`,
+                    success: winner.success,
+                    duration: totalDuration,
+                    statusCode: winner.success ? 200 : null
+                });
+                
+            } catch (error) {
+                const duration = Date.now() - startTime;
+                
+                updateStatus('race-status', 'error');
+                output.className = 'output error';
+                output.textContent = `❌ Race failed: ${error.message}`;
+            }
+        }
+
+        // Batch processing
+        async function performBatchProcessing() {
+            const batchSize = parseInt(document.getElementById('batch-size').value);
+            const maxConcurrency = parseInt(document.getElementById('batch-concurrency').value);
+            const totalItems = parseInt(document.getElementById('total-items').value);
+            const output = document.getElementById('batch-output');
+            const progressBar = document.getElementById('batch-progress');
+            const progressFill = document.getElementById('batch-progress-fill');
+            
+            updateStatus('batch-status', 'loading');
+            output.className = 'output loading';
+            output.innerHTML = '<div class="loading-spinner"></div>Starting batch processing...';
+            progressBar.style.display = 'block';
+            progressFill.style.width = '0%';
+            
+            const startTime = Date.now();
+            
+            try {
+                // Create items to process
+                const items = Array.from({ length: totalItems }, (_, i) => `item-${i + 1}`);
+                const results = [];
+                let processed = 0;
+                
+                // Process items in batches
+                for (let i = 0; i < items.length; i += batchSize) {
+                    const batch = items.slice(i, i + batchSize);
+                    
+                    output.innerHTML = `<div class="loading-spinner"></div>Processing batch ${Math.floor(i/batchSize) + 1}...\n` +
+                        `Items: ${batch.join(', ')}\n` +
+                        `Progress: ${processed}/${totalItems} items completed`;
+                    
+                    // Process batch with controlled concurrency
+                    const batchPromises = batch.slice(0, maxConcurrency).map(async (item) => {
+                        // Simulate processing
+                        await new Promise(resolve => setTimeout(resolve, Math.random() * 500 + 200));
+                        return { item, processed: true, timestamp: Date.now() };
+                    });
+                    
+                    const batchResults = await Promise.all(batchPromises);
+                    results.push(...batchResults);
+                    processed += batchResults.length;
+                    
+                    // Update progress
+                    const progress = (processed / totalItems) * 100;
+                    progressFill.style.width = progress + '%';
+                    
+                    // Small delay between batches
+                    if (i + batchSize < items.length) {
+                        await new Promise(resolve => setTimeout(resolve, 200));
+                    }
+                }
+                
+                const duration = Date.now() - startTime;
+                
+                updateStatus('batch-status', 'success');
+                output.className = 'output success';
+                output.innerHTML = `✅ Batch processing completed!\n` +
+                    `Total items: ${totalItems}\n` +
+                    `Batch size: ${batchSize}\n` +
+                    `Max concurrency: ${maxConcurrency}\n` +
+                    `Total duration: ${duration}ms\n` +
+                    `Average per item: ${(duration/totalItems).toFixed(0)}ms\n` +
+                    `Throughput: ${(totalItems/duration*1000).toFixed(1)} items/second`;
+                
+                addToHistory({
+                    method: 'BATCH',
+                    url: `batch-processing (${totalItems} items)`,
+                    success: true,
+                    duration,
+                    statusCode: 200
+                });
+                
+            } catch (error) {
+                const duration = Date.now() - startTime;
+                
+                updateStatus('batch-status', 'error');
+                output.className = 'output error';
+                output.textContent = `❌ Batch processing failed: ${error.message}`;
+            } finally {
+                progressBar.style.display = 'none';
+            }
+        }
+
+        // Utility functions
+        function clearHistory() {
+            requestHistory = [];
+            updateHistoryDisplay();
+        }
+
+        function exportHistory() {
+            const dataStr = JSON.stringify(requestHistory, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `fetch-history-${new Date().toISOString().slice(0,10)}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('Fetch API Demo loaded successfully');
+            
+            // Set default values
+            document.getElementById('get-url').value = 'https://jsonplaceholder.typicode.com/posts/1';
+            
+            // Initialize stats
+            updateStats('get', 0, 0, '-');
+            updateStats('post', 0, 0, '-');
+        });
+    </script>
+</body>
+</html>
