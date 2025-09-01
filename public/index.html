@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSVerseHub - Master JavaScript in a Galaxy</title>
+    <link rel="stylesheet" href="../src/styles/index.css" />
+    <link rel="stylesheet" href="../src/styles/galaxy.css" />
+    <link rel="stylesheet" href="../src/styles/theme.css" />
+    <link rel="stylesheet" href="../src/styles/responsive.css" />
+    <link
+      rel="preload"
+      href="../src/assets/fonts/space-mono.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+  </head>
+  <body class="galaxy-theme">
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar">
+      <div class="nav-container">
+        <div class="nav-left">
+          <img src="images/ui/logo.png" alt="JSVerseHub" class="logo" />
+          <h1 class="nav-title">JSVerseHub</h1>
+        </div>
+        <div class="nav-right">
+          <button class="nav-btn" id="theme-toggle">
+            <img src="images/ui/theme-toggle.png" alt="Toggle Theme" />
+          </button>
+          <div class="user-progress">
+            <span class="progress-text">Progress: </span>
+            <span class="progress-value" id="progress-value">0%</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Galaxy Container -->
+    <main class="galaxy-container" id="galaxy-container">
+      <div class="galaxy-background">
+        <canvas id="stars-canvas"></canvas>
+      </div>
+
+      <!-- Welcome Modal -->
+      <div class="modal" id="welcome-modal">
+        <div class="modal-content">
+          <h2>🚀 Welcome to JSVerseHub!</h2>
+          <p>
+            Embark on an epic journey through the JavaScript universe. Each
+            planet represents a concept to master!
+          </p>
+          <div class="modal-actions">
+            <button class="btn btn-primary" id="start-journey">
+              Start Your Journey
+            </button>
+            <button class="btn btn-secondary" id="skip-intro">
+              Skip Intro
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Galaxy Map -->
+      <div class="galaxy-map" id="galaxy-map">
+        <!-- Planets will be dynamically generated here -->
+      </div>
+
+      <!-- Floating UI Elements -->
+      <div class="floating-ui">
+        <div class="achievement-panel" id="achievement-panel">
+          <h3>🏆 Achievements</h3>
+          <div class="achievement-list" id="achievement-list">
+            <!-- Dynamic achievements -->
+          </div>
+        </div>
+
+        <div class="progress-panel" id="progress-panel">
+          <h3>🎯 Your Journey</h3>
+          <div class="progress-stats">
+            <div class="stat">
+              <span class="stat-label">Planets Explored:</span>
+              <span class="stat-value" id="planets-explored">0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Concepts Mastered:</span>
+              <span class="stat-value" id="concepts-mastered">0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Badges Earned:</span>
+              <span class="stat-value" id="badges-earned">0</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Concept Modal -->
+      <div class="modal concept-modal" id="concept-modal">
+        <div class="modal-content large">
+          <button class="close-btn" id="close-concept-modal">
+            <img src="images/ui/close-btn.png" alt="Close" />
+          </button>
+          <div class="concept-content" id="concept-content">
+            <!-- Dynamic concept content will load here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading Overlay -->
+      <div class="loading-overlay" id="loading-overlay">
+        <img src="images/ui/loading.gif" alt="Loading..." class="loading-gif" />
+        <p class="loading-text">Preparing your galaxy...</p>
+      </div>
+    </main>
+
+    <!-- Audio for interactions -->
+    <audio id="click-sound" preload="auto">
+      <source src="../src/assets/sounds/click.wav" type="audio/wav" />
+    </audio>
+
+    <!-- Scripts -->
+    <script src="../src/utils/domUtils.js"></script>
+    <script src="../src/utils/logger.js"></script>
+    <script src="../src/utils/debounce.js"></script>
+    <script src="../src/utils/randomColorGenerator.js"></script>
+    <script src="../src/engine/stateManager.js"></script>
+    <script src="../src/engine/conceptLoader.js"></script>
+    <script src="../src/engine/galaxyRenderer.js"></script>
+    <script src="../src/engine/navigation.js"></script>
+    <script src="../src/components/Navbar.js"></script>
+    <script src="../src/components/Modal.js"></script>
+    <script src="../src/components/GalaxyMap.js"></script>
+    <script src="../src/components/PlanetCard.js"></script>
+    <script src="../src/components/ConceptViewer.js"></script>
+    <script src="../src/main.js"></script>
+  </body>
+</html>
