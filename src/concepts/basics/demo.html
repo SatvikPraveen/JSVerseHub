@@ -1,0 +1,729 @@
+<!-- File: src/concepts/basics/demo.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Basics - Interactive Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .demo-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .demo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .demo-card h3 {
+            color: #5a67d8;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 14px;
+            margin: 10px 0;
+            overflow-x: auto;
+            line-height: 1.5;
+        }
+
+        .interactive-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .interactive-section h2 {
+            color: #5a67d8;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #5a67d8;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #5a67d8, #667eea);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(90, 103, 216, 0.4);
+        }
+
+        .output {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            min-height: 100px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            overflow-y: auto;
+            max-height: 200px;
+        }
+
+        .result-success {
+            color: #38a169;
+            background: #f0fff4;
+            border-color: #9ae6b4;
+        }
+
+        .result-error {
+            color: #e53e3e;
+            background: #fff5f5;
+            border-color: #feb2b2;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #718096;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: #5a67d8;
+            border-bottom: 2px solid #5a67d8;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #5a67d8, #667eea);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 JavaScript Basics Demo</h1>
+            <p>Interactive playground to explore fundamental JavaScript concepts</p>
+        </div>
+
+        <!-- Concept Demos -->
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h3>📦 Variables & Data Types</h3>
+                <div class="code-block">let message = "Hello, World!";
+const age = 25;
+var isActive = true;
+
+console.log(typeof message); // "string"
+console.log(typeof age);     // "number"
+console.log(typeof isActive); // "boolean"</div>
+                <button class="btn" onclick="runVariablesDemo()">Run Demo</button>
+                <div id="variables-output" class="output"></div>
+            </div>
+
+            <div class="demo-card">
+                <h3>⚡ Operators</h3>
+                <div class="code-block">let a = 10, b = 3;
+
+console.log(a + b);  // Addition: 13
+console.log(a ** b); // Exponentiation: 1000
+console.log(a === b); // Strict equality: false
+console.log(a > 5 && b < 5); // Logical AND: true</div>
+                <button class="btn" onclick="runOperatorsDemo()">Run Demo</button>
+                <div id="operators-output" class="output"></div>
+            </div>
+
+            <div class="demo-card">
+                <h3>🔄 Control Flow</h3>
+                <div class="code-block">for (let i = 1; i <= 3; i++) {
+  if (i % 2 === 0) {
+    console.log(`${i} is even`);
+  } else {
+    console.log(`${i} is odd`);
+  }
+}</div>
+                <button class="btn" onclick="runControlFlowDemo()">Run Demo</button>
+                <div id="control-flow-output" class="output"></div>
+            </div>
+
+            <div class="demo-card">
+                <h3>🔧 Functions</h3>
+                <div class="code-block">// Arrow function
+const greet = (name) => `Hello, ${name}!`;
+
+// Regular function
+function calculate(x, y) {
+  return { sum: x + y, product: x * y };
+}
+
+console.log(greet("Alice"));
+console.log(calculate(4, 5));</div>
+                <button class="btn" onclick="runFunctionsDemo()">Run Demo</button>
+                <div id="functions-output" class="output"></div>
+            </div>
+        </div>
+
+        <!-- Interactive Playground -->
+        <div class="interactive-section">
+            <h2>🎮 Interactive Playground</h2>
+            
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('calculator')">Calculator</button>
+                <button class="tab" onclick="switchTab('type-checker')">Type Checker</button>
+                <button class="tab" onclick="switchTab('scope-demo')">Scope Demo</button>
+                <button class="tab" onclick="switchTab('mini-quiz')">Mini Quiz</button>
+            </div>
+
+            <!-- Calculator Tab -->
+            <div id="calculator" class="tab-content active">
+                <h3>Basic Calculator</h3>
+                <div class="input-group">
+                    <label for="num1">First Number:</label>
+                    <input type="number" id="num1" placeholder="Enter first number">
+                </div>
+                <div class="input-group">
+                    <label for="operator">Operator:</label>
+                    <select id="operator">
+                        <option value="+">Addition (+)</option>
+                        <option value="-">Subtraction (-)</option>
+                        <option value="*">Multiplication (*)</option>
+                        <option value="/">Division (/)</option>
+                        <option value="%">Modulus (%)</option>
+                        <option value="**">Exponentiation (**)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="num2">Second Number:</label>
+                    <input type="number" id="num2" placeholder="Enter second number">
+                </div>
+                <button class="btn" onclick="calculate()">Calculate</button>
+                <div id="calc-result" class="output"></div>
+            </div>
+
+            <!-- Type Checker Tab -->
+            <div id="type-checker" class="tab-content">
+                <h3>Data Type Checker</h3>
+                <div class="input-group">
+                    <label for="type-input">Enter any value:</label>
+                    <input type="text" id="type-input" placeholder="Try: 42, 'hello', true, null, [1,2,3]">
+                </div>
+                <button class="btn" onclick="checkType()">Check Type</button>
+                <div id="type-result" class="output"></div>
+            </div>
+
+            <!-- Scope Demo Tab -->
+            <div id="scope-demo" class="tab-content">
+                <h3>Variable Scope Demonstration</h3>
+                <div class="input-group">
+                    <label for="scope-var">Variable Name:</label>
+                    <input type="text" id="scope-var" placeholder="Enter variable name">
+                </div>
+                <div class="input-group">
+                    <label for="scope-value">Variable Value:</label>
+                    <input type="text" id="scope-value" placeholder="Enter variable value">
+                </div>
+                <div class="input-group">
+                    <label for="scope-type">Declaration Type:</label>
+                    <select id="scope-type">
+                        <option value="let">let (block scoped)</option>
+                        <option value="const">const (block scoped)</option>
+                        <option value="var">var (function scoped)</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="demonstrateScope()">Demo Scope</button>
+                <div id="scope-result" class="output"></div>
+            </div>
+
+            <!-- Mini Quiz Tab -->
+            <div id="mini-quiz" class="tab-content">
+                <h3>Quick Knowledge Check</h3>
+                <div id="quiz-question">
+                    <p><strong>Question:</strong> What will <code>console.log(typeof null)</code> output?</p>
+                    <button class="btn" onclick="checkAnswer('object', true)">object</button>
+                    <button class="btn" onclick="checkAnswer('null', false)">null</button>
+                    <button class="btn" onclick="checkAnswer('undefined', false)">undefined</button>
+                </div>
+                <div id="quiz-result" class="output"></div>
+                <div class="progress-bar">
+                    <div id="quiz-progress" class="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'calculator';
+        let quizProgress = 0;
+        let currentQuestionIndex = 0;
+
+        const questions = [
+            {
+                question: "What will `console.log(typeof null)` output?",
+                answers: [
+                    { text: "object", correct: true },
+                    { text: "null", correct: false },
+                    { text: "undefined", correct: false }
+                ],
+                explanation: "This is a famous JavaScript quirk. `typeof null` returns 'object' due to a historical bug in JavaScript that was never fixed for backward compatibility."
+            },
+            {
+                question: "What's the difference between `==` and `===`?",
+                answers: [
+                    { text: "No difference", correct: false },
+                    { text: "=== checks type and value, == only checks value", correct: true },
+                    { text: "== is faster than ===", correct: false }
+                ],
+                explanation: "`===` performs strict comparison (no type coercion), while `==` performs loose comparison (with type coercion)."
+            },
+            {
+                question: "What will this code output? `console.log(0.1 + 0.2 === 0.3)`",
+                answers: [
+                    { text: "true", correct: false },
+                    { text: "false", correct: true },
+                    { text: "undefined", correct: false }
+                ],
+                explanation: "This outputs `false` due to floating-point precision issues. `0.1 + 0.2` equals `0.30000000000000004` in JavaScript."
+            }
+        ];
+
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab content and mark tab as active
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+            
+            currentTab = tabName;
+        }
+
+        function runVariablesDemo() {
+            const output = document.getElementById('variables-output');
+            output.className = 'output result-success';
+            
+            const message = "Hello, World!";
+            const age = 25;
+            const isActive = true;
+            
+            output.textContent = `message = "${message}" (type: ${typeof message})
+age = ${age} (type: ${typeof age})
+isActive = ${isActive} (type: ${typeof isActive})
+
+Dynamic typing example:
+let value = 42;        // ${typeof 42}
+value = "Now string";  // ${typeof "Now string"}
+value = true;          // ${typeof true}`;
+        }
+
+        function runOperatorsDemo() {
+            const output = document.getElementById('operators-output');
+            output.className = 'output result-success';
+            
+            const a = 10, b = 3;
+            
+            output.textContent = `a = ${a}, b = ${b}
+
+Arithmetic:
+a + b = ${a + b}
+a - b = ${a - b}
+a * b = ${a * b}
+a / b = ${a / b}
+a % b = ${a % b}
+a ** b = ${a ** b}
+
+Comparison:
+a == b: ${a == b}
+a === b: ${a === b}
+a > b: ${a > b}
+
+Logical:
+a > 5 && b < 5: ${a > 5 && b < 5}
+a < 5 || b < 5: ${a < 5 || b < 5}`;
+        }
+
+        function runControlFlowDemo() {
+            const output = document.getElementById('control-flow-output');
+            output.className = 'output result-success';
+            
+            let result = '';
+            
+            // For loop demo
+            result += 'For loop (1 to 5):\n';
+            for (let i = 1; i <= 5; i++) {
+                if (i % 2 === 0) {
+                    result += `${i} is even\n`;
+                } else {
+                    result += `${i} is odd\n`;
+                }
+            }
+            
+            // Switch demo
+            result += '\nSwitch statement demo:\n';
+            const day = 'Monday';
+            switch (day) {
+                case 'Monday':
+                    result += `${day}: Start of work week\n`;
+                    break;
+                case 'Friday':
+                    result += `${day}: TGIF!\n`;
+                    break;
+                default:
+                    result += `${day}: Regular day\n`;
+            }
+            
+            output.textContent = result;
+        }
+
+        function runFunctionsDemo() {
+            const output = document.getElementById('functions-output');
+            output.className = 'output result-success';
+            
+            // Arrow function
+            const greet = (name) => `Hello, ${name}!`;
+            
+            // Regular function
+            function calculate(x, y) {
+                return { sum: x + y, product: x * y };
+            }
+            
+            // Function with default parameters
+            function createUser(name, role = 'user') {
+                return { name, role, timestamp: Date.now() };
+            }
+            
+            const result1 = greet("Alice");
+            const result2 = calculate(4, 5);
+            const result3 = createUser("Bob");
+            const result4 = createUser("Charlie", "admin");
+            
+            output.textContent = `greet("Alice"): ${result1}
+
+calculate(4, 5): ${JSON.stringify(result2, null, 2)}
+
+createUser("Bob"): ${JSON.stringify(result3, null, 2)}
+
+createUser("Charlie", "admin"): ${JSON.stringify(result4, null, 2)}`;
+        }
+
+        function calculate() {
+            const num1 = parseFloat(document.getElementById('num1').value);
+            const num2 = parseFloat(document.getElementById('num2').value);
+            const operator = document.getElementById('operator').value;
+            const output = document.getElementById('calc-result');
+            
+            if (isNaN(num1) || isNaN(num2)) {
+                output.className = 'output result-error';
+                output.textContent = 'Error: Please enter valid numbers';
+                return;
+            }
+            
+            let result;
+            let operation;
+            
+            try {
+                switch (operator) {
+                    case '+':
+                        result = num1 + num2;
+                        operation = `${num1} + ${num2}`;
+                        break;
+                    case '-':
+                        result = num1 - num2;
+                        operation = `${num1} - ${num2}`;
+                        break;
+                    case '*':
+                        result = num1 * num2;
+                        operation = `${num1} × ${num2}`;
+                        break;
+                    case '/':
+                        if (num2 === 0) {
+                            throw new Error('Division by zero');
+                        }
+                        result = num1 / num2;
+                        operation = `${num1} ÷ ${num2}`;
+                        break;
+                    case '%':
+                        result = num1 % num2;
+                        operation = `${num1} % ${num2}`;
+                        break;
+                    case '**':
+                        result = num1 ** num2;
+                        operation = `${num1} ^ ${num2}`;
+                        break;
+                    default:
+                        throw new Error('Invalid operator');
+                }
+                
+                output.className = 'output result-success';
+                output.textContent = `${operation} = ${result}
+
+Type of result: ${typeof result}
+Is integer: ${Number.isInteger(result)}`;
+                
+            } catch (error) {
+                output.className = 'output result-error';
+                output.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        function checkType() {
+            const input = document.getElementById('type-input').value;
+            const output = document.getElementById('type-result');
+            
+            if (input === '') {
+                output.className = 'output result-error';
+                output.textContent = 'Please enter a value to check';
+                return;
+            }
+            
+            try {
+                // Try to evaluate the input as JavaScript
+                let value;
+                if (input === 'null') {
+                    value = null;
+                } else if (input === 'undefined') {
+                    value = undefined;
+                } else if (input === 'true' || input === 'false') {
+                    value = input === 'true';
+                } else if (!isNaN(input) && !isNaN(parseFloat(input))) {
+                    value = parseFloat(input);
+                } else if (input.startsWith('[') && input.endsWith(']')) {
+                    value = JSON.parse(input);
+                } else if (input.startsWith('{') && input.endsWith('}')) {
+                    value = JSON.parse(input);
+                } else {
+                    value = input; // Treat as string
+                }
+                
+                output.className = 'output result-success';
+                output.textContent = `Input: ${input}
+Value: ${JSON.stringify(value)}
+Type: ${typeof value}
+Is Array: ${Array.isArray(value)}
+Is null: ${value === null}
+Is undefined: ${value === undefined}
+Truthy: ${Boolean(value)}
+String representation: "${String(value)}"`;
+                
+            } catch (error) {
+                output.className = 'output result-error';
+                output.textContent = `Error parsing input: ${error.message}
+
+Treating as string:
+Type: ${typeof input}
+Length: ${input.length}
+Truthy: ${Boolean(input)}`;
+            }
+        }
+
+        function demonstrateScope() {
+            const varName = document.getElementById('scope-var').value;
+            const varValue = document.getElementById('scope-value').value;
+            const scopeType = document.getElementById('scope-type').value;
+            const output = document.getElementById('scope-result');
+            
+            if (!varName || !varValue) {
+                output.className = 'output result-error';
+                output.textContent = 'Please enter both variable name and value';
+                return;
+            }
+            
+            output.className = 'output result-success';
+            
+            let demonstration = `Demonstrating ${scopeType} ${varName} = ${varValue}\n\n`;
+            
+            // Simulate different scopes
+            demonstration += `Global scope:\n`;
+            demonstration += `- Variables declared here are accessible everywhere\n`;
+            demonstration += `- Available to all functions and blocks\n\n`;
+            
+            demonstration += `Function scope:\n`;
+            demonstration += `function example() {\n`;
+            demonstration += `  ${scopeType} ${varName} = ${varValue};\n`;
+            demonstration += `  // ${varName} is accessible here\n`;
+            if (scopeType === 'var') {
+                demonstration += `  // var is function-scoped\n`;
+            } else {
+                demonstration += `  // let/const are block-scoped\n`;
+            }
+            demonstration += `}\n`;
+            demonstration += `// ${varName} is NOT accessible here\n\n`;
+            
+            demonstration += `Block scope (if/for/while):\n`;
+            demonstration += `if (true) {\n`;
+            demonstration += `  ${scopeType} ${varName} = ${varValue};\n`;
+            demonstration += `  // ${varName} is accessible here\n`;
+            demonstration += `}\n`;
+            
+            if (scopeType === 'var') {
+                demonstration += `// var ${varName} IS accessible here (function-scoped)\n`;
+            } else {
+                demonstration += `// let/const ${varName} is NOT accessible here (block-scoped)\n`;
+            }
+            
+            demonstration += `\nKey differences:\n`;
+            demonstration += `• var: function-scoped, hoisted, can be redeclared\n`;
+            demonstration += `• let: block-scoped, not hoisted, cannot be redeclared\n`;
+            demonstration += `• const: block-scoped, not hoisted, cannot be reassigned`;
+            
+            output.textContent = demonstration;
+        }
+
+        function checkAnswer(answer, isCorrect) {
+            const output = document.getElementById('quiz-result');
+            const question = questions[currentQuestionIndex];
+            
+            if (isCorrect) {
+                output.className = 'output result-success';
+                output.textContent = `✅ Correct!\n\nExplanation: ${question.explanation}`;
+                quizProgress += 33.33;
+            } else {
+                output.className = 'output result-error';
+                output.textContent = `❌ Incorrect.\n\nExplanation: ${question.explanation}`;
+            }
+            
+            document.getElementById('quiz-progress').style.width = `${quizProgress}%`;
+            
+            // Move to next question after a delay
+            setTimeout(() => {
+                currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+                loadNextQuestion();
+            }, 3000);
+        }
+
+        function loadNextQuestion() {
+            const questionDiv = document.getElementById('quiz-question');
+            const question = questions[currentQuestionIndex];
+            
+            let html = `<p><strong>Question:</strong> ${question.question}</p>`;
+            question.answers.forEach(answer => {
+                html += `<button class="btn" onclick="checkAnswer('${answer.text}', ${answer.correct})">${answer.text}</button>`;
+            });
+            
+            questionDiv.innerHTML = html;
+            document.getElementById('quiz-result').textContent = '';
+            document.getElementById('quiz-result').className = 'output';
+        }
+
+        // Initialize the page
+        window.addEventListener('load', () => {
+            loadNextQuestion();
+        });
+    </script>
+</body>
+</html>

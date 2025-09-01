@@ -1,0 +1,131 @@
+// File: src/assets/data/code-snippets.json
+// Reusable code examples and templates for the learning platform
+
+{
+  "version": "1.0.0",
+  "lastUpdated": "2025-01-20",
+  "categories": {
+    "fundamentals": "JavaScript Fundamentals",
+    "functions": "Functions & Scope",
+    "async": "Asynchronous Programming", 
+    "dom": "DOM Manipulation",
+    "events": "Event Handling",
+    "storage": "Data Storage",
+    "patterns": "Design Patterns",
+    "algorithms": "Algorithms",
+    "utils": "Utility Functions",
+    "examples": "Complete Examples"
+  },
+
+  "snippets": [
+    {
+      "id": "variable-declarations",
+      "title": "Variable Declaration Best Practices",
+      "category": "fundamentals",
+      "tags": ["variables", "const", "let", "scope"],
+      "description": "Proper ways to declare variables in modern JavaScript",
+      "code": "// Use const for values that won't be reassigned\nconst API_URL = 'https://api.example.com';\nconst userConfig = {\n  theme: 'dark',\n  language: 'en'\n};\n\n// Use let for values that will change\nlet currentUser = null;\nlet isLoading = false;\n\n// Avoid var in modern code\n// var has function scope and hoisting issues\n\n// Block scope demonstration\nif (true) {\n  const blockScoped = 'only accessible here';\n  let alsoBlockScoped = 'me too';\n  // var functionScoped = 'accessible outside this block';\n}\n\n// console.log(blockScoped); // ReferenceError\n// console.log(functionScoped); // undefined (if using var)",
+      "explanation": "Modern JavaScript favors const and let over var for better scope control and preventing accidental reassignments."
+    },
+
+    {
+      "id": "array-methods-chaining",
+      "title": "Array Method Chaining",
+      "category": "fundamentals",
+      "tags": ["arrays", "map", "filter", "reduce", "chaining"],
+      "description": "Powerful data transformation using method chaining",
+      "code": "const users = [\n  { name: 'Alice', age: 25, active: true, score: 85 },\n  { name: 'Bob', age: 30, active: false, score: 92 },\n  { name: 'Charlie', age: 22, active: true, score: 78 },\n  { name: 'Diana', age: 28, active: true, score: 95 }\n];\n\n// Complex transformation with method chaining\nconst result = users\n  .filter(user => user.active)           // Only active users\n  .filter(user => user.score > 80)       // High scores only\n  .map(user => ({                        // Transform data\n    name: user.name.toUpperCase(),\n    grade: user.score > 90 ? 'A' : 'B'\n  }))\n  .sort((a, b) => a.name.localeCompare(b.name)); // Sort alphabetically\n\nconsole.log(result);\n// [{ name: 'ALICE', grade: 'B' }, { name: 'DIANA', grade: 'A' }]\n\n// Calculate statistics\nconst stats = users\n  .filter(user => user.active)\n  .reduce((acc, user) => {\n    acc.count++;\n    acc.totalScore += user.score;\n    acc.averageAge += user.age;\n    return acc;\n  }, { count: 0, totalScore: 0, averageAge: 0 });\n\nstats.averageScore = stats.totalScore / stats.count;\nstats.averageAge = stats.averageAge / stats.count;",
+      "explanation": "Method chaining allows for readable and efficient data transformations by combining multiple array methods."
+    },
+
+    {
+      "id": "async-error-handling",
+      "title": "Comprehensive Async Error Handling",
+      "category": "async",
+      "tags": ["async", "await", "promises", "error-handling"],
+      "description": "Robust error handling patterns for async operations",
+      "code": "// Async function with comprehensive error handling\nasync function fetchWithRetry(url, options = {}, maxRetries = 3) {\n  const { timeout = 5000, ...fetchOptions } = options;\n  \n  for (let attempt = 1; attempt <= maxRetries; attempt++) {\n    try {\n      // Create AbortController for timeout\n      const controller = new AbortController();\n      const timeoutId = setTimeout(() => controller.abort(), timeout);\n      \n      const response = await fetch(url, {\n        ...fetchOptions,\n        signal: controller.signal\n      });\n      \n      clearTimeout(timeoutId);\n      \n      if (!response.ok) {\n        throw new Error(`HTTP ${response.status}: ${response.statusText}`);\n      }\n      \n      const data = await response.json();\n      return { success: true, data, attempt };\n      \n    } catch (error) {\n      console.error(`Attempt ${attempt} failed:`, error.message);\n      \n      // Don't retry on certain errors\n      if (error.name === 'AbortError') {\n        throw new Error(`Request timeout after ${timeout}ms`);\n      }\n      \n      if (attempt === maxRetries) {\n        throw new Error(`Failed after ${maxRetries} attempts: ${error.message}`);\n      }\n      \n      // Exponential backoff\n      const delay = Math.pow(2, attempt - 1) * 1000;\n      await new Promise(resolve => setTimeout(resolve, delay));\n    }\n  }\n}\n\n// Usage with proper error handling\nasync function loadUserData(userId) {\n  try {\n    const result = await fetchWithRetry(`/api/users/${userId}`, {\n      timeout: 3000\n    });\n    \n    console.log(`Data loaded on attempt ${result.attempt}`);\n    return result.data;\n    \n  } catch (error) {\n    console.error('Failed to load user data:', error.message);\n    \n    // Return fallback data\n    return {\n      id: userId,\n      name: 'Unknown User',\n      error: true,\n      errorMessage: error.message\n    };\n  }\n}",
+      "explanation": "This pattern handles timeouts, retries with exponential backoff, different error types, and provides fallback strategies."
+    },
+
+    {
+      "id": "dom-safe-manipulation",
+      "title": "Safe DOM Manipulation",
+      "category": "dom",
+      "tags": ["dom", "safety", "null-checks", "performance"],
+      "description": "Defensive programming practices for DOM operations",
+      "code": "// Safe DOM manipulation utilities\nclass DOMHelper {\n  // Safe element selection\n  static $(selector, context = document) {\n    try {\n      return context.querySelector(selector);\n    } catch (error) {\n      console.error(`Invalid selector: ${selector}`, error);\n      return null;\n    }\n  }\n  \n  static $$(selector, context = document) {\n    try {\n      return Array.from(context.querySelectorAll(selector));\n    } catch (error) {\n      console.error(`Invalid selector: ${selector}`, error);\n      return [];\n    }\n  }\n  \n  // Safe text content setting\n  static setText(element, text) {\n    if (!element || typeof text !== 'string') return false;\n    element.textContent = text;\n    return true;\n  }\n  \n  // Safe HTML setting with sanitization check\n  static setHTML(element, html) {\n    if (!element || typeof html !== 'string') return false;\n    \n    // Basic XSS protection warning\n    if (html.includes('<script') || html.includes('javascript:')) {\n      console.warn('Potentially unsafe HTML detected');\n      return false;\n    }\n    \n    element.innerHTML = html;\n    return true;\n  }\n  \n  // Safe class manipulation\n  static addClass(element, className) {\n    if (!element || !className) return false;\n    element.classList.add(className);\n    return true;\n  }\n  \n  static removeClass(element, className) {\n    if (!element || !className) return false;\n    element.classList.remove(className);\n    return true;\n  }\n  \n  static toggleClass(element, className) {\n    if (!element || !className) return false;\n    return element.classList.toggle(className);\n  }\n  \n  // Safe event handling\n  static on(element, event, handler, options = {}) {\n    if (!element || !event || typeof handler !== 'function') {\n      return null;\n    }\n    \n    element.addEventListener(event, handler, options);\n    \n    // Return cleanup function\n    return () => element.removeEventListener(event, handler, options);\n  }\n  \n  // Wait for element to exist\n  static waitForElement(selector, timeout = 5000) {\n    return new Promise((resolve, reject) => {\n      const element = DOMHelper.$(selector);\n      if (element) {\n        resolve(element);\n        return;\n      }\n      \n      const observer = new MutationObserver(() => {\n        const element = DOMHelper.$(selector);\n        if (element) {\n          observer.disconnect();\n          clearTimeout(timeoutId);\n          resolve(element);\n        }\n      });\n      \n      observer.observe(document.body, {\n        childList: true,\n        subtree: true\n      });\n      \n      const timeoutId = setTimeout(() => {\n        observer.disconnect();\n        reject(new Error(`Element ${selector} not found within ${timeout}ms`));\n      }, timeout);\n    });\n  }\n}\n\n// Usage examples\nconst button = DOMHelper.$('#submit-btn');\nif (button) {\n  const cleanup = DOMHelper.on(button, 'click', (e) => {\n    e.preventDefault();\n    console.log('Button clicked safely');\n  });\n  \n  // Later: cleanup(); to remove listener\n}\n\n// Wait for dynamically added elements\nDOMHelper.waitForElement('.dynamic-content')\n  .then(element => {\n    DOMHelper.setText(element, 'Content loaded!');\n  })\n  .catch(error => {\n    console.error('Element not found:', error);\n  });",
+      "explanation": "These utilities provide safe DOM operations with null checks, error handling, and XSS protection basics."
+    },
+
+    {
+      "id": "storage-manager",
+      "title": "Unified Storage Manager",
+      "category": "storage",
+      "tags": ["localStorage", "sessionStorage", "indexedDB", "storage"],
+      "description": "Abstracted storage interface supporting multiple storage types",
+      "code": "class StorageManager {\n  constructor(storageType = 'localStorage') {\n    this.storageType = storageType;\n    this.storage = this.getStorageInterface(storageType);\n  }\n  \n  getStorageInterface(type) {\n    switch (type) {\n      case 'localStorage':\n        return localStorage;\n      case 'sessionStorage':\n        return sessionStorage;\n      case 'memory':\n        return new Map();\n      default:\n        throw new Error(`Unsupported storage type: ${type}`);\n    }\n  }\n  \n  // Unified interface for all storage types\n  set(key, value, options = {}) {\n    try {\n      const data = {\n        value,\n        timestamp: Date.now(),\n        expires: options.expires || null\n      };\n      \n      const serialized = JSON.stringify(data);\n      \n      if (this.storage instanceof Map) {\n        this.storage.set(key, serialized);\n      } else {\n        this.storage.setItem(key, serialized);\n      }\n      \n      return true;\n    } catch (error) {\n      console.error('Storage set error:', error);\n      return false;\n    }\n  }\n  \n  get(key, defaultValue = null) {\n    try {\n      let serialized;\n      \n      if (this.storage instanceof Map) {\n        serialized = this.storage.get(key);\n      } else {\n        serialized = this.storage.getItem(key);\n      }\n      \n      if (!serialized) return defaultValue;\n      \n      const data = JSON.parse(serialized);\n      \n      // Check expiration\n      if (data.expires && Date.now() > data.expires) {\n        this.remove(key);\n        return defaultValue;\n      }\n      \n      return data.value;\n    } catch (error) {\n      console.error('Storage get error:', error);\n      return defaultValue;\n    }\n  }\n  \n  remove(key) {\n    try {\n      if (this.storage instanceof Map) {\n        return this.storage.delete(key);\n      } else {\n        this.storage.removeItem(key);\n        return true;\n      }\n    } catch (error) {\n      console.error('Storage remove error:', error);\n      return false;\n    }\n  }\n  \n  clear() {\n    try {\n      if (this.storage instanceof Map) {\n        this.storage.clear();\n      } else {\n        this.storage.clear();\n      }\n      return true;\n    } catch (error) {\n      console.error('Storage clear error:', error);\n      return false;\n    }\n  }\n  \n  keys() {\n    try {\n      if (this.storage instanceof Map) {\n        return Array.from(this.storage.keys());\n      } else {\n        return Object.keys(this.storage);\n      }\n    } catch (error) {\n      console.error('Storage keys error:', error);\n      return [];\n    }\n  }\n  \n  size() {\n    try {\n      if (this.storage instanceof Map) {\n        return this.storage.size;\n      } else {\n        return this.storage.length;\n      }\n    } catch (error) {\n      return 0;\n    }\n  }\n  \n  // Utility methods\n  setWithExpiry(key, value, ttlMs) {\n    return this.set(key, value, {\n      expires: Date.now() + ttlMs\n    });\n  }\n  \n  exists(key) {\n    return this.get(key, Symbol('not-found')) !== Symbol('not-found');\n  }\n  \n  // Storage info\n  getInfo() {\n    return {\n      type: this.storageType,\n      size: this.size(),\n      keys: this.keys().length\n    };\n  }\n}\n\n// Usage examples\nconst storage = new StorageManager('localStorage');\n\n// Basic operations\nstorage.set('user', { name: 'John', id: 123 });\nconst user = storage.get('user');\n\n// With expiration (5 minutes)\nstorage.setWithExpiry('session', 'abc123', 5 * 60 * 1000);\n\n// Check existence\nif (storage.exists('user')) {\n  console.log('User data found');\n}\n\n// Get all keys\nconst allKeys = storage.keys();\nconsole.log('Stored keys:', allKeys);\n\n// Storage info\nconsole.log('Storage info:', storage.getInfo());",
+      "explanation": "This storage manager provides a unified interface across different storage types with expiration support and error handling."
+    },
+
+    {
+      "id": "debounce-throttle",
+      "title": "Debounce and Throttle Functions",
+      "category": "utils",
+      "tags": ["performance", "debounce", "throttle", "optimization"],
+      "description": "Essential performance optimization utilities",
+      "code": "// Debounce function - delays execution until after calls have stopped\nfunction debounce(func, delay, immediate = false) {\n  let timeoutId;\n  \n  const debounced = function (...args) {\n    const callNow = immediate && !timeoutId;\n    \n    clearTimeout(timeoutId);\n    \n    timeoutId = setTimeout(() => {\n      timeoutId = null;\n      if (!immediate) func.apply(this, args);\n    }, delay);\n    \n    if (callNow) func.apply(this, args);\n  };\n  \n  // Allow manual cancellation\n  debounced.cancel = () => {\n    clearTimeout(timeoutId);\n    timeoutId = null;\n  };\n  \n  return debounced;\n}\n\n// Throttle function - limits execution to once per time period\nfunction throttle(func, limit) {\n  let inThrottle;\n  \n  return function (...args) {\n    if (!inThrottle) {\n      func.apply(this, args);\n      inThrottle = true;\n      \n      setTimeout(() => {\n        inThrottle = false;\n      }, limit);\n    }\n  };\n}\n\n// Advanced throttle with leading/trailing options\nfunction advancedThrottle(func, limit, options = {}) {\n  const { leading = true, trailing = true } = options;\n  let timeoutId;\n  let lastCallTime = 0;\n  let lastArgs;\n  \n  return function (...args) {\n    const now = Date.now();\n    const timeSinceLastCall = now - lastCallTime;\n    \n    lastArgs = args;\n    \n    // Leading edge\n    if (leading && timeSinceLastCall >= limit) {\n      lastCallTime = now;\n      return func.apply(this, args);\n    }\n    \n    // Trailing edge\n    if (trailing) {\n      clearTimeout(timeoutId);\n      timeoutId = setTimeout(() => {\n        lastCallTime = Date.now();\n        func.apply(this, lastArgs);\n      }, limit - timeSinceLastCall);\n    }\n  };\n}\n\n// Usage examples\n\n// Debounced search - waits for user to stop typing\nconst searchInput = document.getElementById('search');\nconst debouncedSearch = debounce((query) => {\n  console.log('Searching for:', query);\n  // Actual search implementation here\n}, 300);\n\nsearchInput?.addEventListener('input', (e) => {\n  debouncedSearch(e.target.value);\n});\n\n// Throttled scroll handler - limits scroll event processing\nconst throttledScroll = throttle(() => {\n  const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;\n  console.log(`Scroll: ${scrollPercent.toFixed(1)}%`);\n}, 100);\n\nwindow.addEventListener('scroll', throttledScroll);\n\n// Throttled resize handler\nconst throttledResize = advancedThrottle(() => {\n  console.log('Window resized:', window.innerWidth, window.innerHeight);\n}, 250, { leading: true, trailing: true });\n\nwindow.addEventListener('resize', throttledResize);\n\n// API call with debounce\nconst debouncedApiCall = debounce(async (endpoint, data) => {\n  try {\n    const response = await fetch(endpoint, {\n      method: 'POST',\n      headers: { 'Content-Type': 'application/json' },\n      body: JSON.stringify(data)\n    });\n    const result = await response.json();\n    console.log('API result:', result);\n  } catch (error) {\n    console.error('API call failed:', error);\n  }\n}, 500);",
+      "explanation": "Debounce delays execution until activity stops, while throttle limits execution frequency. Essential for performance optimization."
+    },
+
+    {
+      "id": "event-emitter",
+      "title": "Custom Event Emitter",
+      "category": "patterns",
+      "tags": ["events", "observer", "pubsub", "patterns"],
+      "description": "Flexible event system for decoupled communication",
+      "code": "class EventEmitter {\n  constructor() {\n    this.events = new Map();\n    this.maxListeners = 10;\n  }\n  \n  // Add event listener\n  on(event, callback, options = {}) {\n    const { once = false, priority = 0 } = options;\n    \n    if (!this.events.has(event)) {\n      this.events.set(event, []);\n    }\n    \n    const listeners = this.events.get(event);\n    const listener = {\n      callback,\n      once,\n      priority,\n      id: Date.now() + Math.random()\n    };\n    \n    // Insert based on priority (higher priority first)\n    const insertIndex = listeners.findIndex(l => l.priority < priority);\n    if (insertIndex === -1) {\n      listeners.push(listener);\n    } else {\n      listeners.splice(insertIndex, 0, listener);\n    }\n    \n    // Warn about too many listeners\n    if (listeners.length > this.maxListeners) {\n      console.warn(`Possible memory leak: ${listeners.length} listeners for event '${event}'`);\n    }\n    \n    // Return unsubscribe function\n    return () => this.off(event, listener.id);\n  }\n  \n  // Remove event listener\n  off(event, callbackOrId) {\n    if (!this.events.has(event)) return false;\n    \n    const listeners = this.events.get(event);\n    const index = listeners.findIndex(listener => \n      listener.callback === callbackOrId || listener.id === callbackOrId\n    );\n    \n    if (index > -1) {\n      listeners.splice(index, 1);\n      \n      // Clean up empty event arrays\n      if (listeners.length === 0) {\n        this.events.delete(event);\n      }\n      \n      return true;\n    }\n    \n    return false;\n  }\n  \n  // Add one-time event listener\n  once(event, callback, options = {}) {\n    return this.on(event, callback, { ...options, once: true });\n  }\n  \n  // Emit event\n  emit(event, ...args) {\n    if (!this.events.has(event)) return 0;\n    \n    const listeners = [...this.events.get(event)]; // Copy to avoid modification during iteration\n    let count = 0;\n    \n    for (const listener of listeners) {\n      try {\n        listener.callback(...args);\n        count++;\n        \n        // Remove one-time listeners\n        if (listener.once) {\n          this.off(event, listener.id);\n        }\n      } catch (error) {\n        console.error(`Error in event listener for '${event}':`, error);\n      }\n    }\n    \n    return count;\n  }\n  \n  // Async emit - wait for all listeners to complete\n  async emitAsync(event, ...args) {\n    if (!this.events.has(event)) return 0;\n    \n    const listeners = [...this.events.get(event)];\n    const promises = [];\n    \n    for (const listener of listeners) {\n      try {\n        const result = listener.callback(...args);\n        if (result instanceof Promise) {\n          promises.push(result);\n        }\n        \n        if (listener.once) {\n          this.off(event, listener.id);\n        }\n      } catch (error) {\n        console.error(`Error in async event listener for '${event}':`, error);\n      }\n    }\n    \n    await Promise.all(promises);\n    return listeners.length;\n  }\n  \n  // Remove all listeners for an event or all events\n  removeAllListeners(event) {\n    if (event) {\n      return this.events.delete(event);\n    } else {\n      const count = this.events.size;\n      this.events.clear();\n      return count > 0;\n    }\n  }\n  \n  // Get listener count\n  listenerCount(event) {\n    const listeners = this.events.get(event);\n    return listeners ? listeners.length : 0;\n  }\n  \n  // Get all event names\n  eventNames() {\n    return Array.from(this.events.keys());\n  }\n  \n  // Set max listeners warning threshold\n  setMaxListeners(n) {\n    this.maxListeners = n;\n  }\n}\n\n// Usage example\nconst emitter = new EventEmitter();\n\n// Basic usage\nconst unsubscribe = emitter.on('user:login', (user) => {\n  console.log('User logged in:', user.name);\n});\n\n// High priority listener\nemitter.on('user:login', (user) => {\n  console.log('First: Security check for', user.name);\n}, { priority: 10 });\n\n// One-time listener\nemitter.once('app:ready', () => {\n  console.log('App is ready!');\n});\n\n// Async listener\nemitter.on('data:save', async (data) => {\n  await new Promise(resolve => setTimeout(resolve, 100));\n  console.log('Data saved asynchronously');\n});\n\n// Emit events\nemitter.emit('user:login', { name: 'John', id: 123 });\nemitter.emit('app:ready');\n\n// Async emit\nemitter.emitAsync('data:save', { some: 'data' })\n  .then(() => console.log('All async listeners completed'));\n\n// Clean up\n// unsubscribe(); // Remove specific listener\n// emitter.removeAllListeners('user:login'); // Remove all listeners for event",
+      "explanation": "A comprehensive event system with priority ordering, async support, memory leak protection, and proper cleanup mechanisms."
+    }
+  ],
+
+  "templates": {
+    "basicClass": {
+      "title": "Basic ES6 Class Template",
+      "code": "class ClassName {\n  constructor(param1, param2) {\n    this.property1 = param1;\n    this.property2 = param2;\n  }\n  \n  method1() {\n    // Method implementation\n  }\n  \n  static staticMethod() {\n    // Static method implementation\n  }\n  \n  get getter() {\n    return this.property1;\n  }\n  \n  set setter(value) {\n    this.property1 = value;\n  }\n}"
+    },
+    
+    "asyncFunction": {
+      "title": "Async Function with Error Handling",
+      "code": "async function functionName(param1, param2) {\n  try {\n    const result = await someAsyncOperation(param1);\n    return result;\n  } catch (error) {\n    console.error('Operation failed:', error);\n    throw error; // Re-throw or handle as needed\n  }\n}"
+    },
+    
+    "moduleExports": {
+      "title": "ES6 Module Template",
+      "code": "// Named exports\nexport const CONSTANT = 'value';\n\nexport function utilityFunction() {\n  // Implementation\n}\n\nexport class UtilityClass {\n  // Class implementation\n}\n\n// Default export\nconst mainExport = {\n  // Main functionality\n};\n\nexport default mainExport;"
+    }
+  },
+
+  "commonPatterns": {
+    "singleton": "class Singleton {\n  static instance;\n  \n  constructor() {\n    if (Singleton.instance) {\n      return Singleton.instance;\n    }\n    Singleton.instance = this;\n    return this;\n  }\n}",
+    
+    "factory": "class Factory {\n  static create(type, ...args) {\n    switch(type) {\n      case 'typeA': return new TypeA(...args);\n      case 'typeB': return new TypeB(...args);\n      default: throw new Error(`Unknown type: ${type}`);\n    }\n  }\n}",
+    
+    "observer": "class Subject {\n  constructor() {\n    this.observers = [];\n  }\n  \n  subscribe(observer) {\n    this.observers.push(observer);\n  }\n  \n  notify(data) {\n    this.observers.forEach(observer => observer.update(data));\n  }\n}"
+  },
+
+  "bestPractices": [
+    {
+      "title": "Always use strict mode",
+      "code": "'use strict';\n\n// Your code here with strict mode enabled"
+    },
+    {
+      "title": "Prefer const and let over var",
+      "code": "// Good\nconst config = { api: '/api/v1' };\nlet counter = 0;\n\n// Avoid\n// var data = {};"
+    },
+    {
+      "title": "Use descriptive variable names",
+      "code": "// Good\nconst userAccountBalance = 1500;\nconst isEmailValidated = true;\n\n// Avoid\n// const bal = 1500;\n// const flag = true;"
+    }
+  ]
+}

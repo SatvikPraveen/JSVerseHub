@@ -1,0 +1,7 @@
+<!-- File: src/assets/icons/lightbulb.svg -->
+<!-- Hint/tip icon -->
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M9 21h6" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
+  <path d="M12 3c-4.97 0-9 4.03-9 9 0 2.5 1.02 4.77 2.67 6.42.82.82 1.33 1.95 1.33 3.08v.5h10v-.5c0-1.13.51-2.26 1.33-3.08C19.98 16.77 21 14.5 21 12c0-4.97-4.03-9-9-9z" fill="#FEF3C7" stroke="#F59E0B" stroke-width="2"/>
+  <path d="M12 7v5" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
+</svg>

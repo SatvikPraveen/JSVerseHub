@@ -1,0 +1,496 @@
+/* src/styles/theme.css - Theme Variables and Styling */
+
+/* ===== GALAXY THEME ===== */
+.galaxy-theme {
+    /* Core Colors */
+    --primary-bg: #0a0a0f;
+    --secondary-bg: #1a1a2e;
+    --tertiary-bg: #16213e;
+    
+    /* Accent Colors */
+    --accent-color: #00d4ff;
+    --accent-secondary: #ff6b6b;
+    --accent-tertiary: #4ecdc4;
+    
+    /* Text Colors */
+    --text-primary: #ffffff;
+    --text-secondary: #b8b8b8;
+    --text-muted: #8a8a8a;
+    --text-disabled: #555555;
+    
+    /* Status Colors */
+    --success-color: #4ecdc4;
+    --warning-color: #ffe66d;
+    --danger-color: #ff6b6b;
+    --info-color: #74b9ff;
+    
+    /* Planet Colors */
+    --planet-basics: #ff6b6b;
+    --planet-dom: #4ecdc4;
+    --planet-async: #ffe66d;
+    --planet-es6: #a29bfe;
+    --planet-oop: #fd79a8;
+    --planet-functional: #00d4ff;
+    --planet-patterns: #ffeaa7;
+    --planet-storage: #fab1a0;
+    --planet-events: #74b9ff;
+    --planet-testing: #55a3ff;
+    --planet-security: #fd79a8;
+    --planet-algorithms: #fdcb6e;
+    --planet-canvas: #00b894;
+    --planet-api: #6c5ce7;
+    
+    /* Glow Effects */
+    --glow-primary: rgba(0, 212, 255, 0.5);
+    --glow-secondary: rgba(255, 107, 107, 0.4);
+    --glow-success: rgba(78, 205, 196, 0.6);
+    --glow-warning: rgba(255, 230, 109, 0.5);
+    --glow-danger: rgba(255, 107, 107, 0.5);
+    
+    /* Shadows */
+    --shadow-small: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-medium: 0 4px 15px rgba(0, 0, 0, 0.4);
+    --shadow-large: 0 8px 25px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.6);
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, #00d4ff, #ff6b6b);
+    --gradient-secondary: linear-gradient(135deg, #4ecdc4, #74b9ff);
+    --gradient-success: linear-gradient(135deg, #4ecdc4, #00b894);
+    --gradient-warning: linear-gradient(135deg, #ffe66d, #fdcb6e);
+    --gradient-danger: linear-gradient(135deg, #ff6b6b, #fd79a8);
+    --gradient-dark: linear-gradient(135deg, #1a1a2e, #16213e);
+    --gradient-cosmic: radial-gradient(ellipse at center, #1a1a2e 0%, #0a0a0f 100%);
+    
+    /* Interactive States */
+    --hover-bg: rgba(0, 212, 255, 0.1);
+    --active-bg: rgba(0, 212, 255, 0.2);
+    --focus-outline: 2px solid var(--accent-color);
+    --disabled-opacity: 0.4;
+    
+    /* Borders */
+    --border-primary: 1px solid rgba(0, 212, 255, 0.3);
+    --border-secondary: 1px solid rgba(255, 255, 255, 0.1);
+    --border-success: 1px solid rgba(78, 205, 196, 0.4);
+    --border-warning: 1px solid rgba(255, 230, 109, 0.4);
+    --border-danger: 1px solid rgba(255, 107, 107, 0.4);
+    
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    
+    /* Border Radius */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 50%;
+    
+    /* Typography */
+    --font-family-primary: 'SpaceMono', 'Courier New', monospace;
+    --font-family-secondary: 'Arial', sans-serif;
+    
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 1.875rem;
+    --font-size-4xl: 2.25rem;
+    
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    
+    --line-height-tight: 1.25;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.75;
+    
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+    --transition-transform: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Z-Index Scale */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+    --z-toast: 1080;
+}
+
+/* ===== COSMIC THEME (Alternative) ===== */
+.cosmic-theme {
+    /* Core Colors - Darker and more purple */
+    --primary-bg: #050507;
+    --secondary-bg: #0f0f1a;
+    --tertiary-bg: #1a0f2e;
+    
+    /* Accent Colors - Purple/Pink focused */
+    --accent-color: #a855f7;
+    --accent-secondary: #ec4899;
+    --accent-tertiary: #06b6d4;
+    
+    /* Text Colors */
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --text-disabled: #64748b;
+    
+    /* Status Colors */
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --info-color: #3b82f6;
+    
+    /* Planet Colors - Adjusted for cosmic theme */
+    --planet-basics: #ef4444;
+    --planet-dom: #10b981;
+    --planet-async: #f59e0b;
+    --planet-es6: #8b5cf6;
+    --planet-oop: #ec4899;
+    --planet-functional: #06b6d4;
+    --planet-patterns: #eab308;
+    --planet-storage: #f97316;
+    --planet-events: #3b82f6;
+    --planet-testing: #6366f1;
+    --planet-security: #d946ef;
+    --planet-algorithms: #f97316;
+    --planet-canvas: #059669;
+    --planet-api: #7c3aed;
+    
+    /* Glow Effects */
+    --glow-primary: rgba(168, 85, 247, 0.5);
+    --glow-secondary: rgba(236, 72, 153, 0.4);
+    --glow-success: rgba(16, 185, 129, 0.6);
+    --glow-warning: rgba(245, 158, 11, 0.5);
+    --glow-danger: rgba(239, 68, 68, 0.5);
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, #a855f7, #ec4899);
+    --gradient-secondary: linear-gradient(135deg, #06b6d4, #3b82f6);
+    --gradient-success: linear-gradient(135deg, #10b981, #059669);
+    --gradient-warning: linear-gradient(135deg, #f59e0b, #eab308);
+    --gradient-danger: linear-gradient(135deg, #ef4444, #dc2626);
+    --gradient-dark: linear-gradient(135deg, #0f0f1a, #1a0f2e);
+    --gradient-cosmic: radial-gradient(ellipse at center, #1a0f2e 0%, #050507 100%);
+    
+    /* Interactive States */
+    --hover-bg: rgba(168, 85, 247, 0.1);
+    --active-bg: rgba(168, 85, 247, 0.2);
+    --focus-outline: 2px solid var(--accent-color);
+    
+    /* Borders */
+    --border-primary: 1px solid rgba(168, 85, 247, 0.3);
+    --border-secondary: 1px solid rgba(248, 250, 252, 0.1);
+    --border-success: 1px solid rgba(16, 185, 129, 0.4);
+    --border-warning: 1px solid rgba(245, 158, 11, 0.4);
+    --border-danger: 1px solid rgba(239, 68, 68, 0.4);
+}
+
+/* ===== THEME UTILITIES ===== */
+
+/* Background utilities */
+.bg-primary { background-color: var(--primary-bg); }
+.bg-secondary { background-color: var(--secondary-bg); }
+.bg-tertiary { background-color: var(--tertiary-bg); }
+.bg-accent { background-color: var(--accent-color); }
+.bg-success { background-color: var(--success-color); }
+.bg-warning { background-color: var(--warning-color); }
+.bg-danger { background-color: var(--danger-color); }
+
+/* Text color utilities */
+.text-primary { color: var(--text-primary); }
+.text-secondary { color: var(--text-secondary); }
+.text-muted { color: var(--text-muted); }
+.text-accent { color: var(--accent-color); }
+.text-success { color: var(--success-color); }
+.text-warning { color: var(--warning-color); }
+.text-danger { color: var(--danger-color); }
+
+/* Border utilities */
+.border-primary { border: var(--border-primary); }
+.border-secondary { border: var(--border-secondary); }
+.border-success { border: var(--border-success); }
+.border-warning { border: var(--border-warning); }
+.border-danger { border: var(--border-danger); }
+
+/* Glow utilities */
+.glow-primary { box-shadow: 0 0 20px var(--glow-primary); }
+.glow-secondary { box-shadow: 0 0 20px var(--glow-secondary); }
+.glow-success { box-shadow: 0 0 20px var(--glow-success); }
+.glow-warning { box-shadow: 0 0 20px var(--glow-warning); }
+.glow-danger { box-shadow: 0 0 20px var(--glow-danger); }
+
+/* Gradient utilities */
+.gradient-primary { background: var(--gradient-primary); }
+.gradient-secondary { background: var(--gradient-secondary); }
+.gradient-success { background: var(--gradient-success); }
+.gradient-warning { background: var(--gradient-warning); }
+.gradient-danger { background: var(--gradient-danger); }
+.gradient-dark { background: var(--gradient-dark); }
+.gradient-cosmic { background: var(--gradient-cosmic); }
+
+/* Shadow utilities */
+.shadow-sm { box-shadow: var(--shadow-small); }
+.shadow-md { box-shadow: var(--shadow-medium); }
+.shadow-lg { box-shadow: var(--shadow-large); }
+.shadow-xl { box-shadow: var(--shadow-xl); }
+
+/* Spacing utilities */
+.p-xs { padding: var(--spacing-xs); }
+.p-sm { padding: var(--spacing-sm); }
+.p-md { padding: var(--spacing-md); }
+.p-lg { padding: var(--spacing-lg); }
+.p-xl { padding: var(--spacing-xl); }
+
+.m-xs { margin: var(--spacing-xs); }
+.m-sm { margin: var(--spacing-sm); }
+.m-md { margin: var(--spacing-md); }
+.m-lg { margin: var(--spacing-lg); }
+.m-xl { margin: var(--spacing-xl); }
+
+/* Border radius utilities */
+.rounded-sm { border-radius: var(--radius-sm); }
+.rounded-md { border-radius: var(--radius-md); }
+.rounded-lg { border-radius: var(--radius-lg); }
+.rounded-xl { border-radius: var(--radius-xl); }
+.rounded-full { border-radius: var(--radius-full); }
+
+/* Typography utilities */
+.text-xs { font-size: var(--font-size-xs); }
+.text-sm { font-size: var(--font-size-sm); }
+.text-base { font-size: var(--font-size-base); }
+.text-lg { font-size: var(--font-size-lg); }
+.text-xl { font-size: var(--font-size-xl); }
+.text-2xl { font-size: var(--font-size-2xl); }
+.text-3xl { font-size: var(--font-size-3xl); }
+.text-4xl { font-size: var(--font-size-4xl); }
+
+.font-light { font-weight: var(--font-weight-light); }
+.font-normal { font-weight: var(--font-weight-normal); }
+.font-medium { font-weight: var(--font-weight-medium); }
+.font-semibold { font-weight: var(--font-weight-semibold); }
+.font-bold { font-weight: var(--font-weight-bold); }
+
+.leading-tight { line-height: var(--line-height-tight); }
+.leading-normal { line-height: var(--line-height-normal); }
+.leading-relaxed { line-height: var(--line-height-relaxed); }
+
+/* Transition utilities */
+.transition-fast { transition: all var(--transition-fast); }
+.transition-normal { transition: all var(--transition-normal); }
+.transition-slow { transition: all var(--transition-slow); }
+.transition-transform { transition: transform var(--transition-transform); }
+
+/* Interactive state utilities */
+.hover-glow:hover {
+    box-shadow: 0 0 30px var(--glow-primary);
+    transform: scale(1.02);
+}
+
+.hover-lift:hover {
+    transform: translateY(-2px);
+}
+
+.hover-scale:hover {
+    transform: scale(1.05);
+}
+
+/* Planet-specific theme classes */
+.planet-theme-basics {
+    --local-color: var(--planet-basics);
+    --local-glow: rgba(255, 107, 107, 0.6);
+}
+
+.planet-theme-dom {
+    --local-color: var(--planet-dom);
+    --local-glow: rgba(78, 205, 196, 0.6);
+}
+
+.planet-theme-async {
+    --local-color: var(--planet-async);
+    --local-glow: rgba(255, 230, 109, 0.6);
+}
+
+.planet-theme-es6 {
+    --local-color: var(--planet-es6);
+    --local-glow: rgba(162, 155, 254, 0.6);
+}
+
+.planet-theme-oop {
+    --local-color: var(--planet-oop);
+    --local-glow: rgba(253, 121, 168, 0.6);
+}
+
+.planet-theme-functional {
+    --local-color: var(--planet-functional);
+    --local-glow: rgba(0, 212, 255, 0.6);
+}
+
+.planet-theme-patterns {
+    --local-color: var(--planet-patterns);
+    --local-glow: rgba(255, 234, 167, 0.6);
+}
+
+.planet-theme-storage {
+    --local-color: var(--planet-storage);
+    --local-glow: rgba(250, 177, 160, 0.6);
+}
+
+.planet-theme-events {
+    --local-color: var(--planet-events);
+    --local-glow: rgba(116, 185, 255, 0.6);
+}
+
+.planet-theme-testing {
+    --local-color: var(--planet-testing);
+    --local-glow: rgba(85, 163, 255, 0.6);
+}
+
+.planet-theme-security {
+    --local-color: var(--planet-security);
+    --local-glow: rgba(253, 121, 168, 0.6);
+}
+
+.planet-theme-algorithms {
+    --local-color: var(--planet-algorithms);
+    --local-glow: rgba(253, 203, 110, 0.6);
+}
+
+.planet-theme-canvas {
+    --local-color: var(--planet-canvas);
+    --local-glow: rgba(0, 184, 148, 0.6);
+}
+
+.planet-theme-api {
+    --local-color: var(--planet-api);
+    --local-glow: rgba(108, 92, 231, 0.6);
+}
+
+/* Theme animations */
+@keyframes themeTransition {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Theme switching animation */
+.theme-switching {
+    animation: themeTransition 0.3s ease;
+}
+
+/* Custom scrollbar theming */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--secondary-bg);
+    border-radius: var(--radius-md);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--accent-color), var(--accent-secondary));
+    border-radius: var(--radius-md);
+    transition: background var(--transition-normal);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--accent-secondary), var(--accent-color));
+}
+
+/* Selection theming */
+::selection {
+    background: var(--accent-color);
+    color: var(--primary-bg);
+}
+
+::-moz-selection {
+    background: var(--accent-color);
+    color: var(--primary-bg);
+}
+
+/* Focus ring theming */
+*:focus-visible {
+    outline: var(--focus-outline);
+    outline-offset: 2px;
+}
+
+/* Disabled state theming */
+.disabled,
+:disabled {
+    opacity: var(--disabled-opacity);
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    :root {
+        --text-secondary: #ffffff;
+        --border-primary: 2px solid var(--accent-color);
+        --border-secondary: 1px solid var(--text-primary);
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0ms !important;
+    }
+}
+
+/* Dark mode preference support */
+@media (prefers-color-scheme: dark) {
+    /* Already dark by default, but we can add overrides here if needed */
+}
+
+/* Print styles */
+@media print {
+    .galaxy-theme,
+    .cosmic-theme {
+        --primary-bg: white;
+        --secondary-bg: #f8f9fa;
+        --text-primary: black;
+        --text-secondary: #333333;
+        --accent-color: #0066cc;
+    }
+    
+    .shadow-sm,
+    .shadow-md,
+    .shadow-lg,
+    .shadow-xl {
+        box-shadow: none;
+    }
+    
+    .glow-primary,
+    .glow-secondary,
+    .glow-success,
+    .glow-warning,
+    .glow-danger {
+        box-shadow: none;
+    }
+}
