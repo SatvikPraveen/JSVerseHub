@@ -690,7 +690,7 @@ describe('Error handling', () => {
 });
     `,
     
-    testingAsync Await: `
+    testingAsyncAwait: `
 // Testing async/await functions
 
 async function getUserById(id) {
