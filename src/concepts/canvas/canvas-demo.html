@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Graphics Interactive Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            display: flex;
+            height: 600px;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: #f8f9fa;
+            border-right: 2px solid #e0e0e0;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .sidebar h3 {
+            color: #667eea;
+            margin: 20px 0 10px 0;
+            font-size: 1.1em;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .sidebar h3:hover {
+            background: #e0e5ff;
+        }
+
+        .controls {
+            display: none;
+            margin-bottom: 15px;
+        }
+
+        .controls.active {
+            display: block;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .control-group input[type="color"],
+        .control-group input[type="range"],
+        .control-group input[type="number"],
+        .control-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+
+        .control-group input[type="range"] {
+            padding: 0;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.95em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background: #764ba2;
+        }
+
+        button.secondary {
+            background: #6c757d;
+        }
+
+        button.secondary:hover {
+            background: #5a6268;
+        }
+
+        .canvas-area {
+            flex: 1;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            cursor: crosshair;
+        }
+
+        .info-bar {
+            background: #f0f2f5;
+            border-top: 2px solid #e0e0e0;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-around;
+            font-size: 0.9em;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .info-value {
+            color: #667eea;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .demo-selector {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .demo-btn {
+            padding: 10px;
+            background: white;
+            border: 2px solid #ddd;
+            color: #333;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .demo-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .demo-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .value-display {
+            text-align: center;
+            padding: 8px;
+            background: #e8f0ff;
+            border-radius: 5px;
+            color: #667eea;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Canvas Graphics Interactive Demo</h1>
+            <p>Explore drawing, animations, and interactive graphics</p>
+        </div>
+
+        <div class="content">
+            <div class="sidebar">
+                <div class="demo-selector" id="demoSelector">
+                    <button class="demo-btn active" data-demo="shapes">Basic Shapes</button>
+                    <button class="demo-btn" data-demo="animation">Animation</button>
+                    <button class="demo-btn" data-demo="interactive">Interactive</button>
+                    <button class="demo-btn" data-demo="patterns">Patterns</button>
+                    <button class="demo-btn" data-demo="charts">Charts</button>
+                </div>
+
+                <!-- Shapes Controls -->
+                <div id="shapesControls" class="controls active">
+                    <h3>🔷 Shape Drawing</h3>
+                    <div class="control-group">
+                        <label>Shape Type</label>
+                        <select id="shapeType">
+                            <option value="rectangle">Rectangle</option>
+                            <option value="circle">Circle</option>
+                            <option value="triangle">Triangle</option>
+                            <option value="star">Star</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>Fill Color</label>
+                        <input type="color" id="fillColor" value="#667eea">
+                    </div>
+                    <div class="control-group">
+                        <label>Stroke Color</label>
+                        <input type="color" id="strokeColor" value="#764ba2">
+                    </div>
+                    <div class="control-group">
+                        <label>Line Width</label>
+                        <input type="range" id="lineWidth" min="1" max="10" value="2">
+                        <div class="value-display" id="lineWidthValue">2</div>
+                    </div>
+                    <button id="drawShapeBtn">Draw Shape</button>
+                    <button id="clearBtn" class="secondary">Clear Canvas</button>
+                </div>
+
+                <!-- Animation Controls -->
+                <div id="animationControls" class="controls">
+                    <h3>🎬 Animation</h3>
+                    <div class="control-group">
+                        <label>Animation Type</label>
+                        <select id="animationType">
+                            <option value="rotating">Rotating Circle</option>
+                            <option value="bouncing">Bouncing Ball</option>
+                            <option value="spiral">Spiral Pattern</option>
+                            <option value="wave">Wave Effect</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>Speed</label>
+                        <input type="range" id="animationSpeed" min="0.5" max="3" step="0.5" value="1">
+                        <div class="value-display" id="speedValue">1x</div>
+                    </div>
+                    <button id="startAnimationBtn">Start Animation</button>
+                    <button id="stopAnimationBtn" class="secondary">Stop Animation</button>
+                </div>
+
+                <!-- Interactive Controls -->
+                <div id="interactiveControls" class="controls">
+                    <h3>🖱️ Interactive Drawing</h3>
+                    <div class="control-group">
+                        <label>Drawing Tool</label>
+                        <select id="drawingTool">
+                            <option value="brush">Brush</option>
+                            <option value="eraser">Eraser</option>
+                            <option value="circle">Circle Tool</option>
+                            <option value="line">Line Tool</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>Brush Size</label>
+                        <input type="range" id="brushSize" min="1" max="50" value="5">
+                        <div class="value-display" id="brushSizeValue">5</div>
+                    </div>
+                    <div class="control-group">
+                        <label>Brush Color</label>
+                        <input type="color" id="brushColor" value="#333333">
+                    </div>
+                    <button id="enableDrawing" class="secondary">Click canvas to draw</button>
+                    <button id="clearDrawing" class="secondary">Clear Drawing</button>
+                </div>
+
+                <!-- Pattern Controls -->
+                <div id="patternControls" class="controls">
+                    <h3>📐 Patterns</h3>
+                    <div class="control-group">
+                        <label>Pattern Type</label>
+                        <select id="patternType">
+                            <option value="grid">Grid</option>
+                            <option value="checkerboard">Checkerboard</option>
+                            <option value="polar">Polar Grid</option>
+                            <option value="rounded">Rounded Rects</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>Pattern Size</label>
+                        <input type="range" id="patternSize" min="10" max="100" value="30">
+                        <div class="value-display" id="patternSizeValue">30</div>
+                    </div>
+                    <button id="drawPatternBtn">Draw Pattern</button>
+                </div>
+
+                <!-- Chart Controls -->
+                <div id="chartControls" class="controls">
+                    <h3>📊 Charts</h3>
+                    <div class="control-group">
+                        <label>Chart Type</label>
+                        <select id="chartType">
+                            <option value="bar">Bar Chart</option>
+                            <option value="pie">Pie Chart</option>
+                            <option value="line">Line Chart</option>
+                        </select>
+                    </div>
+                    <button id="drawChartBtn">Draw Chart</button>
+                </div>
+            </div>
+
+            <div class="canvas-area">
+                <canvas id="canvas" width="1000" height="600"></canvas>
+            </div>
+        </div>
+
+        <div class="info-bar">
+            <div class="info-item">
+                <span class="info-label">Mouse Position:</span>
+                <span class="info-value" id="mousePos">0, 0</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">FPS:</span>
+                <span class="info-value" id="fps">60</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Canvas Size:</span>
+                <span class="info-value" id="canvasSize">1000 × 600</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let animationId = null;
+        let isDrawing = false;
+        let mouseX = 0, mouseY = 0;
+
+        // Mouse tracking
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+            document.getElementById('mousePos').textContent = `${Math.round(mouseX)}, ${Math.round(mouseY)}`;
+        });
+
+        canvas.addEventListener('mousedown', () => {
+            isDrawing = true;
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            isDrawing = false;
+        });
+
+        // Demo selector
+        document.querySelectorAll('.demo-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.demo-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.controls').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById(btn.dataset.demo + 'Controls').classList.add('active');
+
+                if (animationId) {
+                    cancelAnimationFrame(animationId);
+                    animationId = null;
+                }
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            });
+        });
+
+        // Shape drawing
+        document.getElementById('drawShapeBtn').addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const shapeType = document.getElementById('shapeType').value;
+            const fillColor = document.getElementById('fillColor').value;
+            const strokeColor = document.getElementById('strokeColor').value;
+            const lineWidth = parseInt(document.getElementById('lineWidth').value);
+
+            ctx.fillStyle = fillColor;
+            ctx.strokeStyle = strokeColor;
+            ctx.lineWidth = lineWidth;
+
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+
+            switch (shapeType) {
+                case 'rectangle':
+                    ctx.fillRect(centerX - 75, centerY - 50, 150, 100);
+                    ctx.strokeRect(centerX - 75, centerY - 50, 150, 100);
+                    break;
+                case 'circle':
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, 75, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.stroke();
+                    break;
+                case 'triangle':
+                    ctx.beginPath();
+                    ctx.moveTo(centerX, centerY - 75);
+                    ctx.lineTo(centerX + 75, centerY + 75);
+                    ctx.lineTo(centerX - 75, centerY + 75);
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+                    break;
+                case 'star':
+                    drawStar(centerX, centerY, 5, 75, 35);
+                    break;
+            }
+        });
+
+        function drawStar(cx, cy, points, outer, inner) {
+            ctx.beginPath();
+            let angle = -Math.PI / 2;
+            for (let i = 0; i < points * 2; i++) {
+                const radius = i % 2 === 0 ? outer : inner;
+                const x = cx + Math.cos(angle) * radius;
+                const y = cy + Math.sin(angle) * radius;
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+                angle += Math.PI / points;
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        // Clear canvas
+        document.getElementById('clearBtn').addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+
+        // Animation
+        document.getElementById('lineWidth').addEventListener('input', (e) => {
+            document.getElementById('lineWidthValue').textContent = e.target.value;
+        });
+
+        document.getElementById('animationSpeed').addEventListener('input', (e) => {
+            document.getElementById('speedValue').textContent = e.target.value + 'x';
+        });
+
+        document.getElementById('brushSize').addEventListener('input', (e) => {
+            document.getElementById('brushSizeValue').textContent = e.target.value;
+        });
+
+        document.getElementById('patternSize').addEventListener('input', (e) => {
+            document.getElementById('patternSizeValue').textContent = e.target.value;
+        });
+
+        let animating = false;
+
+        document.getElementById('startAnimationBtn').addEventListener('click', () => {
+            if (animating) return;
+            animating = true;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const animationType = document.getElementById('animationType').value;
+            const speed = parseFloat(document.getElementById('animationSpeed').value);
+            let angle = 0;
+
+            const animate = () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                angle += speed * 0.05;
+
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+
+                switch (animationType) {
+                    case 'rotating':
+                        ctx.save();
+                        ctx.translate(centerX, centerY);
+                        ctx.rotate(angle);
+                        ctx.fillStyle = '#667eea';
+                        ctx.fillRect(-50, -50, 100, 100);
+                        ctx.restore();
+                        break;
+                    case 'bouncing':
+                        const x = centerX + Math.sin(angle) * 200;
+                        ctx.fillStyle = '#764ba2';
+                        ctx.beginPath();
+                        ctx.arc(x, centerY, 30, 0, Math.PI * 2);
+                        ctx.fill();
+                        break;
+                    case 'spiral':
+                        ctx.strokeStyle = '#667eea';
+                        ctx.lineWidth = 2;
+                        ctx.beginPath();
+                        for (let i = 0; i < angle; i += 0.1) {
+                            const x = centerX + Math.cos(i) * i * 2;
+                            const y = centerY + Math.sin(i) * i * 2;
+                            if (i === 0) ctx.moveTo(x, y);
+                            else ctx.lineTo(x, y);
+                        }
+                        ctx.stroke();
+                        break;
+                    case 'wave':
+                        ctx.strokeStyle = '#764ba2';
+                        ctx.lineWidth = 3;
+                        ctx.beginPath();
+                        for (let x = 0; x < canvas.width; x += 5) {
+                            const y = centerY + Math.sin((x + angle) * 0.01) * 50;
+                            if (x === 0) ctx.moveTo(x, y);
+                            else ctx.lineTo(x, y);
+                        }
+                        ctx.stroke();
+                        break;
+                }
+
+                animationId = requestAnimationFrame(animate);
+            };
+
+            animate();
+        });
+
+        document.getElementById('stopAnimationBtn').addEventListener('click', () => {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+            animating = false;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+
+        // Interactive drawing
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isDrawing) return;
+            const drawingTool = document.getElementById('drawingTool').value;
+            if (drawingTool === 'brush' || drawingTool === 'circle') {
+                const size = parseInt(document.getElementById('brushSize').value);
+                ctx.fillStyle = document.getElementById('brushColor').value;
+                ctx.beginPath();
+                ctx.arc(mouseX, mouseY, size / 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        });
+
+        document.getElementById('drawPatternBtn').addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const patternType = document.getElementById('patternType').value;
+            const patternSize = parseInt(document.getElementById('patternSize').value);
+
+            ctx.strokeStyle = '#ddd';
+            ctx.fillStyle = '#f0f0f0';
+
+            switch (patternType) {
+                case 'grid':
+                    for (let x = 0; x < canvas.width; x += patternSize) {
+                        ctx.beginPath();
+                        ctx.moveTo(x, 0);
+                        ctx.lineTo(x, canvas.height);
+                        ctx.stroke();
+                    }
+                    for (let y = 0; y < canvas.height; y += patternSize) {
+                        ctx.beginPath();
+                        ctx.moveTo(0, y);
+                        ctx.lineTo(canvas.width, y);
+                        ctx.stroke();
+                    }
+                    break;
+                case 'checkerboard':
+                    for (let y = 0; y < canvas.height; y += patternSize) {
+                        for (let x = 0; x < canvas.width; x += patternSize) {
+                            if ((x / patternSize + y / patternSize) % 2 === 0) {
+                                ctx.fillRect(x, y, patternSize, patternSize);
+                            }
+                        }
+                    }
+                    break;
+                case 'polar':
+                    const centerX = canvas.width / 2;
+                    const centerY = canvas.height / 2;
+                    ctx.strokeStyle = '#667eea';
+                    for (let r = patternSize; r < 400; r += patternSize) {
+                        ctx.beginPath();
+                        ctx.arc(centerX, centerY, r, 0, Math.PI * 2);
+                        ctx.stroke();
+                    }
+                    for (let i = 0; i < 12; i++) {
+                        const angle = (i / 12) * Math.PI * 2;
+                        ctx.beginPath();
+                        ctx.moveTo(centerX, centerY);
+                        ctx.lineTo(centerX + Math.cos(angle) * 400, centerY + Math.sin(angle) * 400);
+                        ctx.stroke();
+                    }
+                    break;
+            }
+        });
+
+        document.getElementById('drawChartBtn').addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const chartType = document.getElementById('chartType').value;
+            const data = [45, 60, 35, 70, 50];
+
+            ctx.fillStyle = '#667eea';
+            ctx.font = '16px Arial';
+            ctx.fillText('Sample Data Chart', 20, 30);
+
+            switch (chartType) {
+                case 'bar':
+                    data.forEach((value, i) => {
+                        const x = 100 + i * 140;
+                        const height = (value / 100) * 300;
+                        ctx.fillStyle = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#00f2fe'][i];
+                        ctx.fillRect(x, 450 - height, 100, height);
+                    });
+                    break;
+                case 'pie':
+                    const total = data.reduce((a, b) => a + b);
+                    let angle = -Math.PI / 2;
+                    data.forEach((value, i) => {
+                        const sliceAngle = (value / total) * Math.PI * 2;
+                        ctx.fillStyle = ['#667eea', '#764ba2', '#f093fb', '#4facfe', '#00f2fe'][i];
+                        ctx.beginPath();
+                        ctx.arc(canvas.width / 2, canvas.height / 2, 150, angle, angle + sliceAngle);
+                        ctx.lineTo(canvas.width / 2, canvas.height / 2);
+                        ctx.fill();
+                        angle += sliceAngle;
+                    });
+                    break;
+                case 'line':
+                    ctx.strokeStyle = '#667eea';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    data.forEach((value, i) => {
+                        const x = 100 + i * 140;
+                        const y = 450 - (value / 100) * 300;
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    });
+                    ctx.stroke();
+                    break;
+            }
+        });
+
+        document.getElementById('clearDrawing').addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+
+        // FPS counter
+        let frameCount = 0;
+        let lastTime = performance.now();
+        const updateFPS = () => {
+            frameCount++;
+            const now = performance.now();
+            if (now >= lastTime + 1000) {
+                document.getElementById('fps').textContent = frameCount;
+                frameCount = 0;
+                lastTime = now;
+            }
+            requestAnimationFrame(updateFPS);
+        };
+        updateFPS();
+    </script>
+</body>
+</html>
