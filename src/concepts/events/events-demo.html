@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events - Interactive Demonstrations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .demo-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .demo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .demo-card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .demo-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+
+        /* Click Events Demo */
+        #clickButton {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        #clickButton:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        #clickButton:active {
+            transform: scale(0.95);
+        }
+
+        .output-box {
+            background: #f5f5f5;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 0.9em;
+            max-height: 150px;
+            overflow-y: auto;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .event-indicator {
+            display: inline-block;
+            padding: 5px 10px;
+            background: #667eea;
+            color: white;
+            border-radius: 3px;
+            margin: 3px;
+            font-size: 0.85em;
+        }
+
+        .event-indicator.capture {
+            background: #ff6b6b;
+        }
+
+        .event-indicator.bubble {
+            background: #4ecdc4;
+        }
+
+        /* Event Flow Demo */
+        .event-flow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .event-phase {
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .event-phase.parent {
+            background: #ff6b6b;
+        }
+
+        .event-phase.child {
+            background: #4ecdc4;
+            margin: 0 20px;
+        }
+
+        .event-phase.active {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px currentColor;
+        }
+
+        /* Keyboard Events Demo */
+        #keyboardInput {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+            font-family: monospace;
+        }
+
+        #keyboardInput:focus {
+            outline: none;
+            border-color: #764ba2;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Form Events Demo */
+        #demoForm {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #demoForm input,
+        #demoForm select,
+        #demoForm textarea {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        #demoForm input:focus,
+        #demoForm select:focus,
+        #demoForm textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+
+        #demoForm button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        #demoForm button:hover {
+            background: #764ba2;
+        }
+
+        /* Touch Events Demo */
+        #touchArea {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        #touchArea:active {
+            transform: scale(0.98);
+            box-shadow: inset 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Mouse Events Demo */
+        #mouseTracker {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #667eea;
+            font-weight: bold;
+            cursor: crosshair;
+        }
+
+        /* Event Delegation Demo */
+        #itemList {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .list-item {
+            background: #f0f0f0;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid #667eea;
+        }
+
+        .list-item:hover {
+            background: #e0e0e0;
+            transform: translateX(5px);
+        }
+
+        .list-item.selected {
+            background: #667eea;
+            color: white;
+            border-left-color: #764ba2;
+        }
+
+        /* Custom Events Demo */
+        #eventPanel {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            min-height: 80px;
+            border: 2px dashed #ddd;
+        }
+
+        .event-log {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .event-entry {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            border-left: 3px solid #667eea;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .code-example {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            line-height: 1.4;
+            font-family: 'Courier New', monospace;
+            margin-top: 10px;
+        }
+
+        .code-keyword { color: #ff79c6; }
+        .code-string { color: #f1fa8c; }
+        .code-function { color: #8be9fd; }
+        .code-comment { color: #6272a4; }
+
+        .clear-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.85em;
+            margin-top: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .clear-btn:hover {
+            background: #ee5a52;
+        }
+
+        .legend {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+            font-size: 0.85em;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-card {
+                padding: 15px;
+            }
+
+            .demo-card h2 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 JavaScript Events - Interactive Demonstrations</h1>
+
+        <div class="demo-grid">
+            <!-- Click Events Demo -->
+            <div class="demo-card">
+                <h2>1️⃣ Click Events</h2>
+                <p>Demonstrates basic click event handling and counting.</p>
+                <button id="clickButton">Click Me (0 clicks)</button>
+                <div class="output-box" id="clickOutput">Click the button to see the event fire...</div>
+                <div class="code-example">
+<span class="code-keyword">element</span>.<span class="code-function">addEventListener</span>(<span class="code-string">'click'</span>, <span class="code-keyword">function</span>() {
+  <span class="code-comment">// Handle click event</span>
+});
+                </div>
+            </div>
+
+            <!-- Mouse Events Demo -->
+            <div class="demo-card">
+                <h2>2️⃣ Mouse Events</h2>
+                <p>Track mouse movement, enter, and leave events.</p>
+                <div id="mouseTracker">Move your mouse here...</div>
+                <div class="output-box" id="mouseOutput"></div>
+                <div class="code-example">
+<span class="code-keyword">element</span>.<span class="code-function">addEventListener</span>(<span class="code-string">'mousemove'</span>, (e) => {
+  console.<span class="code-function">log</span>(e.clientX, e.clientY);
+});
+                </div>
+            </div>
+
+            <!-- Keyboard Events Demo -->
+            <div class="demo-card">
+                <h2>3️⃣ Keyboard Events</h2>
+                <p>Capture keyboard input and key codes.</p>
+                <input type="text" id="keyboardInput" placeholder="Type something...">
+                <div class="output-box" id="keyboardOutput">Start typing to see key events...</div>
+                <div class="code-example">
+<span class="code-keyword">element</span>.<span class="code-function">addEventListener</span>(<span class="code-string">'keydown'</span>, (e) => {
+  console.<span class="code-function">log</span>(e.key, e.code);
+});
+                </div>
+            </div>
+
+            <!-- Event Flow Demo -->
+            <div class="demo-card">
+                <h2>4️⃣ Event Flow (Bubbling & Capturing)</h2>
+                <p>See how events flow through the DOM tree.</p>
+                <div class="event-flow-container">
+                    <div class="event-phase parent" id="parentPhase">Parent Element</div>
+                    <div class="event-phase child" id="childPhase">Child Element</div>
+                </div>
+                <div class="output-box" id="flowOutput" style="margin-top: 10px;"></div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #ff6b6b;"></div>
+                        <span>Parent</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #4ecdc4;"></div>
+                        <span>Child</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Events Demo -->
+            <div class="demo-card">
+                <h2>5️⃣ Form Events</h2>
+                <p>Handle input, change, submit, and focus events.</p>
+                <form id="demoForm">
+                    <input type="text" name="username" placeholder="Username" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <select name="role">
+                        <option value="">Select Role</option>
+                        <option value="admin">Admin</option>
+                        <option value="user">User</option>
+                        <option value="guest">Guest</option>
+                    </select>
+                    <textarea name="bio" placeholder="Bio" rows="3"></textarea>
+                    <button type="submit">Submit Form</button>
+                </form>
+                <div class="output-box" id="formOutput"></div>
+            </div>
+
+            <!-- Touch Events Demo -->
+            <div class="demo-card">
+                <h2>6️⃣ Touch Events</h2>
+                <p>Interact with touch events (mobile devices).</p>
+                <div id="touchArea">Touch or Click Me</div>
+                <div class="output-box" id="touchOutput">Touch events will appear here...</div>
+                <div class="code-example">
+<span class="code-keyword">element</span>.<span class="code-function">addEventListener</span>(<span class="code-string">'touchstart'</span>, (e) => {
+  console.<span class="code-function">log</span>(e.touches.length);
+});
+                </div>
+            </div>
+
+            <!-- Event Delegation Demo -->
+            <div class="demo-card">
+                <h2>7️⃣ Event Delegation</h2>
+                <p>Single listener handles multiple child elements.</p>
+                <ul id="itemList">
+                    <li class="list-item" data-id="1">Item 1</li>
+                    <li class="list-item" data-id="2">Item 2</li>
+                    <li class="list-item" data-id="3">Item 3</li>
+                    <li class="list-item" data-id="4">Item 4</li>
+                    <li class="list-item" data-id="5">Item 5</li>
+                </ul>
+                <div class="output-box" id="delegationOutput">Click items to see delegation in action...</div>
+                <div class="code-example">
+<span class="code-comment">// Single listener on parent</span>
+parent.<span class="code-function">addEventListener</span>(<span class="code-string">'click'</span>, (e) => {
+  <span class="code-keyword">if</span> (e.target.matches(<span class="code-string">'.item'</span>)) {
+    <span class="code-comment">// Handle item click</span>
+  }
+});
+                </div>
+            </div>
+
+            <!-- Custom Events Demo -->
+            <div class="demo-card">
+                <h2>8️⃣ Custom Events</h2>
+                <p>Create and dispatch custom application events.</p>
+                <button id="emitEventBtn" style="background: #667eea; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 10px;">Emit Custom Event</button>
+                <div id="eventPanel">
+                    <div class="event-log" id="eventLog">
+                        <div style="color: #999; font-size: 0.9em;">Waiting for events...</div>
+                    </div>
+                </div>
+                <button class="clear-btn" id="clearEventsBtn">Clear Log</button>
+                <div class="code-example">
+<span class="code-keyword">const</span> event = <span class="code-keyword">new</span> <span class="code-function">CustomEvent</span>(<span class="code-string">'myEvent'</span>, {
+  detail: { message: <span class="code-string">'Hello!'</span> }
+});
+element.<span class="code-function">dispatchEvent</span>(event);
+                </div>
+            </div>
+
+            <!-- Event Properties Demo -->
+            <div class="demo-card">
+                <h2>9️⃣ Event Properties</h2>
+                <p>Explore important event object properties.</p>
+                <button id="propsButton" style="background: #667eea; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; margin-bottom: 10px;">Click to Inspect Properties</button>
+                <div class="output-box" id="propsOutput">Click the button to see event properties...</div>
+                <div class="code-example">
+<span class="code-comment">// Common Event Properties:</span>
+<span class="code-keyword">event</span>.type <span class="code-comment">// 'click'</span>
+<span class="code-keyword">event</span>.target <span class="code-comment">// Element that fired event</span>
+<span class="code-keyword">event</span>.currentTarget <span class="code-comment">// Element listener attached to</span>
+<span class="code-keyword">event</span>.preventDefault() <span class="code-comment">// Cancel default action</span>
+                </div>
+            </div>
+
+            <!-- Event Prevention Demo -->
+            <div class="demo-card">
+                <h2>🔟 Event Prevention</h2>
+                <p>Prevent default behavior and stop propagation.</p>
+                <a href="#" id="preventLink" style="display: block; padding: 12px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; text-align: center; font-weight: bold; cursor: pointer; margin-bottom: 10px;">This Link Won't Navigate</a>
+                <div class="output-box" id="preventOutput">Click the link to prevent default behavior...</div>
+                <div class="code-example">
+<span class="code-keyword">event</span>.<span class="code-function">preventDefault</span>(); <span class="code-comment">// Cancel default action</span>
+<span class="code-keyword">event</span>.<span class="code-function">stopPropagation</span>(); <span class="code-comment">// Stop event bubbling</span>
+<span class="code-keyword">event</span>.<span class="code-function">stopImmediatePropagation</span>(); <span class="code-comment">// Stop all handlers</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Click Events Demo
+        let clickCount = 0;
+        const clickButton = document.getElementById('clickButton');
+        const clickOutput = document.getElementById('clickOutput');
+
+        clickButton.addEventListener('click', function(e) {
+            clickCount++;
+            clickButton.textContent = `Click Me (${clickCount} clicks)`;
+            clickOutput.textContent = `✓ Click event fired!\nEvent type: ${e.type}\nTarget: ${e.target.tagName}\nTimestamp: ${new Date().toLocaleTimeString()}`;
+        });
+
+        // 2. Mouse Events Demo
+        const mouseTracker = document.getElementById('mouseTracker');
+        const mouseOutput = document.getElementById('mouseOutput');
+        let mouseEvents = 0;
+
+        mouseTracker.addEventListener('mouseenter', function(e) {
+            mouseOutput.innerHTML = '🎯 Mouse entered!';
+            mouseEvents++;
+        });
+
+        mouseTracker.addEventListener('mousemove', function(e) {
+            mouseOutput.innerHTML = `🎯 Mouse at: (${e.clientX}, ${e.clientY})<br>Total events: ${mouseEvents}`;
+        });
+
+        mouseTracker.addEventListener('mouseleave', function(e) {
+            mouseOutput.innerHTML = '👋 Mouse left! Total mouse events: ' + mouseEvents;
+        });
+
+        // 3. Keyboard Events Demo
+        const keyboardInput = document.getElementById('keyboardInput');
+        const keyboardOutput = document.getElementById('keyboardOutput');
+
+        keyboardInput.addEventListener('keydown', function(e) {
+            keyboardOutput.innerHTML = `⌨️ Key Down: <strong>${e.key}</strong><br>Key Code: ${e.code}<br>Shift: ${e.shiftKey} | Ctrl: ${e.ctrlKey}`;
+        });
+
+        keyboardInput.addEventListener('input', function(e) {
+            keyboardOutput.innerHTML += `<br>Current value: "${e.target.value}"`;
+        });
+
+        // 4. Event Flow Demo
+        const parentPhase = document.getElementById('parentPhase');
+        const childPhase = document.getElementById('childPhase');
+        const flowOutput = document.getElementById('flowOutput');
+        let flowLog = [];
+
+        function clearFlow() {
+            flowLog = [];
+            flowOutput.textContent = 'Click on elements to see event flow...';
+        }
+
+        function addFlowLog(phase, event) {
+            flowLog.push(`${phase}: ${event.type}`);
+            flowOutput.textContent = flowLog.join('\n');
+        }
+
+        parentPhase.addEventListener('click', function(e) {
+            if (e.target === parentPhase) {
+                clearFlow();
+                addFlowLog('Parent', e);
+            }
+        }, false); // Bubbling
+
+        childPhase.addEventListener('click', function(e) {
+            e.stopPropagation();
+            addFlowLog('Child', e);
+        }, false);
+
+        // 5. Form Events Demo
+        const demoForm = document.getElementById('demoForm');
+        const formOutput = document.getElementById('formOutput');
+        let formData = {};
+
+        demoForm.addEventListener('input', function(e) {
+            formData[e.target.name] = e.target.value;
+            formOutput.textContent = `📝 Form data:\n${JSON.stringify(formData, null, 2)}`;
+        });
+
+        demoForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            formOutput.textContent += `\n\n✅ Form submitted!\nAll fields valid: ${demoForm.checkValidity()}`;
+        });
+
+        // 6. Touch Events Demo
+        const touchArea = document.getElementById('touchArea');
+        const touchOutput = document.getElementById('touchOutput');
+
+        touchArea.addEventListener('touchstart', function(e) {
+            touchOutput.innerHTML = `👆 Touch Start: ${e.touches.length} finger(s)`;
+        });
+
+        touchArea.addEventListener('touchmove', function(e) {
+            touchOutput.innerHTML = `👆 Touch Moving: ${e.touches.length} finger(s)`;
+        });
+
+        touchArea.addEventListener('touchend', function(e) {
+            touchOutput.innerHTML += `<br>✋ Touch ended`;
+        });
+
+        // 7. Event Delegation Demo
+        const itemList = document.getElementById('itemList');
+        const delegationOutput = document.getElementById('delegationOutput');
+
+        itemList.addEventListener('click', function(e) {
+            if (e.target.classList.contains('list-item')) {
+                // Remove selection from all items
+                document.querySelectorAll('.list-item').forEach(item => {
+                    item.classList.remove('selected');
+                });
+                // Add selection to clicked item
+                e.target.classList.add('selected');
+                delegationOutput.textContent = `✅ Selected: ${e.target.textContent} (ID: ${e.target.dataset.id})`;
+            }
+        });
+
+        // 8. Custom Events Demo
+        const emitEventBtn = document.getElementById('emitEventBtn');
+        const eventPanel = document.getElementById('eventPanel');
+        const eventLog = document.getElementById('eventLog');
+        const clearEventsBtn = document.getElementById('clearEventsBtn');
+        let eventCount = 0;
+
+        emitEventBtn.addEventListener('click', function() {
+            eventCount++;
+            const customEvent = new CustomEvent('appEvent', {
+                detail: { message: `Custom event #${eventCount}`, timestamp: new Date().toLocaleTimeString() }
+            });
+            eventPanel.dispatchEvent(customEvent);
+        });
+
+        eventPanel.addEventListener('appEvent', function(e) {
+            const entry = document.createElement('div');
+            entry.className = 'event-entry';
+            entry.textContent = `🎉 ${e.detail.message} at ${e.detail.timestamp}`;
+            eventLog.insertBefore(entry, eventLog.firstChild);
+
+            if (eventLog.children.length > 5) {
+                eventLog.removeChild(eventLog.lastChild);
+            }
+        });
+
+        clearEventsBtn.addEventListener('click', function() {
+            eventLog.innerHTML = '<div style="color: #999; font-size: 0.9em;">Log cleared</div>';
+        });
+
+        // 9. Event Properties Demo
+        const propsButton = document.getElementById('propsButton');
+        const propsOutput = document.getElementById('propsOutput');
+
+        propsButton.addEventListener('click', function(e) {
+            propsOutput.innerHTML = `📊 Event Properties:
+Type: ${e.type}
+Target: ${e.target.tagName}.${e.target.id || 'no-id'}
+Current Target: ${e.currentTarget.tagName}
+Event Phase: ${e.eventPhase === 1 ? 'CAPTURING' : e.eventPhase === 2 ? 'AT_TARGET' : 'BUBBLING'}
+Timestamp: ${e.timeStamp}ms
+X: ${e.clientX}, Y: ${e.clientY}
+Bubbles: ${e.bubbles}
+Cancelable: ${e.cancelable}`;
+        });
+
+        // 10. Event Prevention Demo
+        const preventLink = document.getElementById('preventLink');
+        const preventOutput = document.getElementById('preventOutput');
+
+        preventLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            preventOutput.textContent = '✅ Link click prevented!\nDefault behavior was cancelled.';
+        });
+
+        // Log initialization
+        console.log('🎯 Events Demo Initialized!');
+        console.log('Try interacting with each demo to see events in action.');
+    </script>
+</body>
+</html>
