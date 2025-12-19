@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing Playground - JSVerseHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            opacity: 0.9;
+        }
+        
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 30px;
+        }
+        
+        .panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .panel h2 {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .code-section {
+            background: #f5f5f5;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        
+        .code-section pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .output {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            min-height: 150px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .test-pass {
+            background: #d4edda;
+            color: #155724;
+            border-left: 3px solid #28a745;
+        }
+        
+        .test-fail {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 3px solid #dc3545;
+        }
+        
+        .test-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-left: 3px solid #17a2b8;
+        }
+        
+        .exercise {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .exercise:hover {
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .exercise h3 {
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+        
+        .exercise-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .difficulty {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .difficulty.easy {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .difficulty.medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .difficulty.hard {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 15px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 14px;
+            color: #666;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧪 Testing Playground</h1>
+            <p>Learn Jest testing with interactive examples</p>
+        </header>
+        
+        <div class="content">
+            <!-- Left Panel: Examples and Learning -->
+            <div class="panel">
+                <h2>📚 Testing Examples</h2>
+                
+                <div class="tabs">
+                    <button class="tab active" onclick="switchTab(event, 'basic')">Basic</button>
+                    <button class="tab" onclick="switchTab(event, 'matchers')">Matchers</button>
+                    <button class="tab" onclick="switchTab(event, 'mocking')">Mocking</button>
+                    <button class="tab" onclick="switchTab(event, 'async')">Async</button>
+                </div>
+                
+                <!-- Basic Tab -->
+                <div id="basic" class="tab-content active">
+                    <h3>Basic Test Structure</h3>
+                    <div class="code-section">
+                        <pre>describe('add function', () => {
+  test('should add two numbers', () => {
+    expect(add(2, 3)).toBe(5);
+  });
+  
+  test('should handle negatives', () => {
+    expect(add(-1, 1)).toBe(0);
+  });
+});</pre>
+                    </div>
+                    <button class="btn-primary" onclick="runBasicTest()">Run Example</button>
+                </div>
+                
+                <!-- Matchers Tab -->
+                <div id="matchers" class="tab-content">
+                    <h3>Jest Matchers</h3>
+                    <div class="code-section">
+                        <pre>// Equality
+expect(2 + 2).toBe(4);
+expect({a: 1}).toEqual({a: 1});
+
+// Truthiness
+expect(true).toBeTruthy();
+expect(false).toBeFalsy();
+
+// Numbers
+expect(4).toBeGreaterThan(3);
+
+// Strings
+expect('hello').toMatch(/hel/);
+
+// Arrays
+expect([1,2,3]).toContain(2);</pre>
+                    </div>
+                    <button class="btn-primary" onclick="runMatcherTest()">Run Example</button>
+                </div>
+                
+                <!-- Mocking Tab -->
+                <div id="mocking" class="tab-content">
+                    <h3>Mocking Functions</h3>
+                    <div class="code-section">
+                        <pre>const mockFn = jest.fn();
+
+// Mock returns value
+mockFn.mockReturnValue(42);
+
+// Verify mock was called
+expect(mockFn).toHaveBeenCalled();
+expect(mockFn).toHaveBeenCalledWith(1, 2);
+
+// Get call count
+expect(mockFn).toHaveBeenCalledTimes(1);</pre>
+                    </div>
+                    <button class="btn-primary" onclick="runMockTest()">Run Example</button>
+                </div>
+                
+                <!-- Async Tab -->
+                <div id="async" class="tab-content">
+                    <h3>Testing Async Code</h3>
+                    <div class="code-section">
+                        <pre>// Using async/await
+test('should fetch data', async () => {
+  const data = await fetchData();
+  expect(data).toBeDefined();
+});
+
+// Using .resolves
+test('resolves data', () => {
+  return expect(fetchData())
+    .resolves.toBeDefined();
+});
+
+// Testing errors
+test('rejects error', () => {
+  return expect(fetchError())
+    .rejects.toThrow();</pre>
+                    </div>
+                    <button class="btn-primary" onclick="runAsyncTest()">Run Example</button>
+                </div>
+            </div>
+            
+            <!-- Right Panel: Interactive Testing -->
+            <div class="panel">
+                <h2>🔨 Test Your Code</h2>
+                
+                <div>
+                    <label style="display: block; font-weight: bold; margin-bottom: 8px;">Write Function:</label>
+                    <textarea id="functionCode" placeholder="function myFunction(x) {
+  return x * 2;
+}">function myFunction(x) {
+  return x * 2;
+}</textarea>
+                </div>
+                
+                <div>
+                    <label style="display: block; font-weight: bold; margin-bottom: 8px;">Write Test:</label>
+                    <textarea id="testCode" placeholder="test('should double number', () => {
+  expect(myFunction(5)).toBe(10);
+});
+test('should handle zero', () => {
+  expect(myFunction(0)).toBe(0);
+});
+test('should handle negatives', () => {
+  expect(myFunction(-3)).toBe(-6);
+});">test('should double number', () => {
+  expect(myFunction(5)).toBe(10);
+});
+test('should handle zero', () => {
+  expect(myFunction(0)).toBe(0);
+});
+test('should handle negatives', () => {
+  expect(myFunction(-3)).toBe(-6);
+});</textarea>
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn-primary" onclick="runUserTest()">▶ Run Tests</button>
+                    <button class="btn-secondary" onclick="clearOutput()">Clear Output</button>
+                </div>
+                
+                <h3>📊 Results:</h3>
+                <div class="output" id="output">Output will appear here...</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Simple expect implementation for demo
+        const createExpect = (value) => ({
+            toBe: (expected) => {
+                if (value === expected) {
+                    return true;
+                }
+                throw new Error(`Expected ${value} to be ${expected}`);
+            },
+            toEqual: (expected) => {
+                if (JSON.stringify(value) === JSON.stringify(expected)) {
+                    return true;
+                }
+                throw new Error(`Expected ${JSON.stringify(value)} to equal ${JSON.stringify(expected)}`);
+            },
+            toBeTruthy: () => {
+                if (value) return true;
+                throw new Error(`Expected ${value} to be truthy`);
+            },
+            toBeFalsy: () => {
+                if (!value) return true;
+                throw new Error(`Expected ${value} to be falsy`);
+            },
+            toBeGreaterThan: (expected) => {
+                if (value > expected) return true;
+                throw new Error(`Expected ${value} to be greater than ${expected}`);
+            },
+            toContain: (expected) => {
+                if (value.includes(expected)) return true;
+                throw new Error(`Expected ${value} to contain ${expected}`);
+            },
+            toThrow: (message) => {
+                try {
+                    value();
+                    throw new Error('Expected function to throw');
+                } catch (e) {
+                    if (message && !e.message.includes(message)) {
+                        throw new Error(`Expected error to contain "${message}"`);
+                    }
+                    return true;
+                }
+            }
+        });
+        
+        function switchTab(event, tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        function runBasicTest() {
+            const output = document.getElementById('output');
+            output.innerHTML = '';
+            
+            function add(a, b) {
+                return a + b;
+            }
+            
+            const tests = [
+                { name: 'should add two numbers', fn: () => add(2, 3) === 5 },
+                { name: 'should handle negatives', fn: () => add(-1, 1) === 0 },
+                { name: 'should return 0 for 0+0', fn: () => add(0, 0) === 0 }
+            ];
+            
+            let passed = 0;
+            tests.forEach(test => {
+                try {
+                    const result = test.fn();
+                    if (result) {
+                        output.innerHTML += `<div class="test-result test-pass">✓ ${test.name}</div>`;
+                        passed++;
+                    } else {
+                        output.innerHTML += `<div class="test-result test-fail">✗ ${test.name}</div>`;
+                    }
+                } catch (e) {
+                    output.innerHTML += `<div class="test-result test-fail">✗ ${test.name}: ${e.message}</div>`;
+                }
+            });
+            
+            output.innerHTML += `<div class="test-result test-info">Total: ${passed}/${tests.length} passed</div>`;
+        }
+        
+        function runMatcherTest() {
+            const output = document.getElementById('output');
+            output.innerHTML = '';
+            
+            const tests = [
+                { name: '2 + 2 = 4', fn: () => { expect(2 + 2).toBe(4); } },
+                { name: 'Array contains 2', fn: () => { expect([1,2,3]).toContain(2); } },
+                { name: '5 > 3', fn: () => { expect(5).toBeGreaterThan(3); } },
+                { name: 'true is truthy', fn: () => { expect(true).toBeTruthy(); } }
+            ];
+            
+            let passed = 0;
+            tests.forEach(test => {
+                try {
+                    test.fn();
+                    output.innerHTML += `<div class="test-result test-pass">✓ ${test.name}</div>`;
+                    passed++;
+                } catch (e) {
+                    output.innerHTML += `<div class="test-result test-fail">✗ ${test.name}</div>`;
+                }
+            });
+            
+            output.innerHTML += `<div class="test-result test-info">Total: ${passed}/${tests.length} passed</div>`;
+        }
+        
+        function runMockTest() {
+            const output = document.getElementById('output');
+            output.innerHTML = '';
+            
+            // Simple mock implementation
+            const mockFn = function() {
+                mockFn.callCount++;
+                mockFn.calls.push(arguments);
+                return mockFn.returnValue;
+            };
+            mockFn.callCount = 0;
+            mockFn.calls = [];
+            mockFn.returnValue = 42;
+            
+            mockFn(1, 2);
+            mockFn(3, 4);
+            
+            output.innerHTML += `<div class="test-result test-pass">✓ Mock function created</div>`;
+            output.innerHTML += `<div class="test-result test-pass">✓ Mock called ${mockFn.callCount} times</div>`;
+            output.innerHTML += `<div class="test-result test-pass">✓ Mock returns ${mockFn.returnValue}</div>`;
+            output.innerHTML += `<div class="test-result test-info">Mock calls: ${mockFn.calls.length}</div>`;
+        }
+        
+        function runAsyncTest() {
+            const output = document.getElementById('output');
+            output.innerHTML = '';
+            
+            const fetchData = () => Promise.resolve({ data: 'test' });
+            
+            output.innerHTML += `<div class="test-result test-info">Running async test...</div>`;
+            
+            fetchData().then(result => {
+                output.innerHTML += `<div class="test-result test-pass">✓ Data fetched successfully</div>`;
+                output.innerHTML += `<div class="test-result test-info">Data: ${JSON.stringify(result)}</div>`;
+            });
+        }
+        
+        function runUserTest() {
+            const output = document.getElementById('output');
+            const functionCode = document.getElementById('functionCode').value;
+            const testCode = document.getElementById('testCode').value;
+            
+            output.innerHTML = '<div class="test-result test-info">🔄 Running tests...</div>';
+            
+            try {
+                // Create function
+                eval(functionCode);
+                
+                // Parse and run tests
+                const testRegex = /test\('([^']+)',\s*\(\)\s*=>\s*\{([^}]+)\}\);/g;
+                let match;
+                let testCount = 0;
+                let passCount = 0;
+                
+                output.innerHTML = '';
+                
+                while ((match = testRegex.exec(testCode)) !== null) {
+                    const testName = match[1];
+                    const testBody = match[2];
+                    testCount++;
+                    
+                    try {
+                        eval(testBody);
+                        output.innerHTML += `<div class="test-result test-pass">✓ ${testName}</div>`;
+                        passCount++;
+                    } catch (e) {
+                        output.innerHTML += `<div class="test-result test-fail">✗ ${testName}: ${e.message}</div>`;
+                    }
+                }
+                
+                if (testCount === 0) {
+                    output.innerHTML += '<div class="test-result test-fail">No tests found. Use test(...) format</div>';
+                } else {
+                    output.innerHTML += `<div class="test-result test-info">Total: ${passCount}/${testCount} passed</div>`;
+                }
+            } catch (e) {
+                output.innerHTML = `<div class="test-result test-fail">Error: ${e.message}</div>`;
+            }
+        }
+        
+        function clearOutput() {
+            document.getElementById('output').innerHTML = 'Output will appear here...';
+        }
+        
+        // Simple expect function for user tests
+        const expect = createExpect;
+    </script>
+</body>
+</html>
