@@ -208,6 +208,66 @@
   border-top-color: rgba(26, 26, 46, 0.95);
 }
 
+/* Tooltip positioning for specific planets */
+
+/* Algorithms - tooltip on left */
+.planet.algorithms .planet-tooltip {
+  bottom: auto;
+  left: auto;
+  right: calc(100% + 15px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.planet.algorithms .planet-tooltip::after {
+  bottom: auto;
+  left: auto;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-left-color: rgba(26, 26, 46, 0.95);
+  border-top-color: transparent;
+}
+
+/* Security - tooltip on left */
+.planet.security .planet-tooltip {
+  bottom: auto;
+  left: auto;
+  right: calc(100% + 15px);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.planet.security .planet-tooltip::after {
+  bottom: auto;
+  left: auto;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-left-color: rgba(26, 26, 46, 0.95);
+  border-top-color: transparent;
+}
+
+/* Functional - tooltip below */
+.planet.functional .planet-tooltip {
+  bottom: auto;
+  top: calc(100% + 15px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.planet.functional .planet-tooltip::after {
+  bottom: auto;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-bottom-color: rgba(26, 26, 46, 0.95);
+  border-top-color: transparent;
+}
+
 .planet:hover .planet-tooltip {
   opacity: 1;
   visibility: visible;
