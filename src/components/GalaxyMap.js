@@ -89,20 +89,20 @@ class GalaxyMap {
             }
         });
 
-        // Planet hover events (delegated)
-        this.container.addEventListener('mouseenter', (e) => {
-            const planet = e.target.closest('.planet');
-            if (planet) {
-                this.handlePlanetHover(planet, true);
-            }
-        }, true);
+        // Planet hover events disabled - PlanetCard component handles tooltips now
+        // this.container.addEventListener('mouseenter', (e) => {
+        //     const planet = e.target.closest('.planet');
+        //     if (planet) {
+        //         this.handlePlanetHover(planet, true);
+        //     }
+        // }, true);
 
-        this.container.addEventListener('mouseleave', (e) => {
-            const planet = e.target.closest('.planet');
-            if (planet) {
-                this.handlePlanetHover(planet, false);
-            }
-        }, true);
+        // this.container.addEventListener('mouseleave', (e) => {
+        //     const planet = e.target.closest('.planet');
+        //     if (planet) {
+        //         this.handlePlanetHover(planet, false);
+        //     }
+        // }, true);
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
