@@ -969,9 +969,9 @@ galaxyMapStyles.textContent = `
 document.head.appendChild(galaxyMapStyles);
 
 // Create singleton instance
-const GalaxyMap = GalaxyMap.getInstance();
+const galaxyMapInstance = GalaxyMap.getInstance();
 
 // Export for use in other modules
 if (typeof window !== 'undefined') {
-    window.GalaxyMap = GalaxyMap;
+    window.GalaxyMap = galaxyMapInstance;
 }

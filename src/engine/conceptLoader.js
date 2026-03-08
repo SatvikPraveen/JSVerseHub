@@ -90,10 +90,13 @@ class ConceptLoader {
    * Initialize the concept loader
    */
   async init() {
-    // Pre-load critical concepts
-    await this.preloadCriticalConcepts();
+    // Skip pre-loading for now to avoid blocking initialization
+    // Concepts will be loaded on-demand when clicked
     this.isInitialized = true;
-    JSVLogger.info("📚 Concept Loader initialized");
+    console.log("📚 Concept Loader initialized (lazy loading enabled)");
+    if (typeof window.JSVLogger !== 'undefined') {
+      window.JSVLogger.info("📚 Concept Loader initialized (lazy loading)");
+    }
   }
 
   /**
@@ -867,9 +870,9 @@ class ConceptLoader {
 }
 
 // Create singleton instance
-const ConceptLoader = ConceptLoader.getInstance();
+const conceptLoaderInstance = ConceptLoader.getInstance();
 
 // Export for use in other modules
 if (typeof window !== "undefined") {
-  window.ConceptLoader = ConceptLoader;
+  window.ConceptLoader = conceptLoaderInstance;
 }

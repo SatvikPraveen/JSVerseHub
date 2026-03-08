@@ -141,7 +141,7 @@ class PlanetCard {
         // Planet icon
         const icon = document.createElement('img');
         icon.className = 'planet-icon';
-        icon.src = `images/planets/${this.planetData.id}.png`;
+        icon.src = `/images/planets/${this.planetData.id}.png`;
         icon.alt = this.planetData.title;
         icon.onerror = () => {
             // Fallback to emoji or text if image fails

@@ -433,9 +433,9 @@ class StateManager {
 }
 
 // Create singleton instance
-const StateManager = StateManager.getInstance();
+const stateManagerInstance = StateManager.getInstance();
 
 // Export for use in other modules
 if (typeof window !== "undefined") {
-  window.StateManager = StateManager;
+  window.StateManager = stateManagerInstance;
 }

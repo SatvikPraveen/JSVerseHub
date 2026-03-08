@@ -658,9 +658,9 @@ class RandomColorGenerator {
 }
 
 // Create singleton instance
-const RandomColorGenerator = RandomColorGenerator.getInstance();
+const randomColorGeneratorInstance = RandomColorGenerator.getInstance();
 
 // Export for use in other modules
 if (typeof window !== "undefined") {
-  window.RandomColorGenerator = RandomColorGenerator;
+  window.RandomColorGenerator = randomColorGeneratorInstance;
 }

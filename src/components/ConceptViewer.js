@@ -2685,9 +2685,9 @@ conceptViewerStyles.textContent = `
 document.head.appendChild(conceptViewerStyles);
 
 // Create singleton instance
-const ConceptViewer = ConceptViewer.getInstance();
+const conceptViewerInstance = ConceptViewer.getInstance();
 
 // Export for use in other modules
 if (typeof window !== 'undefined') {
-    window.ConceptViewer = ConceptViewer;
+    window.ConceptViewer = conceptViewerInstance;
 }

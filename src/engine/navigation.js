@@ -639,11 +639,11 @@ class Navigation {
 }
 
 // Create singleton instance
-const Navigation = Navigation.getInstance();
+const navigationInstance = Navigation.getInstance();
 
 // Export for use in other modules
 if (typeof window !== "undefined") {
-  window.Navigation = Navigation;
+  window.Navigation = navigationInstance;
 }
 
 // Add CSS for navigation elements
