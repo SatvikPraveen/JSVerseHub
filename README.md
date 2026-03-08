@@ -162,11 +162,19 @@ jsversehub/
 │       ├── navigation.test.js       # Navigation system testing
 │       └── conceptLoader.test.js    # Content loading system testing
 │
+├── scripts/                 # Deployment and utility scripts
+│   ├── deploy.sh           # Automated deployment script
+│   └── create-jsversehub.sh # Project setup and initialization
+│
 ├── docs/                    # Project documentation
+│   ├── INDEX.md            # Documentation index and navigation
+│   ├── PROJECT_STRUCTURE.md # Complete file structure reference
+│   ├── ANALYSIS_COMPLETE.txt # Project analysis notes
 │   ├── architecture.md      # System design and architecture
 │   ├── concept-mapping.md   # Learning path and concept relationships
 │   ├── roadmap.md          # Future development plans
-│   └── changelog.md        # Version history and updates
+│   ├── changelog.md        # Version history and updates
+│   └── guides/             # Detailed implementation guides
 │
 ├── .eslintrc.js            # ESLint configuration
 ├── .gitignore             # Git ignore patterns

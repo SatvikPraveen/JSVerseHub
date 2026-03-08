@@ -15,7 +15,7 @@
 
 ### 🔧 Deployment & Operations
 - **[docs/guides/DEPLOYMENT.md](docs/guides/DEPLOYMENT.md)** - Complete deployment guide with 3 methods
-- **[deploy.sh](deploy.sh)** - Automated deployment script
+- **[deploy.sh](../scripts/deploy.sh)** - Automated deployment script
 - **[Dockerfile](Dockerfile)** - Docker image definition
 - **[docker-compose.yml](docker-compose.yml)** - Docker orchestration
 
@@ -79,7 +79,7 @@ npm test:watch
 
 ### Production Deployment
 ```bash
-./deploy.sh              # Interactive deployment
+./scripts/deploy.sh       # Interactive deployment
 # or
 npm run build
 docker-compose up -d
@@ -108,7 +108,9 @@ JSVerseHub/
 │       └── FINAL_STATUS.txt           # Status report
 ├── src/                               # Source code
 ├── tests/                             # Test suites
-├── deploy.sh                          # Deployment script
+├── scripts/
+│   ├── deploy.sh                      # Deployment script
+│   └── create-jsversehub.sh            # Project setup script
 ├── Dockerfile                         # Docker image
 └── docker-compose.yml                 # Docker orchestration
 ```
@@ -150,7 +152,7 @@ JSVerseHub/
 **For DevOps/Operations:**
 1. [docs/guides/DEPLOYMENT.md](docs/guides/DEPLOYMENT.md) - Deployment options
 2. [docs/guides/MONITORING.md](docs/guides/MONITORING.md) - Monitoring setup
-3. [deploy.sh](deploy.sh) - Automated deployment
+3. [deploy.sh](../scripts/deploy.sh) - Automated deployment
 4. [docker-compose.yml](docker-compose.yml) - Container orchestration
 
 **For Project Managers:**
