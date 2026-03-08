@@ -364,12 +364,13 @@ class GalaxyRenderer {
     planet.addEventListener("click", (e) =>
       this.handlePlanetClick(e, planetDef)
     );
-    planet.addEventListener("mouseenter", (e) =>
-      this.handlePlanetHover(e, planetDef, true)
-    );
-    planet.addEventListener("mouseleave", (e) =>
-      this.handlePlanetHover(e, planetDef, false)
-    );
+    // Hover handlers disabled - PlanetCard component handles tooltips now
+    // planet.addEventListener("mouseenter", (e) =>
+    //   this.handlePlanetHover(e, planetDef, true)
+    // );
+    // planet.addEventListener("mouseleave", (e) =>
+    //   this.handlePlanetHover(e, planetDef, false)
+    // );
 
     return planet;
   }
