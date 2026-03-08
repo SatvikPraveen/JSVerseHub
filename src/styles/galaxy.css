@@ -5,7 +5,7 @@
   position: relative;
   width: 100%;
   height: calc(100vh - 70px);
-  overflow: hidden;
+  overflow: visible;
   perspective: 1000px;
 }
 
@@ -174,7 +174,7 @@
 
 /* Planet Tooltip */
 .planet-tooltip {
-  position: fixed;
+  position: absolute;
   background: rgba(26, 26, 46, 0.95);
   color: var(--text-primary);
   padding: 16px 20px;
@@ -191,8 +191,9 @@
   transition: all 0.3s ease;
   z-index: 1000;
   pointer-events: none;
-  top: 210px;
-  left: 20px;
+  bottom: calc(100% + 15px);
+  left: 50%;
+  transform: translateX(-50%);
   word-wrap: break-word;
   overflow-wrap: break-word;
 }
@@ -200,10 +201,11 @@
 .planet-tooltip::after {
   content: "";
   position: absolute;
-  top: -10px;
-  left: 20px;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
   border: 6px solid transparent;
-  border-bottom-color: rgba(26, 26, 46, 0.95);
+  border-top-color: rgba(26, 26, 46, 0.95);
 }
 
 .planet:hover .planet-tooltip {
