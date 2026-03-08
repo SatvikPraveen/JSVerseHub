@@ -5,22 +5,40 @@
   
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
   [![JavaScript](https://img.shields.io/badge/JavaScript-ES2021-yellow.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-  [![Portfolio Project](https://img.shields.io/badge/Type-Portfolio-blue.svg)](https://github.com/SatvikPraveen/JSVerseHub)
-  [![Demo](https://img.shields.io/badge/Demo-Live-success.svg)](https://jsversehub.surge.sh)
+  [![Personal Project](https://img.shields.io/badge/Type-Personal%20Project-blue.svg)](https://github.com/SatvikPraveen/JSVerseHub)
+  [![Status](https://img.shields.io/badge/Status-Active-success.svg)](https://github.com/SatvikPraveen/JSVerseHub)
 </div>
+
+> **Note:** This is a personal project created for portfolio purposes and continuous learning. It showcases modern web development skills and serves as an interactive JavaScript reference platform.
 
 ## 🚀 Project Overview
 
-JSVerseHub is a portfolio project that demonstrates modern web development techniques through an interactive JavaScript learning platform. The application transforms JavaScript education into a gamified space exploration experience, where each programming concept is represented as a planet in a personal galaxy.
+JSVerseHub is a **personal portfolio project** that demonstrates modern web development techniques through an interactive JavaScript learning platform. The application transforms JavaScript education into a gamified space exploration experience, where each programming concept is represented as a planet in a personal galaxy.
 
 This project serves as both a functional learning tool and a showcase of frontend development skills, featuring modern JavaScript, responsive design, component architecture, and comprehensive testing.
 
+### 📌 Current Status (March 2026)
+
+**Project Status:** ✅ **Fully Functional**
+
+Recent updates and improvements:
+- ✅ All initialization errors resolved
+- ✅ Planet images loading correctly (14 interactive planet concepts)
+- ✅ Responsive navigation bar with proper layering
+- ✅ Single, clean tooltip system on planet hover
+- ✅ Text overflow and positioning optimized
+- ✅ Build system optimized with Webpack 5
+- ✅ Production-ready Express server configuration
+- ✅ Comprehensive test coverage maintained
+
+The application is actively maintained and fully operational for exploring JavaScript concepts through an engaging space-themed interface.
+
 ### 🎯 Purpose
 
-- **Portfolio Demonstration**: Showcases proficiency in modern web development technologies
-- **Learning Tool**: Provides an interactive platform for JavaScript concept review
+- **Personal Learning**: Ongoing project for exploring and mastering web development technologies
+- **Portfolio Demonstration**: Showcases proficiency in modern frontend development
 - **Technical Showcase**: Demonstrates clean code architecture, testing practices, and UI/UX design
-- **Open Source Contribution**: Available for community use and contribution
+- **Community Resource**: Available as an open-source learning tool for others
 
 ## ✨ Key Features & Technical Highlights
 
@@ -437,11 +455,15 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact & Support
 
+**Developer:** Satvik Praveen
+
 **Project Repository:** [https://github.com/SatvikPraveen/JSVerseHub](https://github.com/SatvikPraveen/JSVerseHub)
 
 **Issues & Bug Reports:** [GitHub Issues](https://github.com/SatvikPraveen/JSVerseHub/issues)
 
 **Feature Requests:** [GitHub Discussions](https://github.com/SatvikPraveen/JSVerseHub/discussions)
+
+> **Note:** This is a personal project developed for portfolio and learning purposes. While contributions are welcome, response times may vary based on availability.
 
 ## 🎯 Project Goals & Learning Outcomes
 
@@ -467,11 +489,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <div align="center">
-  <p><strong>A portfolio project showcasing modern web development techniques</strong></p>
-  <p><em>Available for learning, review, and contribution</em></p>
+  <p><strong>🚀 A personal project showcasing modern web development techniques</strong></p>
+  <p><em>Built with passion for learning and exploring JavaScript</em></p>
+  <p><sub>Available for learning, review, and contribution</sub></p>
   <p>
     <a href="https://github.com/SatvikPraveen/JSVerseHub">📂 Repository</a> •
     <a href="https://github.com/SatvikPraveen/JSVerseHub/issues">🐛 Report Issue</a> •
     <a href="https://github.com/SatvikPraveen/JSVerseHub/discussions">💡 Suggest Feature</a>
   </p>
+  <p><sub>Created by <a href="https://github.com/SatvikPraveen">Satvik Praveen</a> | MIT License</sub></p>
 </div>
