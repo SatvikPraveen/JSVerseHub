@@ -11,7 +11,9 @@ export const basicsConfig = {
     "Operators",
     "Control Flow",
     "Functions",
-    "Scope and Hoisting"
+    "Scope and Hoisting",
+    "Error Handling",
+    "Regular Expressions"
   ]
 };
 
@@ -407,6 +409,275 @@ for (var i = 0; i < 3; i++) {
   ]
 };
 
+// Error Handling
+export const errorHandling = {
+  concept: "Error Handling",
+  explanation: `
+    Error handling allows your program to gracefully handle unexpected situations.
+    JavaScript provides try-catch-finally blocks and the ability to throw custom errors.
+  `,
+  
+  examples: {
+    tryCatch: `
+// Basic try-catch
+try {
+  const result = riskyOperation();
+  console.log("Success:", result);
+} catch (error) {
+  console.error("Error occurred:", error.message);
+}
+
+// Try-catch-finally
+function processData(data) {
+  let file = null;
+  try {
+    file = openFile(data.filename);
+    const content = file.read();
+    return processContent(content);
+  } catch (error) {
+    console.error("Processing failed:", error.message);
+    return null;
+  } finally {
+    // Always executes, even if there's a return statement
+    if (file) {
+      file.close();
+      console.log("File closed");
+    }
+  }
+}
+
+// Catching specific errors
+try {
+  JSON.parse("invalid json");
+} catch (error) {
+  if (error instanceof SyntaxError) {
+    console.error("JSON syntax error:", error.message);
+  } else {
+    console.error("Unexpected error:", error);
+  }
+}
+    `,
+    
+    throwingErrors: `
+// Throwing errors
+function divide(a, b) {
+  if (b === 0) {
+    throw new Error("Division by zero");
+  }
+  return a / b;
+}
+
+try {
+  const result = divide(10, 0);
+  console.log(result);
+} catch (error) {
+  console.error("Operation failed:", error.message);
+}
+
+// Custom error types
+class ValidationError extends Error {
+  constructor(message, field) {
+    super(message);
+    this.name = "ValidationError";
+    this.field = field;
+  }
+}
+
+function validateUser(user) {
+  if (!user.email) {
+    throw new ValidationError("Email is required", "email");
+  }
+  if (!user.email.includes("@")) {
+    throw new ValidationError("Invalid email format", "email");
+  }
+  return true;
+}
+
+try {
+  validateUser({ email: "invalid" });
+} catch (error) {
+  if (error instanceof ValidationError) {
+    console.error(\`Validation failed on \${error.field}: \${error.message}\`);
+  } else {
+    console.error("Unexpected error:", error);
+  }
+}
+    `,
+    
+    errorBestPractices: `
+// Error handling best practices
+
+// 1. Always catch errors in async operations
+async function fetchUserData(userId) {
+  try {
+    const response = await fetch(\`/api/users/\${userId}\`);
+    if (!response.ok) {
+      throw new Error(\`HTTP error! status: \${response.status}\`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch user:", error);
+    return null;
+  }
+}
+
+// 2. Provide meaningful error messages
+function processPayment(amount) {
+  if (typeof amount !== 'number') {
+    throw new TypeError(\`Expected number, got \${typeof amount}\`);
+  }
+  if (amount <= 0) {
+    throw new RangeError(\`Amount must be positive, got \${amount}\`);
+  }
+  // Process payment...
+}
+
+// 3. Don't swallow errors silently
+function badExample() {
+  try {
+    riskyOperation();
+  } catch (error) {
+    // DON'T do this - silent failure
+  }
+}
+
+function goodExample() {
+  try {
+    riskyOperation();
+  } catch (error) {
+    console.error("Operation failed:", error);
+    // Log to error tracking service
+    // Show user-friendly message
+  }
+}
+
+// 4. Use error boundaries in production
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('Unhandled promise rejection:', event.reason);
+});
+    `
+  },
+  
+  exercises: [
+    {
+      id: "error_handling_practice",
+      question: "Create a function that safely parses JSON and returns an object with {success, data, error}",
+      solution: `function safeJSONParse(jsonString) {
+  try {
+    const data = JSON.parse(jsonString);
+    return { success: true, data, error: null };
+  } catch (error) {
+    return { success: false, data: null, error: error.message };
+  }
+}`,
+      hint: "Use try-catch and return an object with status information"
+    }
+  ]
+};
+
+// Regular Expressions
+export const regularExpressions = {
+  concept: "Regular Expressions",
+  explanation: `
+    Regular expressions (regex) are patterns used for matching character combinations in strings.
+    They're powerful tools for text search, validation, and manipulation.
+  `,
+  
+  examples: {
+    basicPatterns: `
+// Creating regex patterns
+const pattern1 = /hello/;           // Literal notation
+const pattern2 = new RegExp('hello'); // Constructor notation
+
+// Basic matching
+const text = "Hello world, hello universe";
+console.log(/hello/.test(text));           // false (case-sensitive)
+console.log(/hello/i.test(text));          // true (case-insensitive with i flag)
+console.log(text.match(/hello/g));         // ["hello"]
+console.log(text.match(/hello/gi));        // ["Hello", "hello"]
+
+// Common patterns
+const emailPattern = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+const phonePattern = /^\\d{3}-\\d{3}-\\d{4}$/;  // 123-456-7890
+const urlPattern = /^https?:\\/\\/[^\\s]+$/;
+
+console.log(emailPattern.test("user@example.com"));  // true
+console.log(phonePattern.test("123-456-7890"));      // true
+    `,
+    
+    regexMethods: `
+// String methods with regex
+
+// 1. test() - returns boolean
+const hasDigit = /\\d/.test("abc123"); // true
+
+// 2. match() - returns array of matches
+const text = "The year is 2024, not 2023";
+console.log(text.match(/\\d{4}/g)); // ["2024", "2023"]
+
+// 3. search() - returns index of first match
+console.log("Hello world".search(/world/)); // 6
+
+// 4. replace() - replaces matches
+const censored = "Bad word here".replace(/bad/gi, "***");
+console.log(censored); // "*** word here"
+
+// Advanced replace with capture groups
+const date = "2024-03-08";
+const formatted = date.replace(/(\\d{4})-(\\d{2})-(\\d{2})/, "$2/$3/$1");
+console.log(formatted); // "03/08/2024"
+
+// 5. split() - splits string by pattern
+const words = "one,two;three four".split(/[,;\\s]+/);
+console.log(words); // ["one", "two", "three", "four"]
+    `,
+    
+    practicalExamples: `
+// Validation functions using regex
+
+function validateEmail(email) {
+  const pattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/;
+  return pattern.test(email);
+}
+
+function validatePassword(password) {
+  // At least 8 chars, 1 uppercase, 1 lowercase, 1 number
+  const pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{8,}$/;
+  return pattern.test(password);
+}
+
+function extractURLs(text) {
+  const pattern = /https?:\\/\\/[^\\s<]+/g;
+  return text.match(pattern) || [];
+}
+
+function formatPhoneNumber(phone) {
+  const digits = phone.replace(/\\D/g, '');
+  if (digits.length === 10) {
+    return digits.replace(/(\\d{3})(\\d{3})(\\d{4})/, '($1) $2-$3');
+  }
+  return phone;
+}
+
+// Usage examples
+console.log(validateEmail("user@example.com"));      // true
+console.log(validatePassword("SecureP@ss123"));      // true
+console.log(formatPhoneNumber("1234567890"));        // "(123) 456-7890"
+    `
+  },
+  
+  exercises: [
+    {
+      id: "regex_practice",
+      question: "Create a regex pattern to validate a username: 3-20 characters, letters and numbers only, must start with a letter",
+      solution: `const usernamePattern = /^[a-zA-Z][a-zA-Z0-9]{2,19}$/;
+console.log(usernamePattern.test("user123"));    // true
+console.log(usernamePattern.test("123user"));    // false`,
+      hint: "Use ^ for start, [a-zA-Z] for first letter, then {n,m} for count"
+    }
+  ]
+};
+
 // Interactive exercises
 export const interactiveExercises = [
   {
@@ -456,10 +727,10 @@ var myBoolean = false;
 
 // Progress tracking
 export const progressConfig = {
-  totalConcepts: 5,
+  totalConcepts: 7,
   conceptsCompleted: 0,
   exercises: {
-    total: 4,
+    total: 6,
     completed: 0
   },
   
@@ -486,7 +757,9 @@ export default {
     operators,
     controlFlow,
     functions,
-    scopeAndHoisting
+    scopeAndHoisting,
+    errorHandling,
+    regularExpressions
   },
   exercises: interactiveExercises,
   progress: progressConfig

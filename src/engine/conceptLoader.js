@@ -14,9 +14,9 @@ class ConceptLoader {
     // Concept structure definitions
     this.conceptStructure = {
       basics: {
-        sections: ["variables", "functions", "loops", "conditionals", "scope"],
-        exercises: 8,
-        quiz: { questions: 10, timeLimit: 600 },
+        sections: ["variables", "functions", "loops", "conditionals", "scope", "errorHandling", "regex"],
+        exercises: 10,
+        quiz: { questions: 15, timeLimit: 900 },
       },
       dom: {
         sections: ["selection", "manipulation", "creation", "events"],
@@ -29,9 +29,9 @@ class ConceptLoader {
         quiz: { questions: 7, timeLimit: 420 },
       },
       es6: {
-        sections: ["arrowFunctions", "destructuring", "modules", "classes"],
-        exercises: 7,
-        quiz: { questions: 9, timeLimit: 540 },
+        sections: ["arrowFunctions", "destructuring", "templateLiterals", "spreadRest", "modules", "classes"],
+        exercises: 9,
+        quiz: { questions: 12, timeLimit: 720 },
       },
       oop: {
         sections: ["classes", "inheritance", "polymorphism"],
@@ -82,6 +82,11 @@ class ConceptLoader {
         sections: ["fetch", "restAPIs", "graphQL"],
         exercises: 5,
         quiz: { questions: 7, timeLimit: 420 },
+      },
+      performance: {
+        sections: ["optimization", "profiling", "bestPractices"],
+        exercises: 4,
+        quiz: { questions: 6, timeLimit: 360 },
       },
     };
   }

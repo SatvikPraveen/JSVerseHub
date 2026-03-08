@@ -312,5 +312,101 @@ describe('JavaScript Basics Concepts', () => {
       }
       expect(caughtError).toBe('Something went wrong');
     });
+
+    test('finally block should always execute', () => {
+      let finallyExecuted = false;
+      
+      try {
+        throw new Error('Test error');
+      } catch (error) {
+        // Error caught
+      } finally {
+        finallyExecuted = true;
+      }
+      
+      expect(finallyExecuted).toBe(true);
+    });
+
+    test('custom errors should work correctly', () => {
+      class ValidationError extends Error {
+        constructor(message, field) {
+          super(message);
+          this.name = 'ValidationError';
+          this.field = field;
+        }
+      }
+
+      const error = new ValidationError('Invalid input', 'email');
+      expect(error.message).toBe('Invalid input');
+      expect(error.field).toBe('email');
+      expect(error instanceof ValidationError).toBe(true);
+      expect(error instanceof Error).toBe(true);
+    });
+  });
+
+  // Test regular expressions
+  describe('Regular Expressions', () => {
+    test('regex should match patterns correctly', () => {
+      const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      
+      expect(emailPattern.test('user@example.com')).toBe(true);
+      expect(emailPattern.test('invalid.email')).toBe(false);
+      expect(emailPattern.test('user@domain')).toBe(false);
+    });
+
+    test('regex flags should work correctly', () => {
+      const text = 'Hello World, hello universe';
+      
+      expect(text.match(/hello/g)).toEqual(['hello']);
+      expect(text.match(/hello/gi)).toEqual(['Hello', 'hello']);
+      expect(/hello/i.test(text)).toBe(true);
+      expect(/goodbye/.test(text)).toBe(false);
+    });
+
+    test('regex methods should work correctly', () => {
+      const text = 'The year is 2024';
+      
+      // test()
+      expect(/\d{4}/.test(text)).toBe(true);
+      
+      // match()
+      const match = text.match(/\d{4}/);
+      expect(match[0]).toBe('2024');
+      
+      // search()
+      expect(text.search(/\d{4}/)).toBe(12);
+      
+      // replace()
+      expect(text.replace(/2024/, '2025')).toBe('The year is 2025');
+    });
+
+    test('regex capture groups should work', () => {
+      const date = '2024-03-08';
+      const pattern = /(\d{4})-(\d{2})-(\d{2})/;
+      const match = date.match(pattern);
+      
+      expect(match[1]).toBe('2024');
+      expect(match[2]).toBe('03');
+      expect(match[3]).toBe('08');
+      
+      const formatted = date.replace(pattern, '$2/$3/$1');
+      expect(formatted).toBe('03/08/2024');
+    });
+
+    test('common regex patterns should work', () => {
+      const phonePattern = /^\d{3}-\d{3}-\d{4}$/;
+      const urlPattern = /^https?:\/\/[^\s]+$/;
+      const usernamePattern = /^[a-zA-Z][a-zA-Z0-9]{2,19}$/;
+      
+      expect(phonePattern.test('123-456-7890')).toBe(true);
+      expect(phonePattern.test('1234567890')).toBe(false);
+      
+      expect(urlPattern.test('https://example.com')).toBe(true);
+      expect(urlPattern.test('not a url')).toBe(false);
+      
+      expect(usernamePattern.test('user123')).toBe(true);
+      expect(usernamePattern.test('123user')).toBe(false);
+      expect(usernamePattern.test('ab')).toBe(false);
+    });
   });
 });
