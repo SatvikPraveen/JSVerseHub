@@ -3,6 +3,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -140,6 +141,15 @@ module.exports = {
             minifyURLs: true,
           }
         : false,
+    }),
+    // Copy static assets that aren't imported in JS
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: "public/images/planets",
+          to: "images/planets",
+        },
+      ],
     }),
     // Note: CSS is injected via style-loader in JavaScript bundles
   ],

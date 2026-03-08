@@ -181,7 +181,8 @@
   border-radius: var(--border-radius);
   font-size: 0.9rem;
   white-space: normal;
-  max-width: 300px;
+  max-width: 350px;
+  min-width: 280px;
   border: 1px solid rgba(0, 212, 255, 0.3);
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
@@ -190,8 +191,10 @@
   transition: all 0.3s ease;
   z-index: 1000;
   pointer-events: none;
-  top: 120px;
+  top: 90px;
   left: 20px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .planet-tooltip::after {
@@ -211,6 +214,8 @@
 /* Tooltip Content Styling */
 .tooltip-content {
   line-height: 1.6;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .tooltip-content strong {
@@ -218,10 +223,12 @@
   color: var(--accent-color);
   display: block;
   margin-bottom: 8px;
+  word-break: break-word;
 }
 
 .tooltip-meta {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   margin-top: 10px;
   padding-top: 10px;
@@ -233,6 +240,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
+  white-space: nowrap;
 }
 
 .tooltip-dependencies {
@@ -241,6 +249,8 @@
   border-top: 1px solid rgba(0, 212, 255, 0.2);
   font-size: 0.8rem;
   color: var(--text-secondary);
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Specific Planet Themes */

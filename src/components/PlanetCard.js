@@ -207,11 +207,15 @@ class PlanetCard {
 
         this.tooltip.innerHTML = `
             <div class="tooltip-content">
-                <strong>${this.planetData.title}</strong><br>
-                ${this.planetData.description}<br>
+                <strong>${this.planetData.title}</strong>
+                <div style="margin: 8px 0;">${this.planetData.description}</div>
                 <div class="tooltip-meta">
                     <span>⏱️ ${this.planetData.estimatedTime}</span>
+                </div>
+                <div class="tooltip-meta">
                     <span>🎯 ${this.planetData.concepts} concepts</span>
+                </div>
+                <div class="tooltip-meta">
                     <span>📊 ${this.planetData.difficulty}</span>
                 </div>
                 <div class="tooltip-dependencies">
