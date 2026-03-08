@@ -2,15 +2,19 @@
 ├── .DS_Store
 ├── .eslintrc.js
 ├── .gitignore
-├── create-jsversehub.sh
 ├── docs
-│   ├── architecture.md
-│   ├── changelog.md
-│   ├── concept-mapping.md
-│   └── roadmap.md
+│   ├── ANALYSIS_COMPLETE.txt
+│   ├── INDEX.md
+│   ├── PROJECT_STRUCTURE.md
+│   ├── architecture.md
+│   ├── changelog.md
+│   ├── concept-mapping.md
+│   └── roadmap.md
 ├── LICENSE
 ├── package.json
-├── PROJECT_STRUCTURE.md
+├── scripts
+│   ├── create-jsversehub.sh
+│   └── deploy.sh
 ├── public
 │   ├── .DS_Store
 │   ├── images
