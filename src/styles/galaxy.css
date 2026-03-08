@@ -174,40 +174,73 @@
 
 /* Planet Tooltip */
 .planet-tooltip {
-  position: absolute;
-  bottom: 140px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: fixed;
   background: rgba(26, 26, 46, 0.95);
   color: var(--text-primary);
-  padding: 12px 16px;
+  padding: 16px 20px;
   border-radius: var(--border-radius);
   font-size: 0.9rem;
-  white-space: nowrap;
+  white-space: normal;
+  max-width: 300px;
   border: 1px solid rgba(0, 212, 255, 0.3);
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
-  z-index: 20;
+  z-index: 1000;
   pointer-events: none;
+  top: 120px;
+  left: 20px;
 }
 
 .planet-tooltip::after {
   content: "";
   position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
+  top: -10px;
+  left: 20px;
   border: 6px solid transparent;
-  border-top-color: rgba(26, 26, 46, 0.95);
+  border-bottom-color: rgba(26, 26, 46, 0.95);
 }
 
 .planet:hover .planet-tooltip {
   opacity: 1;
   visibility: visible;
-  bottom: 145px;
+}
+
+/* Tooltip Content Styling */
+.tooltip-content {
+  line-height: 1.6;
+}
+
+.tooltip-content strong {
+  font-size: 1.1rem;
+  color: var(--accent-color);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.tooltip-meta {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0, 212, 255, 0.2);
+  font-size: 0.85rem;
+}
+
+.tooltip-meta span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tooltip-dependencies {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(0, 212, 255, 0.2);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
 }
 
 /* Specific Planet Themes */

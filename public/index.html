@@ -3,18 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="JSVerseHub - An interactive JavaScript learning platform with galaxy-based navigation" />
+    <meta name="keywords" content="JavaScript, learning, education, programming, tutorial, interactive" />
+    <meta name="author" content="JSVerseHub Developer" />
     <title>JSVerseHub - Master JavaScript in a Galaxy</title>
-    <link rel="stylesheet" href="../src/styles/index.css" />
-    <link rel="stylesheet" href="../src/styles/galaxy.css" />
-    <link rel="stylesheet" href="../src/styles/theme.css" />
-    <link rel="stylesheet" href="../src/styles/responsive.css" />
-    <link
-      rel="preload"
-      href="../src/assets/fonts/space-mono.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+    <link rel="icon" type="image/png" href="images/ui/logo.png" />
   </head>
   <body class="galaxy-theme">
     <!-- Navigation Bar -->
@@ -108,30 +101,18 @@
 
       <!-- Loading Overlay -->
       <div class="loading-overlay" id="loading-overlay">
-        <img src="images/ui/loading.gif" alt="Loading..." class="loading-gif" />
-        <p class="loading-text">Preparing your galaxy...</p>
+        <div class="loading-content">
+          <div class="loading-spinner"></div>
+          <p class="loading-text">Preparing your galaxy...</p>
+        </div>
       </div>
     </main>
 
     <!-- Audio for interactions -->
     <audio id="click-sound" preload="auto">
-      <source src="../src/assets/sounds/click.wav" type="audio/wav" />
+      <source src="sounds/click.wav" type="audio/wav" />
     </audio>
 
-    <!-- Scripts -->
-    <script src="../src/utils/domUtils.js"></script>
-    <script src="../src/utils/logger.js"></script>
-    <script src="../src/utils/debounce.js"></script>
-    <script src="../src/utils/randomColorGenerator.js"></script>
-    <script src="../src/engine/stateManager.js"></script>
-    <script src="../src/engine/conceptLoader.js"></script>
-    <script src="../src/engine/galaxyRenderer.js"></script>
-    <script src="../src/engine/navigation.js"></script>
-    <script src="../src/components/Navbar.js"></script>
-    <script src="../src/components/Modal.js"></script>
-    <script src="../src/components/GalaxyMap.js"></script>
-    <script src="../src/components/PlanetCard.js"></script>
-    <script src="../src/components/ConceptViewer.js"></script>
-    <script src="../src/main.js"></script>
+    <!-- Scripts and styles will be injected by webpack -->
   </body>
 </html>

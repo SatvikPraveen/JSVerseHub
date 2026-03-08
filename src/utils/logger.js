@@ -30,7 +30,8 @@ class JSVLogger {
    * Initialize logger
    */
   init() {
-    this.setupConsoleInterception();
+    // Disabled console interception - causing initialization issues
+    // this.setupConsoleInterception();
     this.loadStoredLogs();
     this.isInitialized = true;
     this.info("🚀 JSVLogger initialized");
@@ -222,18 +223,30 @@ class JSVLogger {
   setupConsoleInterception() {
     // Intercept unhandled errors
     window.addEventListener("error", (event) => {
-      this.error("Unhandled error:", {
-        message: event.message,
-        filename: event.filename,
-        lineno: event.lineno,
-        colno: event.colno,
-        error: event.error,
-      });
+      try {
+        this.error("Unhandled error:", {
+          message: event.message,
+          filename: event.filename,
+          lineno: event.lineno,
+          colno: event.colno,
+          errorType: event.error ? event.error.constructor.name : 'Unknown',
+        });
+      } catch (e) {
+        // Fallback to console if logger fails
+        console.error("Logger error handler failed:", e);
+        console.error("Original error:", event.message);
+      }
     });
 
     // Intercept unhandled promise rejections
     window.addEventListener("unhandledrejection", (event) => {
-      this.error("Unhandled promise rejection:", event.reason);
+      try {
+        this.error("Unhandled promise rejection:", event.reason);
+      } catch (e) {
+        // Fallback to console if logger fails
+        console.error("Logger rejection handler failed:", e);
+        console.error("Original rejection:", event.reason);
+      }
     });
 
     // Override console methods to capture all logs
@@ -246,22 +259,34 @@ class JSVLogger {
 
     console.log = (...args) => {
       originalMethods.log(...args);
-      if (args[0] && !args[0].toString().includes("JSVLogger")) {
-        this.debug("Console.log:", ...args);
+      try {
+        if (args[0] && typeof args[0].toString === 'function' && !args[0].toString().includes("JSVLogger")) {
+          this.debug("Console.log:", ...args);
+        }
+      } catch (e) {
+        // Silently ignore logging failures
       }
     };
 
     console.warn = (...args) => {
       originalMethods.warn(...args);
-      if (args[0] && !args[0].toString().includes("JSVLogger")) {
-        this.warn("Console.warn:", ...args);
+      try {
+        if (args[0] && typeof args[0].toString === 'function' && !args[0].toString().includes("JSVLogger")) {
+          this.warn("Console.warn:", ...args);
+        }
+      } catch (e) {
+        // Silently ignore logging failures
       }
     };
 
     console.error = (...args) => {
       originalMethods.error(...args);
-      if (args[0] && !args[0].toString().includes("JSVLogger")) {
-        this.error("Console.error:", ...args);
+      try {
+        if (args[0] && typeof args[0].toString === 'function' && !args[0].toString().includes("JSVLogger")) {
+          this.error("Console.error:", ...args);
+        }
+      } catch (e) {
+        // Silently ignore logging failures
       }
     };
   }
@@ -515,9 +540,9 @@ class JSVLogger {
 }
 
 // Create singleton instance
-const JSVLogger = JSVLogger.getInstance();
+const loggerInstance = JSVLogger.getInstance();
 
 // Export for use in other modules
 if (typeof window !== "undefined") {
-  window.JSVLogger = JSVLogger;
+  window.JSVLogger = loggerInstance;
 }

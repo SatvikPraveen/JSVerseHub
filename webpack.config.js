@@ -52,12 +52,12 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          isProduction ? MiniCssExtractPlugin.loader : "style-loader",
+          "style-loader", // Inject CSS into the DOM via JS (works for all modes)
           {
             loader: "css-loader",
             options: {
               importLoaders: 1,
-              sourceMap: true,
+              sourceMap: !isProduction,
             },
           },
           {
@@ -141,15 +141,7 @@ module.exports = {
           }
         : false,
     }),
-
-    ...(isProduction
-      ? [
-          new MiniCssExtractPlugin({
-            filename: "css/[name].[contenthash].css",
-            chunkFilename: "css/[name].[contenthash].chunk.css",
-          }),
-        ]
-      : []),
+    // Note: CSS is injected via style-loader in JavaScript bundles
   ],
 
   resolve: {
@@ -166,36 +158,9 @@ module.exports = {
   },
 
   optimization: {
-    splitChunks: {
-      chunks: "all",
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: "vendors",
-          priority: 20,
-        },
-        engine: {
-          test: /[\\/]src[\\/]engine[\\/]/,
-          name: "engine",
-          priority: 15,
-        },
-        components: {
-          test: /[\\/]src[\\/]components[\\/]/,
-          name: "components",
-          priority: 10,
-        },
-        utils: {
-          test: /[\\/]src[\\/]utils[\\/]/,
-          name: "utils",
-          priority: 5,
-        },
-        default: {
-          minChunks: 2,
-          priority: 1,
-          reuseExistingChunk: true,
-        },
-      },
-    },
+    // Disable code splitting to ensure all modules load in correct order
+    splitChunks: false,
+    runtimeChunk: false,
 
     ...(isProduction && {
       minimize: true,

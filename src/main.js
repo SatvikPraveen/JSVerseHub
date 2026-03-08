@@ -5,17 +5,55 @@
  * Initializes the galaxy-based JavaScript learning platform
  */
 
+// Import styles
+import './styles/index.css';
+import './styles/galaxy.css';
+import './styles/theme.css';
+import './styles/responsive.css';
+import './styles/modal.css';
+
+// Import utilities (they define global functions/classes)
+import './utils/logger.js';
+import './utils/debounce.js';
+import './utils/domUtils.js';
+import './utils/randomColorGenerator.js';
+
+// Import engine modules (they define global classes)
+import './engine/stateManager.js';
+import './engine/conceptLoader.js';
+import './engine/galaxyRenderer.js';
+import './engine/navigation.js';
+
+// Import components (they define global classes)
+import './components/Navbar.js';
+import './components/Modal.js';
+import './components/GalaxyMap.js';
+import './components/PlanetCard.js';
+import './components/ConceptViewer.js';
+
 class JSVerseHubApp {
   constructor() {
+    console.log("🔍 JSVerseHubApp constructor called");
+    console.log("🔍 Document ready state:", document.readyState);
+    console.log("🔍 window.JSVLogger exists:", typeof window.JSVLogger !== 'undefined');
+    console.log("🔍 window.StateManager exists:", typeof window.StateManager !== 'undefined');
+    console.log("🔍 window.ConceptLoader exists:", typeof window.ConceptLoader !== 'undefined');
+    
     this.isInitialized = false;
     this.currentTheme = "galaxy";
     this.components = {};
 
     // Initialize app when DOM is ready
     if (document.readyState === "loading") {
+      console.log("🔍 Waiting for DOMContentLoaded...");
       document.addEventListener("DOMContentLoaded", () => this.init());
     } else {
-      this.init();
+      // Give modules time to set up global variables
+      console.log("🔍 DOM already loaded, scheduling init in 500ms...");
+      setTimeout(() => {
+        console.log("🔍 Timeout expired, calling init()");
+        this.init();
+      }, 500);
     }
   }
 
@@ -23,35 +61,58 @@ class JSVerseHubApp {
    * Initialize the application
    */
   async init() {
+    console.log("🔍 init() method called");
     try {
-      JSVLogger.info("🚀 Initializing JSVerseHub...");
+      // Ensure global objects are available
+      if (typeof window.JSVLogger === 'undefined') {
+        console.error('❌ JSVLogger not available - modules may not have loaded correctly');
+        console.log('🔍 Available window properties:', Object.keys(window).filter(k => k.includes('JS') || k.includes('State') || k.includes('Concept')));
+        this.hideLoadingOverlay();
+        return;
+      }
+
+      console.log("✅ JSVLogger is available");
+      window.JSVLogger.info("🚀 Initializing JSVerseHub...");
 
       // Show loading overlay
+      console.log("🔍 Showing loading overlay");
       this.showLoadingOverlay();
 
       // Initialize core systems
+      console.log("🔍 Initializing core systems");
       await this.initializeCoreSystem();
 
       // Initialize components
+      console.log("🔍 Initializing components");
       await this.initializeComponents();
 
       // Setup event listeners
+      console.log("🔍 Setting up event listeners");
       this.setupGlobalEventListeners();
 
       // Initialize galaxy
+      console.log("🔍 Initializing galaxy");
       await this.initializeGalaxy();
 
       // Setup theme system
+      console.log("🔍 Initializing theme system");
       this.initializeThemeSystem();
 
       // Hide loading overlay and show welcome
+      console.log("🔍 Hiding loading overlay");
       this.hideLoadingOverlay();
+      console.log("🔍 Showing welcome modal");
       this.showWelcomeModal();
 
       this.isInitialized = true;
-      JSVLogger.success("✅ JSVerseHub initialized successfully!");
+      window.JSVLogger.success("✅ JSVerseHub initialized successfully!");
+      console.log("✅ Initialization complete!");
     } catch (error) {
-      JSVLogger.error("❌ Failed to initialize JSVerseHub:", error);
+      console.error("❌ Failed to initialize JSVerseHub:", error);
+      console.error("❌ Error stack:", error.stack);
+      if (window.JSVLogger) {
+        window.JSVLogger.error("❌ Failed to initialize JSVerseHub:", error);
+      }
       this.showErrorState(error);
     }
   }
@@ -61,21 +122,21 @@ class JSVerseHubApp {
    */
   async initializeCoreSystem() {
     // Initialize state manager
-    if (typeof StateManager !== "undefined") {
-      StateManager.init();
-      JSVLogger.info("📊 State Manager initialized");
+    if (typeof window.StateManager !== "undefined") {
+      window.StateManager.init();
+      window.JSVLogger.info("📊 State Manager initialized");
     }
 
     // Initialize concept loader
-    if (typeof ConceptLoader !== "undefined") {
-      await ConceptLoader.init();
-      JSVLogger.info("📚 Concept Loader initialized");
+    if (typeof window.ConceptLoader !== "undefined") {
+      await window.ConceptLoader.init();
+      window.JSVLogger.info("📚 Concept Loader initialized");
     }
 
     // Initialize navigation system
-    if (typeof Navigation !== "undefined") {
-      Navigation.init();
-      JSVLogger.info("🧭 Navigation system initialized");
+    if (typeof window.Navigation !== "undefined") {
+      window.Navigation.init();
+      window.JSVLogger.info("🧭 Navigation system initialized");
     }
 
     // Create star field background
@@ -98,10 +159,10 @@ class JSVerseHubApp {
       try {
         if (typeof window[className] !== "undefined") {
           this.components[name] = new window[className]();
-          JSVLogger.info(`🔧 ${className} component initialized`);
+          window.JSVLogger.info(`🔧 ${className} component initialized`);
         }
       } catch (error) {
-        JSVLogger.warn(`⚠️ Failed to initialize ${className}:`, error);
+        window.JSVLogger.warn(`⚠️ Failed to initialize ${className}:`, error);
       }
     }
   }
@@ -151,10 +212,10 @@ class JSVerseHubApp {
    * Initialize the galaxy visualization
    */
   async initializeGalaxy() {
-    if (typeof GalaxyRenderer !== "undefined") {
-      await GalaxyRenderer.init();
-      GalaxyRenderer.renderGalaxy();
-      JSVLogger.info("🌌 Galaxy rendered");
+    if (typeof window.GalaxyRenderer !== "undefined") {
+      await window.GalaxyRenderer.init();
+      window.GalaxyRenderer.renderGalaxy();
+      window.JSVLogger.info("🌌 Galaxy rendered");
     }
   }
 
@@ -313,7 +374,7 @@ class JSVerseHubApp {
    */
   showWelcomeModal() {
     const modal = document.getElementById("welcome-modal");
-    if (modal && !StateManager.getProgress().hasSeenWelcome) {
+    if (modal && window.StateManager && !window.StateManager.getProgress().hasSeenWelcome) {
       modal.classList.add("show");
     }
   }
@@ -325,7 +386,9 @@ class JSVerseHubApp {
     const modal = document.getElementById("welcome-modal");
     if (modal) {
       modal.classList.remove("show");
-      StateManager.updateProgress({ hasSeenWelcome: true });
+      if (window.StateManager) {
+        window.StateManager.updateProgress({ hasSeenWelcome: true });
+      }
     }
   }
 
@@ -445,9 +508,13 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("/sw.js")
     .then((registration) => {
-      JSVLogger.info("🔧 Service Worker registered successfully");
+      if (window.JSVLogger) {
+        window.JSVLogger.info("🔧 Service Worker registered successfully");
+      }
     })
     .catch((error) => {
-      JSVLogger.warn("⚠️ Service Worker registration failed:", error);
+      if (window.JSVLogger) {
+        window.JSVLogger.warn("⚠️ Service Worker registration failed:", error);
+      }
     });
 }

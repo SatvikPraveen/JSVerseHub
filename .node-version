@@ -1,0 +1,5 @@
+# .node_version
+# This file specifies the Node.js version for this project
+# Used by nvm, nodenv, and other version managers
+
+16.0.0

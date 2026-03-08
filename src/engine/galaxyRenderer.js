@@ -210,11 +210,16 @@ class GalaxyRenderer {
     this.isInitialized = true;
 
     // Listen for state changes
-    StateManager.addListener((event, data) => {
-      this.handleStateChange(event, data);
-    });
+    if (typeof window.StateManager !== 'undefined') {
+      window.StateManager.addListener((event, data) => {
+        this.handleStateChange(event, data);
+      });
+    }
 
-    JSVLogger.info("🌌 Galaxy Renderer initialized");
+    console.log("🌌 Galaxy Renderer initialized");
+    if (typeof window.JSVLogger !== 'undefined') {
+      window.JSVLogger.info("🌌 Galaxy Renderer initialized");
+    }
   }
 
   /**
@@ -238,7 +243,10 @@ class GalaxyRenderer {
     this.createConnections();
     this.animateGalaxy();
 
-    JSVLogger.info("🌌 Galaxy rendered successfully");
+    console.log("🌌 Galaxy rendered successfully");
+    if (typeof window.JSVLogger !== 'undefined') {
+      window.JSVLogger.info("🌌 Galaxy rendered successfully");
+    }
   }
 
   /**
@@ -758,11 +766,11 @@ class GalaxyRenderer {
 }
 
 // Create singleton instance
-const GalaxyRenderer = GalaxyRenderer.getInstance();
+const galaxyRendererInstance = GalaxyRenderer.getInstance();
 
 // Export for use in other modules
 if (typeof window !== "undefined") {
-  window.GalaxyRenderer = GalaxyRenderer;
+  window.GalaxyRenderer = galaxyRendererInstance;
 }
 
 // Add required CSS animations
