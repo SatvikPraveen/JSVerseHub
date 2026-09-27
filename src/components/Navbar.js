@@ -34,6 +34,10 @@ class Navbar {
       this.handleStateChange(event, data);
     });
 
+    if (window.LearningModel) {
+      window.LearningModel.onChange(() => this.updateUserStats());
+    }
+
     JSVLogger.info("🧭 Navbar component initialized");
   }
 
@@ -47,6 +51,7 @@ class Navbar {
     this.planetsExplored = document.getElementById("planets-explored");
     this.conceptsCompleted = document.getElementById("concepts-mastered");
     this.badgesEarned = document.getElementById("badges-earned");
+    this.reviewsDue = document.getElementById("reviews-due");
 
     if (!this.navbar) {
       JSVLogger.warn("⚠️ Navbar element not found");
@@ -266,6 +271,58 @@ class Navbar {
     if (this.badgesEarned) {
       this.badgesEarned.textContent = this.userStats.badgesEarned;
     }
+    if (this.reviewsDue && window.LearningModel) {
+      this.userStats.reviewsDue = window.LearningModel.getDueReviews().length;
+      this.reviewsDue.textContent = this.userStats.reviewsDue;
+    }
+  }
+
+  /**
+   * Render the learner-model panel (BKT mastery + SM-2 review queue)
+   */
+  renderLearningModelPanel() {
+    if (!window.LearningModel) return "";
+    const summary = window.LearningModel.getSummary();
+    const mastered = Object.entries(summary.mastery)
+      .filter(([id]) => !id.includes(":"))
+      .sort((a, b) => b[1].pKnown - a[1].pKnown);
+    const rows = mastered.length
+      ? mastered
+          .map(
+            ([id, m]) => `
+              <div class="mastery-row">
+                <span class="mastery-label">${id}</span>
+                <span class="mastery-bar"><span class="mastery-fill" style="width: ${Math.round(m.pKnown * 100)}%"></span></span>
+                <span class="mastery-value">${Math.round(m.pKnown * 100)}%${m.mastered ? " ✓" : ""}</span>
+              </div>`
+          )
+          .join("")
+      : '<p class="mastery-empty">Take a quiz to start building your mastery profile.</p>';
+    return `
+      <div class="learning-model">
+        <h3>🧠 Mastery Estimates</h3>
+        <p class="learning-model-hint">Bayesian knowledge tracing, P(known) per concept</p>
+        <div class="mastery-list">${rows}</div>
+        <div class="review-summary">
+          <span>🔁 Reviews due: <strong>${summary.reviews.due}</strong> of ${summary.reviews.total}</span>
+          <span>📈 Est. retention: <strong>${Math.round(summary.reviews.averageRetention * 100)}%</strong></span>
+        </div>
+        <button class="btn btn-secondary btn-small" id="export-learning-data" type="button">⬇️ Export learning data (JSON)</button>
+      </div>`;
+  }
+
+  exportLearningData() {
+    if (!window.LearningModel) return;
+    const payload = window.LearningModel.exportAll();
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `jsversehub-learning-data-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
   }
 
   /**
@@ -382,6 +439,8 @@ class Navbar {
                     </div>
                 </div>
 
+                ${this.renderLearningModelPanel()}
+
                 <div class="recent-achievements">
                     <h3>Recent Achievements</h3>
                     <div class="achievements-list">
@@ -414,6 +473,10 @@ class Navbar {
         `;
 
     this.showModal(modalContent);
+    const exportBtn = document.getElementById("export-learning-data");
+    if (exportBtn) {
+      exportBtn.addEventListener("click", () => this.exportLearningData());
+    }
   }
 
   /**
