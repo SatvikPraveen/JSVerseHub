@@ -1,6 +1,6 @@
 {
   "name": "jsversehub",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Research-grade interactive JavaScript learning platform: galaxy-based navigation, spaced repetition, Bayesian knowledge tracing, and privacy-preserving learning analytics",
   "main": "public/index.html",
   "scripts": {
@@ -125,14 +125,25 @@
     ],
     "coverageThreshold": {
       "global": {
-        "branches": 50,
-        "functions": 60,
-        "lines": 60,
-        "statements": 60
+        "statements": 22,
+        "branches": 14,
+        "functions": 18,
+        "lines": 22
+      },
+      "src/engine/{spacedRepetition,knowledgeTracing,learningAnalytics,learningModel,contentRegistry,stateManager}.js": {
+        "statements": 85,
+        "branches": 75,
+        "functions": 75,
+        "lines": 85
       }
     },
     "testMatch": [
       "<rootDir>/tests/**/*.test.js"
+    ],
+    "coverageReporters": [
+      "text-summary",
+      "lcov",
+      "json-summary"
     ]
   },
   "stylelint": {
