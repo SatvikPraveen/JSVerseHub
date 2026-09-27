@@ -155,21 +155,43 @@ class ConceptLoader {
     }
 
     try {
-      // Load concept content in parallel
-      const [overview, sections, exercises, quiz] = await Promise.all([
-        this.loadConceptOverview(conceptId),
-        this.loadConceptSections(conceptId, structure.sections),
-        this.loadConceptExercises(conceptId, structure.exercises),
-        this.loadConceptQuiz(conceptId, structure.quiz),
-      ]);
+      // Authored content (src/concepts/*) is lazy-loaded through the
+      // ContentRegistry; the generated scaffolding below is only a fallback
+      // for parts a module does not provide (e.g. a concept without a quiz).
+      const registry = typeof window !== "undefined" ? window.ContentRegistry : null;
+      const authoredPromise =
+        registry && registry.has(conceptId)
+          ? registry.load(conceptId, { timeLimit: structure.quiz.timeLimit }).catch((error) => {
+              JSVLogger.warn(`⚠️ Authored content unavailable for ${conceptId}, using generated fallback`, error);
+              return null;
+            })
+          : Promise.resolve(null);
+
+      const [generatedOverview, generatedSections, generatedExercises, generatedQuiz, authored] =
+        await Promise.all([
+          this.loadConceptOverview(conceptId),
+          this.loadConceptSections(conceptId, structure.sections),
+          this.loadConceptExercises(conceptId, structure.exercises),
+          this.loadConceptQuiz(conceptId, structure.quiz),
+          authoredPromise,
+        ]);
+
+      const hasAuthoredSections = Boolean(authored && authored.sections && authored.sections.length);
+      const hasAuthoredExercises = Boolean(authored && authored.exercises && authored.exercises.length);
+      const hasAuthoredQuiz = Boolean(authored && authored.quiz);
 
       return {
         id: conceptId,
-        overview,
-        sections,
-        exercises,
-        quiz,
+        overview: { ...(authored ? authored.overview : {}), ...generatedOverview },
+        sections: hasAuthoredSections ? authored.sections : generatedSections,
+        exercises: hasAuthoredExercises ? authored.exercises : generatedExercises,
+        quiz: hasAuthoredQuiz ? authored.quiz : generatedQuiz,
         structure,
+        source: {
+          sections: hasAuthoredSections ? "authored" : "generated",
+          exercises: hasAuthoredExercises ? "authored" : "generated",
+          quiz: hasAuthoredQuiz ? "authored" : "generated",
+        },
         loadedAt: new Date().toISOString(),
       };
     } catch (error) {
@@ -473,9 +495,9 @@ class ConceptLoader {
     return {
       description:
         sectionContent?.content || `Learn about ${sectionId} in ${conceptId}`,
-      examples: sectionContent?.examples || [
-        `// ${sectionId} example\nconsole.log('${sectionId}');`,
-      ],
+      examples: (sectionContent?.examples || [`// ${sectionId} example\nconsole.log('${sectionId}');`]).map(
+        (code, index) => ({ title: `Example ${index + 1}`, code })
+      ),
       explanation: `This section covers the important aspects of ${sectionId}. You'll learn practical techniques and best practices.`,
     };
   }

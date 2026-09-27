@@ -20,6 +20,8 @@ import './utils/randomColorGenerator.js';
 
 // Import engine modules (they define global classes)
 import './engine/stateManager.js';
+import './engine/contentRegistry.js';
+import './engine/learningModel.js';
 import './engine/conceptLoader.js';
 import './engine/galaxyRenderer.js';
 import './engine/navigation.js';

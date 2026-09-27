@@ -55,6 +55,9 @@ class ConceptViewer {
             const conceptData = await ConceptLoader.loadConcept(conceptId);
             this.currentConcept = conceptData;
             this.currentSection = 0;
+            if (window.LearningModel) {
+                window.LearningModel.conceptViewed(conceptId, conceptData);
+            }
 
             // Hide loading modal
             loadingModal.hide();
@@ -1125,6 +1128,15 @@ class ConceptViewer {
         
         const score = Math.round((correctAnswers / quiz.questions.length) * 100);
         const passed = score >= quiz.passingScore;
+
+        // Feed the learner models (knowledge tracing, spaced repetition, analytics)
+        if (window.LearningModel) {
+            window.LearningModel.quizSubmitted(this.currentConcept.id, quiz, this.currentQuiz.answers, {
+                score,
+                passed,
+                timeExpired
+            });
+        }
         
         // Save quiz result
         StateManager.completeQuiz(this.currentConcept.id, correctAnswers, quiz.questions.length);
