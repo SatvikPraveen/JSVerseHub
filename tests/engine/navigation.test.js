@@ -181,9 +181,13 @@ describe('Navigation Engine', () => {
         
         if (params) {
           Object.keys(params).forEach(key => {
-            route = route.replace(`:${key}`, params[key]);
+            // Replace the param and its optional marker (`:section?`)
+            route = route.replace(new RegExp(`:${key}\\??`), params[key]);
           });
         }
+        
+        // Drop optional segments that were not supplied
+        route = route.replace(/\/:[^/]+\?/g, '');
         
         return route;
       });

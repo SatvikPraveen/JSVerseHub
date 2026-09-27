@@ -384,6 +384,10 @@ describe('Asynchronous JavaScript Concepts', () => {
           json: () => Promise.resolve({ data: 'success' }),
           text: () => Promise.resolve('success text')
         });
+      } else if (url.includes('network-error')) {
+        // Must be checked before the generic 'error' branch, which would
+        // otherwise match '/api/network-error' and resolve with a 404.
+        return Promise.reject(new Error('Network error'));
       } else if (url.includes('error')) {
         return Promise.resolve({
           ok: false,
@@ -391,8 +395,6 @@ describe('Asynchronous JavaScript Concepts', () => {
           json: () => Promise.resolve({ error: 'Not found' }),
           text: () => Promise.resolve('Not found')
         });
-      } else if (url.includes('network-error')) {
-        return Promise.reject(new Error('Network error'));
       }
     };
 

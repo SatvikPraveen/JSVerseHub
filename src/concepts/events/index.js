@@ -154,6 +154,291 @@ element.addEventListener('click', function(event) {
 event.preventDefault();              // Prevent default action
 event.stopPropagation();            // Stop event bubbling
 event.stopImmediatePropagation();   // Prevent other listeners
+    `,
+    basicListener: `
+// addEventListener(type, listener, options)
+// - type:     the event name ('click', 'keydown', ...)
+// - listener: the function to run when the event fires
+// - options:  optional { capture, once, passive, signal }
+const button = document.querySelector('#save');
+
+function handleSave(event) {
+  console.log('Save requested by', event.target);
+}
+
+button.addEventListener('click', handleSave);
+
+// The same listener function can be attached to many elements,
+// and one element can have many listeners for the same event.
+document.querySelectorAll('.save').forEach(btn => {
+  btn.addEventListener('click', handleSave);
+});
+    `,
+
+    clickExample: `
+// Click handling: single click, double click and mouse buttons
+const card = document.querySelector('.card');
+
+card.addEventListener('click', (event) => {
+  console.log('Clicked at', event.clientX, event.clientY);
+  console.log('Modifier keys:', {
+    shift: event.shiftKey,
+    ctrl: event.ctrlKey,
+    meta: event.metaKey
+  });
+});
+
+card.addEventListener('dblclick', () => {
+  card.classList.toggle('expanded');
+});
+
+// contextmenu fires on right-click; preventDefault() blocks the browser menu
+card.addEventListener('contextmenu', (event) => {
+  event.preventDefault();
+  showCustomMenu(event.pageX, event.pageY);
+});
+    `,
+
+    keyboardExample: `
+// Keyboard handling: prefer event.key (the character/name)
+// over the deprecated event.keyCode
+const editor = document.querySelector('#editor');
+
+editor.addEventListener('keydown', (event) => {
+  // Ctrl/Cmd + S -> save
+  if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+    event.preventDefault(); // stop the browser "Save page" dialog
+    saveDocument();
+    return;
+  }
+
+  // Escape closes any open dialog
+  if (event.key === 'Escape') {
+    closeDialog();
+  }
+});
+
+// keyup is useful for "typing finished" style detection
+editor.addEventListener('keyup', (event) => {
+  console.log('Released:', event.key, 'physical key:', event.code);
+});
+
+// Arrow-key navigation inside a menu
+menu.addEventListener('keydown', (event) => {
+  if (event.key === 'ArrowDown') focusNext();
+  if (event.key === 'ArrowUp') focusPrevious();
+});
+    `,
+
+    formExample: `
+// Form handling: submit, change and input events
+const form = document.querySelector('#signup');
+const email = form.querySelector('input[name="email"]');
+const plan = form.querySelector('select[name="plan"]');
+
+// submit fires on the <form>, not on the button
+form.addEventListener('submit', (event) => {
+  event.preventDefault(); // stop the full-page reload
+  const data = new FormData(form);
+  sendToServer(Object.fromEntries(data));
+});
+
+// input fires on every keystroke
+email.addEventListener('input', () => {
+  email.setCustomValidity(''); // clear previous error while typing
+});
+
+// change fires when the value is committed (blur for text, immediately for select)
+plan.addEventListener('change', (event) => {
+  console.log('Plan selected:', event.target.value);
+});
+
+// focus/blur do not bubble; focusin/focusout do
+form.addEventListener('focusin', (event) => {
+  event.target.classList.add('active');
+});
+form.addEventListener('focusout', (event) => {
+  event.target.classList.remove('active');
+});
+    `,
+
+    eventObjectExample: `
+// Every listener receives an Event object describing what happened
+document.querySelector('.toolbar').addEventListener('click', (event) => {
+  event.type;           // 'click'
+  event.target;         // the element that was actually clicked (may be a child)
+  event.currentTarget;  // the element the listener is attached to (.toolbar)
+  event.timeStamp;      // ms since the document was created
+  event.bubbles;        // true for click
+  event.cancelable;     // true - preventDefault() has an effect
+  event.defaultPrevented; // becomes true after preventDefault()
+  event.eventPhase;     // 1 capturing, 2 at target, 3 bubbling
+
+  // Because event.target can be a nested <span> inside a <button>,
+  // use closest() to normalise it to the element you care about.
+  const button = event.target.closest('button');
+  if (button) {
+    console.log('Toolbar action:', button.dataset.action);
+  }
+});
+    `,
+
+    mouseEvents: [
+      'click',
+      'dblclick',
+      'mousedown',
+      'mouseup',
+      'mousemove',
+      'mouseenter',
+      'mouseleave',
+      'mouseover',
+      'mouseout',
+      'contextmenu',
+      'wheel'
+    ],
+
+    keyboardEvents: [
+      'keydown',
+      'keyup',
+      'keypress'
+    ],
+
+    formEvents: [
+      'submit',
+      'reset',
+      'change',
+      'input',
+      'focus',
+      'blur',
+      'focusin',
+      'focusout',
+      'invalid'
+    ],
+
+    touchEvents: [
+      'touchstart',
+      'touchmove',
+      'touchend',
+      'touchcancel'
+    ],
+
+    removalExample: `
+// removeEventListener needs the SAME function reference that was added.
+// Anonymous functions cannot be removed because you have no reference to them.
+const button = document.querySelector('#load-more');
+
+function loadMore() {
+  fetchNextPage();
+}
+
+button.addEventListener('click', loadMore);
+// ...later, e.g. when the last page is reached:
+button.removeEventListener('click', loadMore);
+
+// The capture flag must match too: a listener added with { capture: true }
+// is only removed when removeEventListener is called with { capture: true }.
+document.addEventListener('scroll', onScroll, { capture: true });
+document.removeEventListener('scroll', onScroll, { capture: true });
+
+// Modern alternative: an AbortController can remove many listeners at once
+const controller = new AbortController();
+button.addEventListener('click', loadMore, { signal: controller.signal });
+window.addEventListener('resize', relayout, { signal: controller.signal });
+controller.abort(); // both listeners removed
+    `,
+
+    onceExample: `
+// { once: true } automatically removes the listener after it runs once.
+// Ideal for "first interaction" logic such as starting audio or lazy setup.
+const video = document.querySelector('video');
+
+video.addEventListener('play', () => {
+  trackAnalytics('first-play');
+}, { once: true });
+
+// Other useful options:
+// { passive: true } promises you will not call preventDefault(),
+// which lets the browser scroll immediately without waiting for JS.
+document.addEventListener('touchmove', onTouchMove, { passive: true });
+
+// { capture: true } listens during the capturing phase.
+document.addEventListener('focus', onAnyFocus, { capture: true });
+    `,
+
+    clickCountingExample: `
+// A click counter keeps its state in a closure and updates the DOM
+const counterButton = document.querySelector('#counter');
+let clicks = 0;
+
+counterButton.addEventListener('click', () => {
+  clicks += 1;
+  counterButton.textContent = 'Clicked ' + clicks + ' time' + (clicks === 1 ? '' : 's');
+
+  if (clicks === 10) {
+    counterButton.disabled = true;
+    counterButton.textContent = 'Limit reached';
+  }
+});
+
+// event.detail on a MouseEvent holds the click count within the
+// double-click interval, useful for detecting triple clicks
+counterButton.addEventListener('click', (event) => {
+  if (event.detail === 3) console.log('Triple click!');
+});
+    `,
+
+    formValidationExample: `
+// Live validation: validate on input, block submission on submit
+const form = document.querySelector('#register');
+const password = form.querySelector('#password');
+const error = form.querySelector('#password-error');
+
+function validatePassword(value) {
+  if (value.length < 8) return 'Password must be at least 8 characters';
+  if (!/[0-9]/.test(value)) return 'Password must include a number';
+  return '';
+}
+
+password.addEventListener('input', () => {
+  const message = validatePassword(password.value);
+  error.textContent = message;
+  password.setCustomValidity(message); // integrates with :invalid and form.checkValidity()
+});
+
+form.addEventListener('submit', (event) => {
+  if (!form.checkValidity()) {
+    event.preventDefault();
+    form.querySelector(':invalid').focus();
+    return;
+  }
+  // form is valid - allow the default submission or send via fetch
+});
+    `,
+
+    eventFilteringExample: `
+// Filtering: only react to events that meet a condition
+const list = document.querySelector('#files');
+
+list.addEventListener('click', (event) => {
+  // Ignore clicks that did not land on a file row
+  const row = event.target.closest('.file-row');
+  if (!row) return;
+
+  // Ignore right/middle button clicks
+  if (event.button !== 0) return;
+
+  // Ignore disabled rows
+  if (row.classList.contains('disabled')) return;
+
+  openFile(row.dataset.id);
+});
+
+// Filter keyboard events to a single key
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Enter') return;
+  if (event.target.tagName === 'TEXTAREA') return; // allow newlines in textareas
+  submitActiveForm();
+});
     `
   },
   
@@ -292,6 +577,191 @@ console.log(focusEvent.bubbles); // false
 // Use capturing phase for non-bubbling events
 const input = document.querySelector('input');
 input.addEventListener('focus', handler, true); // Capturing phase
+    `,
+    bubblingExplanation: `
+Event bubbling is the third phase of event propagation. After an event reaches
+its target element, it "bubbles" upward through every ancestor: target -> parent
+-> grandparent -> ... -> document -> window. Each ancestor with a matching
+listener (registered without the capture flag) is called in that order.
+
+Bubbling is what makes event delegation possible: a single listener on a parent
+receives events from all of its descendants. Most UI events bubble (click, input,
+keydown, change), but some do not (focus, blur, load, scroll on elements).
+Use event.bubbles to check.
+    `,
+
+    bubblingExample: `
+// <section id="page">
+//   <article id="post">
+//     <button id="like">Like</button>
+//   </article>
+// </section>
+const page = document.getElementById('page');
+const post = document.getElementById('post');
+const like = document.getElementById('like');
+
+like.addEventListener('click', () => console.log('1. button (target)'));
+post.addEventListener('click', () => console.log('2. article (bubbles)'));
+page.addEventListener('click', () => console.log('3. section (bubbles)'));
+document.addEventListener('click', () => console.log('4. document (bubbles)'));
+
+// Clicking the button logs 1, 2, 3, 4 - innermost to outermost
+    `,
+
+    stopPropagationExample: `
+// stopPropagation(): ancestors will NOT receive this event
+const modal = document.querySelector('.modal');
+const overlay = document.querySelector('.overlay');
+
+// Clicking the dark overlay closes the modal...
+overlay.addEventListener('click', () => closeModal());
+
+// ...but clicks inside the modal must not bubble up to the overlay
+modal.addEventListener('click', (event) => {
+  event.stopPropagation();
+});
+
+// stopImmediatePropagation(): also skips the remaining listeners
+// on the SAME element
+const input = document.querySelector('#search');
+input.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    event.stopImmediatePropagation(); // the second listener below never runs
+    runSearch(input.value);
+  }
+});
+input.addEventListener('keydown', () => console.log('typing...'));
+    `,
+
+    capturingExplanation: `
+Event capturing is the first phase of propagation. Before the event reaches its
+target, it travels DOWN the tree from window -> document -> html -> body -> ...
+-> the target's parent. Listeners registered with capture: true run during this
+descent, outermost first.
+
+Capturing lets an ancestor see (and optionally stop) an event before the target
+or any bubbling listener runs. It is also the only way to observe non-bubbling
+events such as focus, blur, load or error from an ancestor element.
+    `,
+
+    capturingExample: `
+// The third argument (true) or { capture: true } registers a capturing listener
+const app = document.getElementById('app');
+const button = document.getElementById('submit');
+
+app.addEventListener('click', () => console.log('app - capturing'), true);
+app.addEventListener('click', () => console.log('app - bubbling'));
+button.addEventListener('click', () => console.log('button - target'));
+
+// Clicking the button logs:
+// app - capturing
+// button - target
+// app - bubbling
+
+// Practical use: observe every focus change in the app, even though
+// 'focus' itself does not bubble
+app.addEventListener('focus', (event) => {
+  console.log('Focused:', event.target);
+}, { capture: true });
+    `,
+
+    phases: {
+      NONE: 0,
+      CAPTURING_PHASE: 1,
+      AT_TARGET: 2,
+      BUBBLING_PHASE: 3
+    },
+
+    targetExplanation: `
+event.target is the element on which the event originally occurred - the deepest
+element under the pointer for a click, or the input that received a keystroke.
+It never changes as the event propagates. Because target can be a nested child
+(for example a <span> inside a <button>), delegated handlers usually normalise
+it with event.target.closest(selector).
+    `,
+
+    currentTargetExplanation: `
+event.currentTarget is the element whose listener is currently running. It
+changes at every step of propagation and is always the element you called
+addEventListener on. Inside a non-arrow listener function, "this" is the same
+as event.currentTarget. Use currentTarget when you want the element you
+attached to, and target when you want the element that was actually clicked.
+    `,
+
+    comparisonExample: `
+// <ul id="menu">
+//   <li>Home</li>
+//   <li>About <span class="badge">new</span></li>
+// </ul>
+const menu = document.getElementById('menu');
+
+menu.addEventListener('click', (event) => {
+  console.log(event.currentTarget); // always <ul id="menu">
+  console.log(event.target);        // <li>, or the <span> if the badge was clicked
+
+  // Normalise the target to the <li> the user meant
+  const item = event.target.closest('li');
+  if (item && menu.contains(item)) {
+    console.log('Selected:', item.textContent.trim());
+  }
+});
+
+// eventPhase tells you which phase the listener is running in
+document.addEventListener('click', (event) => {
+  // 1 = CAPTURING_PHASE, 2 = AT_TARGET, 3 = BUBBLING_PHASE
+  console.log('phase:', event.eventPhase);
+});
+    `,
+
+    preventDefaultExample: `
+// preventDefault() cancels the browser's built-in action for the event,
+// without affecting propagation.
+const link = document.querySelector('a.ajax');
+link.addEventListener('click', (event) => {
+  event.preventDefault();       // do not navigate
+  loadPage(link.href);          // load the content with fetch instead
+});
+
+const form = document.querySelector('form');
+form.addEventListener('submit', (event) => {
+  event.preventDefault();       // do not reload the page
+  submitWithFetch(form);
+});
+
+const numberInput = document.querySelector('#quantity');
+numberInput.addEventListener('keydown', (event) => {
+  // Block letters so only digits are typed
+  if (event.key.length === 1 && !/[0-9]/.test(event.key)) {
+    event.preventDefault();
+  }
+});
+
+// After calling it, defaultPrevented is true for later listeners
+document.addEventListener('submit', (event) => {
+  if (event.defaultPrevented) console.log('Handled by page script');
+});
+    `,
+
+    cancelableExample: `
+// Not every event can be cancelled. Check event.cancelable before relying
+// on preventDefault(); calling it on a non-cancelable event does nothing.
+element.addEventListener('touchmove', (event) => {
+  if (event.cancelable) {
+    event.preventDefault(); // stop scrolling while dragging
+  }
+});
+
+// Listeners registered with { passive: true } are never allowed to cancel,
+// so preventDefault() is ignored and the browser logs a warning.
+document.addEventListener('wheel', (event) => {
+  event.preventDefault(); // no effect - passive listener
+}, { passive: true });
+
+// Custom events are non-cancelable unless you say otherwise
+const cancelable = new CustomEvent('before-save', { cancelable: true });
+const proceed = element.dispatchEvent(cancelable);
+// dispatchEvent returns false if a listener called preventDefault()
+if (!proceed) console.log('Save was vetoed by a listener');
     `
   },
   
@@ -498,6 +968,204 @@ function addItemWithDelegation() {
   const item = createItemElement();
   container.appendChild(item); // Listener already works!
 }
+    `,
+    delegationConcept: `
+Event delegation attaches ONE listener to a common ancestor instead of a
+listener on every child. When a child is clicked, the event bubbles up to the
+ancestor, and the handler inspects event.target to decide what to do.
+
+Why it matters:
+- Scales to thousands of rows with a single listener
+- Elements added later are handled automatically - no re-binding
+- Removing elements does not leak listeners
+- Behaviour lives in one place, close to the data it acts on
+
+The trade-off: the handler must filter events (matches/closest) and it only
+works for events that bubble (or with capture: true for those that do not).
+    `,
+
+    matchesExample: `
+// element.matches(selector) returns true if the element itself matches
+const table = document.querySelector('#users');
+
+table.addEventListener('click', (event) => {
+  const target = event.target;
+
+  if (target.matches('button.edit')) {
+    editUser(target.closest('tr').dataset.id);
+  } else if (target.matches('button.delete')) {
+    deleteUser(target.closest('tr').dataset.id);
+  } else if (target.matches('input[type="checkbox"]')) {
+    toggleSelection(target.value, target.checked);
+  }
+});
+
+// matches() only checks the exact element. If the button contains an icon
+// (<button><svg/></button>) and the icon is clicked, matches('button') is false.
+// Use closest() when the event may originate from a descendant.
+    `,
+
+    closestExample: `
+// element.closest(selector) walks up from the element (inclusive) and returns
+// the first ancestor that matches - or null.
+const gallery = document.querySelector('.gallery');
+
+gallery.addEventListener('click', (event) => {
+  // Works whether the user clicked the <img>, the caption, or the card itself
+  const card = event.target.closest('.photo-card');
+  if (!card) return;                       // click was outside any card
+  if (!gallery.contains(card)) return;     // safety: card must be inside gallery
+
+  openLightbox(card.dataset.src);
+});
+
+// Combine with a guard so clicks on nested interactive controls are ignored
+gallery.addEventListener('click', (event) => {
+  if (event.target.closest('button, a')) return; // let controls handle themselves
+  const card = event.target.closest('.photo-card');
+  if (card) selectCard(card);
+});
+    `,
+
+    memoryExample: `
+// Per-element listeners: each closure holds a reference and must be removed
+// when the element is discarded, or the listener keeps the element alive.
+function renderRowsWithoutDelegation(rows) {
+  rows.forEach(row => {
+    const tr = document.createElement('tr');
+    tr.addEventListener('click', () => select(row.id)); // 1 closure per row
+    table.appendChild(tr);
+  });
+}
+// Re-rendering 5,000 rows creates 5,000 closures every time.
+
+// With delegation: zero per-row listeners, nothing to clean up
+table.addEventListener('click', (event) => {
+  const tr = event.target.closest('tr');
+  if (tr) select(tr.dataset.id);
+});
+
+function renderRowsWithDelegation(rows) {
+  table.innerHTML = rows.map(row =>
+    '<tr data-id="' + row.id + '"><td>' + row.name + '</td></tr>'
+  ).join('');
+}
+// Rows can be replaced freely; the single listener keeps working.
+    `,
+
+    dataAttributeExample: `
+// Route actions through data-* attributes instead of separate handlers
+// <div class="player">
+//   <button data-action="play">Play</button>
+//   <button data-action="pause">Pause</button>
+//   <button data-action="seek" data-seconds="-10">-10s</button>
+//   <button data-action="seek" data-seconds="10">+10s</button>
+// </div>
+const player = document.querySelector('.player');
+
+const actions = {
+  play: () => audio.play(),
+  pause: () => audio.pause(),
+  seek: (button) => { audio.currentTime += Number(button.dataset.seconds); }
+};
+
+player.addEventListener('click', (event) => {
+  const button = event.target.closest('[data-action]');
+  if (!button) return;
+
+  const handler = actions[button.dataset.action];
+  if (handler) handler(button);
+});
+
+// Adding a new button is now a markup change only:
+// <button data-action="mute">Mute</button>  +  actions.mute = () => ...
+    `,
+
+    multipleEventsExample: `
+// One delegated handler per event type, sharing the same lookup logic
+const board = document.querySelector('.kanban');
+
+function getCard(event) {
+  return event.target.closest('.card');
+}
+
+board.addEventListener('click', (event) => {
+  const card = getCard(event);
+  if (card) openCard(card.dataset.id);
+});
+
+board.addEventListener('dblclick', (event) => {
+  const card = getCard(event);
+  if (card) startInlineEdit(card);
+});
+
+board.addEventListener('keydown', (event) => {
+  const card = getCard(event);
+  if (card && event.key === 'Delete') removeCard(card.dataset.id);
+});
+
+// Or register several types in a loop with a shared dispatcher
+['dragstart', 'dragover', 'drop'].forEach(type => {
+  board.addEventListener(type, (event) => {
+    const card = getCard(event);
+    if (card) dragHandlers[type](event, card);
+  });
+});
+    `,
+
+    dynamicExample: `
+// Delegation handles elements that do not exist yet
+const feed = document.querySelector('#feed');
+
+// Registered once, before any posts are loaded
+feed.addEventListener('click', (event) => {
+  const likeButton = event.target.closest('.like');
+  if (likeButton) {
+    likeButton.classList.toggle('liked');
+  }
+});
+
+// Posts loaded later still work - no need to attach listeners to them
+async function loadMorePosts() {
+  const posts = await fetch('/api/posts?page=2').then(r => r.json());
+  posts.forEach(post => {
+    const article = document.createElement('article');
+    article.innerHTML = '<p>' + post.text + '</p><button class="like">Like</button>';
+    feed.appendChild(article);
+  });
+}
+
+// Compare: with per-element listeners you would have to call
+// article.querySelector('.like').addEventListener(...) inside the loop above.
+    `,
+
+    selectorExample: `
+// Be precise about what you match to avoid handling the wrong element
+const nav = document.querySelector('nav');
+
+nav.addEventListener('click', (event) => {
+  // Too broad: matches any <a>, including external links
+  // const link = event.target.closest('a');
+
+  // Precise: only internal navigation links inside this nav
+  const link = event.target.closest('a[href^="/"]:not([target="_blank"])');
+  if (!link || !nav.contains(link)) return;
+
+  event.preventDefault();
+  router.navigate(link.getAttribute('href'));
+});
+
+// Nested delegated regions: stop at the nearest container so an inner
+// widget's clicks are not also handled by the outer one
+document.addEventListener('click', (event) => {
+  const dropdownItem = event.target.closest('.dropdown-item');
+  if (dropdownItem) {
+    selectOption(dropdownItem);
+    return; // handled - do not fall through to the generic handler below
+  }
+  const cardAction = event.target.closest('.card [data-action]');
+  if (cardAction) runCardAction(cardAction);
+});
     `
   },
   
@@ -701,6 +1369,297 @@ function componentC() {
 componentB();
 componentC();
 componentA(); // Triggers both components
+    `,
+    customEventCreation: `
+// CustomEvent extends Event and adds a "detail" payload.
+// Options: bubbles (default false), cancelable (default false), composed
+const event = new CustomEvent('user:login', {
+  detail: { userId: 42, name: 'Ada' },
+  bubbles: true,      // let ancestors (and document) hear it
+  cancelable: false
+});
+
+console.log(event.type);    // 'user:login'
+console.log(event.detail);  // { userId: 42, name: 'Ada' }
+
+// A plain Event works when there is no data to carry
+const ready = new Event('app:ready', { bubbles: true });
+    `,
+
+    detailExample: `
+// detail carries any value: object, array, string, number...
+const cart = document.querySelector('#cart');
+
+function addToCart(product) {
+  cart.dispatchEvent(new CustomEvent('cart:add', {
+    bubbles: true,
+    detail: {
+      product,
+      quantity: 1,
+      addedAt: Date.now()
+    }
+  }));
+}
+
+cart.addEventListener('cart:add', (event) => {
+  const { product, quantity } = event.detail;
+  console.log('Added', quantity, 'x', product.name);
+});
+
+// detail is read-only on the event; treat it as an immutable message.
+// Pass a fresh object each time rather than mutating a shared one.
+    `,
+
+    dispatchExample: `
+// dispatchEvent(event) runs listeners synchronously and returns false
+// if a cancelable event was preventDefault()-ed.
+const editor = document.querySelector('#editor');
+
+editor.addEventListener('doc:before-save', (event) => {
+  if (hasUnresolvedComments()) {
+    event.preventDefault(); // veto the save
+  }
+});
+
+function save() {
+  const allowed = editor.dispatchEvent(
+    new CustomEvent('doc:before-save', { cancelable: true })
+  );
+  if (!allowed) {
+    alert('Resolve comments before saving');
+    return;
+  }
+  persist();
+  editor.dispatchEvent(new CustomEvent('doc:saved', { bubbles: true }));
+}
+
+// Because dispatch is synchronous, code after dispatchEvent runs
+// only after every listener has finished.
+    `,
+
+    listeningExample: `
+// Custom events are listened for exactly like built-in ones
+const app = document.querySelector('#app');
+
+// Listen on the element that dispatches
+app.addEventListener('theme:change', (event) => {
+  document.body.dataset.theme = event.detail.theme;
+});
+
+// Or on an ancestor, if the event was created with bubbles: true
+document.addEventListener('theme:change', (event) => {
+  localStorage.setItem('theme', event.detail.theme);
+});
+
+// once and signal work too
+const controller = new AbortController();
+app.addEventListener('theme:change', logChange, { signal: controller.signal });
+controller.abort(); // stop listening
+
+// Trigger
+app.dispatchEvent(new CustomEvent('theme:change', {
+  bubbles: true,
+  detail: { theme: 'dark' }
+}));
+    `,
+
+    parameterExample: `
+// The listener parameter is the CustomEvent instance itself
+element.addEventListener('order:placed', (event) => {
+  event instanceof CustomEvent; // true
+  event.type;                   // 'order:placed'
+  event.detail;                 // your payload
+  event.target;                 // element that dispatched
+  event.currentTarget;          // element this listener is attached to
+  event.timeStamp;              // when it was dispatched
+});
+
+// Destructure detail for readable handlers
+element.addEventListener('order:placed', ({ detail: { orderId, total } }) => {
+  showToast('Order ' + orderId + ' placed: $' + total.toFixed(2));
+});
+
+// handleEvent objects: any object with a handleEvent method is a valid listener
+const logger = {
+  handleEvent(event) {
+    console.log('[' + event.type + ']', event.detail);
+  }
+};
+element.addEventListener('order:placed', logger);
+    `,
+
+    eventTargetPattern: `
+// Any class can extend EventTarget to get addEventListener / dispatchEvent
+// without being a DOM element. This is the modern "polyfill" for the
+// classic Node.js-style EventEmitter in the browser.
+class Timer extends EventTarget {
+  #id = null;
+
+  start(ms) {
+    this.#id = setInterval(() => {
+      this.dispatchEvent(new CustomEvent('tick', { detail: { at: Date.now() } }));
+    }, ms);
+  }
+
+  stop() {
+    clearInterval(this.#id);
+    this.dispatchEvent(new Event('stop'));
+  }
+}
+
+const timer = new Timer();
+timer.addEventListener('tick', (event) => console.log('tick', event.detail.at));
+timer.addEventListener('stop', () => console.log('stopped'), { once: true });
+timer.start(1000);
+
+// For environments without EventTarget as a constructor, the same shape can
+// be built by hand with a Map of type -> Set of listeners (see emitterExample).
+    `,
+
+    pubSubExample: `
+// Publish/Subscribe decouples publishers from subscribers via topics.
+// Subscribers do not know who publishes; publishers do not know who listens.
+class PubSub {
+  #topics = new Map();
+
+  subscribe(topic, handler) {
+    if (!this.#topics.has(topic)) this.#topics.set(topic, new Set());
+    this.#topics.get(topic).add(handler);
+    return () => this.unsubscribe(topic, handler); // unsubscribe function
+  }
+
+  unsubscribe(topic, handler) {
+    this.#topics.get(topic)?.delete(handler);
+  }
+
+  publish(topic, payload) {
+    this.#topics.get(topic)?.forEach(handler => handler(payload));
+  }
+}
+
+const bus = new PubSub();
+
+const stop = bus.subscribe('notification', (msg) => showToast(msg.text));
+bus.subscribe('notification', (msg) => playSound(msg.level));
+
+bus.publish('notification', { text: 'Upload complete', level: 'info' });
+stop(); // the toast subscriber no longer receives messages
+    `,
+
+    emitterExample: `
+// A minimal EventEmitter: on / off / once / emit
+class EventEmitter {
+  constructor() {
+    this.listeners = new Map();
+  }
+
+  on(type, listener) {
+    if (!this.listeners.has(type)) this.listeners.set(type, new Set());
+    this.listeners.get(type).add(listener);
+    return this; // chainable
+  }
+
+  off(type, listener) {
+    this.listeners.get(type)?.delete(listener);
+    return this;
+  }
+
+  once(type, listener) {
+    const wrapper = (...args) => {
+      this.off(type, wrapper);
+      listener(...args);
+    };
+    return this.on(type, wrapper);
+  }
+
+  emit(type, ...args) {
+    const set = this.listeners.get(type);
+    if (!set) return false;
+    // Copy so listeners that remove themselves do not break iteration
+    [...set].forEach(listener => listener(...args));
+    return true;
+  }
+}
+
+const emitter = new EventEmitter();
+emitter.on('data', (chunk) => process(chunk));
+emitter.once('end', () => console.log('done'));
+emitter.emit('data', 'chunk 1');
+emitter.emit('end');
+emitter.emit('end'); // nothing - once listener already removed
+    `,
+
+    stateChangeExample: `
+// Notify the UI when application state changes, without tight coupling
+class Store extends EventTarget {
+  #state = { user: null, cart: [] };
+
+  get state() { return this.#state; }
+
+  setState(patch) {
+    const previous = this.#state;
+    this.#state = { ...previous, ...patch };
+    this.dispatchEvent(new CustomEvent('change', {
+      detail: { previous, current: this.#state, changed: Object.keys(patch) }
+    }));
+  }
+}
+
+const store = new Store();
+
+// Header only re-renders when the user changes
+store.addEventListener('change', ({ detail }) => {
+  if (detail.changed.includes('user')) renderHeader(detail.current.user);
+});
+
+// Cart badge only cares about the cart
+store.addEventListener('change', ({ detail }) => {
+  if (detail.changed.includes('cart')) renderBadge(detail.current.cart.length);
+});
+
+store.setState({ user: { name: 'Ada' } });   // header updates
+store.setState({ cart: [{ id: 1 }] });       // badge updates
+    `,
+
+    componentCommExample: `
+// Sibling components talk through DOM events that bubble to a shared ancestor.
+// Neither component holds a reference to the other.
+
+// <div id="app">
+//   <search-box></search-box>
+//   <results-list></results-list>
+// </div>
+
+// Component A: emits an event with its query
+class SearchBox extends HTMLElement {
+  connectedCallback() {
+    this.innerHTML = '<input placeholder="Search">';
+    this.querySelector('input').addEventListener('input', (event) => {
+      this.dispatchEvent(new CustomEvent('search', {
+        bubbles: true,
+        composed: true,            // cross shadow DOM boundaries
+        detail: { query: event.target.value }
+      }));
+    });
+  }
+}
+
+// Component B: renders whatever it is told to
+class ResultsList extends HTMLElement {
+  show(items) {
+    this.innerHTML = items.map(item => '<li>' + item + '</li>').join('');
+  }
+}
+
+customElements.define('search-box', SearchBox);
+customElements.define('results-list', ResultsList);
+
+// The parent wires them together
+const app = document.querySelector('#app');
+app.addEventListener('search', async (event) => {
+  const items = await searchApi(event.detail.query);
+  app.querySelector('results-list').show(items);
+});
     `
   },
   
@@ -742,14 +1701,17 @@ document.body.appendChild(button);
     tests: [
       {
         description: "Should have an event listener attached",
+        assertion: "Solution calls addEventListener on the button",
         check: (code) => code.includes('addEventListener')
       },
       {
         description: "Should increment click count",
+        assertion: "The click handler increases clickCount by one on every click",
         check: (code) => code.includes('clickCount++') || code.includes('clickCount +=') || code.includes('clickCount = clickCount + 1')
       },
       {
         description: "Should listen for 'click' event",
+        assertion: "The listener is registered for the 'click' event type",
         check: (code) => code.includes("'click'") || code.includes('"click"')
       }
     ],
@@ -783,10 +1745,12 @@ document.body.appendChild(form);
     tests: [
       {
         description: "Should have event listeners",
+        assertion: "Solution registers at least one listener with addEventListener",
         check: (code) => code.includes('addEventListener')
       },
       {
         description: "Should validate email format",
+        assertion: "The handler checks that the value contains an '@' before accepting it",
         check: (code) => code.includes('@') || code.includes('includes')
       }
     ],
@@ -829,10 +1793,12 @@ document.body.appendChild(list);
     tests: [
       {
         description: "Should use event delegation",
+        assertion: "A single listener on the list element handles clicks for all items",
         check: (code) => code.includes('addEventListener') && code.includes('list')
       },
       {
         description: "Should handle delete button clicks",
+        assertion: "Clicking a delete button removes its parent list item",
         check: (code) => code.includes('delete') || code.includes('remove')
       }
     ],
@@ -869,10 +1835,12 @@ pub.publish('greet', { message: 'Hello!' });
     tests: [
       {
         description: "Should use CustomEvent",
+        assertion: "Publisher creates events with the CustomEvent constructor",
         check: (code) => code.includes('CustomEvent')
       },
       {
         description: "Should dispatch events",
+        assertion: "Publisher notifies subscribers with dispatchEvent",
         check: (code) => code.includes('dispatchEvent')
       }
     ],
@@ -911,10 +1879,12 @@ document.body.appendChild(outer);
     tests: [
       {
         description: "Should have event listeners",
+        assertion: "Solution registers at least one listener with addEventListener",
         check: (code) => code.includes('addEventListener')
       },
       {
         description: "Should use stopPropagation",
+        assertion: "The middle handler calls event.stopPropagation() so outer never fires",
         check: (code) => code.includes('stopPropagation')
       }
     ],
@@ -948,10 +1918,12 @@ registerShortcut('Space', () => console.log('Space pressed'));
     tests: [
       {
         description: "Should listen to keyboard events",
+        assertion: "A keydown, keyup or keypress listener is registered",
         check: (code) => code.includes('keydown') || code.includes('keyup') || code.includes('keypress')
       },
       {
         description: "Should check event.key",
+        assertion: "The handler reads event.key to identify the pressed key",
         check: (code) => code.includes('event.key') || code.includes('e.key')
       }
     ],
@@ -986,11 +1958,23 @@ const debouncedScroll = debounce(handleScroll, 500);
     tests: [
       {
         description: "Should have debounce function",
+        assertion: "A debounce(func, wait) function is defined and used",
         check: (code) => code.includes('debounce')
       },
       {
         description: "Should use setTimeout",
+        assertion: "The debounced function schedules the call with setTimeout",
         check: (code) => code.includes('setTimeout')
+      },
+      {
+        description: "Should clear the pending timeout on each call",
+        assertion: "Each new call cancels the previous timer with clearTimeout",
+        check: (code) => code.includes('clearTimeout')
+      },
+      {
+        description: "Should attach the debounced handler to the scroll event",
+        assertion: "The debounced function is registered as a 'scroll' listener",
+        check: (code) => code.includes("'scroll'") || code.includes('"scroll"')
       }
     ],
     hints: [
@@ -1026,10 +2010,12 @@ document.body.appendChild(tracker);
     tests: [
       {
         description: "Should listen to mousemove event",
+        assertion: "A mousemove listener is attached to the tracker element",
         check: (code) => code.includes('mousemove')
       },
       {
         description: "Should use event.clientX and event.clientY",
+        assertion: "The handler reads the pointer coordinates from the event object",
         check: (code) => (code.includes('clientX') || code.includes('pageX')) && (code.includes('clientY') || code.includes('pageY'))
       }
     ],
@@ -1077,11 +2063,28 @@ const app = new TodoApp('.container');
     tests: [
       {
         description: "Should have addEventListener",
+        assertion: "The app attaches its listeners with addEventListener",
         check: (code) => code.includes('addEventListener')
       },
       {
         description: "Should handle add and remove",
+        assertion: "TodoApp implements both addTodo and removeTodo",
         check: (code) => code.includes('addTodo') && code.includes('removeTodo')
+      },
+      {
+        description: "Should use event delegation for list items",
+        assertion: "One listener on the list identifies items with matches() or closest()",
+        check: (code) => code.includes('closest') || code.includes('matches')
+      },
+      {
+        description: "Should dispatch custom events on add and remove",
+        assertion: "addTodo and removeTodo dispatch a CustomEvent describing the change",
+        check: (code) => code.includes('CustomEvent') && code.includes('dispatchEvent')
+      },
+      {
+        description: "Should clean up listeners",
+        assertion: "A destroy/cleanup step removes listeners with removeEventListener or an AbortController",
+        check: (code) => code.includes('removeEventListener') || code.includes('AbortController')
       }
     ],
     hints: [

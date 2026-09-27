@@ -515,8 +515,9 @@ describe('Concept Loader Engine', () => {
 
         stages.forEach((update, index) => {
           setTimeout(() => {
+            // The registered listener below records each update; pushing
+            // here as well would double-count every stage.
             callback({ conceptId: id, ...update });
-            progressUpdates.push(update);
             
             if (index === stages.length - 1) {
               expect(progressUpdates).toHaveLength(5);

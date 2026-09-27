@@ -65,21 +65,52 @@ const performanceMeasurement = {
    * @returns {Object} Timing information
    */
   getNavigationTiming() {
-    const timing = performance.timing;
-    const navigation = performance.navigation;
-    
+    // Prefer the Navigation Timing Level 2 entry; fall back to the legacy
+    // performance.timing object; degrade to zeros when neither exists
+    // (e.g. non-browser environments or jsdom).
+    const navEntry = typeof performance.getEntriesByType === 'function'
+      ? performance.getEntriesByType('navigation')[0]
+      : undefined;
+    const legacy = performance.timing;
+
+    if (!navEntry && !legacy) {
+      return {
+        available: false,
+        redirectTime: 0,
+        domainLookupTime: 0,
+        connectTime: 0,
+        requestTime: 0,
+        responseTime: 0,
+        domInteractiveTime: 0,
+        domCompleteTime: 0,
+        loadEventTime: 0,
+        domContentLoadedTime: 0,
+        pageLoadTime: 0,
+        navigationType: 'unknown'
+      };
+    }
+
+    // Level 2 entries are relative to startTime (0); legacy values are
+    // absolute timestamps relative to navigationStart.
+    const timing = navEntry || legacy;
+    const origin = navEntry ? navEntry.startTime : legacy.navigationStart;
+    const navigationType = navEntry
+      ? navEntry.type
+      : (performance.navigation ? performance.navigation.type : 'unknown');
+
     return {
+      available: true,
       redirectTime: timing.redirectEnd - timing.redirectStart,
       domainLookupTime: timing.domainLookupEnd - timing.domainLookupStart,
       connectTime: timing.connectEnd - timing.connectStart,
       requestTime: timing.responseStart - timing.requestStart,
       responseTime: timing.responseEnd - timing.responseStart,
-      domInteractiveTime: timing.domInteractive - timing.navigationStart,
-      domCompleteTime: timing.domComplete - timing.navigationStart,
+      domInteractiveTime: timing.domInteractive - origin,
+      domCompleteTime: timing.domComplete - origin,
       loadEventTime: timing.loadEventEnd - timing.loadEventStart,
-      domContentLoadedTime: timing.domContentLoadedEventEnd - timing.navigationStart,
-      pageLoadTime: timing.loadEventEnd - timing.navigationStart,
-      navigationType: navigation.type
+      domContentLoadedTime: timing.domContentLoadedEventEnd - origin,
+      pageLoadTime: timing.loadEventEnd - origin,
+      navigationType
     };
   },
 
@@ -89,6 +120,9 @@ const performanceMeasurement = {
    * @returns {Array} Array of resource timings
    */
   getResourceTiming(resourceName = null) {
+    if (typeof performance.getEntriesByType !== 'function') {
+      return [];
+    }
     const resources = performance.getEntriesByType('resource');
     
     if (resourceName) {
@@ -111,6 +145,11 @@ const performanceMeasurement = {
    * @returns {PerformanceObserver}
    */
   createObserver(callback, entryType = 'measure') {
+    if (typeof PerformanceObserver === 'undefined') {
+      console.warn('PerformanceObserver is not supported in this environment');
+      return null;
+    }
+
     const observer = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
         callback(entry);
@@ -131,6 +170,10 @@ const performanceMeasurement = {
    * @param {string} name - Mark name
    */
   mark(name) {
+    if (typeof performance.mark !== 'function') {
+      console.warn('performance.mark is not supported in this environment');
+      return;
+    }
     performance.mark(name);
   },
 
@@ -141,6 +184,10 @@ const performanceMeasurement = {
    * @param {string} endMark - End mark name
    */
   measure(name, startMark, endMark) {
+    if (typeof performance.measure !== 'function') {
+      console.warn('performance.measure is not supported in this environment');
+      return;
+    }
     try {
       performance.measure(name, startMark, endMark);
       const measures = performance.getEntriesByName(name);

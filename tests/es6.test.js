@@ -20,7 +20,10 @@ describe('ES6+ Features', () => {
         name: 'Test',
         regularFunction: function() {
           return function() {
-            return this.name;
+            // A regular function gets its own `this` from how it is CALLED,
+            // not from where it is defined. Called plainly in strict mode
+            // (ES modules are always strict) `this` is undefined.
+            return this === undefined ? undefined : this.name;
           };
         },
         arrowFunction: function() {
@@ -34,7 +37,9 @@ describe('ES6+ Features', () => {
       const arrow = obj.arrowFunction();
 
       expect(regular()).toBeUndefined(); // 'this' is undefined in strict mode
-      expect(arrow()).toBe('Test'); // 'this' is bound from outer context
+      expect(regular.call({ name: 'Other' })).toBe('Other'); // 'this' comes from the call site
+      expect(arrow()).toBe('Test'); // 'this' is lexically bound from outer context
+      expect(arrow.call({ name: 'Other' })).toBe('Test'); // call() cannot rebind an arrow's 'this'
     });
 
     test('arrow functions should not have arguments object', () => {
@@ -773,11 +778,20 @@ Line 3`;
         set(target, prop, value) {
           if (typeof value === 'number') {
             target[prop] = value;
-            return true;
           }
-          return false;
+          // Silently ignore non-number writes. In strict mode (ES modules)
+          // returning false from a set trap throws a TypeError, so return
+          // true to signal "handled" even when the write was rejected.
+          return true;
         }
       });
+
+      const strictProxy = new Proxy({}, {
+        set() {
+          return false; // rejecting a write this way throws in strict mode
+        }
+      });
+      expect(() => { strictProxy.x = 1; }).toThrow(TypeError);
       
       expect(proxy.a).toBe(1);
       expect(proxy.c).toBe('default');

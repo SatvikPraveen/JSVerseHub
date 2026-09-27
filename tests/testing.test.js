@@ -267,8 +267,8 @@ describe('Testing Concept', () => {
     });
     
     test('should throw on empty name', () => {
-      expect(() => processUser({ name: '' })).not.toThrow();
-      // Empty string is falsy, might throw depending on requirements
+      // Empty string is falsy, so the `!user.name` guard rejects it
+      expect(() => processUser({ name: '' })).toThrow('User name is required');
     });
   });
   

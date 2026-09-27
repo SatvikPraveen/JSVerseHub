@@ -551,11 +551,14 @@ class Navigation {
       return "/";
     }
 
-    // Replace parameters in pattern
+    // Replace parameters in pattern (including optional `:param?` markers)
     let url = pattern;
     Object.entries(params).forEach(([key, value]) => {
-      url = url.replace(`:${key}`, encodeURIComponent(value));
+      url = url.replace(new RegExp(`:${key}\\??`), encodeURIComponent(value));
     });
+
+    // Drop optional segments that were not supplied
+    url = url.replace(/\/:[^/]+\?/g, "");
 
     // Add query string
     const queryString = Object.entries(query)
