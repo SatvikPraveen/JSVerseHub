@@ -1,30 +1,23 @@
-# Use official Node.js runtime as base image
-FROM node:18-alpine
+# syntax=docker/dockerfile:1
+# Multi-stage build: compile with dev dependencies, ship only the static
+# bundle, the tiny Express server and its single runtime dependency.
 
-# Set working directory
+FROM node:20-alpine AS build
 WORKDIR /app
-
-# Install security updates
-RUN apk update && apk upgrade && rm -rf /var/cache/apk/*
-
-# Copy package files
-COPY package*.json ./
-
-# Install dependencies
-RUN npm ci --only=production
-
-# Copy application source
+COPY package.json package-lock.json ./
+RUN npm ci --ignore-scripts
 COPY . .
+RUN npm run build
 
-# Build application
-RUN npm run build --if-present || echo "No build script"
-
-# Expose port
+FROM node:20-alpine AS runtime
+ENV NODE_ENV=production
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev --ignore-scripts && npm cache clean --force
+COPY --from=build /app/dist ./dist
+COPY server.js ./
+USER node
 EXPOSE 3000
-
-# Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"
-
-# Start application
+  CMD node -e "require('http').get('http://localhost:3000', r => { if (r.statusCode !== 200) process.exit(1) }).on('error', () => process.exit(1))"
 CMD ["node", "server.js"]
