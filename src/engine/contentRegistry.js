@@ -88,7 +88,8 @@ export function isSectionLike(value) {
   const keys = Object.keys(value);
   if (keys.length === 0) return false;
   const hasProse = typeof value.explanation === 'string' || typeof value.description === 'string';
-  const hasTitle = typeof value.concept === 'string' || typeof value.title === 'string' || typeof value.name === 'string';
+  const hasTitle =
+    typeof value.concept === 'string' || typeof value.title === 'string' || typeof value.name === 'string';
   const hasExamples = value.examples !== undefined || Array.isArray(value.codeExamples) || isPlainObject(value.theory);
   const fnCount = keys.filter(k => typeof value[k] === 'function').length;
   const mostlyFunctions = fnCount >= 2 && fnCount >= keys.length * 0.6;
@@ -155,8 +156,8 @@ export function normalizeSection(key, section) {
   const keyPoints = Array.isArray(section.keyPoints)
     ? section.keyPoints
     : Array.isArray(section.bestPractices)
-      ? section.bestPractices
-      : [];
+    ? section.bestPractices
+    : [];
 
   return {
     id: key,
@@ -226,7 +227,7 @@ export function normalizeQuiz(raw, { timeLimit } = {}) {
       id: q.id ?? `q${i + 1}`,
       question: q.question,
       options: q.options,
-      correctAnswer: typeof q.correctAnswer === 'number' ? q.correctAnswer : (q.correct ?? 0),
+      correctAnswer: typeof q.correctAnswer === 'number' ? q.correctAnswer : q.correct ?? 0,
       explanation: q.explanation ?? '',
       skill: q.skill ?? q.topic ?? null
     }));
@@ -241,7 +242,13 @@ export function normalizeQuiz(raw, { timeLimit } = {}) {
 }
 
 export function normalizeOverview(mod) {
-  const candidates = [mod.conceptConfig, mod.config, ...Object.entries(mod).filter(([k]) => /config$/i.test(k)).map(([, v]) => v)];
+  const candidates = [
+    mod.conceptConfig,
+    mod.config,
+    ...Object.entries(mod)
+      .filter(([k]) => /config$/i.test(k))
+      .map(([, v]) => v)
+  ];
   const config = candidates.find(c => isPlainObject(c) && Object.keys(c).length > 0) ?? {};
   const topics = Array.isArray(config.topics) ? config.topics : Object.keys(config.topics ?? {}).map(humanize);
   const objectives = config.learningObjectives ?? config.objectives ?? topics.map(t => `Understand ${t}`);

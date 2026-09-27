@@ -393,17 +393,19 @@ function totalArea(shapes) {
 }
 
 // Mixins: compose behaviour into a class without a deep inheritance chain
-const Serializable = Base => class extends Base {
-  serialize() {
-    return JSON.stringify(this);
-  }
-};
+const Serializable = Base =>
+  class extends Base {
+    serialize() {
+      return JSON.stringify(this);
+    }
+  };
 
-const Comparable = Base => class extends Base {
-  equals(other) {
-    return JSON.stringify(this) === JSON.stringify(other);
-  }
-};
+const Comparable = Base =>
+  class extends Base {
+    equals(other) {
+      return JSON.stringify(this) === JSON.stringify(other);
+    }
+  };
 
 class Point {
   constructor(x, y) {
@@ -690,7 +692,8 @@ export const exercises = [
     id: 1,
     title: 'Define a Book Class',
     difficulty: 'easy',
-    description: 'Create a class Book with a constructor taking title, author, and pages. Add a summary() method that returns "<title> by <author>, <pages> pages".',
+    description:
+      'Create a class Book with a constructor taking title, author, and pages. Add a summary() method that returns "<title> by <author>, <pages> pages".',
     template: `
 // Define a class named Book
 class Book {
@@ -706,10 +709,11 @@ class Book {
     tests: [
       {
         description: 'Constructor should assign title, author, and pages',
-        check: (code, Book) => safely(() => {
-          const b = new Book('Dune', 'Herbert', 412);
-          return b.title === 'Dune' && b.author === 'Herbert' && b.pages === 412;
-        })
+        check: (code, Book) =>
+          safely(() => {
+            const b = new Book('Dune', 'Herbert', 412);
+            return b.title === 'Dune' && b.author === 'Herbert' && b.pages === 412;
+          })
       },
       {
         description: 'summary() should return the formatted string',
@@ -722,7 +726,8 @@ class Book {
     id: 2,
     title: 'Extend Animal into Dog',
     difficulty: 'easy',
-    description: 'Given a base class Animal with speak() returning "<name> makes a sound", create class Dog that extends Animal and overrides speak() to return "<name> barks".',
+    description:
+      'Given a base class Animal with speak() returning "<name> makes a sound", create class Dog that extends Animal and overrides speak() to return "<name> barks".',
     template: `
 class Animal {
   constructor(name) {
@@ -753,13 +758,17 @@ class Dog extends Animal {
         check: (code, Dog, Animal) => safely(() => new Dog('Rex') instanceof Animal)
       }
     ],
-    hints: ['You do not need a constructor if it only calls super with the same arguments', 'Define speak() in Dog to override the parent version']
+    hints: [
+      'You do not need a constructor if it only calls super with the same arguments',
+      'Define speak() in Dog to override the parent version'
+    ]
   },
   {
     id: 3,
     title: 'Fluent Query Builder',
     difficulty: 'medium',
-    description: 'Implement class QueryBuilder with methods select(fields), from(table), where(condition) that each return this, and build() that returns "SELECT <fields> FROM <table> WHERE <condition>".',
+    description:
+      'Implement class QueryBuilder with methods select(fields), from(table), where(condition) that each return this, and build() that returns "SELECT <fields> FROM <table> WHERE <condition>".',
     template: `
 class QueryBuilder {
   // Store the parts of the query as instance state
@@ -784,30 +793,32 @@ class QueryBuilder {
     tests: [
       {
         description: 'Methods should be chainable',
-        check: (code, QueryBuilder) => safely(() => {
-          const q = new QueryBuilder();
-          return q.select('*') === q && q.from('users') === q && q.where('id = 1') === q;
-        })
+        check: (code, QueryBuilder) =>
+          safely(() => {
+            const q = new QueryBuilder();
+            return q.select('*') === q && q.from('users') === q && q.where('id = 1') === q;
+          })
       },
       {
         description: 'build() should produce the full SQL string',
-        check: (code, QueryBuilder) => safely(() => {
-          const sql = new QueryBuilder()
-            .select('name, age')
-            .from('users')
-            .where('age > 18')
-            .build();
-          return sql === 'SELECT name, age FROM users WHERE age > 18';
-        })
+        check: (code, QueryBuilder) =>
+          safely(() => {
+            const sql = new QueryBuilder().select('name, age').from('users').where('age > 18').build();
+            return sql === 'SELECT name, age FROM users WHERE age > 18';
+          })
       }
     ],
-    hints: ['Each builder method should end with return this', 'Assemble the string in build() using a template literal']
+    hints: [
+      'Each builder method should end with return this',
+      'Assemble the string in build() using a template literal'
+    ]
   },
   {
     id: 4,
     title: 'Temperature with Getters and Setters',
     difficulty: 'medium',
-    description: 'Create class Temperature that stores celsius. Expose a fahrenheit getter and setter that convert to and from celsius, and throw a RangeError if celsius is set below -273.15.',
+    description:
+      'Create class Temperature that stores celsius. Expose a fahrenheit getter and setter that convert to and from celsius, and throw a RangeError if celsius is set below -273.15.',
     template: `
 class Temperature {
   constructor(celsius) {
@@ -832,32 +843,38 @@ class Temperature {
       },
       {
         description: 'fahrenheit setter should update celsius',
-        check: (code, Temperature) => safely(() => {
-          const t = new Temperature(0);
-          t.fahrenheit = 32;
-          return Math.abs(t.celsius) < 1e-9;
-        })
+        check: (code, Temperature) =>
+          safely(() => {
+            const t = new Temperature(0);
+            t.fahrenheit = 32;
+            return Math.abs(t.celsius) < 1e-9;
+          })
       },
       {
         description: 'Setting celsius below absolute zero should throw',
-        check: (code, Temperature) => safely(() => {
-          const t = new Temperature(0);
-          try {
-            t.celsius = -300;
-            return false;
-          } catch (e) {
-            return e instanceof RangeError;
-          }
-        })
+        check: (code, Temperature) =>
+          safely(() => {
+            const t = new Temperature(0);
+            try {
+              t.celsius = -300;
+              return false;
+            } catch (e) {
+              return e instanceof RangeError;
+            }
+          })
       }
     ],
-    hints: ['F = C * 9/5 + 32 and C = (F - 32) * 5/9', 'Store the raw value in a private or underscore-prefixed field so the setter can validate']
+    hints: [
+      'F = C * 9/5 + 32 and C = (F - 32) * 5/9',
+      'Store the raw value in a private or underscore-prefixed field so the setter can validate'
+    ]
   },
   {
     id: 5,
     title: 'Static Registry with Instance Counting',
     difficulty: 'medium',
-    description: 'Create class User with a static count that increments on each construction, a static findByName(name) that searches all created users, and a static reset() that clears the registry.',
+    description:
+      'Create class User with a static count that increments on each construction, a static findByName(name) that searches all created users, and a static reset() that clears the registry.',
     template: `
 class User {
   static count = 0;
@@ -879,29 +896,35 @@ class User {
     tests: [
       {
         description: 'count should track number of instances',
-        check: (code, User) => safely(() => {
-          User.reset();
-          const a = new User('a');
-          const b = new User('b');
-          return User.count === 2 && a !== b;
-        })
+        check: (code, User) =>
+          safely(() => {
+            User.reset();
+            const a = new User('a');
+            const b = new User('b');
+            return User.count === 2 && a !== b;
+          })
       },
       {
         description: 'findByName should return the matching user',
-        check: (code, User) => safely(() => {
-          User.reset();
-          const u = new User('zoe');
-          return User.findByName('zoe') === u && User.findByName('nope') === undefined;
-        })
+        check: (code, User) =>
+          safely(() => {
+            User.reset();
+            const u = new User('zoe');
+            return User.findByName('zoe') === u && User.findByName('nope') === undefined;
+          })
       }
     ],
-    hints: ['Static members are accessed via the class name: User.count', 'Push this into the registry inside the constructor']
+    hints: [
+      'Static members are accessed via the class name: User.count',
+      'Push this into the registry inside the constructor'
+    ]
   },
   {
     id: 6,
     title: 'Constructor Function and Prototype',
     difficulty: 'medium',
-    description: 'Without using the class keyword, write a constructor function Counter that starts at 0, and add increment() and getValue() to its prototype. increment() must return the counter for chaining.',
+    description:
+      'Without using the class keyword, write a constructor function Counter that starts at 0, and add increment() and getValue() to its prototype. increment() must return the counter for chaining.',
     template: `
 function Counter() {
   // Your code here
@@ -912,12 +935,15 @@ function Counter() {
     tests: [
       {
         description: 'Methods should live on the prototype and be shared',
-        check: (code, Counter) => safely(() => {
-          const first = new Counter();
-          const second = new Counter();
-          return first.increment === second.increment
-            && Object.prototype.hasOwnProperty.call(Counter.prototype, 'increment');
-        })
+        check: (code, Counter) =>
+          safely(() => {
+            const first = new Counter();
+            const second = new Counter();
+            return (
+              first.increment === second.increment &&
+              Object.prototype.hasOwnProperty.call(Counter.prototype, 'increment')
+            );
+          })
       },
       {
         description: 'increment() should be chainable and getValue() correct',
@@ -930,7 +956,8 @@ function Counter() {
     id: 7,
     title: 'Abstract Shape Hierarchy with Polymorphism',
     difficulty: 'hard',
-    description: 'Implement an abstract Shape class that throws when instantiated directly and whose area() throws if not overridden. Create Circle(r) and Square(side) subclasses and a function largest(shapes) that returns the shape with the greatest area.',
+    description:
+      'Implement an abstract Shape class that throws when instantiated directly and whose area() throws if not overridden. Create Circle(r) and Square(side) subclasses and a function largest(shapes) that returns the shape with the greatest area.',
     template: `
 class Shape {
   constructor() {
@@ -957,23 +984,25 @@ function largest(shapes) {
     tests: [
       {
         description: 'Shape cannot be instantiated directly',
-        check: (code, ShapeClass) => safely(() => {
-          try {
-            // eslint-disable-next-line no-new
-            new ShapeClass();
-            return false;
-          } catch (e) {
-            return e instanceof TypeError;
-          }
-        })
+        check: (code, ShapeClass) =>
+          safely(() => {
+            try {
+              // eslint-disable-next-line no-new
+              new ShapeClass();
+              return false;
+            } catch (e) {
+              return e instanceof TypeError;
+            }
+          })
       },
       {
         description: 'largest() should use polymorphic area() dispatch',
-        check: (code, ShapeClass, CircleClass, SquareClass, largestFn) => safely(() => {
-          const c = new CircleClass(1);
-          const s = new SquareClass(2);
-          return largestFn([c, s]) === s && largestFn([new CircleClass(2), s]) instanceof CircleClass;
-        })
+        check: (code, ShapeClass, CircleClass, SquareClass, largestFn) =>
+          safely(() => {
+            const c = new CircleClass(1);
+            const s = new SquareClass(2);
+            return largestFn([c, s]) === s && largestFn([new CircleClass(2), s]) instanceof CircleClass;
+          })
       }
     ],
     hints: ['new.target is the constructor that was invoked with new', 'Use reduce to find the maximum by area()']
@@ -982,7 +1011,8 @@ function largest(shapes) {
     id: 8,
     title: 'Mixins for Cross-Cutting Behaviour',
     difficulty: 'hard',
-    description: 'Write two mixin factories, withTimestamps(Base) adding createdAt on construction and touch() that updates updatedAt, and withValidation(Base) adding validate() that returns true only if all keys in this.required are non-empty on the instance. Compose them onto a Model class.',
+    description:
+      'Write two mixin factories, withTimestamps(Base) adding createdAt on construction and touch() that updates updatedAt, and withValidation(Base) adding validate() that returns true only if all keys in this.required are non-empty on the instance. Compose them onto a Model class.',
     template: `
 const withTimestamps = Base => class extends Base {
   // Your code here
@@ -1005,26 +1035,34 @@ class User extends withValidation(withTimestamps(Model)) {
     tests: [
       {
         description: 'withTimestamps should set createdAt and update updatedAt on touch()',
-        check: (code, User) => safely(() => {
-          const u = new User({ name: 'a', email: 'b' });
-          const before = u.updatedAt;
-          u.touch();
-          return u.createdAt instanceof Date && u.updatedAt instanceof Date && u.updatedAt !== before;
-        })
+        check: (code, User) =>
+          safely(() => {
+            const u = new User({ name: 'a', email: 'b' });
+            const before = u.updatedAt;
+            u.touch();
+            return u.createdAt instanceof Date && u.updatedAt instanceof Date && u.updatedAt !== before;
+          })
       },
       {
         description: 'validate() should check required fields',
-        check: (code, User) => safely(() => new User({ name: 'a', email: 'b' }).validate() === true
-          && new User({ name: 'a' }).validate() === false)
+        check: (code, User) =>
+          safely(
+            () =>
+              new User({ name: 'a', email: 'b' }).validate() === true && new User({ name: 'a' }).validate() === false
+          )
       }
     ],
-    hints: ['A mixin is a function that takes a class and returns a new class extending it', 'Call super(...args) in the mixin constructor before touching this']
+    hints: [
+      'A mixin is a function that takes a class and returns a new class extending it',
+      'Call super(...args) in the mixin constructor before touching this'
+    ]
   },
   {
     id: 9,
     title: 'Safe Deep Merge (Prototype Pollution Guard)',
     difficulty: 'hard',
-    description: 'Implement deepMerge(target, source) that recursively merges plain objects without ever assigning the keys __proto__, constructor, or prototype, so untrusted JSON cannot pollute Object.prototype.',
+    description:
+      'Implement deepMerge(target, source) that recursively merges plain objects without ever assigning the keys __proto__, constructor, or prototype, so untrusted JSON cannot pollute Object.prototype.',
     template: `
 function deepMerge(target, source) {
   // Your code here
@@ -1033,18 +1071,20 @@ function deepMerge(target, source) {
     tests: [
       {
         description: 'Should merge nested objects',
-        check: (code, deepMerge) => safely(() => {
-          const out = deepMerge({ a: { b: 1 } }, { a: { c: 2 }, d: 3 });
-          return out.a.b === 1 && out.a.c === 2 && out.d === 3;
-        })
+        check: (code, deepMerge) =>
+          safely(() => {
+            const out = deepMerge({ a: { b: 1 } }, { a: { c: 2 }, d: 3 });
+            return out.a.b === 1 && out.a.c === 2 && out.d === 3;
+          })
       },
       {
         description: 'Should ignore __proto__ keys from untrusted input',
-        check: (code, deepMerge) => safely(() => {
-          const payload = JSON.parse('{"__proto__": {"polluted": true}}');
-          deepMerge({}, payload);
-          return ({}).polluted === undefined;
-        })
+        check: (code, deepMerge) =>
+          safely(() => {
+            const payload = JSON.parse('{"__proto__": {"polluted": true}}');
+            deepMerge({}, payload);
+            return {}.polluted === undefined;
+          })
       }
     ],
     hints: ['Iterate with Object.keys(source) rather than for...in', 'Skip the three dangerous keys before recursing']
@@ -1070,8 +1110,8 @@ export const progressConfig = {
     return {
       conceptProgress: (this.conceptsCompleted / this.totalConcepts) * 100,
       exerciseProgress: (this.exercises.completed / this.exercises.total) * 100,
-      overallProgress: ((this.conceptsCompleted + this.exercises.completed)
-        / (this.totalConcepts + this.exercises.total)) * 100
+      overallProgress:
+        ((this.conceptsCompleted + this.exercises.completed) / (this.totalConcepts + this.exercises.total)) * 100
     };
   }
 };

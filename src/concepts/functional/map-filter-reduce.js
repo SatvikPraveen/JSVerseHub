@@ -2,9 +2,9 @@
 // Functional Programming - Map, Filter, Reduce in JavaScript
 
 export const mapFilterReduceContent = {
-  title: "Map, Filter, and Reduce",
-  description: "Master the fundamental array methods for functional data transformation",
-  
+  title: 'Map, Filter, and Reduce',
+  description: 'Master the fundamental array methods for functional data transformation',
+
   theory: {
     introduction: `
       Map, filter, and reduce are the holy trinity of functional programming in JavaScript.
@@ -12,11 +12,11 @@ export const mapFilterReduceContent = {
       declarative way without mutating the original arrays. Understanding these methods is 
       essential for writing clean, readable, and maintainable JavaScript code.
     `,
-    
+
     concepts: [
       {
-        name: "Array.map() - Data Transformation",
-        explanation: "Transform each element in an array and return a new array of the same length",
+        name: 'Array.map() - Data Transformation',
+        explanation: 'Transform each element in an array and return a new array of the same length',
         example: `
 // Basic map usage
 const numbers = [1, 2, 3, 4, 5];
@@ -104,10 +104,10 @@ const enrichedProducts = products.map(product => ({
 console.log(enrichedProducts);
         `
       },
-      
+
       {
-        name: "Array.filter() - Data Filtering",
-        explanation: "Create a new array with elements that pass a test condition",
+        name: 'Array.filter() - Data Filtering',
+        explanation: 'Create a new array with elements that pass a test condition',
         example: `
 // Basic filter usage
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -194,10 +194,10 @@ const uniqueNumbers = duplicateNumbers.filter((num, index) =>
 console.log(uniqueNumbers); // [1, 2, 3, 4, 5]
         `
       },
-      
+
       {
-        name: "Array.reduce() - Data Aggregation",
-        explanation: "Reduce an array to a single value through accumulation",
+        name: 'Array.reduce() - Data Aggregation',
+        explanation: 'Reduce an array to a single value through accumulation',
         example: `
 // Basic reduce usage
 const numbers = [1, 2, 3, 4, 5];
@@ -300,10 +300,10 @@ const result = pipeline.reduce((data, operation) => operation(data), [-1, 2, 3, 
 console.log(result); // 20 (positive numbers: 2,3,5 -> doubled: 4,6,10 -> sum: 20)
         `
       },
-      
+
       {
-        name: "Combining Map, Filter, and Reduce",
-        explanation: "Chain these methods together for powerful data processing",
+        name: 'Combining Map, Filter, and Reduce',
+        explanation: 'Chain these methods together for powerful data processing',
         example: `
 // Complex data processing pipeline
 const salesData = [
@@ -459,11 +459,11 @@ console.log("Monthly performance:", monthlyData);
       }
     ]
   },
-  
+
   practicalExamples: [
     {
-      title: "E-commerce Order Processing System",
-      description: "Complete order processing pipeline using map, filter, and reduce",
+      title: 'E-commerce Order Processing System',
+      description: 'Complete order processing pipeline using map, filter, and reduce',
       code: `
 // Sample e-commerce data
 const orders = [
@@ -728,10 +728,10 @@ overallMetrics.averageOrderValue = parseFloat(
 console.log("Overall Business Metrics:", overallMetrics);
       `
     },
-    
+
     {
-      title: "Student Grade Analysis System",
-      description: "Comprehensive student performance analysis using functional programming",
+      title: 'Student Grade Analysis System',
+      description: 'Comprehensive student performance analysis using functional programming',
       code: `
 // Student data with multiple subjects and assignments
 const studentData = [
@@ -1042,13 +1042,14 @@ topPerformers.forEach((student, index) => {
       `
     }
   ],
-  
+
   exercises: [
     {
-      id: "map-filter-reduce-basic",
-      title: "Basic Array Operations",
-      difficulty: "easy",
-      prompt: "Given an array of numbers, use map/filter/reduce to: 1) Square all numbers, 2) Keep only even results, 3) Sum them up.",
+      id: 'map-filter-reduce-basic',
+      title: 'Basic Array Operations',
+      difficulty: 'easy',
+      prompt:
+        'Given an array of numbers, use map/filter/reduce to: 1) Square all numbers, 2) Keep only even results, 3) Sum them up.',
       solution: `
 function processNumbers(numbers) {
   const result = numbers
@@ -1073,12 +1074,13 @@ console.log("Even squares:", evenSquares);
 console.log("Sum:", sum);
       `
     },
-    
+
     {
-      id: "map-filter-reduce-intermediate",
-      title: "Employee Data Processing",
-      difficulty: "medium", 
-      prompt: "Process employee data to find average salary by department for employees over 25, formatted for display.",
+      id: 'map-filter-reduce-intermediate',
+      title: 'Employee Data Processing',
+      difficulty: 'medium',
+      prompt:
+        'Process employee data to find average salary by department for employees over 25, formatted for display.',
       solution: `
 function analyzeEmployeeSalaries(employees) {
   // Filter employees over 25 and group by department with salary calculation
@@ -1136,54 +1138,52 @@ analysis.forEach(dept => {
       `
     }
   ],
-  
+
   quiz: [
     {
-      question: "What does the map() method return?",
+      question: 'What does the map() method return?',
       options: [
-        "The original array modified",
-        "A new array with the same length as the original",
-        "A single value",
-        "An object with key-value pairs"
+        'The original array modified',
+        'A new array with the same length as the original',
+        'A single value',
+        'An object with key-value pairs'
       ],
       correct: 1,
-      explanation: "The map() method returns a new array with the same length as the original, where each element is transformed by the provided function."
+      explanation:
+        'The map() method returns a new array with the same length as the original, where each element is transformed by the provided function.'
     },
-    
+
     {
-      question: "Which method would you use to get a subset of an array based on a condition?",
-      options: [
-        "map()",
-        "reduce()",
-        "filter()",
-        "forEach()"
-      ],
+      question: 'Which method would you use to get a subset of an array based on a condition?',
+      options: ['map()', 'reduce()', 'filter()', 'forEach()'],
       correct: 2,
-      explanation: "The filter() method creates a new array with only the elements that pass the test condition."
+      explanation: 'The filter() method creates a new array with only the elements that pass the test condition.'
     },
-    
+
     {
-      question: "What is the second parameter of the reduce() method?",
+      question: 'What is the second parameter of the reduce() method?',
       options: [
-        "The callback function",
-        "The initial value for the accumulator",
-        "The current index",
-        "The original array"
+        'The callback function',
+        'The initial value for the accumulator',
+        'The current index',
+        'The original array'
       ],
       correct: 1,
-      explanation: "The second parameter of reduce() is the initial value for the accumulator. If not provided, the first element of the array is used."
+      explanation:
+        'The second parameter of reduce() is the initial value for the accumulator. If not provided, the first element of the array is used.'
     },
-    
+
     {
-      question: "Can you chain map(), filter(), and reduce() together?",
+      question: 'Can you chain map(), filter(), and reduce() together?',
       options: [
-        "No, they must be used separately",
-        "Yes, because they all return arrays",
-        "Only map() and filter() can be chained",
-        "Yes, but reduce() must be last since it returns a single value"
+        'No, they must be used separately',
+        'Yes, because they all return arrays',
+        'Only map() and filter() can be chained',
+        'Yes, but reduce() must be last since it returns a single value'
       ],
       correct: 3,
-      explanation: "You can chain these methods, but reduce() should typically be last since it returns a single value, not an array."
+      explanation:
+        'You can chain these methods, but reduce() should typically be last since it returns a single value, not an array.'
     }
   ]
 };

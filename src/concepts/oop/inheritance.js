@@ -2,20 +2,20 @@
 // Object-Oriented Programming - Inheritance in JavaScript
 
 export const inheritanceContent = {
-  title: "JavaScript Inheritance",
-  description: "Master class inheritance, method overriding, and polymorphism",
-  
+  title: 'JavaScript Inheritance',
+  description: 'Master class inheritance, method overriding, and polymorphism',
+
   theory: {
     introduction: `
       Inheritance allows classes to inherit properties and methods from parent classes,
       enabling code reuse and creating hierarchical relationships between objects.
       JavaScript supports both classical inheritance (with classes) and prototypal inheritance.
     `,
-    
+
     concepts: [
       {
-        name: "Class Inheritance with extends",
-        explanation: "Create child classes that inherit from parent classes",
+        name: 'Class Inheritance with extends',
+        explanation: 'Create child classes that inherit from parent classes',
         example: `
 class Animal {
   constructor(name, species) {
@@ -80,10 +80,10 @@ dog.fetch();
 console.log(dog.getInfo());
         `
       },
-      
+
       {
-        name: "Method Overriding",
-        explanation: "Child classes can override parent methods to provide specific behavior",
+        name: 'Method Overriding',
+        explanation: 'Child classes can override parent methods to provide specific behavior',
         example: `
 class Shape {
   constructor(color) {
@@ -156,10 +156,10 @@ shapes.forEach(shape => {
 });
         `
       },
-      
+
       {
-        name: "Super Keyword",
-        explanation: "Access parent class methods and constructor using super",
+        name: 'Super Keyword',
+        explanation: 'Access parent class methods and constructor using super',
         example: `
 class Employee {
   constructor(name, id, salary) {
@@ -219,10 +219,10 @@ manager.giveBonus(5000);
 console.log(manager.getSalaryInfo());
         `
       },
-      
+
       {
-        name: "Abstract Classes Pattern",
-        explanation: "Creating base classes that should not be instantiated directly",
+        name: 'Abstract Classes Pattern',
+        explanation: 'Creating base classes that should not be instantiated directly',
         example: `
 class Vehicle {
   constructor(make, model) {
@@ -316,11 +316,11 @@ bike.accelerate(15);
       }
     ]
   },
-  
+
   practicalExamples: [
     {
-      title: "E-commerce Product System",
-      description: "A complete product hierarchy with different product types",
+      title: 'E-commerce Product System',
+      description: 'A complete product hierarchy with different product types',
       code: `
 class Product {
   constructor(name, price, category) {
@@ -471,10 +471,10 @@ products.forEach(product => {
 });
       `
     },
-    
+
     {
-      title: "Media Player System",
-      description: "Inheritance hierarchy for different media types",
+      title: 'Media Player System',
+      description: 'Inheritance hierarchy for different media types',
       code: `
 class MediaItem {
   constructor(title, duration) {
@@ -647,13 +647,13 @@ playlist.forEach(item => {
       `
     }
   ],
-  
+
   exercises: [
     {
-      id: "inheritance-basic",
-      title: "Animal Kingdom",
-      difficulty: "easy",
-      prompt: "Create an Animal base class and Bird, Fish subclasses with specific behaviors.",
+      id: 'inheritance-basic',
+      title: 'Animal Kingdom',
+      difficulty: 'easy',
+      prompt: 'Create an Animal base class and Bird, Fish subclasses with specific behaviors.',
       solution: `
 class Animal {
   constructor(name, species) {
@@ -724,12 +724,13 @@ class Fish extends Animal {
 }
       `
     },
-    
+
     {
-      id: "inheritance-advanced",
-      title: "Banking System",
-      difficulty: "hard",
-      prompt: "Create Account base class and CheckingAccount, SavingsAccount, CreditAccount subclasses with different rules.",
+      id: 'inheritance-advanced',
+      title: 'Banking System',
+      difficulty: 'hard',
+      prompt:
+        'Create Account base class and CheckingAccount, SavingsAccount, CreditAccount subclasses with different rules.',
       solution: `
 class Account {
   constructor(accountNumber, ownerName, initialBalance = 0) {
@@ -903,42 +904,44 @@ class CreditAccount extends Account {
       `
     }
   ],
-  
+
   quiz: [
     {
       question: "What does the 'super()' keyword do in a constructor?",
       options: [
-        "Creates a new instance of the parent class",
-        "Calls the parent class constructor",
-        "Overrides the parent class constructor", 
-        "Deletes the parent class constructor"
+        'Creates a new instance of the parent class',
+        'Calls the parent class constructor',
+        'Overrides the parent class constructor',
+        'Deletes the parent class constructor'
       ],
       correct: 1,
-      explanation: "super() calls the parent class constructor and must be called before using 'this' in the child constructor."
+      explanation:
+        "super() calls the parent class constructor and must be called before using 'this' in the child constructor."
     },
-    
+
     {
-      question: "Method overriding in inheritance means:",
+      question: 'Method overriding in inheritance means:',
       options: [
-        "Adding new methods to a child class",
-        "Removing methods from the parent class",
-        "Replacing a parent method with a new implementation",
-        "Calling parent methods from child class"
+        'Adding new methods to a child class',
+        'Removing methods from the parent class',
+        'Replacing a parent method with a new implementation',
+        'Calling parent methods from child class'
       ],
       correct: 2,
-      explanation: "Method overriding means providing a new implementation of a parent class method in the child class."
+      explanation: 'Method overriding means providing a new implementation of a parent class method in the child class.'
     },
-    
+
     {
-      question: "How do you prevent a class from being instantiated directly?",
+      question: 'How do you prevent a class from being instantiated directly?',
       options: [
         "Use the 'abstract' keyword",
-        "Check new.target in the constructor",
-        "Make the constructor private",
-        "Use static methods only"
+        'Check new.target in the constructor',
+        'Make the constructor private',
+        'Use static methods only'
       ],
       correct: 1,
-      explanation: "Checking 'new.target' in the constructor allows you to prevent direct instantiation of a base class."
+      explanation:
+        "Checking 'new.target' in the constructor allows you to prevent direct instantiation of a base class."
     }
   ]
 };

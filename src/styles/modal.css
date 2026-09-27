@@ -131,11 +131,7 @@
 .concept-title {
   font-size: 2.5rem;
   margin: 0 0 0.5rem;
-  background: linear-gradient(
-    135deg,
-    var(--accent-color),
-    var(--accent-secondary)
-  );
+  background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -225,7 +221,7 @@
 
 .code-content {
   padding: 1rem;
-  font-family: "Courier New", monospace;
+  font-family: 'Courier New', monospace;
   font-size: 0.9rem;
   line-height: 1.6;
   color: #e6e6e6;
@@ -249,11 +245,7 @@
 
 /* Exercise Section */
 .exercise-section {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 230, 109, 0.1),
-    rgba(255, 107, 107, 0.1)
-  );
+  background: linear-gradient(135deg, rgba(255, 230, 109, 0.1), rgba(255, 107, 107, 0.1));
   border: 1px solid rgba(255, 230, 109, 0.3);
 }
 
@@ -294,11 +286,7 @@
 
 /* Quiz Section */
 .quiz-section {
-  background: linear-gradient(
-    135deg,
-    rgba(78, 205, 196, 0.1),
-    rgba(0, 212, 255, 0.1)
-  );
+  background: linear-gradient(135deg, rgba(78, 205, 196, 0.1), rgba(0, 212, 255, 0.1));
   border: 1px solid rgba(78, 205, 196, 0.3);
 }
 
@@ -377,6 +365,7 @@
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.8;
   }
@@ -442,11 +431,7 @@
 #welcome-modal h2 {
   font-size: 2.5rem;
   margin-bottom: 1rem;
-  background: linear-gradient(
-    135deg,
-    var(--accent-color),
-    var(--accent-secondary)
-  );
+  background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

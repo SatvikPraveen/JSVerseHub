@@ -1,9 +1,4 @@
-import {
-  localStorage,
-  sessionStorage,
-  indexedDB,
-  exercises,
-} from '../src/concepts/storage/index';
+import { localStorage, sessionStorage, indexedDB, exercises } from '../src/concepts/storage/index';
 
 describe('Storage - Local Storage', () => {
   beforeEach(() => {
@@ -36,7 +31,7 @@ describe('Storage - Local Storage', () => {
       const user = { name: 'Alice', age: 28 };
       localStorage.setItem('user', JSON.stringify(user));
       const retrieved = JSON.parse(localStorage.getItem('user'));
-      
+
       expect(retrieved).toEqual(user);
     });
 
@@ -44,18 +39,18 @@ describe('Storage - Local Storage', () => {
       const items = ['apple', 'banana', 'cherry'];
       localStorage.setItem('items', JSON.stringify(items));
       const retrieved = JSON.parse(localStorage.getItem('items'));
-      
+
       expect(retrieved).toEqual(items);
     });
 
     test('should handle complex nested structures', () => {
       const data = {
         user: { name: 'Bob', roles: ['admin', 'user'] },
-        settings: { theme: 'dark', notifications: true },
+        settings: { theme: 'dark', notifications: true }
       };
       localStorage.setItem('appState', JSON.stringify(data));
       const retrieved = JSON.parse(localStorage.getItem('appState'));
-      
+
       expect(retrieved).toEqual(data);
     });
   });
@@ -64,7 +59,7 @@ describe('Storage - Local Storage', () => {
     test('should remove items', () => {
       localStorage.setItem('key', 'value');
       localStorage.removeItem('key');
-      
+
       expect(localStorage.getItem('key')).toBeNull();
     });
 
@@ -72,7 +67,7 @@ describe('Storage - Local Storage', () => {
       localStorage.setItem('key1', 'value1');
       localStorage.setItem('key2', 'value2');
       localStorage.clear();
-      
+
       expect(localStorage.getItem('key1')).toBeNull();
       expect(localStorage.getItem('key2')).toBeNull();
     });
@@ -80,7 +75,7 @@ describe('Storage - Local Storage', () => {
     test('should get storage key by index', () => {
       localStorage.setItem('first', '1');
       localStorage.setItem('second', '2');
-      
+
       const key = localStorage.key(0);
       expect(key).toBeTruthy();
     });
@@ -88,7 +83,7 @@ describe('Storage - Local Storage', () => {
     test('should report length', () => {
       localStorage.setItem('a', '1');
       localStorage.setItem('b', '2');
-      
+
       expect(localStorage.length).toBe(2);
     });
   });
@@ -97,7 +92,7 @@ describe('Storage - Local Storage', () => {
     test('should persist user preferences', () => {
       const preferences = { fontSize: 14, theme: 'dark', language: 'en' };
       localStorage.setItem('preferences', JSON.stringify(preferences));
-      
+
       const stored = JSON.parse(localStorage.getItem('preferences'));
       expect(stored.theme).toBe('dark');
     });
@@ -105,7 +100,7 @@ describe('Storage - Local Storage', () => {
     test('should cache API responses', () => {
       const apiData = { users: ['Alice', 'Bob', 'Charlie'], cached: true };
       localStorage.setItem('api_users', JSON.stringify(apiData));
-      
+
       const cached = JSON.parse(localStorage.getItem('api_users'));
       expect(cached.users).toHaveLength(3);
     });
@@ -113,10 +108,10 @@ describe('Storage - Local Storage', () => {
     test('should implement a simple todo list', () => {
       const todos = [
         { id: 1, text: 'Learn localStorage', done: false },
-        { id: 2, text: 'Build app', done: false },
+        { id: 2, text: 'Build app', done: false }
       ];
       localStorage.setItem('todos', JSON.stringify(todos));
-      
+
       const stored = JSON.parse(localStorage.getItem('todos'));
       expect(stored).toHaveLength(2);
     });
@@ -127,13 +122,13 @@ describe('Storage - Local Storage', () => {
       // localStorage has ~5-10MB limit
       const largeString = 'x'.repeat(1000);
       localStorage.setItem('large', largeString);
-      
+
       expect(localStorage.getItem('large')).toBe(largeString);
     });
 
     test('should persist data across page reloads (simulated)', () => {
       localStorage.setItem('persistent', 'value');
-      
+
       // Simulating reload - in real tests, this would be verified differently
       expect(localStorage.getItem('persistent')).toBe('value');
     });
@@ -154,7 +149,7 @@ describe('Storage - Session Storage', () => {
     test('should clear values (different from localStorage)', () => {
       sessionStorage.setItem('temp', 'value');
       sessionStorage.clear();
-      
+
       expect(sessionStorage.getItem('temp')).toBeNull();
     });
   });
@@ -164,7 +159,7 @@ describe('Storage - Session Storage', () => {
       const session = { id: 123, token: 'abc123xyz' };
       sessionStorage.setItem('session', JSON.stringify(session));
       const retrieved = JSON.parse(sessionStorage.getItem('session'));
-      
+
       expect(retrieved.id).toBe(123);
     });
 
@@ -172,10 +167,10 @@ describe('Storage - Session Storage', () => {
       const userState = {
         loggedIn: true,
         username: 'alice',
-        lastPage: '/dashboard',
+        lastPage: '/dashboard'
       };
       sessionStorage.setItem('state', JSON.stringify(userState));
-      
+
       const stored = JSON.parse(sessionStorage.getItem('state'));
       expect(stored.loggedIn).toBe(true);
     });
@@ -185,7 +180,7 @@ describe('Storage - Session Storage', () => {
     test('should store temporary form data', () => {
       const formData = { name: 'Bob', email: 'bob@example.com', draft: true };
       sessionStorage.setItem('formData', JSON.stringify(formData));
-      
+
       const stored = JSON.parse(sessionStorage.getItem('formData'));
       expect(stored.draft).toBe(true);
     });
@@ -193,7 +188,7 @@ describe('Storage - Session Storage', () => {
     test('should track session-specific settings', () => {
       const settings = { viewMode: 'grid', itemsPerPage: 20 };
       sessionStorage.setItem('viewSettings', JSON.stringify(settings));
-      
+
       expect(JSON.parse(sessionStorage.getItem('viewSettings')).viewMode).toBe('grid');
     });
   });
@@ -220,9 +215,9 @@ describe('Storage - IndexedDB', () => {
         boolean: true,
         date: new Date(),
         object: { key: 'value' },
-        array: [1, 2, 3],
+        array: [1, 2, 3]
       };
-      
+
       expect(typeof dataTypes.string).toBe('string');
       expect(typeof dataTypes.number).toBe('number');
       expect(typeof dataTypes.boolean).toBe('boolean');
@@ -250,7 +245,7 @@ describe('Storage - IndexedDB', () => {
     test('IndexedDB should have larger capacity than localStorage', () => {
       const localStorageLimit = '5-10 MB';
       const indexedDBLimit = 'GB+ (depends on browser)';
-      
+
       // IndexedDB > localStorage in capacity
       expect(true).toBe(true);
     });
@@ -294,23 +289,17 @@ describe('Storage - Exercises', () => {
 
   describe('Exercise Coverage', () => {
     test('should have exercises for localStorage', () => {
-      const localStorageExercises = exercises.filter(e => 
-        e.description.toLowerCase().includes('localstorage')
-      );
+      const localStorageExercises = exercises.filter(e => e.description.toLowerCase().includes('localstorage'));
       expect(localStorageExercises.length).toBeGreaterThan(0);
     });
 
     test('should have exercises for sessionStorage', () => {
-      const sessionStorageExercises = exercises.filter(e => 
-        e.description.toLowerCase().includes('sessionstorage')
-      );
+      const sessionStorageExercises = exercises.filter(e => e.description.toLowerCase().includes('sessionstorage'));
       expect(sessionStorageExercises.length).toBeGreaterThan(0);
     });
 
     test('should have exercises for IndexedDB', () => {
-      const indexedDBExercises = exercises.filter(e => 
-        e.description.toLowerCase().includes('indexeddb')
-      );
+      const indexedDBExercises = exercises.filter(e => e.description.toLowerCase().includes('indexeddb'));
       expect(indexedDBExercises.length).toBeGreaterThan(0);
     });
   });

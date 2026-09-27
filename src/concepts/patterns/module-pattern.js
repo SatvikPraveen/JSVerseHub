@@ -2,9 +2,9 @@
 // Design Patterns - Module Pattern in JavaScript
 
 export const modulePatternContent = {
-  title: "Module Pattern",
-  description: "Learn to organize code using the Module Pattern for encapsulation and namespacing",
-  
+  title: 'Module Pattern',
+  description: 'Learn to organize code using the Module Pattern for encapsulation and namespacing',
+
   theory: {
     introduction: `
       The Module Pattern is one of the most important design patterns in JavaScript. It provides 
@@ -13,11 +13,11 @@ export const modulePatternContent = {
       public interface. This pattern helps prevent global namespace pollution and creates 
       reusable, maintainable code modules.
     `,
-    
+
     concepts: [
       {
-        name: "Basic Module Pattern (IIFE)",
-        explanation: "Using Immediately Invoked Function Expression to create encapsulated modules",
+        name: 'Basic Module Pattern (IIFE)',
+        explanation: 'Using Immediately Invoked Function Expression to create encapsulated modules',
         example: `
 // Basic Module Pattern using IIFE
 const Calculator = (function() {
@@ -157,10 +157,10 @@ console.log(Counter.getValue()); // 11
 console.log(Counter.canIncrement()); // true
         `
       },
-      
+
       {
-        name: "Revealing Module Pattern",
-        explanation: "A variation that defines all functions privately and reveals selected ones",
+        name: 'Revealing Module Pattern',
+        explanation: 'A variation that defines all functions privately and reveals selected ones',
         example: `
 // Revealing Module Pattern
 const UserManager = (function() {
@@ -336,10 +336,10 @@ try {
 // console.log(UserManager.validateUser); // undefined
         `
       },
-      
+
       {
-        name: "Module Factory Pattern",
-        explanation: "Creating multiple module instances with factory functions",
+        name: 'Module Factory Pattern',
+        explanation: 'Creating multiple module instances with factory functions',
         example: `
 // Module Factory Pattern
 function createShoppingCart() {
@@ -548,10 +548,10 @@ console.log('Cart 1 after checkout:', cart1.isEmpty()); // true
 console.log('Cart 2 still has items:', cart2.getItemCount()); // 3
         `
       },
-      
+
       {
-        name: "Namespace Module Pattern",
-        explanation: "Organizing multiple modules under a single namespace",
+        name: 'Namespace Module Pattern',
+        explanation: 'Organizing multiple modules under a single namespace',
         example: `
 // Namespace Module Pattern
 const MyApp = MyApp || {};
@@ -760,11 +760,11 @@ console.log('Available modules:', Object.keys(MyApp));
       }
     ]
   },
-  
+
   practicalExamples: [
     {
-      title: "Task Management System Module",
-      description: "A complete task management system using the module pattern",
+      title: 'Task Management System Module',
+      description: 'A complete task management system using the module pattern',
       code: `
 // Task Management System using Module Pattern
 const TaskManager = (function() {
@@ -1165,13 +1165,14 @@ console.log('Export data structure:', Object.keys(exportData));
       `
     }
   ],
-  
+
   exercises: [
     {
-      id: "module-basic",
-      title: "Create a Simple Bank Account Module",
-      difficulty: "easy",
-      prompt: "Create a module that manages a bank account with deposit, withdraw, and balance checking functionality. Keep the balance private.",
+      id: 'module-basic',
+      title: 'Create a Simple Bank Account Module',
+      difficulty: 'easy',
+      prompt:
+        'Create a module that manages a bank account with deposit, withdraw, and balance checking functionality. Keep the balance private.',
       solution: `
 const BankAccount = (function() {
   let balance = 0;
@@ -1232,12 +1233,13 @@ BankAccount.deposit(50).withdraw(30);
 console.log('Account info:', BankAccount.getAccountInfo());
       `
     },
-    
+
     {
-      id: "module-advanced",
-      title: "Library Management System",
-      difficulty: "hard",
-      prompt: "Create a comprehensive library system with books, members, and borrowing functionality using the module pattern.",
+      id: 'module-advanced',
+      title: 'Library Management System',
+      difficulty: 'hard',
+      prompt:
+        'Create a comprehensive library system with books, members, and borrowing functionality using the module pattern.',
       solution: `
 const LibrarySystem = (function() {
   // Private data stores
@@ -1560,54 +1562,59 @@ console.log("Updated stats:", library.getLibraryStats());
       `
     }
   ],
-  
+
   quiz: [
     {
-      question: "What is the main benefit of the Module Pattern?",
+      question: 'What is the main benefit of the Module Pattern?',
       options: [
-        "Faster code execution",
-        "Smaller file sizes",
-        "Encapsulation and privacy",
-        "Better browser compatibility"
+        'Faster code execution',
+        'Smaller file sizes',
+        'Encapsulation and privacy',
+        'Better browser compatibility'
       ],
       correct: 2,
-      explanation: "The Module Pattern's main benefit is encapsulation - it allows you to create private variables and functions while exposing only what's necessary through a public interface."
+      explanation:
+        "The Module Pattern's main benefit is encapsulation - it allows you to create private variables and functions while exposing only what's necessary through a public interface."
     },
-    
+
     {
-      question: "What does IIFE stand for in the context of the Module Pattern?",
+      question: 'What does IIFE stand for in the context of the Module Pattern?',
       options: [
-        "Immediately Invoked Function Expression",
-        "Internal Interface Function Extension",
-        "Integrated Input Function Event",
-        "Independent Instance Function Execution"
+        'Immediately Invoked Function Expression',
+        'Internal Interface Function Extension',
+        'Integrated Input Function Event',
+        'Independent Instance Function Execution'
       ],
       correct: 0,
-      explanation: "IIFE stands for Immediately Invoked Function Expression, which is used to create a private scope for module variables and functions."
+      explanation:
+        'IIFE stands for Immediately Invoked Function Expression, which is used to create a private scope for module variables and functions.'
     },
-    
+
     {
-      question: "In the Revealing Module Pattern, when are functions and variables defined?",
+      question: 'In the Revealing Module Pattern, when are functions and variables defined?',
       options: [
-        "In the returned object",
-        "Privately within the module, then selectively exposed",
-        "As global variables",
-        "Only when called by external code"
+        'In the returned object',
+        'Privately within the module, then selectively exposed',
+        'As global variables',
+        'Only when called by external code'
       ],
       correct: 1,
-      explanation: "In the Revealing Module Pattern, all functions and variables are defined privately within the module scope, and then selectively exposed through the returned object."
+      explanation:
+        'In the Revealing Module Pattern, all functions and variables are defined privately within the module scope, and then selectively exposed through the returned object.'
     },
-    
+
     {
-      question: "What happens to private variables in a module when multiple instances are created using a factory function?",
+      question:
+        'What happens to private variables in a module when multiple instances are created using a factory function?',
       options: [
-        "They are shared between all instances",
-        "They are global to the application",
-        "Each instance has its own copy",
-        "They become undefined"
+        'They are shared between all instances',
+        'They are global to the application',
+        'Each instance has its own copy',
+        'They become undefined'
       ],
       correct: 2,
-      explanation: "When using a factory function to create module instances, each instance gets its own copy of the private variables, providing proper encapsulation."
+      explanation:
+        'When using a factory function to create module instances, each instance gets its own copy of the private variables, providing proper encapsulation.'
     }
   ]
 };

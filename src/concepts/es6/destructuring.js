@@ -2,20 +2,20 @@
 // ES6 Destructuring - Array and Object destructuring patterns
 
 export const destructuringConfig = {
-  title: "ES6 Destructuring",
-  description: "Master destructuring assignment for arrays and objects",
-  difficulty: "intermediate",
-  estimatedTime: "25 minutes"
+  title: 'ES6 Destructuring',
+  description: 'Master destructuring assignment for arrays and objects',
+  difficulty: 'intermediate',
+  estimatedTime: '25 minutes'
 };
 
 // Object Destructuring
 export const objectDestructuring = {
-  concept: "Object Destructuring",
+  concept: 'Object Destructuring',
   explanation: `
     Object destructuring allows you to extract properties from objects into distinct variables.
     It provides a clean and readable way to access object properties.
   `,
-  
+
   examples: {
     basicObjectDestructuring: `
 // Basic object destructuring
@@ -51,7 +51,7 @@ console.log(country, phone); // USA, Not provided
 const { name: fullName, department = 'Engineering' } = user;
 console.log(fullName, department); // Alice Johnson, Engineering
     `,
-    
+
     nestedObjectDestructuring: `
 // Nested object destructuring
 const employee = {
@@ -118,7 +118,7 @@ const {
 
 console.log(country, postal, manager); // USA, 02101, TBD
     `,
-    
+
     dynamicPropertyDestructuring: `
 // Dynamic property destructuring
 const config = {
@@ -167,12 +167,12 @@ console.log(getConfigValue(config, 'maxConnections', 10)); // 10
 
 // Array Destructuring
 export const arrayDestructuring = {
-  concept: "Array Destructuring",
+  concept: 'Array Destructuring',
   explanation: `
     Array destructuring allows you to unpack values from arrays into distinct variables.
     It's based on position rather than property names.
   `,
-  
+
   examples: {
     basicArrayDestructuring: `
 // Basic array destructuring
@@ -208,7 +208,7 @@ const empty = [];
 const [a = 'default', b = 'fallback'] = empty;
 console.log(a, b); // default, fallback
     `,
-    
+
     advancedArrayDestructuring: `
 // Advanced array destructuring patterns
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -257,7 +257,7 @@ function getCoordinates() {
 const [latitude, longitude] = getCoordinates();
 console.log(\`Lat: \${latitude}, Lng: \${longitude}\`); // Lat: 40.7128, Lng: -74.0060
     `,
-    
+
     mixedDestructuring: `
 // Mixed array and object destructuring
 const response = {
@@ -324,12 +324,12 @@ processOrder(order);
 
 // Function Parameter Destructuring
 export const parameterDestructuring = {
-  concept: "Function Parameter Destructuring",
+  concept: 'Function Parameter Destructuring',
   explanation: `
     Destructuring can be used directly in function parameters to extract values
     from objects or arrays passed as arguments.
   `,
-  
+
   examples: {
     objectParameterDestructuring: `
 // Object parameter destructuring
@@ -406,7 +406,7 @@ const apiCall = handleApiRequest({
   headers: { 'Content-Type': 'application/json' }
 });
     `,
-    
+
     arrayParameterDestructuring: `
 // Array parameter destructuring
 function calculateDistance([x1, y1], [x2, y2]) {
@@ -452,7 +452,7 @@ const matrixB = [[5, 6], [7, 8]];
 const product = multiplyMatrices(matrixA, matrixB);
 console.log(product); // [[19, 22], [43, 50]]
     `,
-    
+
     mixedParameterDestructuring: `
 // Mixed parameter destructuring
 function createChart({
@@ -539,12 +539,12 @@ console.log(apiError.message, apiError.status);
 
 // Practical Destructuring Patterns
 export const practicalPatterns = {
-  concept: "Practical Destructuring Patterns",
+  concept: 'Practical Destructuring Patterns',
   explanation: `
     Real-world examples and patterns where destructuring provides clean,
     readable solutions to common programming tasks.
   `,
-  
+
   examples: {
     reactPatterns: `
 // React-style destructuring patterns (conceptual examples)
@@ -606,7 +606,7 @@ function useState(initialState) {
   return [state, setState];
 }
     `,
-    
+
     apiResponseHandling: `
 // API response handling with destructuring
 async function fetchUserDashboard(userId) {
@@ -684,7 +684,7 @@ function processPaginatedResponse({
   };
 }
     `,
-    
+
     configurationManagement: `
 // Configuration management with destructuring
 function initializeApp({
@@ -780,7 +780,7 @@ function processQueryResults({
   };
 }
     `,
-    
+
     eventHandling: `
 // Event handling with destructuring
 function handleFormSubmit({

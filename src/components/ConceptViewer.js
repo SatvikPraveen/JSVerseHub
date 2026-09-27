@@ -6,93 +6,92 @@
  */
 
 class ConceptViewer {
-    constructor(options = {}) {
-        this.options = {
-            container: options.container || null,
-            autoPlay: options.autoPlay || false,
-            showProgress: options.showProgress !== false,
-            enableBookmarks: options.enableBookmarks !== false,
-            ...options
-        };
+  constructor(options = {}) {
+    this.options = {
+      container: options.container || null,
+      autoPlay: options.autoPlay || false,
+      showProgress: options.showProgress !== false,
+      enableBookmarks: options.enableBookmarks !== false,
+      ...options
+    };
 
-        this.currentConcept = null;
-        this.currentSection = 0;
-        this.currentExercise = 0;
-        this.currentQuiz = null;
-        this.bookmarks = [];
-        this.isInitialized = false;
-        this.modal = null;
+    this.currentConcept = null;
+    this.currentSection = 0;
+    this.currentExercise = 0;
+    this.currentQuiz = null;
+    this.bookmarks = [];
+    this.isInitialized = false;
+    this.modal = null;
 
-        this.init();
+    this.init();
+  }
+
+  /**
+   * Initialize the concept viewer
+   */
+  init() {
+    this.loadBookmarks();
+    this.isInitialized = true;
+
+    // Listen for state changes
+    StateManager.addListener((event, data) => {
+      this.handleStateChange(event, data);
+    });
+
+    JSVLogger.info('📚 ConceptViewer initialized');
+  }
+
+  /**
+   * Show concept in modal
+   */
+  async showConcept(conceptId, options = {}) {
+    try {
+      JSVLogger.info(`Loading concept: ${conceptId}`);
+
+      // Show loading modal
+      const loadingModal = Modal.loading(`Loading ${conceptId} concept...`);
+
+      // Load concept data
+      const conceptData = await ConceptLoader.loadConcept(conceptId);
+      this.currentConcept = conceptData;
+      this.currentSection = 0;
+      if (window.LearningModel) {
+        window.LearningModel.conceptViewed(conceptId, conceptData);
+      }
+
+      // Hide loading modal
+      loadingModal.hide();
+
+      // Create concept modal
+      this.modal = new Modal({
+        title: conceptData.overview.title,
+        content: this.generateConceptContent(conceptData),
+        size: 'large',
+        className: 'concept-modal',
+        onHide: () => {
+          this.onConceptClose();
+        },
+        ...options
+      });
+
+      this.modal.setFooter(this.generateConceptFooter(conceptData));
+      this.modal.show();
+
+      // Initialize concept features
+      this.initializeConceptFeatures();
+
+      JSVLogger.success(`Concept loaded: ${conceptId}`);
+    } catch (error) {
+      JSVLogger.error('Failed to load concept:', error);
+      Modal.alert('Error', 'Failed to load concept. Please try again.');
     }
+  }
 
-    /**
-     * Initialize the concept viewer
-     */
-    init() {
-        this.loadBookmarks();
-        this.isInitialized = true;
-
-        // Listen for state changes
-        StateManager.addListener((event, data) => {
-            this.handleStateChange(event, data);
-        });
-
-        JSVLogger.info('📚 ConceptViewer initialized');
-    }
-
-    /**
-     * Show concept in modal
-     */
-    async showConcept(conceptId, options = {}) {
-        try {
-            JSVLogger.info(`Loading concept: ${conceptId}`);
-            
-            // Show loading modal
-            const loadingModal = Modal.loading(`Loading ${conceptId} concept...`);
-            
-            // Load concept data
-            const conceptData = await ConceptLoader.loadConcept(conceptId);
-            this.currentConcept = conceptData;
-            this.currentSection = 0;
-            if (window.LearningModel) {
-                window.LearningModel.conceptViewed(conceptId, conceptData);
-            }
-
-            // Hide loading modal
-            loadingModal.hide();
-
-            // Create concept modal
-            this.modal = new Modal({
-                title: conceptData.overview.title,
-                content: this.generateConceptContent(conceptData),
-                size: 'large',
-                className: 'concept-modal',
-                onHide: () => {
-                    this.onConceptClose();
-                },
-                ...options
-            });
-
-            this.modal.setFooter(this.generateConceptFooter(conceptData));
-            this.modal.show();
-
-            // Initialize concept features
-            this.initializeConceptFeatures();
-
-            JSVLogger.success(`Concept loaded: ${conceptId}`);
-
-        } catch (error) {
-            JSVLogger.error('Failed to load concept:', error);
-            Modal.alert('Error', 'Failed to load concept. Please try again.');
-        }
-    }
-
-    /**
-     * Generate concept content HTML
-     */
-    generateConceptContent(conceptData) {
-        return `
+  /**
+   * Generate concept content HTML
+   */
+  generateConceptContent(conceptData) {
+    return `
             <div class="concept-viewer-container">
                 ${this.generateConceptHeader(conceptData)}
                 ${this.generateProgressIndicator(conceptData)}
@@ -101,15 +100,15 @@ class ConceptViewer {
                 ${this.generateSidebar(conceptData)}
             </div>
         `;
-    }
+  }
 
-    /**
-     * Generate concept header
-     */
-    generateConceptHeader(conceptData) {
-        const isBookmarked = this.isBookmarked(conceptData.id);
-        
-        return `
+  /**
+   * Generate concept header
+   */
+  generateConceptHeader(conceptData) {
+    const isBookmarked = this.isBookmarked(conceptData.id);
+
+    return `
             <div class="concept-header">
                 <div class="concept-meta-info">
                     <div class="concept-badges">
@@ -139,56 +138,64 @@ class ConceptViewer {
                 ${this.generatePrerequisites(conceptData.overview.prerequisites)}
             </div>
         `;
-    }
+  }
 
-    /**
-     * Generate learning objectives
-     */
-    generateLearningObjectives(objectives) {
-        if (!objectives || objectives.length === 0) return '';
+  /**
+   * Generate learning objectives
+   */
+  generateLearningObjectives(objectives) {
+    if (!objectives || objectives.length === 0) return '';
 
-        return `
+    return `
             <div class="learning-objectives">
                 <h4>🎯 Learning Objectives</h4>
                 <ul class="objectives-list">
-                    ${objectives.map(objective => `
+                    ${objectives
+                      .map(
+                        objective => `
                         <li class="objective-item">
                             <span class="objective-check">✓</span>
                             ${objective}
                         </li>
-                    `).join('')}
+                    `
+                      )
+                      .join('')}
                 </ul>
             </div>
         `;
+  }
+
+  /**
+   * Generate prerequisites
+   */
+  generatePrerequisites(prerequisites) {
+    if (!prerequisites || prerequisites.length === 0) {
+      return '<div class="prerequisites"><span class="no-prereq">📌 No prerequisites required</span></div>';
     }
 
-    /**
-     * Generate prerequisites
-     */
-    generatePrerequisites(prerequisites) {
-        if (!prerequisites || prerequisites.length === 0) {
-            return '<div class="prerequisites"><span class="no-prereq">📌 No prerequisites required</span></div>';
-        }
-
-        return `
+    return `
             <div class="prerequisites">
                 <h4>📋 Prerequisites</h4>
                 <div class="prereq-list">
-                    ${prerequisites.map(prereq => `
+                    ${prerequisites
+                      .map(
+                        prereq => `
                         <span class="prereq-item">${prereq}</span>
-                    `).join('')}
+                    `
+                      )
+                      .join('')}
                 </div>
             </div>
         `;
-    }
+  }
 
-    /**
-     * Generate progress indicator
-     */
-    generateProgressIndicator(conceptData) {
-        const progress = this.calculateConceptProgress(conceptData.id);
-        
-        return `
+  /**
+   * Generate progress indicator
+   */
+  generateProgressIndicator(conceptData) {
+    const progress = this.calculateConceptProgress(conceptData.id);
+
+    return `
             <div class="concept-progress-container">
                 <div class="progress-info">
                     <span class="progress-label">Progress</span>
@@ -206,13 +213,13 @@ class ConceptViewer {
                 </div>
             </div>
         `;
-    }
+  }
 
-    /**
-     * Generate navigation tabs
-     */
-    generateNavigationTabs(conceptData) {
-        return `
+  /**
+   * Generate navigation tabs
+   */
+  generateNavigationTabs(conceptData) {
+    return `
             <div class="concept-navigation">
                 <div class="nav-tabs">
                     <button class="nav-tab active" data-tab="content">
@@ -230,13 +237,13 @@ class ConceptViewer {
                 </div>
             </div>
         `;
-    }
+  }
 
-    /**
-     * Generate content area
-     */
-    generateContentArea(conceptData) {
-        return `
+  /**
+   * Generate content area
+   */
+  generateContentArea(conceptData) {
+    return `
             <div class="concept-content-area">
                 ${this.generateContentTab(conceptData)}
                 ${this.generateExercisesTab(conceptData)}
@@ -244,26 +251,32 @@ class ConceptViewer {
                 ${this.generateNotesTab(conceptData)}
             </div>
         `;
-    }
+  }
 
-    /**
-     * Generate content tab
-     */
-    generateContentTab(conceptData) {
-        return `
+  /**
+   * Generate content tab
+   */
+  generateContentTab(conceptData) {
+    return `
             <div class="tab-content active" data-tab="content">
                 <div class="sections-navigation">
                     <div class="sections-list">
-                        ${conceptData.sections.map((section, index) => `
+                        ${conceptData.sections
+                          .map(
+                            (section, index) => `
                             <button class="section-nav-item ${index === 0 ? 'active' : ''}" 
                                     data-section="${index}">
                                 <span class="section-number">${index + 1}</span>
                                 <span class="section-title">${section.title}</span>
-                                <span class="section-status ${this.isSectionCompleted(conceptData.id, index) ? 'completed' : 'pending'}">
+                                <span class="section-status ${
+                                  this.isSectionCompleted(conceptData.id, index) ? 'completed' : 'pending'
+                                }">
                                     ${this.isSectionCompleted(conceptData.id, index) ? '✓' : '○'}
                                 </span>
                             </button>
-                        `).join('')}
+                        `
+                          )
+                          .join('')}
                     </div>
                 </div>
                 <div class="section-content">
@@ -282,13 +295,13 @@ class ConceptViewer {
                 </div>
             </div>
         `;
-    }
+  }
 
-    /**
-     * Generate section content
-     */
-    generateSectionContent(section, index) {
-        return `
+  /**
+   * Generate section content
+   */
+  generateSectionContent(section, index) {
+    return `
             <div class="section-content-wrapper">
                 <div class="section-header">
                     <h3 class="section-title">${section.title}</h3>
@@ -312,9 +325,13 @@ class ConceptViewer {
                     <div class="key-points">
                         <h4>🔑 Key Points</h4>
                         <ul class="key-points-list">
-                            ${section.keyPoints.map(point => `
+                            ${section.keyPoints
+                              .map(
+                                point => `
                                 <li class="key-point">${point}</li>
-                            `).join('')}
+                            `
+                              )
+                              .join('')}
                         </ul>
                     </div>
                     
@@ -322,30 +339,38 @@ class ConceptViewer {
                         <button class="btn btn-success complete-section-btn" 
                                 data-section="${index}"
                                 ${this.isSectionCompleted(this.currentConcept?.id, index) ? 'disabled' : ''}>
-                            ${this.isSectionCompleted(this.currentConcept?.id, index) ? '✓ Completed' : 'Mark as Complete'}
+                            ${
+                              this.isSectionCompleted(this.currentConcept?.id, index)
+                                ? '✓ Completed'
+                                : 'Mark as Complete'
+                            }
                         </button>
                     </div>
                 </div>
             </div>
         `;
-    }
+  }
 
-    /**
-     * Generate code examples
-     */
-    generateCodeExamples(examples) {
-        if (!examples || examples.length === 0) return '';
+  /**
+   * Generate code examples
+   */
+  generateCodeExamples(examples) {
+    if (!examples || examples.length === 0) return '';
 
-        return `
+    return `
             <div class="code-examples-section">
                 <h4>💻 Code Examples</h4>
                 <div class="code-examples">
-                    ${examples.map((example, index) => `
+                    ${examples
+                      .map(
+                        (example, index) => `
                         <div class="code-example">
                             <div class="code-header">
                                 <span class="code-title">${example.title || `Example ${index + 1}`}</span>
                                 <div class="code-actions">
-                                    <button class="btn-small copy-code-btn" data-code="${this.escapeHtml(example.code)}">
+                                    <button class="btn-small copy-code-btn" data-code="${this.escapeHtml(
+                                      example.code
+                                    )}">
                                         📋 Copy
                                     </button>
                                     <button class="btn-small run-code-btn" data-code="${this.escapeHtml(example.code)}">
@@ -356,30 +381,38 @@ class ConceptViewer {
                             <div class="code-content">
                                 <pre><code class="language-javascript">${this.escapeHtml(example.code)}</code></pre>
                             </div>
-                            ${example.explanation ? `
+                            ${
+                              example.explanation
+                                ? `
                                 <div class="code-explanation">
                                     <p>${example.explanation}</p>
                                 </div>
-                            ` : ''}
+                            `
+                                : ''
+                            }
                         </div>
-                    `).join('')}
+                    `
+                      )
+                      .join('')}
                 </div>
             </div>
         `;
-    }
+  }
 
-    /**
-     * Generate exercises tab
-     */
-    generateExercisesTab(conceptData) {
-        return `
+  /**
+   * Generate exercises tab
+   */
+  generateExercisesTab(conceptData) {
+    return `
             <div class="tab-content" data-tab="exercises">
                 <div class="exercises-header">
                     <h3>🎯 Practice Exercises</h3>
                     <p>Apply your knowledge with these hands-on exercises.</p>
                 </div>
                 <div class="exercises-list">
-                    ${conceptData.exercises.map((exercise, index) => `
+                    ${conceptData.exercises
+                      .map(
+                        (exercise, index) => `
                         <div class="exercise-card">
                             <div class="exercise-header">
                                 <h4 class="exercise-title">${exercise.title}</h4>
@@ -412,7 +445,9 @@ class ConceptViewer {
                                     
                                     <div class="workspace-content">
                                         <div class="workspace-panel active" data-workspace="starter">
-                                            <pre><code class="language-javascript">${this.escapeHtml(exercise.starterCode)}</code></pre>
+                                            <pre><code class="language-javascript">${this.escapeHtml(
+                                              exercise.starterCode
+                                            )}</code></pre>
                                             <button class="btn btn-primary run-exercise-btn" 
                                                     data-exercise="${index}">
                                                 ▶️ Run Code
@@ -420,13 +455,17 @@ class ConceptViewer {
                                         </div>
                                         
                                         <div class="workspace-panel" data-workspace="solution">
-                                            <pre><code class="language-javascript">${this.escapeHtml(exercise.solution)}</code></pre>
+                                            <pre><code class="language-javascript">${this.escapeHtml(
+                                              exercise.solution
+                                            )}</code></pre>
                                             <p class="solution-note">💡 Try to solve it yourself first!</p>
                                         </div>
                                         
                                         <div class="workspace-panel" data-workspace="hints">
                                             <div class="hints-list">
-                                                ${exercise.hints.map((hint, hintIndex) => `
+                                                ${exercise.hints
+                                                  .map(
+                                                    (hint, hintIndex) => `
                                                     <div class="hint-item">
                                                         <button class="hint-toggle" data-hint="${hintIndex}">
                                                             💡 Hint ${hintIndex + 1}
@@ -435,7 +474,9 @@ class ConceptViewer {
                                                             <p>${hint}</p>
                                                         </div>
                                                     </div>
-                                                `).join('')}
+                                                `
+                                                  )
+                                                  .join('')}
                                             </div>
                                         </div>
                                     </div>
@@ -453,17 +494,19 @@ class ConceptViewer {
                                 </div>
                             </div>
                         </div>
-                    `).join('')}
+                    `
+                      )
+                      .join('')}
                 </div>
             </div>
         `;
-    }
+  }
 
-    /**
-     * Generate quiz tab
-     */
-    generateQuizTab(conceptData) {
-        return `
+  /**
+   * Generate quiz tab
+   */
+  generateQuizTab(conceptData) {
+    return `
             <div class="tab-content" data-tab="quiz">
                 <div class="quiz-header">
                     <h3>🧠 Knowledge Quiz</h3>
@@ -482,7 +525,9 @@ class ConceptViewer {
                             <ul>
                                 <li>Answer all questions to the best of your ability</li>
                                 <li>You can review and change your answers before submitting</li>
-                                <li>Each question is worth ${Math.round(conceptData.quiz.totalPoints / conceptData.quiz.questions.length)} points</li>
+                                <li>Each question is worth ${Math.round(
+                                  conceptData.quiz.totalPoints / conceptData.quiz.questions.length
+                                )} points</li>
                                 <li>You need ${conceptData.quiz.passingScore}% to pass this quiz</li>
                             </ul>
                         </div>
@@ -493,15 +538,15 @@ class ConceptViewer {
                 </div>
             </div>
         `;
-    }
+  }
 
-    /**
-     * Generate notes tab
-     */
-    generateNotesTab(conceptData) {
-        const notes = this.getUserNotes(conceptData.id);
-        
-        return `
+  /**
+   * Generate notes tab
+   */
+  generateNotesTab(conceptData) {
+    const notes = this.getUserNotes(conceptData.id);
+
+    return `
             <div class="tab-content" data-tab="notes">
                 <div class="notes-header">
                     <h3>📝 Personal Notes</h3>
@@ -548,26 +593,32 @@ class ConceptViewer {
                 </div>
             </div>
         `;
-    }
+  }
 
-    /**
-     * Generate sidebar
-     */
-    generateSidebar(conceptData) {
-        return `
+  /**
+   * Generate sidebar
+   */
+  generateSidebar(conceptData) {
+    return `
             <div class="concept-sidebar">
                 <div class="sidebar-section">
                     <h4>📖 Table of Contents</h4>
                     <div class="toc-list">
-                        ${conceptData.sections.map((section, index) => `
+                        ${conceptData.sections
+                          .map(
+                            (section, index) => `
                             <a href="#section-${index}" class="toc-item">
                                 <span class="toc-number">${index + 1}.</span>
                                 <span class="toc-title">${section.title}</span>
-                                <span class="toc-status ${this.isSectionCompleted(conceptData.id, index) ? 'completed' : ''}">
+                                <span class="toc-status ${
+                                  this.isSectionCompleted(conceptData.id, index) ? 'completed' : ''
+                                }">
                                     ${this.isSectionCompleted(conceptData.id, index) ? '✓' : ''}
                                 </span>
                             </a>
-                        `).join('')}
+                        `
+                          )
+                          .join('')}
                     </div>
                 </div>
                 
@@ -598,372 +649,379 @@ class ConceptViewer {
                 <div class="sidebar-section">
                     <h4>🔗 Related Concepts</h4>
                     <div class="related-concepts">
-                        ${this.getRelatedConcepts(conceptData.id).map(concept => `
+                        ${this.getRelatedConcepts(conceptData.id)
+                          .map(
+                            concept => `
                             <a href="#" class="related-concept-link" data-concept="${concept.id}">
                                 <span class="related-icon">${concept.emoji}</span>
                                 <span class="related-title">${concept.title}</span>
                             </a>
-                        `).join('')}
+                        `
+                          )
+                          .join('')}
                     </div>
                 </div>
             </div>
         `;
-    }
+  }
 
-    /**
-     * Generate concept footer buttons
-     */
-    generateConceptFooter(conceptData) {
-        return [
-            {
-                text: '📚 Continue Learning',
-                className: 'btn-primary',
-                handler: () => {
-                    this.continueLearning();
-                }
-            },
-            {
-                text: '🧠 Take Quiz',
-                className: 'btn-secondary',
-                handler: () => {
-                    this.switchToQuizTab();
-                }
-            },
-            {
-                text: '🔖 Bookmark',
-                className: 'btn-secondary',
-                handler: () => {
-                    this.toggleBookmark(conceptData.id);
-                }
-            }
-        ];
-    }
-
-    /**
-     * Initialize concept features after modal is shown
-     */
-    initializeConceptFeatures() {
-        this.setupTabNavigation();
-        this.setupSectionNavigation();
-        this.setupCodeInteractions();
-        this.setupExerciseInteractions();
-        this.setupQuizInteractions();
-        this.setupNotesEditor();
-        this.setupBookmarkSystem();
-        this.initializeAutoSave();
-    }
-
-    /**
-     * Setup tab navigation
-     */
-    setupTabNavigation() {
-        const tabButtons = this.modal.element.querySelectorAll('.nav-tab');
-        const tabContents = this.modal.element.querySelectorAll('.tab-content');
-
-        tabButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                const tabName = button.dataset.tab;
-                
-                // Update active tab
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                tabContents.forEach(content => content.classList.remove('active'));
-                
-                button.classList.add('active');
-                const targetContent = this.modal.element.querySelector(`[data-tab="${tabName}"]`);
-                if (targetContent) {
-                    targetContent.classList.add('active');
-                }
-
-                // Track tab usage
-                this.trackTabUsage(tabName);
-            });
-        });
-    }
-
-    /**
-     * Setup section navigation
-     */
-    setupSectionNavigation() {
-        const prevBtn = this.modal.element.querySelector('#prev-section');
-        const nextBtn = this.modal.element.querySelector('#next-section');
-        const sectionNavItems = this.modal.element.querySelectorAll('.section-nav-item');
-
-        // Previous/Next navigation
-        prevBtn?.addEventListener('click', () => this.navigateSection(-1));
-        nextBtn?.addEventListener('click', () => this.navigateSection(1));
-
-        // Direct section navigation
-        sectionNavItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                const sectionIndex = parseInt(item.dataset.section);
-                this.navigateToSection(sectionIndex);
-            });
-        });
-
-        // Complete section buttons
-        const completeBtns = this.modal.element.querySelectorAll('.complete-section-btn');
-        completeBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const sectionIndex = parseInt(btn.dataset.section);
-                this.completeSection(sectionIndex);
-            });
-        });
-    }
-
-    /**
-     * Setup code interactions
-     */
-    setupCodeInteractions() {
-        // Copy code buttons
-        const copyBtns = this.modal.element.querySelectorAll('.copy-code-btn');
-        copyBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const code = btn.dataset.code;
-                this.copyToClipboard(code);
-                this.showTemporaryMessage('Code copied!', btn);
-            });
-        });
-
-        // Run code buttons
-        const runBtns = this.modal.element.querySelectorAll('.run-code-btn');
-        runBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const code = btn.dataset.code;
-                this.runCode(code);
-            });
-        });
-    }
-
-    /**
-     * Setup exercise interactions
-     */
-    setupExerciseInteractions() {
-        // Workspace tab navigation
-        const workspaceTabs = this.modal.element.querySelectorAll('.workspace-tab');
-        workspaceTabs.forEach(tab => {
-            tab.addEventListener('click', (e) => {
-                const workspace = tab.dataset.workspace;
-                const container = tab.closest('.exercise-workspace');
-                
-                // Update active workspace
-                container.querySelectorAll('.workspace-tab').forEach(t => t.classList.remove('active'));
-                container.querySelectorAll('.workspace-panel').forEach(p => p.classList.remove('active'));
-                
-                tab.classList.add('active');
-                container.querySelector(`[data-workspace="${workspace}"]`).classList.add('active');
-            });
-        });
-
-        // Hint toggles
-        const hintToggles = this.modal.element.querySelectorAll('.hint-toggle');
-        hintToggles.forEach(toggle => {
-            toggle.addEventListener('click', (e) => {
-                const hintContent = toggle.nextElementSibling;
-                hintContent.classList.toggle('hidden');
-                toggle.textContent = hintContent.classList.contains('hidden') 
-                    ? toggle.textContent.replace('🔽', '💡')
-                    : toggle.textContent.replace('💡', '🔽');
-            });
-        });
-
-        // Exercise completion
-        const completeExerciseBtns = this.modal.element.querySelectorAll('.complete-exercise-btn');
-        completeExerciseBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const exerciseIndex = parseInt(btn.dataset.exercise);
-                this.completeExercise(exerciseIndex);
-            });
-        });
-    }
-
-    /**
-     * Setup quiz interactions
-     */
-    setupQuizInteractions() {
-        const startQuizBtn = this.modal.element.querySelector('.start-quiz-btn');
-        startQuizBtn?.addEventListener('click', () => {
-            this.startQuiz();
-        });
-    }
-
-    /**
-     * Setup notes editor
-     */
-    setupNotesEditor() {
-        const notesTextarea = this.modal.element.querySelector('.notes-textarea');
-        const wordCount = this.modal.element.querySelector('.word-count');
-        
-        if (notesTextarea) {
-            // Word count update
-            notesTextarea.addEventListener('input', (e) => {
-                const words = e.target.value.trim().split(/\s+/).filter(word => word.length > 0).length;
-                if (wordCount) {
-                    wordCount.textContent = `${words} word${words !== 1 ? 's' : ''}`;
-                }
-                
-                // Auto-save
-                this.autoSaveNotes();
-            });
-
-            // Editor toolbar
-            const editorBtns = this.modal.element.querySelectorAll('.editor-btn');
-            editorBtns.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const action = btn.dataset.action;
-                    this.handleEditorAction(action, notesTextarea);
-                });
-            });
+  /**
+   * Generate concept footer buttons
+   */
+  generateConceptFooter(conceptData) {
+    return [
+      {
+        text: '📚 Continue Learning',
+        className: 'btn-primary',
+        handler: () => {
+          this.continueLearning();
         }
-    }
+      },
+      {
+        text: '🧠 Take Quiz',
+        className: 'btn-secondary',
+        handler: () => {
+          this.switchToQuizTab();
+        }
+      },
+      {
+        text: '🔖 Bookmark',
+        className: 'btn-secondary',
+        handler: () => {
+          this.toggleBookmark(conceptData.id);
+        }
+      }
+    ];
+  }
 
-    /**
-     * Setup bookmark system
-     */
-    setupBookmarkSystem() {
-        const bookmarkBtn = this.modal.element.querySelector('.bookmark-btn');
-        bookmarkBtn?.addEventListener('click', () => {
-            this.toggleBookmark(this.currentConcept.id);
+  /**
+   * Initialize concept features after modal is shown
+   */
+  initializeConceptFeatures() {
+    this.setupTabNavigation();
+    this.setupSectionNavigation();
+    this.setupCodeInteractions();
+    this.setupExerciseInteractions();
+    this.setupQuizInteractions();
+    this.setupNotesEditor();
+    this.setupBookmarkSystem();
+    this.initializeAutoSave();
+  }
+
+  /**
+   * Setup tab navigation
+   */
+  setupTabNavigation() {
+    const tabButtons = this.modal.element.querySelectorAll('.nav-tab');
+    const tabContents = this.modal.element.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+      button.addEventListener('click', _e => {
+        const tabName = button.dataset.tab;
+
+        // Update active tab
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        tabContents.forEach(content => content.classList.remove('active'));
+
+        button.classList.add('active');
+        const targetContent = this.modal.element.querySelector(`[data-tab="${tabName}"]`);
+        if (targetContent) {
+          targetContent.classList.add('active');
+        }
+
+        // Track tab usage
+        this.trackTabUsage(tabName);
+      });
+    });
+  }
+
+  /**
+   * Setup section navigation
+   */
+  setupSectionNavigation() {
+    const prevBtn = this.modal.element.querySelector('#prev-section');
+    const nextBtn = this.modal.element.querySelector('#next-section');
+    const sectionNavItems = this.modal.element.querySelectorAll('.section-nav-item');
+
+    // Previous/Next navigation
+    prevBtn?.addEventListener('click', () => this.navigateSection(-1));
+    nextBtn?.addEventListener('click', () => this.navigateSection(1));
+
+    // Direct section navigation
+    sectionNavItems.forEach(item => {
+      item.addEventListener('click', _e => {
+        const sectionIndex = parseInt(item.dataset.section, 10);
+        this.navigateToSection(sectionIndex);
+      });
+    });
+
+    // Complete section buttons
+    const completeBtns = this.modal.element.querySelectorAll('.complete-section-btn');
+    completeBtns.forEach(btn => {
+      btn.addEventListener('click', _e => {
+        const sectionIndex = parseInt(btn.dataset.section, 10);
+        this.completeSection(sectionIndex);
+      });
+    });
+  }
+
+  /**
+   * Setup code interactions
+   */
+  setupCodeInteractions() {
+    // Copy code buttons
+    const copyBtns = this.modal.element.querySelectorAll('.copy-code-btn');
+    copyBtns.forEach(btn => {
+      btn.addEventListener('click', _e => {
+        const { code } = btn.dataset;
+        this.copyToClipboard(code);
+        this.showTemporaryMessage('Code copied!', btn);
+      });
+    });
+
+    // Run code buttons
+    const runBtns = this.modal.element.querySelectorAll('.run-code-btn');
+    runBtns.forEach(btn => {
+      btn.addEventListener('click', _e => {
+        const { code } = btn.dataset;
+        this.runCode(code);
+      });
+    });
+  }
+
+  /**
+   * Setup exercise interactions
+   */
+  setupExerciseInteractions() {
+    // Workspace tab navigation
+    const workspaceTabs = this.modal.element.querySelectorAll('.workspace-tab');
+    workspaceTabs.forEach(tab => {
+      tab.addEventListener('click', _e => {
+        const { workspace } = tab.dataset;
+        const container = tab.closest('.exercise-workspace');
+
+        // Update active workspace
+        container.querySelectorAll('.workspace-tab').forEach(t => t.classList.remove('active'));
+        container.querySelectorAll('.workspace-panel').forEach(p => p.classList.remove('active'));
+
+        tab.classList.add('active');
+        container.querySelector(`[data-workspace="${workspace}"]`).classList.add('active');
+      });
+    });
+
+    // Hint toggles
+    const hintToggles = this.modal.element.querySelectorAll('.hint-toggle');
+    hintToggles.forEach(toggle => {
+      toggle.addEventListener('click', _e => {
+        const hintContent = toggle.nextElementSibling;
+        hintContent.classList.toggle('hidden');
+        toggle.textContent = hintContent.classList.contains('hidden')
+          ? toggle.textContent.replace('🔽', '💡')
+          : toggle.textContent.replace('💡', '🔽');
+      });
+    });
+
+    // Exercise completion
+    const completeExerciseBtns = this.modal.element.querySelectorAll('.complete-exercise-btn');
+    completeExerciseBtns.forEach(btn => {
+      btn.addEventListener('click', _e => {
+        const exerciseIndex = parseInt(btn.dataset.exercise, 10);
+        this.completeExercise(exerciseIndex);
+      });
+    });
+  }
+
+  /**
+   * Setup quiz interactions
+   */
+  setupQuizInteractions() {
+    const startQuizBtn = this.modal.element.querySelector('.start-quiz-btn');
+    startQuizBtn?.addEventListener('click', () => {
+      this.startQuiz();
+    });
+  }
+
+  /**
+   * Setup notes editor
+   */
+  setupNotesEditor() {
+    const notesTextarea = this.modal.element.querySelector('.notes-textarea');
+    const wordCount = this.modal.element.querySelector('.word-count');
+
+    if (notesTextarea) {
+      // Word count update
+      notesTextarea.addEventListener('input', e => {
+        const words = e.target.value
+          .trim()
+          .split(/\s+/)
+          .filter(word => word.length > 0).length;
+        if (wordCount) {
+          wordCount.textContent = `${words} word${words !== 1 ? 's' : ''}`;
+        }
+
+        // Auto-save
+        this.autoSaveNotes();
+      });
+
+      // Editor toolbar
+      const editorBtns = this.modal.element.querySelectorAll('.editor-btn');
+      editorBtns.forEach(btn => {
+        btn.addEventListener('click', _e => {
+          const { action } = btn.dataset;
+          this.handleEditorAction(action, notesTextarea);
         });
+      });
+    }
+  }
+
+  /**
+   * Setup bookmark system
+   */
+  setupBookmarkSystem() {
+    const bookmarkBtn = this.modal.element.querySelector('.bookmark-btn');
+    bookmarkBtn?.addEventListener('click', () => {
+      this.toggleBookmark(this.currentConcept.id);
+    });
+  }
+
+  /**
+   * Initialize auto-save functionality
+   */
+  initializeAutoSave() {
+    this.autoSaveInterval = setInterval(() => {
+      this.autoSaveProgress();
+    }, 30000); // Auto-save every 30 seconds
+  }
+
+  // Navigation methods
+  navigateSection(direction) {
+    const newSection = this.currentSection + direction;
+    if (newSection >= 0 && newSection < this.currentConcept.sections.length) {
+      this.navigateToSection(newSection);
+    }
+  }
+
+  navigateToSection(sectionIndex) {
+    this.currentSection = sectionIndex;
+    const sectionContent = this.modal.element.querySelector('.section-content');
+    const section = this.currentConcept.sections[sectionIndex];
+
+    sectionContent.innerHTML = this.generateSectionContent(section, sectionIndex);
+
+    // Update navigation
+    this.updateSectionNavigation();
+
+    // Scroll to top
+    sectionContent.scrollTop = 0;
+  }
+
+  updateSectionNavigation() {
+    const prevBtn = this.modal.element.querySelector('#prev-section');
+    const nextBtn = this.modal.element.querySelector('#next-section');
+    const currentSection = this.modal.element.querySelector('#current-section');
+
+    if (prevBtn) prevBtn.disabled = this.currentSection === 0;
+    if (nextBtn) nextBtn.disabled = this.currentSection === this.currentConcept.sections.length - 1;
+    if (currentSection) currentSection.textContent = this.currentSection + 1;
+
+    // Update section navigation items
+    const navItems = this.modal.element.querySelectorAll('.section-nav-item');
+    navItems.forEach((item, index) => {
+      item.classList.toggle('active', index === this.currentSection);
+    });
+  }
+
+  switchToQuizTab() {
+    const quizTab = this.modal.element.querySelector('[data-tab="quiz"]');
+    if (quizTab) {
+      quizTab.click();
+    }
+  }
+
+  // Progress tracking methods
+  completeSection(sectionIndex) {
+    const conceptId = this.currentConcept.id;
+    const sectionKey = `${conceptId}-section-${sectionIndex}`;
+
+    // Mark section as completed
+    StateManager.completeConcept(sectionKey);
+
+    // Update UI
+    const btn = this.modal.element.querySelector(`[data-section="${sectionIndex}"]`);
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = '✓ Completed';
+      btn.classList.add('completed');
     }
 
-    /**
-     * Initialize auto-save functionality
-     */
-    initializeAutoSave() {
-        this.autoSaveInterval = setInterval(() => {
-            this.autoSaveProgress();
-        }, 30000); // Auto-save every 30 seconds
+    // Update section navigation
+    const navItem = this.modal.element.querySelector(`.section-nav-item[data-section="${sectionIndex}"]`);
+    if (navItem) {
+      const statusSpan = navItem.querySelector('.section-status');
+      statusSpan.textContent = '✓';
+      statusSpan.classList.add('completed');
     }
 
-    // Navigation methods
-    navigateSection(direction) {
-        const newSection = this.currentSection + direction;
-        if (newSection >= 0 && newSection < this.currentConcept.sections.length) {
-            this.navigateToSection(newSection);
-        }
+    // Show celebration
+    this.showCompletionCelebration(`Section "${this.currentConcept.sections[sectionIndex].title}" completed!`);
+
+    // Auto-advance to next section
+    if (sectionIndex < this.currentConcept.sections.length - 1) {
+      setTimeout(() => {
+        this.navigateToSection(sectionIndex + 1);
+      }, 1500);
     }
 
-    navigateToSection(sectionIndex) {
-        this.currentSection = sectionIndex;
-        const sectionContent = this.modal.element.querySelector('.section-content');
-        const section = this.currentConcept.sections[sectionIndex];
-        
-        sectionContent.innerHTML = this.generateSectionContent(section, sectionIndex);
-        
-        // Update navigation
-        this.updateSectionNavigation();
-        
-        // Scroll to top
-        sectionContent.scrollTop = 0;
+    // Update progress
+    this.updateProgressDisplay();
+  }
+
+  completeExercise(exerciseIndex) {
+    const conceptId = this.currentConcept.id;
+    const exerciseKey = `${conceptId}-exercise-${exerciseIndex}`;
+
+    // Mark exercise as completed
+    StateManager.completeConcept(exerciseKey);
+
+    // Update UI
+    const btn = this.modal.element.querySelector(`[data-exercise="${exerciseIndex}"] .complete-exercise-btn`);
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = '✓ Completed';
+      btn.classList.add('completed');
     }
 
-    updateSectionNavigation() {
-        const prevBtn = this.modal.element.querySelector('#prev-section');
-        const nextBtn = this.modal.element.querySelector('#next-section');
-        const currentSection = this.modal.element.querySelector('#current-section');
-        
-        if (prevBtn) prevBtn.disabled = this.currentSection === 0;
-        if (nextBtn) nextBtn.disabled = this.currentSection === this.currentConcept.sections.length - 1;
-        if (currentSection) currentSection.textContent = this.currentSection + 1;
+    // Show success message
+    this.showCompletionCelebration('Exercise completed! Great job!');
 
-        // Update section navigation items
-        const navItems = this.modal.element.querySelectorAll('.section-nav-item');
-        navItems.forEach((item, index) => {
-            item.classList.toggle('active', index === this.currentSection);
-        });
-    }
+    // Update progress
+    this.updateProgressDisplay();
+  }
 
-    switchToQuizTab() {
-        const quizTab = this.modal.element.querySelector('[data-tab="quiz"]');
-        if (quizTab) {
-            quizTab.click();
-        }
-    }
+  startQuiz() {
+    const quizContainer = this.modal.element.querySelector('#quiz-container');
+    this.currentQuiz = {
+      questionIndex: 0,
+      answers: [],
+      startTime: Date.now(),
+      timeRemaining: this.currentConcept.quiz.timeLimit
+    };
 
-    // Progress tracking methods
-    completeSection(sectionIndex) {
-        const conceptId = this.currentConcept.id;
-        const sectionKey = `${conceptId}-section-${sectionIndex}`;
-        
-        // Mark section as completed
-        StateManager.completeConcept(sectionKey);
-        
-        // Update UI
-        const btn = this.modal.element.querySelector(`[data-section="${sectionIndex}"]`);
-        if (btn) {
-            btn.disabled = true;
-            btn.textContent = '✓ Completed';
-            btn.classList.add('completed');
-        }
-        
-        // Update section navigation
-        const navItem = this.modal.element.querySelector(`.section-nav-item[data-section="${sectionIndex}"]`);
-        if (navItem) {
-            const statusSpan = navItem.querySelector('.section-status');
-            statusSpan.textContent = '✓';
-            statusSpan.classList.add('completed');
-        }
-        
-        // Show celebration
-        this.showCompletionCelebration(`Section "${this.currentConcept.sections[sectionIndex].title}" completed!`);
-        
-        // Auto-advance to next section
-        if (sectionIndex < this.currentConcept.sections.length - 1) {
-            setTimeout(() => {
-                this.navigateToSection(sectionIndex + 1);
-            }, 1500);
-        }
-        
-        // Update progress
-        this.updateProgressDisplay();
-    }
+    quizContainer.innerHTML = this.generateQuizInterface();
+    this.initializeQuiz();
+  }
 
-    completeExercise(exerciseIndex) {
-        const conceptId = this.currentConcept.id;
-        const exerciseKey = `${conceptId}-exercise-${exerciseIndex}`;
-        
-        // Mark exercise as completed
-        StateManager.completeConcept(exerciseKey);
-        
-        // Update UI
-        const btn = this.modal.element.querySelector(`[data-exercise="${exerciseIndex}"] .complete-exercise-btn`);
-        if (btn) {
-            btn.disabled = true;
-            btn.textContent = '✓ Completed';
-            btn.classList.add('completed');
-        }
-        
-        // Show success message
-        this.showCompletionCelebration('Exercise completed! Great job!');
-        
-        // Update progress
-        this.updateProgressDisplay();
-    }
+  generateQuizInterface() {
+    const { quiz } = this.currentConcept;
+    const question = quiz.questions[0];
 
-    startQuiz() {
-        const quizContainer = this.modal.element.querySelector('#quiz-container');
-        this.currentQuiz = {
-            questionIndex: 0,
-            answers: [],
-            startTime: Date.now(),
-            timeRemaining: this.currentConcept.quiz.timeLimit
-        };
-        
-        quizContainer.innerHTML = this.generateQuizInterface();
-        this.initializeQuiz();
-    }
-
-    generateQuizInterface() {
-        const quiz = this.currentConcept.quiz;
-        const question = quiz.questions[0];
-        
-        return `
+    return `
             <div class="quiz-interface">
                 <div class="quiz-header">
                     <div class="quiz-progress">
                         <span class="question-counter">Question 1 of ${quiz.questions.length}</span>
                         <div class="quiz-progress-bar">
-                            <div class="quiz-progress-fill" style="width: ${(1/quiz.questions.length)*100}%"></div>
+                            <div class="quiz-progress-fill" style="width: ${(1 / quiz.questions.length) * 100}%"></div>
                         </div>
                     </div>
                     <div class="quiz-timer" id="quiz-timer">
@@ -989,166 +1047,176 @@ class ConceptViewer {
                 </div>
             </div>
         `;
-    }
+  }
 
-    generateQuestionHTML(question, index) {
-        return `
+  generateQuestionHTML(question, index) {
+    return `
             <div class="quiz-question">
                 <h4 class="question-text">${question.question}</h4>
                 <div class="question-options">
-                    ${question.options.map((option, optionIndex) => `
+                    ${question.options
+                      .map(
+                        (option, optionIndex) => `
                         <label class="quiz-option">
                             <input type="radio" name="question-${index}" value="${optionIndex}"
                                    ${this.currentQuiz.answers[index] === optionIndex ? 'checked' : ''}>
                             <span class="option-text">${option}</span>
                         </label>
-                    `).join('')}
+                    `
+                      )
+                      .join('')}
                 </div>
-                ${question.explanation ? `
+                ${
+                  question.explanation
+                    ? `
                     <div class="question-explanation hidden">
                         <h5>💡 Explanation</h5>
                         <p>${question.explanation}</p>
                     </div>
-                ` : ''}
+                `
+                    : ''
+                }
             </div>
         `;
+  }
+
+  initializeQuiz() {
+    // Start timer
+    this.quizTimer = setInterval(() => {
+      this.updateQuizTimer();
+    }, 1000);
+
+    // Setup navigation
+    const prevBtn = this.modal.element.querySelector('#quiz-prev');
+    const nextBtn = this.modal.element.querySelector('#quiz-next');
+    const submitBtn = this.modal.element.querySelector('#quiz-submit');
+
+    prevBtn.addEventListener('click', () => this.navigateQuizQuestion(-1));
+    nextBtn.addEventListener('click', () => this.navigateQuizQuestion(1));
+    submitBtn.addEventListener('click', () => this.submitQuiz());
+
+    // Setup answer recording
+    const options = this.modal.element.querySelectorAll('input[type="radio"]');
+    options.forEach(option => {
+      option.addEventListener('change', e => {
+        const { questionIndex } = this.currentQuiz;
+        this.currentQuiz.answers[questionIndex] = parseInt(e.target.value, 10);
+      });
+    });
+  }
+
+  navigateQuizQuestion(direction) {
+    const newIndex = this.currentQuiz.questionIndex + direction;
+    const totalQuestions = this.currentConcept.quiz.questions.length;
+
+    if (newIndex >= 0 && newIndex < totalQuestions) {
+      this.currentQuiz.questionIndex = newIndex;
+      this.updateQuizQuestion();
+    }
+  }
+
+  updateQuizQuestion() {
+    const questionContainer = this.modal.element.querySelector('.quiz-question-container');
+    const question = this.currentConcept.quiz.questions[this.currentQuiz.questionIndex];
+
+    questionContainer.innerHTML = this.generateQuestionHTML(question, this.currentQuiz.questionIndex);
+
+    // Update navigation
+    this.updateQuizNavigation();
+
+    // Reattach event listeners
+    const options = questionContainer.querySelectorAll('input[type="radio"]');
+    options.forEach(option => {
+      option.addEventListener('change', e => {
+        this.currentQuiz.answers[this.currentQuiz.questionIndex] = parseInt(e.target.value, 10);
+      });
+    });
+  }
+
+  updateQuizNavigation() {
+    const prevBtn = this.modal.element.querySelector('#quiz-prev');
+    const nextBtn = this.modal.element.querySelector('#quiz-next');
+    const submitBtn = this.modal.element.querySelector('#quiz-submit');
+    const counter = this.modal.element.querySelector('.question-counter');
+    const progressFill = this.modal.element.querySelector('.quiz-progress-fill');
+
+    const currentQ = this.currentQuiz.questionIndex + 1;
+    const totalQ = this.currentConcept.quiz.questions.length;
+
+    prevBtn.disabled = this.currentQuiz.questionIndex === 0;
+
+    if (this.currentQuiz.questionIndex === totalQ - 1) {
+      nextBtn.classList.add('hidden');
+      submitBtn.classList.remove('hidden');
+    } else {
+      nextBtn.classList.remove('hidden');
+      submitBtn.classList.add('hidden');
     }
 
-    initializeQuiz() {
-        // Start timer
-        this.quizTimer = setInterval(() => {
-            this.updateQuizTimer();
-        }, 1000);
-        
-        // Setup navigation
-        const prevBtn = this.modal.element.querySelector('#quiz-prev');
-        const nextBtn = this.modal.element.querySelector('#quiz-next');
-        const submitBtn = this.modal.element.querySelector('#quiz-submit');
-        
-        prevBtn.addEventListener('click', () => this.navigateQuizQuestion(-1));
-        nextBtn.addEventListener('click', () => this.navigateQuizQuestion(1));
-        submitBtn.addEventListener('click', () => this.submitQuiz());
-        
-        // Setup answer recording
-        const options = this.modal.element.querySelectorAll('input[type="radio"]');
-        options.forEach(option => {
-            option.addEventListener('change', (e) => {
-                const questionIndex = this.currentQuiz.questionIndex;
-                this.currentQuiz.answers[questionIndex] = parseInt(e.target.value);
-            });
-        });
+    counter.textContent = `Question ${currentQ} of ${totalQ}`;
+    progressFill.style.width = `${(currentQ / totalQ) * 100}%`;
+  }
+
+  updateQuizTimer() {
+    this.currentQuiz.timeRemaining -= 1000;
+
+    if (this.currentQuiz.timeRemaining <= 0) {
+      this.submitQuiz(true); // Auto-submit when time expires
+      return;
     }
 
-    navigateQuizQuestion(direction) {
-        const newIndex = this.currentQuiz.questionIndex + direction;
-        const totalQuestions = this.currentConcept.quiz.questions.length;
-        
-        if (newIndex >= 0 && newIndex < totalQuestions) {
-            this.currentQuiz.questionIndex = newIndex;
-            this.updateQuizQuestion();
-        }
+    const timerText = this.modal.element.querySelector('.timer-text');
+    if (timerText) {
+      timerText.textContent = this.formatTime(this.currentQuiz.timeRemaining);
+
+      // Add warning colors
+      if (this.currentQuiz.timeRemaining <= 60000) {
+        // Last minute
+        timerText.classList.add('timer-warning');
+      }
+      if (this.currentQuiz.timeRemaining <= 30000) {
+        // Last 30 seconds
+        timerText.classList.add('timer-critical');
+      }
+    }
+  }
+
+  submitQuiz(timeExpired = false) {
+    clearInterval(this.quizTimer);
+
+    // Calculate score
+    const { quiz } = this.currentConcept;
+    let correctAnswers = 0;
+
+    quiz.questions.forEach((question, index) => {
+      if (this.currentQuiz.answers[index] === question.correctAnswer) {
+        correctAnswers++;
+      }
+    });
+
+    const score = Math.round((correctAnswers / quiz.questions.length) * 100);
+    const passed = score >= quiz.passingScore;
+
+    // Feed the learner models (knowledge tracing, spaced repetition, analytics)
+    if (window.LearningModel) {
+      window.LearningModel.quizSubmitted(this.currentConcept.id, quiz, this.currentQuiz.answers, {
+        score,
+        passed,
+        timeExpired
+      });
     }
 
-    updateQuizQuestion() {
-        const questionContainer = this.modal.element.querySelector('.quiz-question-container');
-        const question = this.currentConcept.quiz.questions[this.currentQuiz.questionIndex];
-        
-        questionContainer.innerHTML = this.generateQuestionHTML(question, this.currentQuiz.questionIndex);
-        
-        // Update navigation
-        this.updateQuizNavigation();
-        
-        // Reattach event listeners
-        const options = questionContainer.querySelectorAll('input[type="radio"]');
-        options.forEach(option => {
-            option.addEventListener('change', (e) => {
-                this.currentQuiz.answers[this.currentQuiz.questionIndex] = parseInt(e.target.value);
-            });
-        });
-    }
+    // Save quiz result
+    StateManager.completeQuiz(this.currentConcept.id, correctAnswers, quiz.questions.length);
 
-    updateQuizNavigation() {
-        const prevBtn = this.modal.element.querySelector('#quiz-prev');
-        const nextBtn = this.modal.element.querySelector('#quiz-next');
-        const submitBtn = this.modal.element.querySelector('#quiz-submit');
-        const counter = this.modal.element.querySelector('.question-counter');
-        const progressFill = this.modal.element.querySelector('.quiz-progress-fill');
-        
-        const currentQ = this.currentQuiz.questionIndex + 1;
-        const totalQ = this.currentConcept.quiz.questions.length;
-        
-        prevBtn.disabled = this.currentQuiz.questionIndex === 0;
-        
-        if (this.currentQuiz.questionIndex === totalQ - 1) {
-            nextBtn.classList.add('hidden');
-            submitBtn.classList.remove('hidden');
-        } else {
-            nextBtn.classList.remove('hidden');
-            submitBtn.classList.add('hidden');
-        }
-        
-        counter.textContent = `Question ${currentQ} of ${totalQ}`;
-        progressFill.style.width = `${(currentQ / totalQ) * 100}%`;
-    }
+    // Show results
+    this.showQuizResults(score, correctAnswers, quiz.questions.length, passed, timeExpired);
+  }
 
-    updateQuizTimer() {
-        this.currentQuiz.timeRemaining -= 1000;
-        
-        if (this.currentQuiz.timeRemaining <= 0) {
-            this.submitQuiz(true); // Auto-submit when time expires
-            return;
-        }
-        
-        const timerText = this.modal.element.querySelector('.timer-text');
-        if (timerText) {
-            timerText.textContent = this.formatTime(this.currentQuiz.timeRemaining);
-            
-            // Add warning colors
-            if (this.currentQuiz.timeRemaining <= 60000) { // Last minute
-                timerText.classList.add('timer-warning');
-            }
-            if (this.currentQuiz.timeRemaining <= 30000) { // Last 30 seconds
-                timerText.classList.add('timer-critical');
-            }
-        }
-    }
+  showQuizResults(score, correct, total, passed, timeExpired) {
+    const quizContainer = this.modal.element.querySelector('#quiz-container');
 
-    submitQuiz(timeExpired = false) {
-        clearInterval(this.quizTimer);
-        
-        // Calculate score
-        const quiz = this.currentConcept.quiz;
-        let correctAnswers = 0;
-        
-        quiz.questions.forEach((question, index) => {
-            if (this.currentQuiz.answers[index] === question.correctAnswer) {
-                correctAnswers++;
-            }
-        });
-        
-        const score = Math.round((correctAnswers / quiz.questions.length) * 100);
-        const passed = score >= quiz.passingScore;
-
-        // Feed the learner models (knowledge tracing, spaced repetition, analytics)
-        if (window.LearningModel) {
-            window.LearningModel.quizSubmitted(this.currentConcept.id, quiz, this.currentQuiz.answers, {
-                score,
-                passed,
-                timeExpired
-            });
-        }
-        
-        // Save quiz result
-        StateManager.completeQuiz(this.currentConcept.id, correctAnswers, quiz.questions.length);
-        
-        // Show results
-        this.showQuizResults(score, correctAnswers, quiz.questions.length, passed, timeExpired);
-    }
-
-    showQuizResults(score, correct, total, passed, timeExpired) {
-        const quizContainer = this.modal.element.querySelector('#quiz-container');
-        
-        quizContainer.innerHTML = `
+    quizContainer.innerHTML = `
             <div class="quiz-results">
                 <div class="results-header">
                     <div class="results-icon ${passed ? 'success' : 'failure'}">
@@ -1179,53 +1247,61 @@ class ConceptViewer {
                     </div>
                 </div>
                 
-                ${passed ? `
+                ${
+                  passed
+                    ? `
                     <div class="congratulations">
                         <h4>🎊 Congratulations!</h4>
                         <p>You've successfully completed the ${this.currentConcept.overview.title} quiz!</p>
                     </div>
-                ` : `
+                `
+                    : `
                     <div class="encouragement">
                         <h4>📚 Keep Learning!</h4>
                         <p>Review the content and try again. You've got this!</p>
                     </div>
-                `}
+                `
+                }
                 
                 <div class="results-actions">
                     <button class="btn btn-primary review-answers-btn">
                         🔍 Review Answers
                     </button>
-                    ${!passed ? `
+                    ${
+                      !passed
+                        ? `
                         <button class="btn btn-secondary retake-quiz-btn">
                             🔄 Retake Quiz
                         </button>
-                    ` : ''}
+                    `
+                        : ''
+                    }
                     <button class="btn btn-secondary close-quiz-btn">
                         ✅ Continue Learning
                     </button>
                 </div>
             </div>
         `;
-        
-        // Setup result actions
-        this.setupQuizResultActions();
-    }
 
-    setupQuizResultActions() {
-        const reviewBtn = this.modal.element.querySelector('.review-answers-btn');
-        const retakeBtn = this.modal.element.querySelector('.retake-quiz-btn');
-        const closeBtn = this.modal.element.querySelector('.close-quiz-btn');
-        
-        reviewBtn?.addEventListener('click', () => this.showAnswerReview());
-        retakeBtn?.addEventListener('click', () => this.startQuiz());
-        closeBtn?.addEventListener('click', () => this.switchToTab('content'));
-    }
+    // Setup result actions
+    this.setupQuizResultActions();
+  }
 
-    showAnswerReview() {
-        const quizContainer = this.modal.element.querySelector('#quiz-container');
-        const quiz = this.currentConcept.quiz;
-        
-        quizContainer.innerHTML = `
+  setupQuizResultActions() {
+    const reviewBtn = this.modal.element.querySelector('.review-answers-btn');
+    const retakeBtn = this.modal.element.querySelector('.retake-quiz-btn');
+    const closeBtn = this.modal.element.querySelector('.close-quiz-btn');
+
+    reviewBtn?.addEventListener('click', () => this.showAnswerReview());
+    retakeBtn?.addEventListener('click', () => this.startQuiz());
+    closeBtn?.addEventListener('click', () => this.switchToTab('content'));
+  }
+
+  showAnswerReview() {
+    const quizContainer = this.modal.element.querySelector('#quiz-container');
+    const { quiz } = this.currentConcept;
+
+    quizContainer.innerHTML = `
             <div class="answer-review">
                 <div class="review-header">
                     <h3>📋 Answer Review</h3>
@@ -1233,10 +1309,11 @@ class ConceptViewer {
                 </div>
                 
                 <div class="reviewed-questions">
-                    ${quiz.questions.map((question, index) => {
+                    ${quiz.questions
+                      .map((question, index) => {
                         const userAnswer = this.currentQuiz.answers[index];
                         const isCorrect = userAnswer === question.correctAnswer;
-                        
+
                         return `
                             <div class="reviewed-question ${isCorrect ? 'correct' : 'incorrect'}">
                                 <div class="question-header">
@@ -1256,25 +1333,34 @@ class ConceptViewer {
                                         </span>
                                     </div>
                                     
-                                    ${!isCorrect ? `
+                                    ${
+                                      !isCorrect
+                                        ? `
                                         <div class="correct-answer">
                                             <strong>Correct Answer:</strong>
                                             <span class="correct">
                                                 ${question.options[question.correctAnswer]}
                                             </span>
                                         </div>
-                                    ` : ''}
+                                    `
+                                        : ''
+                                    }
                                 </div>
                                 
-                                ${question.explanation ? `
+                                ${
+                                  question.explanation
+                                    ? `
                                     <div class="answer-explanation">
                                         <h5>💡 Explanation</h5>
                                         <p>${question.explanation}</p>
                                     </div>
-                                ` : ''}
+                                `
+                                    : ''
+                                }
                             </div>
                         `;
-                    }).join('')}
+                      })
+                      .join('')}
                 </div>
                 
                 <div class="review-actions">
@@ -1284,58 +1370,66 @@ class ConceptViewer {
                 </div>
             </div>
         `;
-        
-        // Setup back button
-        const backBtn = this.modal.element.querySelector('.back-to-results-btn');
-        backBtn?.addEventListener('click', () => {
-            // Regenerate results view
-            const score = Math.round((this.currentQuiz.answers.filter((answer, index) => 
-                answer === this.currentConcept.quiz.questions[index].correctAnswer
-            ).length / this.currentConcept.quiz.questions.length) * 100);
-            
-            this.showQuizResults(score, 
-                this.currentQuiz.answers.filter((answer, index) => 
-                    answer === this.currentConcept.quiz.questions[index].correctAnswer
-                ).length,
-                this.currentConcept.quiz.questions.length,
-                score >= this.currentConcept.quiz.passingScore,
-                false
-            );
-        });
-    }
 
-    // Utility methods
-    switchToTab(tabName) {
-        const tab = this.modal.element.querySelector(`[data-tab="${tabName}"]`);
-        if (tab) {
-            tab.click();
-        }
-    }
+    // Setup back button
+    const backBtn = this.modal.element.querySelector('.back-to-results-btn');
+    backBtn?.addEventListener('click', () => {
+      // Regenerate results view
+      const score = Math.round(
+        (this.currentQuiz.answers.filter(
+          (answer, index) => answer === this.currentConcept.quiz.questions[index].correctAnswer
+        ).length /
+          this.currentConcept.quiz.questions.length) *
+          100
+      );
 
-    formatTime(milliseconds) {
-        const minutes = Math.floor(milliseconds / 60000);
-        const seconds = Math.floor((milliseconds % 60000) / 1000);
-        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    }
+      this.showQuizResults(
+        score,
+        this.currentQuiz.answers.filter(
+          (answer, index) => answer === this.currentConcept.quiz.questions[index].correctAnswer
+        ).length,
+        this.currentConcept.quiz.questions.length,
+        score >= this.currentConcept.quiz.passingScore,
+        false
+      );
+    });
+  }
 
-    copyToClipboard(text) {
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(text);
-        } else {
-            // Fallback for older browsers
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-        }
+  // Utility methods
+  switchToTab(tabName) {
+    const tab = this.modal.element.querySelector(`[data-tab="${tabName}"]`);
+    if (tab) {
+      tab.click();
     }
+  }
 
-    runCode(code) {
-        // Create a safe execution environment
-        try {
-            const result = new Function('console', `
+  formatTime(milliseconds) {
+    const minutes = Math.floor(milliseconds / 60000);
+    const seconds = Math.floor((milliseconds % 60000) / 1000);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  copyToClipboard(text) {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+    } else {
+      // Fallback for older browsers
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+    }
+  }
+
+  runCode(code) {
+    // Create a safe execution environment
+    try {
+      // eslint-disable-next-line no-new-func -- intentional: sandboxed "Run" button executes learner-authored code
+      const result = new Function(
+        'console',
+        `
                 const originalLog = console.log;
                 const logs = [];
                 console.log = (...args) => {
@@ -1349,59 +1443,68 @@ class ConceptViewer {
                 } catch (error) {
                     return { success: false, logs, error: error.message };
                 }
-            `)(console);
-            
-            this.showCodeResult(result);
-        } catch (error) {
-            this.showCodeResult({ success: false, error: error.message, logs: [] });
-        }
+            `
+      )(console);
+
+      this.showCodeResult(result);
+    } catch (error) {
+      this.showCodeResult({ success: false, error: error.message, logs: [] });
+    }
+  }
+
+  showCodeResult(result) {
+    // Create or update result display
+    let resultDiv = this.modal.element.querySelector('.code-execution-result');
+    if (!resultDiv) {
+      resultDiv = document.createElement('div');
+      resultDiv.className = 'code-execution-result';
+      // Find the last code example and insert after it
+      const lastCodeExample = this.modal.element.querySelector('.code-example:last-of-type');
+      if (lastCodeExample) {
+        lastCodeExample.insertAdjacentElement('afterend', resultDiv);
+      }
     }
 
-    showCodeResult(result) {
-        // Create or update result display
-        let resultDiv = this.modal.element.querySelector('.code-execution-result');
-        if (!resultDiv) {
-            resultDiv = document.createElement('div');
-            resultDiv.className = 'code-execution-result';
-            // Find the last code example and insert after it
-            const lastCodeExample = this.modal.element.querySelector('.code-example:last-of-type');
-            if (lastCodeExample) {
-                lastCodeExample.insertAdjacentElement('afterend', resultDiv);
-            }
-        }
-        
-        resultDiv.innerHTML = `
+    resultDiv.innerHTML = `
             <div class="result-header">
                 <span class="result-icon">${result.success ? '✅' : '❌'}</span>
                 <span class="result-title">${result.success ? 'Success' : 'Error'}</span>
             </div>
             
-            ${result.logs && result.logs.length > 0 ? `
+            ${
+              result.logs && result.logs.length > 0
+                ? `
                 <div class="result-logs">
                     <h5>📄 Console Output:</h5>
                     <pre class="logs-content">${result.logs.join('\n')}</pre>
                 </div>
-            ` : ''}
+            `
+                : ''
+            }
             
-            ${result.error ? `
+            ${
+              result.error
+                ? `
                 <div class="result-error">
                     <h5>🚨 Error:</h5>
                     <pre class="error-content">${result.error}</pre>
                 </div>
-            ` : ''}
+            `
+                : ''
+            }
         `;
-        
-        // Auto-hide after 5 seconds
-        setTimeout(() => {
-            resultDiv.style.opacity = '0.5';
-        }, 5000);
-    }
 
-    showTemporaryMessage(message, targetElement) {
-        const messageEl = document.createElement('div');
-        messageEl.className = 'temporary-message';
-        messageEl.textContent = message;
-        messageEl.style.cssText = `
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+      resultDiv.style.opacity = '0.5';
+    }, 5000);
+  }
+
+  showTemporaryMessage(message, targetElement) {
+    const messageEl = document.createElement('div');
+    messageEl.className = 'temporary-message';
+    messageEl.textContent = message;
+    messageEl.style.cssText = `
             position: absolute;
             background: var(--success-color);
             color: white;
@@ -1412,32 +1515,32 @@ class ConceptViewer {
             animation: fadeInOut 2s ease;
             pointer-events: none;
         `;
-        
-        // Position relative to target element
-        const rect = targetElement.getBoundingClientRect();
-        messageEl.style.top = `${rect.top - 40}px`;
-        messageEl.style.left = `${rect.left}px`;
-        
-        document.body.appendChild(messageEl);
-        
-        setTimeout(() => {
-            if (messageEl.parentNode) {
-                messageEl.parentNode.removeChild(messageEl);
-            }
-        }, 2000);
-    }
 
-    showCompletionCelebration(message) {
-        // Create celebration animation
-        const celebration = document.createElement('div');
-        celebration.className = 'completion-celebration';
-        celebration.innerHTML = `
+    // Position relative to target element
+    const rect = targetElement.getBoundingClientRect();
+    messageEl.style.top = `${rect.top - 40}px`;
+    messageEl.style.left = `${rect.left}px`;
+
+    document.body.appendChild(messageEl);
+
+    setTimeout(() => {
+      if (messageEl.parentNode) {
+        messageEl.parentNode.removeChild(messageEl);
+      }
+    }, 2000);
+  }
+
+  showCompletionCelebration(message) {
+    // Create celebration animation
+    const celebration = document.createElement('div');
+    celebration.className = 'completion-celebration';
+    celebration.innerHTML = `
             <div class="celebration-content">
                 <div class="celebration-icon">🎉</div>
                 <div class="celebration-message">${message}</div>
             </div>
         `;
-        celebration.style.cssText = `
+    celebration.style.cssText = `
             position: fixed;
             top: 50%;
             left: 50%;
@@ -1451,336 +1554,333 @@ class ConceptViewer {
             animation: celebrationPop 2s ease;
             pointer-events: none;
         `;
-        
-        document.body.appendChild(celebration);
-        
-        setTimeout(() => {
-            if (celebration.parentNode) {
-                celebration.parentNode.removeChild(celebration);
-            }
-        }, 2000);
+
+    document.body.appendChild(celebration);
+
+    setTimeout(() => {
+      if (celebration.parentNode) {
+        celebration.parentNode.removeChild(celebration);
+      }
+    }, 2000);
+  }
+
+  // Progress calculation methods
+  calculateConceptProgress(conceptId) {
+    const progress = StateManager.getProgress();
+    const completedConcepts = progress.completedConcepts.filter(concept => concept.startsWith(conceptId));
+
+    if (!this.currentConcept) return 0;
+
+    const totalItems = this.currentConcept.sections.length + this.currentConcept.exercises.length + 1; // +1 for quiz
+
+    return Math.round((completedConcepts.length / totalItems) * 100);
+  }
+
+  getCompletedSections(conceptId) {
+    const progress = StateManager.getProgress();
+    return progress.completedConcepts.filter(concept => concept.startsWith(`${conceptId}-section`)).length;
+  }
+
+  getCompletedExercises(conceptId) {
+    const progress = StateManager.getProgress();
+    return progress.completedConcepts.filter(concept => concept.startsWith(`${conceptId}-exercise`)).length;
+  }
+
+  isQuizCompleted(conceptId) {
+    const progress = StateManager.getProgress();
+    return progress.completedConcepts.includes(`${conceptId}-quiz`);
+  }
+
+  isSectionCompleted(conceptId, sectionIndex) {
+    if (!conceptId) return false;
+    const progress = StateManager.getProgress();
+    return progress.completedConcepts.includes(`${conceptId}-section-${sectionIndex}`);
+  }
+
+  updateProgressDisplay() {
+    if (!this.currentConcept) return;
+
+    const progress = this.calculateConceptProgress(this.currentConcept.id);
+    const progressFill = this.modal.element.querySelector('.progress-fill');
+    const progressPercentage = this.modal.element.querySelector('.progress-percentage');
+
+    if (progressFill) progressFill.style.width = `${progress}%`;
+    if (progressPercentage) progressPercentage.textContent = `${progress}%`;
+
+    // Update sidebar progress
+    const sidebarProgress = this.modal.element.querySelectorAll('.progress-value');
+    if (sidebarProgress.length >= 3) {
+      sidebarProgress[0].textContent = `${this.getCompletedSections(this.currentConcept.id)}/${
+        this.currentConcept.sections.length
+      }`;
+      sidebarProgress[1].textContent = `${this.getCompletedExercises(this.currentConcept.id)}/${
+        this.currentConcept.exercises.length
+      }`;
+      sidebarProgress[2].textContent = this.isQuizCompleted(this.currentConcept.id) ? 'Completed' : 'Pending';
+    }
+  }
+
+  // Bookmark and notes methods
+  toggleBookmark(conceptId) {
+    const isBookmarked = this.isBookmarked(conceptId);
+
+    if (isBookmarked) {
+      this.removeBookmark(conceptId);
+    } else {
+      this.addBookmark(conceptId);
     }
 
-    // Progress calculation methods
-    calculateConceptProgress(conceptId) {
-        const progress = StateManager.getProgress();
-        const completedConcepts = progress.completedConcepts.filter(concept => 
-            concept.startsWith(conceptId)
-        );
-        
-        if (!this.currentConcept) return 0;
-        
-        const totalItems = this.currentConcept.sections.length + 
-                          this.currentConcept.exercises.length + 1; // +1 for quiz
-        
-        return Math.round((completedConcepts.length / totalItems) * 100);
+    // Update bookmark button
+    const bookmarkBtn = this.modal.element.querySelector('.bookmark-btn');
+    if (bookmarkBtn) {
+      bookmarkBtn.classList.toggle('active', !isBookmarked);
+      bookmarkBtn.textContent = !isBookmarked ? '🔖' : '📑';
+      bookmarkBtn.title = !isBookmarked ? 'Remove bookmark' : 'Bookmark this concept';
+    }
+  }
+
+  addBookmark(conceptId) {
+    if (!this.bookmarks.includes(conceptId)) {
+      this.bookmarks.push(conceptId);
+      this.saveBookmarks();
+      this.showTemporaryMessage('Concept bookmarked!', this.modal.element.querySelector('.bookmark-btn'));
+    }
+  }
+
+  removeBookmark(conceptId) {
+    const index = this.bookmarks.indexOf(conceptId);
+    if (index > -1) {
+      this.bookmarks.splice(index, 1);
+      this.saveBookmarks();
+      this.showTemporaryMessage('Bookmark removed!', this.modal.element.querySelector('.bookmark-btn'));
+    }
+  }
+
+  isBookmarked(conceptId) {
+    return this.bookmarks.includes(conceptId);
+  }
+
+  saveBookmarks() {
+    localStorage.setItem('jsversehub-bookmarks', JSON.stringify(this.bookmarks));
+  }
+
+  loadBookmarks() {
+    try {
+      const stored = localStorage.getItem('jsversehub-bookmarks');
+      this.bookmarks = stored ? JSON.parse(stored) : [];
+    } catch (error) {
+      JSVLogger.warn('Failed to load bookmarks:', error);
+      this.bookmarks = [];
+    }
+  }
+
+  // Notes methods
+  getUserNotes(conceptId) {
+    try {
+      const notes = localStorage.getItem(`jsversehub-notes-${conceptId}`);
+      return notes || '';
+    } catch (error) {
+      JSVLogger.warn('Failed to load notes:', error);
+      return '';
+    }
+  }
+
+  saveUserNotes(conceptId, notes) {
+    try {
+      localStorage.setItem(`jsversehub-notes-${conceptId}`, notes);
+      this.showAutoSaveStatus('Notes saved');
+    } catch (error) {
+      JSVLogger.error('Failed to save notes:', error);
+      this.showAutoSaveStatus('Save failed', true);
+    }
+  }
+
+  autoSaveNotes() {
+    if (!this.currentConcept) return;
+
+    const notesTextarea = this.modal.element.querySelector('.notes-textarea');
+    if (notesTextarea) {
+      clearTimeout(this.notesAutoSaveTimeout);
+      this.notesAutoSaveTimeout = setTimeout(() => {
+        this.saveUserNotes(this.currentConcept.id, notesTextarea.value);
+      }, 2000);
+    }
+  }
+
+  showAutoSaveStatus(message, isError = false) {
+    const statusEl = this.modal.element.querySelector('.auto-save-status');
+    if (statusEl) {
+      statusEl.textContent = message;
+      statusEl.style.color = isError ? 'var(--danger-color)' : 'var(--success-color)';
+
+      setTimeout(() => {
+        statusEl.textContent = 'Auto-saved';
+        statusEl.style.color = 'var(--text-muted)';
+      }, 2000);
+    }
+  }
+
+  handleEditorAction(action, textarea) {
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = textarea.value.substring(start, end);
+
+    let replacement = '';
+    let newCursorPos = start;
+
+    switch (action) {
+      case 'bold':
+        replacement = `**${selectedText}**`;
+        newCursorPos = selectedText ? end + 4 : start + 2;
+        break;
+      case 'italic':
+        replacement = `*${selectedText}*`;
+        newCursorPos = selectedText ? end + 2 : start + 1;
+        break;
+      case 'code':
+        replacement = `\`${selectedText}\``;
+        newCursorPos = selectedText ? end + 2 : start + 1;
+        break;
+      case 'link':
+        replacement = `[${selectedText || 'link text'}](url)`;
+        newCursorPos = start + replacement.length - 4;
+        break;
+      case 'save':
+        this.saveUserNotes(this.currentConcept.id, textarea.value);
+        return;
+      case 'export':
+        this.exportNotes();
+        return;
     }
 
-    getCompletedSections(conceptId) {
-        const progress = StateManager.getProgress();
-        return progress.completedConcepts.filter(concept => 
-            concept.startsWith(`${conceptId}-section`)
-        ).length;
+    if (replacement) {
+      textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+      textarea.selectionStart = textarea.selectionEnd = newCursorPos;
+      textarea.focus();
+    }
+  }
+
+  exportNotes() {
+    if (!this.currentConcept) return;
+
+    const notes = this.modal.element.querySelector('.notes-textarea').value;
+    if (!notes.trim()) {
+      Modal.alert('No Notes', 'No notes to export for this concept.');
+      return;
     }
 
-    getCompletedExercises(conceptId) {
-        const progress = StateManager.getProgress();
-        return progress.completedConcepts.filter(concept => 
-            concept.startsWith(`${conceptId}-exercise`)
-        ).length;
+    const blob = new Blob([notes], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `jsversehub-notes-${this.currentConcept.id}-${Date.now()}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // Helper methods
+  escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  getRelatedConcepts(conceptId) {
+    // This would normally come from the concept data or a separate mapping
+    const relatedMap = {
+      basics: [
+        { id: 'dom', title: 'DOM Manipulation', emoji: '🌍' },
+        { id: 'functions', title: 'Advanced Functions', emoji: '⚡' }
+      ],
+      dom: [
+        { id: 'events', title: 'Event Handling', emoji: '⚪' },
+        { id: 'async', title: 'Async JavaScript', emoji: '⚡' }
+      ]
+    };
+
+    return relatedMap[conceptId] || [];
+  }
+
+  trackTabUsage(tabName) {
+    // Track which tabs users interact with most
+    JSVLogger.debug(`Tab switched to: ${tabName}`);
+  }
+
+  continueLearning() {
+    // Navigate to next logical section or concept
+    if (this.currentSection < this.currentConcept.sections.length - 1) {
+      this.navigateSection(1);
+    } else {
+      // Check if all sections completed, move to exercises
+      const completedSections = this.getCompletedSections(this.currentConcept.id);
+      if (completedSections === this.currentConcept.sections.length) {
+        this.switchToTab('exercises');
+      }
+    }
+  }
+
+  autoSaveProgress() {
+    // Auto-save current progress
+    if (this.currentConcept) {
+      const progressData = {
+        conceptId: this.currentConcept.id,
+        currentSection: this.currentSection,
+        lastAccessed: Date.now()
+      };
+      localStorage.setItem('jsversehub-current-progress', JSON.stringify(progressData));
+    }
+  }
+
+  // Event handlers
+  handleStateChange(event, _data) {
+    if (event === 'conceptCompleted') {
+      this.updateProgressDisplay();
+    }
+  }
+
+  onConceptClose() {
+    // Cleanup when concept modal is closed
+    if (this.quizTimer) {
+      clearInterval(this.quizTimer);
     }
 
-    isQuizCompleted(conceptId) {
-        const progress = StateManager.getProgress();
-        return progress.completedConcepts.includes(`${conceptId}-quiz`);
+    if (this.autoSaveInterval) {
+      clearInterval(this.autoSaveInterval);
     }
 
-    isSectionCompleted(conceptId, sectionIndex) {
-        if (!conceptId) return false;
-        const progress = StateManager.getProgress();
-        return progress.completedConcepts.includes(`${conceptId}-section-${sectionIndex}`);
-    }
+    // Save final progress
+    this.autoSaveProgress();
 
-    updateProgressDisplay() {
-        if (!this.currentConcept) return;
-        
-        const progress = this.calculateConceptProgress(this.currentConcept.id);
-        const progressFill = this.modal.element.querySelector('.progress-fill');
-        const progressPercentage = this.modal.element.querySelector('.progress-percentage');
-        
-        if (progressFill) progressFill.style.width = `${progress}%`;
-        if (progressPercentage) progressPercentage.textContent = `${progress}%`;
-        
-        // Update sidebar progress
-        const sidebarProgress = this.modal.element.querySelectorAll('.progress-value');
-        if (sidebarProgress.length >= 3) {
-            sidebarProgress[0].textContent = `${this.getCompletedSections(this.currentConcept.id)}/${this.currentConcept.sections.length}`;
-            sidebarProgress[1].textContent = `${this.getCompletedExercises(this.currentConcept.id)}/${this.currentConcept.exercises.length}`;
-            sidebarProgress[2].textContent = this.isQuizCompleted(this.currentConcept.id) ? 'Completed' : 'Pending';
-        }
-    }
+    this.currentConcept = null;
+    this.modal = null;
+  }
 
-    // Bookmark and notes methods
-    toggleBookmark(conceptId) {
-        const isBookmarked = this.isBookmarked(conceptId);
-        
-        if (isBookmarked) {
-            this.removeBookmark(conceptId);
-        } else {
-            this.addBookmark(conceptId);
-        }
-        
-        // Update bookmark button
-        const bookmarkBtn = this.modal.element.querySelector('.bookmark-btn');
-        if (bookmarkBtn) {
-            bookmarkBtn.classList.toggle('active', !isBookmarked);
-            bookmarkBtn.textContent = !isBookmarked ? '🔖' : '📑';
-            bookmarkBtn.title = !isBookmarked ? 'Remove bookmark' : 'Bookmark this concept';
-        }
-    }
+  // Static methods
+  static showExercise(conceptId, _exerciseId) {
+    const viewer = new ConceptViewer();
+    viewer.showConcept(conceptId).then(() => {
+      viewer.switchToTab('exercises');
+    });
+  }
 
-    addBookmark(conceptId) {
-        if (!this.bookmarks.includes(conceptId)) {
-            this.bookmarks.push(conceptId);
-            this.saveBookmarks();
-            this.showTemporaryMessage('Concept bookmarked!', this.modal.element.querySelector('.bookmark-btn'));
-        }
-    }
+  static showQuiz(conceptId) {
+    const viewer = new ConceptViewer();
+    viewer.showConcept(conceptId).then(() => {
+      viewer.switchToTab('quiz');
+    });
+  }
 
-    removeBookmark(conceptId) {
-        const index = this.bookmarks.indexOf(conceptId);
-        if (index > -1) {
-            this.bookmarks.splice(index, 1);
-            this.saveBookmarks();
-            this.showTemporaryMessage('Bookmark removed!', this.modal.element.querySelector('.bookmark-btn'));
-        }
+  /**
+   * Get singleton instance
+   */
+  static getInstance() {
+    if (!ConceptViewer.instance) {
+      ConceptViewer.instance = new ConceptViewer();
     }
-
-    isBookmarked(conceptId) {
-        return this.bookmarks.includes(conceptId);
-    }
-
-    saveBookmarks() {
-        localStorage.setItem('jsversehub-bookmarks', JSON.stringify(this.bookmarks));
-    }
-
-    loadBookmarks() {
-        try {
-            const stored = localStorage.getItem('jsversehub-bookmarks');
-            this.bookmarks = stored ? JSON.parse(stored) : [];
-        } catch (error) {
-            JSVLogger.warn('Failed to load bookmarks:', error);
-            this.bookmarks = [];
-        }
-    }
-
-    // Notes methods
-    getUserNotes(conceptId) {
-        try {
-            const notes = localStorage.getItem(`jsversehub-notes-${conceptId}`);
-            return notes || '';
-        } catch (error) {
-            JSVLogger.warn('Failed to load notes:', error);
-            return '';
-        }
-    }
-
-    saveUserNotes(conceptId, notes) {
-        try {
-            localStorage.setItem(`jsversehub-notes-${conceptId}`, notes);
-            this.showAutoSaveStatus('Notes saved');
-        } catch (error) {
-            JSVLogger.error('Failed to save notes:', error);
-            this.showAutoSaveStatus('Save failed', true);
-        }
-    }
-
-    autoSaveNotes() {
-        if (!this.currentConcept) return;
-        
-        const notesTextarea = this.modal.element.querySelector('.notes-textarea');
-        if (notesTextarea) {
-            clearTimeout(this.notesAutoSaveTimeout);
-            this.notesAutoSaveTimeout = setTimeout(() => {
-                this.saveUserNotes(this.currentConcept.id, notesTextarea.value);
-            }, 2000);
-        }
-    }
-
-    showAutoSaveStatus(message, isError = false) {
-        const statusEl = this.modal.element.querySelector('.auto-save-status');
-        if (statusEl) {
-            statusEl.textContent = message;
-            statusEl.style.color = isError ? 'var(--danger-color)' : 'var(--success-color)';
-            
-            setTimeout(() => {
-                statusEl.textContent = 'Auto-saved';
-                statusEl.style.color = 'var(--text-muted)';
-            }, 2000);
-        }
-    }
-
-    handleEditorAction(action, textarea) {
-        const start = textarea.selectionStart;
-        const end = textarea.selectionEnd;
-        const selectedText = textarea.value.substring(start, end);
-        
-        let replacement = '';
-        let newCursorPos = start;
-        
-        switch (action) {
-            case 'bold':
-                replacement = `**${selectedText}**`;
-                newCursorPos = selectedText ? end + 4 : start + 2;
-                break;
-            case 'italic':
-                replacement = `*${selectedText}*`;
-                newCursorPos = selectedText ? end + 2 : start + 1;
-                break;
-            case 'code':
-                replacement = `\`${selectedText}\``;
-                newCursorPos = selectedText ? end + 2 : start + 1;
-                break;
-            case 'link':
-                replacement = `[${selectedText || 'link text'}](url)`;
-                newCursorPos = start + replacement.length - 4;
-                break;
-            case 'save':
-                this.saveUserNotes(this.currentConcept.id, textarea.value);
-                return;
-            case 'export':
-                this.exportNotes();
-                return;
-        }
-        
-        if (replacement) {
-            textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
-            textarea.selectionStart = textarea.selectionEnd = newCursorPos;
-            textarea.focus();
-        }
-    }
-
-    exportNotes() {
-        if (!this.currentConcept) return;
-        
-        const notes = this.modal.element.querySelector('.notes-textarea').value;
-        if (!notes.trim()) {
-            Modal.alert('No Notes', 'No notes to export for this concept.');
-            return;
-        }
-        
-        const blob = new Blob([notes], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `jsversehub-notes-${this.currentConcept.id}-${Date.now()}.txt`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-    }
-
-    // Helper methods
-    escapeHtml(text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-
-    getRelatedConcepts(conceptId) {
-        // This would normally come from the concept data or a separate mapping
-        const relatedMap = {
-            basics: [
-                { id: 'dom', title: 'DOM Manipulation', emoji: '🌍' },
-                { id: 'functions', title: 'Advanced Functions', emoji: '⚡' }
-            ],
-            dom: [
-                { id: 'events', title: 'Event Handling', emoji: '⚪' },
-                { id: 'async', title: 'Async JavaScript', emoji: '⚡' }
-            ]
-        };
-        
-        return relatedMap[conceptId] || [];
-    }
-
-    trackTabUsage(tabName) {
-        // Track which tabs users interact with most
-        JSVLogger.debug(`Tab switched to: ${tabName}`);
-    }
-
-    continueLearning() {
-        // Navigate to next logical section or concept
-        if (this.currentSection < this.currentConcept.sections.length - 1) {
-            this.navigateSection(1);
-        } else {
-            // Check if all sections completed, move to exercises
-            const completedSections = this.getCompletedSections(this.currentConcept.id);
-            if (completedSections === this.currentConcept.sections.length) {
-                this.switchToTab('exercises');
-            }
-        }
-    }
-
-    autoSaveProgress() {
-        // Auto-save current progress
-        if (this.currentConcept) {
-            const progressData = {
-                conceptId: this.currentConcept.id,
-                currentSection: this.currentSection,
-                lastAccessed: Date.now()
-            };
-            localStorage.setItem('jsversehub-current-progress', JSON.stringify(progressData));
-        }
-    }
-
-    // Event handlers
-    handleStateChange(event, data) {
-        if (event === 'conceptCompleted') {
-            this.updateProgressDisplay();
-        }
-    }
-
-    onConceptClose() {
-        // Cleanup when concept modal is closed
-        if (this.quizTimer) {
-            clearInterval(this.quizTimer);
-        }
-        
-        if (this.autoSaveInterval) {
-            clearInterval(this.autoSaveInterval);
-        }
-        
-        // Save final progress
-        this.autoSaveProgress();
-        
-        this.currentConcept = null;
-        this.modal = null;
-    }
-
-    // Static methods
-    static showExercise(conceptId, exerciseId) {
-        const viewer = new ConceptViewer();
-        viewer.showConcept(conceptId).then(() => {
-            viewer.switchToTab('exercises');
-        });
-    }
-
-    static showQuiz(conceptId) {
-        const viewer = new ConceptViewer();
-        viewer.showConcept(conceptId).then(() => {
-            viewer.switchToTab('quiz');
-        });
-    }
-
-    /**
-     * Get singleton instance
-     */
-    static getInstance() {
-        if (!ConceptViewer.instance) {
-            ConceptViewer.instance = new ConceptViewer();
-        }
-        return ConceptViewer.instance;
-    }
+    return ConceptViewer.instance;
+  }
 }
 
 // CSS styles for ConceptViewer
@@ -2701,5 +2801,5 @@ const conceptViewerInstance = ConceptViewer.getInstance();
 
 // Export for use in other modules
 if (typeof window !== 'undefined') {
-    window.ConceptViewer = conceptViewerInstance;
+  window.ConceptViewer = conceptViewerInstance;
 }

@@ -1,15 +1,10 @@
-import {
-  pureFunctions,
-  higherOrderFunctions,
-  mapFilterReduce,
-  exercises,
-} from '../src/concepts/functional/index';
+import { pureFunctions, higherOrderFunctions, mapFilterReduce, exercises } from '../src/concepts/functional/index';
 
 describe('Functional Programming - Pure Functions', () => {
   describe('Pure Function Definition', () => {
     test('pure function should always return same output for same input', () => {
       const { add } = pureFunctions.examples;
-      
+
       expect(add(2, 3)).toBe(5);
       expect(add(2, 3)).toBe(5);
       expect(add(5, 10)).toBe(15);
@@ -17,10 +12,10 @@ describe('Functional Programming - Pure Functions', () => {
 
     test('pure function should not have side effects', () => {
       const { multiply } = pureFunctions.examples;
-      
+
       const result1 = multiply(4, 5);
       const result2 = multiply(4, 5);
-      
+
       expect(result1).toBe(result2);
       expect(result1).toBe(20);
     });
@@ -29,16 +24,16 @@ describe('Functional Programming - Pure Functions', () => {
       const { doubleArray } = pureFunctions.examples;
       const original = [1, 2, 3];
       const originalCopy = [...original];
-      
+
       const result = doubleArray(original);
-      
+
       expect(original).toEqual(originalCopy);
       expect(result).toEqual([2, 4, 6]);
     });
 
     test('pure function should not depend on external state', () => {
       const { calculate } = pureFunctions.examples;
-      
+
       expect(calculate(10)).toBe(50);
       expect(calculate(10)).toBe(50);
     });
@@ -49,9 +44,9 @@ describe('Functional Programming - Pure Functions', () => {
       const { updateObject } = pureFunctions.examples;
       const original = { name: 'John', age: 30 };
       const originalCopy = JSON.parse(JSON.stringify(original));
-      
+
       const updated = updateObject(original, { age: 31 });
-      
+
       expect(original).toEqual(originalCopy);
       expect(updated.age).toBe(31);
     });
@@ -60,9 +55,9 @@ describe('Functional Programming - Pure Functions', () => {
       const { appendItem } = pureFunctions.examples;
       const original = [1, 2, 3];
       const originalCopy = [...original];
-      
+
       const result = appendItem(original, 4);
-      
+
       expect(original).toEqual(originalCopy);
       expect(result).toContain(4);
     });
@@ -71,14 +66,14 @@ describe('Functional Programming - Pure Functions', () => {
   describe('Avoiding Side Effects', () => {
     test('pure function should not modify global state', () => {
       const { getRandomNumber } = pureFunctions.examples;
-      
+
       // Should get same result from pure logic
       expect(typeof getRandomNumber()).toBe('number');
     });
 
     test('pure function should not perform I/O operations', () => {
       const { processData } = pureFunctions.examples;
-      
+
       // Pure functions don't read/write to console, files, or network
       const result = processData([1, 2, 3, 4, 5]);
       expect(Array.isArray(result)).toBe(true);
@@ -91,7 +86,7 @@ describe('Functional Programming - Higher Order Functions', () => {
     test('should return function from function', () => {
       const { multiplier } = higherOrderFunctions.examples;
       const double = multiplier(2);
-      
+
       expect(typeof double).toBe('function');
       expect(double(5)).toBe(10);
     });
@@ -100,7 +95,7 @@ describe('Functional Programming - Higher Order Functions', () => {
       const { makeAdder } = higherOrderFunctions.examples;
       const add5 = makeAdder(5);
       const add10 = makeAdder(10);
-      
+
       expect(add5(3)).toBe(8);
       expect(add10(3)).toBe(13);
     });
@@ -110,7 +105,7 @@ describe('Functional Programming - Higher Order Functions', () => {
     test('should accept functions as arguments', () => {
       const { applyTwice } = higherOrderFunctions.examples;
       const double = x => x * 2;
-      
+
       expect(applyTwice(double, 5)).toBe(20);
     });
 
@@ -118,7 +113,7 @@ describe('Functional Programming - Higher Order Functions', () => {
       const { compose } = higherOrderFunctions.examples;
       const add2 = x => x + 2;
       const multiply3 = x => x * 3;
-      
+
       const composed = compose(multiply3, add2);
       expect(composed(5)).toBe(21); // (5 + 2) * 3
     });
@@ -127,7 +122,7 @@ describe('Functional Programming - Higher Order Functions', () => {
       const { pipe } = higherOrderFunctions.examples;
       const add1 = x => x + 1;
       const double = x => x * 2;
-      
+
       const piped = pipe(add1, double);
       expect(piped(5)).toBe(12); // (5 + 1) * 2
     });
@@ -137,7 +132,7 @@ describe('Functional Programming - Higher Order Functions', () => {
     test('should maintain closure over outer function variables', () => {
       const { makeCounter } = higherOrderFunctions.examples;
       const counter = makeCounter();
-      
+
       expect(counter()).toBe(1);
       expect(counter()).toBe(2);
       expect(counter()).toBe(3);
@@ -147,7 +142,7 @@ describe('Functional Programming - Higher Order Functions', () => {
       const { makeCounter } = higherOrderFunctions.examples;
       const counter1 = makeCounter();
       const counter2 = makeCounter();
-      
+
       expect(counter1()).toBe(1);
       expect(counter2()).toBe(1);
       expect(counter1()).toBe(2);
@@ -159,7 +154,7 @@ describe('Functional Programming - Higher Order Functions', () => {
       const { createFilter } = higherOrderFunctions.examples;
       const isEven = n => n % 2 === 0;
       const filterEven = createFilter(isEven);
-      
+
       expect(filterEven([1, 2, 3, 4, 5, 6])).toEqual([2, 4, 6]);
     });
 
@@ -167,7 +162,7 @@ describe('Functional Programming - Higher Order Functions', () => {
       const { withLogging } = higherOrderFunctions.examples;
       const add = (a, b) => a + b;
       const loggedAdd = withLogging(add);
-      
+
       expect(loggedAdd(3, 4)).toBe(7);
     });
   });
@@ -177,23 +172,23 @@ describe('Functional Programming - Map, Filter, Reduce', () => {
   describe('Array.map()', () => {
     test('should transform array elements', () => {
       const { mapDoubleNumbers } = mapFilterReduce.examples;
-      
+
       expect(mapDoubleNumbers([1, 2, 3])).toEqual([2, 4, 6]);
     });
 
     test('should map objects in array', () => {
       const { mapNames } = mapFilterReduce.examples;
       const users = [{ name: 'Alice' }, { name: 'Bob' }];
-      
+
       expect(mapNames(users)).toEqual(['Alice', 'Bob']);
     });
 
     test('should not mutate original array', () => {
       const original = [1, 2, 3];
       const originalCopy = [...original];
-      
+
       const mapped = original.map(x => x * 2);
-      
+
       expect(original).toEqual(originalCopy);
       expect(mapped).toEqual([2, 4, 6]);
     });
@@ -202,7 +197,7 @@ describe('Functional Programming - Map, Filter, Reduce', () => {
   describe('Array.filter()', () => {
     test('should filter array elements based on predicate', () => {
       const { filterEvenNumbers } = mapFilterReduce.examples;
-      
+
       expect(filterEvenNumbers([1, 2, 3, 4, 5])).toEqual([2, 4]);
     });
 
@@ -211,15 +206,15 @@ describe('Functional Programming - Map, Filter, Reduce', () => {
       const users = [
         { name: 'Alice', active: true },
         { name: 'Bob', active: false },
-        { name: 'Charlie', active: true },
+        { name: 'Charlie', active: true }
       ];
-      
+
       expect(filterActive(users).length).toBe(2);
     });
 
     test('should return empty array when no elements match', () => {
       const { filterGreaterThan10 } = mapFilterReduce.examples;
-      
+
       expect(filterGreaterThan10([1, 2, 3])).toEqual([]);
     });
   });
@@ -227,13 +222,13 @@ describe('Functional Programming - Map, Filter, Reduce', () => {
   describe('Array.reduce()', () => {
     test('should sum array elements', () => {
       const { sumArray } = mapFilterReduce.examples;
-      
+
       expect(sumArray([1, 2, 3, 4, 5])).toBe(15);
     });
 
     test('should accumulate values', () => {
       const { countOccurrences } = mapFilterReduce.examples;
-      
+
       expect(countOccurrences(['a', 'b', 'a', 'c', 'b', 'a'])).toEqual({ a: 3, b: 2, c: 1 });
     });
 
@@ -242,9 +237,9 @@ describe('Functional Programming - Map, Filter, Reduce', () => {
       const users = [
         { name: 'Alice', role: 'admin' },
         { name: 'Bob', role: 'user' },
-        { name: 'Charlie', role: 'admin' },
+        { name: 'Charlie', role: 'admin' }
       ];
-      
+
       const grouped = groupByProperty(users, 'role');
       expect(grouped.admin.length).toBe(2);
       expect(grouped.user.length).toBe(1);
@@ -252,7 +247,7 @@ describe('Functional Programming - Map, Filter, Reduce', () => {
 
     test('should handle initial value', () => {
       const { multiplyWithInitial } = mapFilterReduce.examples;
-      
+
       expect(multiplyWithInitial([2, 3, 4], 10)).toBe(240);
     });
   });
@@ -260,12 +255,12 @@ describe('Functional Programming - Map, Filter, Reduce', () => {
   describe('Chaining Operations', () => {
     test('should chain map, filter, reduce operations', () => {
       const numbers = [1, 2, 3, 4, 5, 6];
-      
+
       const result = numbers
         .filter(n => n % 2 === 0)
         .map(n => n * 2)
         .reduce((sum, n) => sum + n, 0);
-      
+
       expect(result).toBe(24); // (2*2) + (4*2) + (6*2)
     });
 
@@ -273,14 +268,14 @@ describe('Functional Programming - Map, Filter, Reduce', () => {
       const users = [
         { name: 'Alice', age: 25, active: true },
         { name: 'Bob', age: 30, active: false },
-        { name: 'Charlie', age: 28, active: true },
+        { name: 'Charlie', age: 28, active: true }
       ];
-      
+
       const totalAge = users
         .filter(u => u.active)
         .map(u => u.age)
         .reduce((sum, age) => sum + age, 0);
-      
+
       expect(totalAge).toBe(53);
     });
   });
@@ -289,7 +284,7 @@ describe('Functional Programming - Map, Filter, Reduce', () => {
     test('should use find to locate element', () => {
       const { findUserByName } = mapFilterReduce.examples;
       const users = [{ name: 'Alice' }, { name: 'Bob' }];
-      
+
       expect(findUserByName(users, 'Bob')).toEqual({ name: 'Bob' });
     });
 
@@ -297,15 +292,15 @@ describe('Functional Programming - Map, Filter, Reduce', () => {
       const { hasAdminUser } = mapFilterReduce.examples;
       const users = [
         { name: 'Alice', role: 'user' },
-        { name: 'Bob', role: 'admin' },
+        { name: 'Bob', role: 'admin' }
       ];
-      
+
       expect(hasAdminUser(users)).toBe(true);
     });
 
     test('should use every to verify all elements match', () => {
       const { allAdults } = mapFilterReduce.examples;
-      
+
       expect(allAdults([25, 30, 22])).toBe(true);
       expect(allAdults([25, 30, 17])).toBe(false);
     });
@@ -382,18 +377,18 @@ describe('Functional Programming - Concept Configuration', () => {
     const conceptConfig = {
       title: 'Functional Programming',
       difficulty: 'intermediate',
-      estimatedTime: '4-5 hours',
+      estimatedTime: '4-5 hours'
     };
-    
+
     expect(conceptConfig).toHaveProperty('title');
     expect(conceptConfig).toHaveProperty('difficulty');
   });
 
   test('should have prerequisites defined', () => {
     const conceptConfig = {
-      prerequisites: ['Basics', 'Functions', 'ES6+'],
+      prerequisites: ['Basics', 'Functions', 'ES6+']
     };
-    
+
     expect(conceptConfig.prerequisites).toBeDefined();
     expect(Array.isArray(conceptConfig.prerequisites)).toBe(true);
   });

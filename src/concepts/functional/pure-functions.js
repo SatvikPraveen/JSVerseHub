@@ -2,20 +2,20 @@
 // Functional Programming - Pure Functions in JavaScript
 
 export const pureFunctionsContent = {
-  title: "Pure Functions",
-  description: "Master pure functions and immutable programming patterns in JavaScript",
-  
+  title: 'Pure Functions',
+  description: 'Master pure functions and immutable programming patterns in JavaScript',
+
   theory: {
     introduction: `
       Pure functions are the foundation of functional programming. They always return the same output 
       for the same input and have no side effects. This makes code more predictable, testable, and easier to reason about.
       Understanding pure functions is essential for writing maintainable and bug-free JavaScript applications.
     `,
-    
+
     concepts: [
       {
-        name: "What Makes a Function Pure",
-        explanation: "Pure functions have two key characteristics: deterministic output and no side effects",
+        name: 'What Makes a Function Pure',
+        explanation: 'Pure functions have two key characteristics: deterministic output and no side effects',
         example: `
 // Pure function examples
 function add(a, b) {
@@ -76,10 +76,10 @@ const newValue = pureIncrement(value); // value stays 5, newValue is 6
 console.log(value, newValue); // 5, 6
         `
       },
-      
+
       {
-        name: "Immutability Patterns",
-        explanation: "Working with data without mutating original values",
+        name: 'Immutability Patterns',
+        explanation: 'Working with data without mutating original values',
         example: `
 // Immutable array operations
 const numbers = [1, 2, 3, 4, 5];
@@ -156,10 +156,10 @@ console.log("Older person:", olderPerson);
 console.log("Moved person:", movedPerson);
         `
       },
-      
+
       {
-        name: "Function Composition",
-        explanation: "Combining pure functions to create more complex behavior",
+        name: 'Function Composition',
+        explanation: 'Combining pure functions to create more complex behavior',
         example: `
 // Basic pure functions
 const trim = str => str.trim();
@@ -242,10 +242,10 @@ const processUsers = pipe(
 console.log("Processed users:", processUsers(users));
         `
       },
-      
+
       {
-        name: "Avoiding Side Effects",
-        explanation: "Strategies to eliminate side effects and maintain purity",
+        name: 'Avoiding Side Effects',
+        explanation: 'Strategies to eliminate side effects and maintain purity',
         example: `
 // Bad: Functions with side effects
 let globalCounter = 0;
@@ -350,11 +350,11 @@ if (divisionResult.success) {
       }
     ]
   },
-  
+
   practicalExamples: [
     {
-      title: "Shopping Cart System",
-      description: "A complete shopping cart implementation using pure functions",
+      title: 'Shopping Cart System',
+      description: 'A complete shopping cart implementation using pure functions',
       code: `
 // Pure functions for shopping cart operations
 function createCartItem(product, quantity = 1) {
@@ -489,10 +489,10 @@ console.log("Final cart:", cart);
 console.log("Final summary:", calculateCartSummary(cart));
       `
     },
-    
+
     {
-      title: "Data Validation System",
-      description: "Pure functions for validating and sanitizing user input",
+      title: 'Data Validation System',
+      description: 'Pure functions for validating and sanitizing user input',
       code: `
 // Basic validation functions
 const isString = value => typeof value === 'string';
@@ -652,13 +652,13 @@ if (validationResult.isValid) {
       `
     }
   ],
-  
+
   exercises: [
     {
-      id: "pure-basic",
-      title: "Temperature Converter",
-      difficulty: "easy",
-      prompt: "Create pure functions to convert between Celsius, Fahrenheit, and Kelvin temperatures.",
+      id: 'pure-basic',
+      title: 'Temperature Converter',
+      difficulty: 'easy',
+      prompt: 'Create pure functions to convert between Celsius, Fahrenheit, and Kelvin temperatures.',
       solution: `
 // Pure temperature conversion functions
 function celsiusToFahrenheit(celsius) {
@@ -721,12 +721,13 @@ function convertTemperature(value, fromUnit, toUnit) {
 }
       `
     },
-    
+
     {
-      id: "pure-intermediate",
-      title: "Array Processing Pipeline",
-      difficulty: "medium",
-      prompt: "Create pure functions to process an array of student objects with filtering, sorting, and transformation operations.",
+      id: 'pure-intermediate',
+      title: 'Array Processing Pipeline',
+      difficulty: 'medium',
+      prompt:
+        'Create pure functions to process an array of student objects with filtering, sorting, and transformation operations.',
       solution: `
 // Pure functions for student data processing
 function filterStudentsByGrade(students, minGrade) {
@@ -823,42 +824,44 @@ function processStudents(students, filters = {}) {
       `
     }
   ],
-  
+
   quiz: [
     {
       question: "What makes a function 'pure'?",
       options: [
-        "It uses only primitive data types",
-        "It returns the same output for the same input and has no side effects",
+        'It uses only primitive data types',
+        'It returns the same output for the same input and has no side effects',
         "It doesn't use any variables",
-        "It only uses built-in JavaScript functions"
+        'It only uses built-in JavaScript functions'
       ],
       correct: 1,
-      explanation: "A pure function always returns the same output for the same input and produces no side effects (doesn't modify external state or perform I/O operations)."
+      explanation:
+        "A pure function always returns the same output for the same input and produces no side effects (doesn't modify external state or perform I/O operations)."
     },
-    
+
     {
-      question: "Which of these is a side effect?",
+      question: 'Which of these is a side effect?',
       options: [
-        "Returning a calculated value",
-        "Using function parameters",
-        "Modifying a global variable",
-        "Creating a local variable"
+        'Returning a calculated value',
+        'Using function parameters',
+        'Modifying a global variable',
+        'Creating a local variable'
       ],
       correct: 2,
       explanation: "Modifying a global variable is a side effect because it changes state outside the function's scope."
     },
-    
+
     {
-      question: "What is the best way to modify an array in a pure function?",
+      question: 'What is the best way to modify an array in a pure function?',
       options: [
-        "Use push() to add elements",
-        "Use splice() to remove elements",
-        "Use the spread operator to create a new array",
-        "Modify the array directly with assignment"
+        'Use push() to add elements',
+        'Use splice() to remove elements',
+        'Use the spread operator to create a new array',
+        'Modify the array directly with assignment'
       ],
       correct: 2,
-      explanation: "Pure functions should not mutate their inputs. Using the spread operator creates a new array without modifying the original."
+      explanation:
+        'Pure functions should not mutate their inputs. Using the spread operator creates a new array without modifying the original.'
     }
   ]
 };

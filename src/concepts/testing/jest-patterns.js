@@ -6,7 +6,7 @@
  * Useful for testing complex outputs that rarely change
  */
 export const snapshotTesting = {
-  title: "Snapshot Testing",
+  title: 'Snapshot Testing',
   explanation: `
     Snapshot tests capture output and compare future runs against it.
     
@@ -21,7 +21,7 @@ export const snapshotTesting = {
     - Review snapshot changes carefully
     - Snapshots are stored separately
   `,
-  
+
   examples: {
     basicSnapshot: `
 function renderUserCard(user) {
@@ -47,7 +47,7 @@ describe('User card snapshot', () => {
 // On future runs: compares against snapshot
 // If different: fails and asks to update
     `,
-    
+
     inlineSnapshot: `
 test('should format date', () => {
   const date = new Date('2024-01-15');
@@ -56,7 +56,7 @@ test('should format date', () => {
 
 // Snapshot embedded inline in test file
     `,
-    
+
     partialSnapshot: `
 test('should partially match snapshot', () => {
   const response = {
@@ -78,7 +78,7 @@ test('should partially match snapshot', () => {
  * Run same test with different inputs
  */
 export const parameterizedTesting = {
-  title: "Parameterized/Table-Driven Testing",
+  title: 'Parameterized/Table-Driven Testing',
   explanation: `
     Use test.each() to run same test with different parameters.
     
@@ -88,7 +88,7 @@ export const parameterizedTesting = {
     - Clear test matrix
     - Better coverage
   `,
-  
+
   examples: {
     tableTest: `
 describe('Calculator', () => {
@@ -105,7 +105,7 @@ describe('Calculator', () => {
 
 // Generates 5 test cases from one test definition
     `,
-    
+
     namedTableTest: `
 test.each\`
   a    | b    | expected
@@ -118,7 +118,7 @@ test.each\`
 
 // Named parameters with template literals
     `,
-    
+
     objectTableTest: `
 test.each([
   { a: 1, b: 2, expected: 3 },
@@ -136,7 +136,7 @@ test.each([
  * Measuring how much code is tested
  */
 export const testCoverage = {
-  title: "Test Coverage",
+  title: 'Test Coverage',
   explanation: `
     Coverage metrics:
     - Line coverage: % of lines executed
@@ -150,7 +150,7 @@ export const testCoverage = {
     Goal: Aim for 80%+ coverage
     Don't chase 100% - focus on important code
   `,
-  
+
   examples: {
     coverageExample: `
 // Function with low coverage
@@ -201,7 +201,7 @@ describe('processUser coverage', () => {
 // Functions: 1/1 (100%)
 // Lines: 5/5 (100%)
     `,
-    
+
     coverageReporting: `
 // Run tests with coverage:
 // npm test -- --coverage
@@ -222,8 +222,8 @@ describe('processUser coverage', () => {
  * Testing Patterns and Anti-Patterns
  */
 export const testingPatterns = {
-  title: "Best Practices & Anti-Patterns",
-  
+  title: 'Best Practices & Anti-Patterns',
+
   bestPractices: `
     ✓ GOOD PRACTICES:
     1. Descriptive test names - clarifies intent
@@ -235,7 +235,7 @@ export const testingPatterns = {
     7. Meaningful error messages - helps debugging
     8. Keep tests simple - simpler than code being tested
   `,
-  
+
   antiPatterns: `
     ✗ BAD PATTERNS:
     1. Fragile tests - break on minor code changes

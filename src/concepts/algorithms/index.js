@@ -5,26 +5,26 @@
  * Algorithms Configuration
  */
 export const algorithmsConfig = {
-  title: "Algorithm Fundamentals",
-  description: "Master essential algorithms and analyze their performance",
-  difficulty: "intermediate-advanced",
-  estimatedTime: "120 minutes",
+  title: 'Algorithm Fundamentals',
+  description: 'Master essential algorithms and analyze their performance',
+  difficulty: 'intermediate-advanced',
+  estimatedTime: '120 minutes',
   topics: [
-    "Big O Notation",
-    "Sorting Algorithms",
-    "Searching Algorithms",
-    "Recursion",
-    "Dynamic Programming",
-    "Algorithm Optimization"
+    'Big O Notation',
+    'Sorting Algorithms',
+    'Searching Algorithms',
+    'Recursion',
+    'Dynamic Programming',
+    'Algorithm Optimization'
   ],
-  prerequisites: ["JavaScript Basics", "Arrays", "Functions"],
+  prerequisites: ['JavaScript Basics', 'Arrays', 'Functions'],
   learningObjectives: [
-    "Understand time and space complexity",
-    "Implement core sorting algorithms",
-    "Implement searching techniques",
-    "Write recursive solutions",
-    "Optimize algorithms for performance",
-    "Choose appropriate algorithms"
+    'Understand time and space complexity',
+    'Implement core sorting algorithms',
+    'Implement searching techniques',
+    'Write recursive solutions',
+    'Optimize algorithms for performance',
+    'Choose appropriate algorithms'
   ]
 };
 
@@ -32,7 +32,7 @@ export const algorithmsConfig = {
  * Big O Notation
  */
 export const bigONotation = {
-  concept: "Big O Notation & Complexity Analysis",
+  concept: 'Big O Notation & Complexity Analysis',
   explanation: `
     Big O describes how an algorithm's performance scales with input size.
     
@@ -54,7 +54,7 @@ export const bigONotation = {
     - Optimize hot paths in code
     - Test with large datasets
   `,
-  
+
   examples: {
     complexityComparison: `
 // O(1) - Constant time
@@ -102,7 +102,7 @@ function fibonacci(n) {
   return fibonacci(n - 1) + fibonacci(n - 2);
 }
     `,
-    
+
     analyzeComplexity: `
 // Analyzing complexity
 
@@ -166,7 +166,7 @@ function analyzeSpace3(n) {
  * Sorting Algorithms
  */
 export const sortingAlgorithms = {
-  concept: "Sorting Algorithms",
+  concept: 'Sorting Algorithms',
   explanation: `
     Sorting arranges data in order. Different algorithms have different tradeoffs.
     
@@ -184,7 +184,7 @@ export const sortingAlgorithms = {
     - Nearly sorted: Insertion sort
     - Need stable sort: Merge sort or built-in sort
   `,
-  
+
   examples: {
     bubbleSort: `
 // Bubble Sort - Compare adjacent, swap if wrong order
@@ -205,7 +205,7 @@ function bubbleSort(arr) {
 console.log(bubbleSort([64, 34, 25, 12, 22, 11, 90]));
 // Result: [11, 12, 22, 25, 34, 64, 90]
     `,
-    
+
     mergeSort: `
 // Merge Sort - Divide and conquer
 // Time: O(n log n), Space: O(n)
@@ -238,7 +238,7 @@ function merge(left, right) {
 console.log(mergeSort([64, 34, 25, 12, 22, 11, 90]));
 // Result: [11, 12, 22, 25, 34, 64, 90]
     `,
-    
+
     quickSort: `
 // Quick Sort - Partition around pivot
 // Time: O(n log n) avg, O(n²) worst, Space: O(log n)
@@ -285,7 +285,7 @@ function partition(arr, low, high) {
  * Searching Algorithms
  */
 export const searchingAlgorithms = {
-  concept: "Searching Algorithms",
+  concept: 'Searching Algorithms',
   explanation: `
     Finding specific elements in data.
     
@@ -298,7 +298,7 @@ export const searchingAlgorithms = {
     - Much faster for large datasets
     - Cuts search space in half each step
   `,
-  
+
   examples: {
     linearSearch: `
 // Linear Search - Check each element
@@ -314,7 +314,7 @@ function linearSearch(arr, target) {
 console.log(linearSearch([10, 20, 30, 40, 50], 30)); // 2
 console.log(linearSearch([10, 20, 30, 40, 50], 25)); // -1
     `,
-    
+
     binarySearch: `
 // Binary Search - Divide and eliminate half
 // Time: O(log n), Space: O(1)
@@ -355,7 +355,7 @@ console.log(binarySearch(sorted, 25)); // -1
  * Recursion
  */
 export const recursion = {
-  concept: "Recursion",
+  concept: 'Recursion',
   explanation: `
     Function calling itself with smaller input.
     
@@ -374,7 +374,7 @@ export const recursion = {
     - Performance overhead
     - Can be slower than loops
   `,
-  
+
   examples: {
     recursionBasics: `
 // Simple recursion - Factorial
@@ -407,7 +407,7 @@ function treeSum(node) {
   return node.value + treeSum(node.left) + treeSum(node.right);
 }
     `,
-    
+
     recursionOptimization: `
 // Tail recursion optimization
 function sumTail(arr, index = 0, accumulator = 0) {
@@ -454,10 +454,10 @@ function inorderTraversal(node) {
  */
 export const exercises = [
   {
-    id: "alg_ex1",
-    title: "Analyze Big O",
-    difficulty: "easy",
-    description: "Determine time complexity of code",
+    id: 'alg_ex1',
+    title: 'Analyze Big O',
+    difficulty: 'easy',
+    description: 'Determine time complexity of code',
     template: `
 // What is the Big O complexity?
 
@@ -488,21 +488,17 @@ function example3(arr) {
     `,
     tests: [
       {
-        description: "Should have O(1) for example1",
-        check: (code) => code.includes('O(1)') || code.includes('O(1)')
+        description: 'Should have O(1) for example1',
+        check: code => code.includes('O(1)') || code.includes('O(1)')
       }
     ],
-    hints: [
-      "Example 1: Constant time access",
-      "Example 2: Iterate once",
-      "Example 3: Nested loops"
-    ]
+    hints: ['Example 1: Constant time access', 'Example 2: Iterate once', 'Example 3: Nested loops']
   },
   {
-    id: "alg_ex2",
-    title: "Implement Bubble Sort",
-    difficulty: "medium",
-    description: "Write bubble sort algorithm",
+    id: 'alg_ex2',
+    title: 'Implement Bubble Sort',
+    difficulty: 'medium',
+    description: 'Write bubble sort algorithm',
     template: `
 function bubbleSort(arr) {
   // Your implementation here
@@ -519,21 +515,17 @@ console.log(bubbleSort([64, 34, 25, 12, 22, 11, 90]));
     `,
     tests: [
       {
-        description: "Should have nested loops",
-        check: (code) => code.match(/for/g).length >= 2
+        description: 'Should have nested loops',
+        check: code => code.match(/for/g).length >= 2
       }
     ],
-    hints: [
-      "Use two nested loops",
-      "Compare adjacent elements",
-      "Swap if arr[j] > arr[j+1]"
-    ]
+    hints: ['Use two nested loops', 'Compare adjacent elements', 'Swap if arr[j] > arr[j+1]']
   },
   {
-    id: "alg_ex3",
-    title: "Implement Binary Search",
-    difficulty: "hard",
-    description: "Write binary search for sorted array",
+    id: 'alg_ex3',
+    title: 'Implement Binary Search',
+    difficulty: 'hard',
+    description: 'Write binary search for sorted array',
     template: `
 function binarySearch(arr, target) {
   // Your implementation here
@@ -551,15 +543,11 @@ console.log(binarySearch(sorted, 10)); // -1
     `,
     tests: [
       {
-        description: "Should use left and right",
-        check: (code) => code.includes('left') && code.includes('right')
+        description: 'Should use left and right',
+        check: code => code.includes('left') && code.includes('right')
       }
     ],
-    hints: [
-      "Track left and right boundaries",
-      "Calculate mid = (left + right) / 2",
-      "Narrow range based on comparison"
-    ]
+    hints: ['Track left and right boundaries', 'Calculate mid = (left + right) / 2', 'Narrow range based on comparison']
   }
 ];
 
@@ -568,40 +556,25 @@ console.log(binarySearch(sorted, 10)); // -1
  */
 export const quiz = [
   {
-    id: "aq1",
-    question: "What is O(n log n) complexity?",
-    options: [
-      "Linear time",
-      "Quadratic time",
-      "Linearithmic time",
-      "Exponential time"
-    ],
+    id: 'aq1',
+    question: 'What is O(n log n) complexity?',
+    options: ['Linear time', 'Quadratic time', 'Linearithmic time', 'Exponential time'],
     correct: 2,
-    explanation: "O(n log n) is called linearithmic - combination of linear and logarithmic"
+    explanation: 'O(n log n) is called linearithmic - combination of linear and logarithmic'
   },
   {
-    id: "aq2",
-    question: "Which algorithm is O(log n)?",
-    options: [
-      "Bubble sort",
-      "Linear search",
-      "Binary search",
-      "Fibonacci"
-    ],
+    id: 'aq2',
+    question: 'Which algorithm is O(log n)?',
+    options: ['Bubble sort', 'Linear search', 'Binary search', 'Fibonacci'],
     correct: 2,
-    explanation: "Binary search has O(log n) complexity by eliminating half the search space"
+    explanation: 'Binary search has O(log n) complexity by eliminating half the search space'
   },
   {
-    id: "aq3",
-    question: "What is the best case for quick sort?",
-    options: [
-      "O(n)",
-      "O(n log n)",
-      "O(n²)",
-      "O(2^n)"
-    ],
+    id: 'aq3',
+    question: 'What is the best case for quick sort?',
+    options: ['O(n)', 'O(n log n)', 'O(n²)', 'O(2^n)'],
     correct: 1,
-    explanation: "Quick sort best case is O(n log n) when pivot splits array evenly"
+    explanation: 'Quick sort best case is O(n log n) when pivot splits array evenly'
   }
 ];
 

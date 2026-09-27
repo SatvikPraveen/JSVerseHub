@@ -78,7 +78,8 @@ export class MemoryStorage {
   setItem(key, value) {
     const name = String(key);
     const text = String(value);
-    const currentSize = this.usedCharacters() - (this.entries.get(name) || '').length - (this.entries.has(name) ? name.length : 0);
+    const currentSize =
+      this.usedCharacters() - (this.entries.get(name) || '').length - (this.entries.has(name) ? name.length : 0);
     if (currentSize + name.length + text.length > this.quota) {
       throw storageError('QuotaExceededError', `Setting "${name}" exceeded the storage quota`);
     }
@@ -267,8 +268,13 @@ export function createExpiringStorage(storage, { now = () => Date.now() } = {}) 
       }
       keys.forEach(key => {
         const entry = json.get(key);
-        if (entry && typeof entry === 'object' && entry.expiresAt !== null && entry.expiresAt !== undefined
-          && now() >= entry.expiresAt) {
+        if (
+          entry &&
+          typeof entry === 'object' &&
+          entry.expiresAt !== null &&
+          entry.expiresAt !== undefined &&
+          now() >= entry.expiresAt
+        ) {
           storage.removeItem(key);
           purged += 1;
         }
@@ -324,11 +330,14 @@ export const localStorageConcept = {
     /**
      * Persisted user preferences with defaults, merging partial updates.
      */
-    createPreferences(storage = localStorage, defaults = {
-      theme: 'light',
-      fontSize: 14,
-      language: 'en'
-    }) {
+    createPreferences(
+      storage = localStorage,
+      defaults = {
+        theme: 'light',
+        fontSize: 14,
+        language: 'en'
+      }
+    ) {
       const json = createJSONStorage(storage);
       const KEY = 'preferences';
 
@@ -555,7 +564,7 @@ window.addEventListener('DOMContentLoaded', () => renderStep(wizard.get().step))
   keyPoints: [
     'Identical API to localStorage: setItem, getItem, removeItem, clear, key, length',
     'Lifetime is the tab: closing the tab clears it, reloading does not',
-    'Isolated per tab; window.open and tab duplication copy the opener\'s data',
+    "Isolated per tab; window.open and tab duplication copy the opener's data",
     'Ideal for form drafts, wizard steps and view state that should not leak across sessions',
     'Same string-only and synchronous limitations as localStorage'
   ]
@@ -650,9 +659,9 @@ function extractKey(value, keyPath) {
   if (Array.isArray(keyPath)) {
     return keyPath.map(path => extractKey(value, path));
   }
-  return keyPath.split('.').reduce((current, segment) => (current === undefined || current === null
-    ? undefined
-    : current[segment]), value);
+  return keyPath
+    .split('.')
+    .reduce((current, segment) => (current === undefined || current === null ? undefined : current[segment]), value);
 }
 
 function assignKey(value, keyPath, key) {
@@ -793,10 +802,15 @@ function createStoreHandle(store, transaction) {
       if (!index.unique) return;
       const indexed = extractKey(copy, index.keyPath);
       if (indexed === undefined) return;
-      const clash = [...store.records.entries()].some(([recordKey, record]) => compareKeys(recordKey, key) !== 0
-        && compareKeys(extractKey(record, index.keyPath), indexed) === 0);
+      const clash = [...store.records.entries()].some(
+        ([recordKey, record]) =>
+          compareKeys(recordKey, key) !== 0 && compareKeys(extractKey(record, index.keyPath), indexed) === 0
+      );
       if (clash) {
-        throw storageError('ConstraintError', `Unique index "${index.name}" already contains ${JSON.stringify(indexed)}`);
+        throw storageError(
+          'ConstraintError',
+          `Unique index "${index.name}" already contains ${JSON.stringify(indexed)}`
+        );
       }
     });
     if (existing) {
@@ -831,31 +845,37 @@ function createStoreHandle(store, transaction) {
 
     add: (value, key) => writeRequest(() => write(value, key, { overwrite: false })),
     put: (value, key) => writeRequest(() => write(value, key, { overwrite: true })),
-    get: query => request(() => {
-      const entry = sortedEntries(query)[0];
-      return entry ? structuredCopy(entry[1]) : undefined;
-    }),
-    getKey: query => request(() => {
-      const entry = sortedEntries(query)[0];
-      return entry ? entry[0] : undefined;
-    }),
-    getAll: (query, count) => request(() => {
-      const entries = sortedEntries(query).map(([, value]) => structuredCopy(value));
-      return count === undefined ? entries : entries.slice(0, count);
-    }),
-    getAllKeys: (query, count) => request(() => {
-      const keys = sortedEntries(query).map(([key]) => key);
-      return count === undefined ? keys : keys.slice(0, count);
-    }),
+    get: query =>
+      request(() => {
+        const entry = sortedEntries(query)[0];
+        return entry ? structuredCopy(entry[1]) : undefined;
+      }),
+    getKey: query =>
+      request(() => {
+        const entry = sortedEntries(query)[0];
+        return entry ? entry[0] : undefined;
+      }),
+    getAll: (query, count) =>
+      request(() => {
+        const entries = sortedEntries(query).map(([, value]) => structuredCopy(value));
+        return count === undefined ? entries : entries.slice(0, count);
+      }),
+    getAllKeys: (query, count) =>
+      request(() => {
+        const keys = sortedEntries(query).map(([key]) => key);
+        return count === undefined ? keys : keys.slice(0, count);
+      }),
     count: query => request(() => sortedEntries(query).length),
-    delete: query => writeRequest(() => {
-      sortedEntries(query).forEach(([key]) => store.records.delete(key));
-      return undefined;
-    }),
-    clear: () => writeRequest(() => {
-      store.records.clear();
-      return undefined;
-    }),
+    delete: query =>
+      writeRequest(() => {
+        sortedEntries(query).forEach(([key]) => store.records.delete(key));
+        return undefined;
+      }),
+    clear: () =>
+      writeRequest(() => {
+        store.records.clear();
+        return undefined;
+      }),
 
     createIndex(name, keyPath, { unique = false, multiEntry = false } = {}) {
       if (transaction.mode !== 'versionchange') {
@@ -884,14 +904,15 @@ function createStoreHandle(store, transaction) {
         throw storageError('NotFoundError', `Index "${name}" does not exist`);
       }
 
-      const indexedEntries = query => [...store.records.entries()]
-        .map(([primaryKey, value]) => ({
-          primaryKey,
-          value,
-          indexKey: extractKey(value, index.keyPath)
-        }))
-        .filter(entry => entry.indexKey !== undefined && matchesQuery(entry.indexKey, query))
-        .sort((a, b) => compareKeys(a.indexKey, b.indexKey) || compareKeys(a.primaryKey, b.primaryKey));
+      const indexedEntries = query =>
+        [...store.records.entries()]
+          .map(([primaryKey, value]) => ({
+            primaryKey,
+            value,
+            indexKey: extractKey(value, index.keyPath)
+          }))
+          .filter(entry => entry.indexKey !== undefined && matchesQuery(entry.indexKey, query))
+          .sort((a, b) => compareKeys(a.indexKey, b.indexKey) || compareKeys(a.primaryKey, b.primaryKey));
 
       return {
         name: index.name,
@@ -899,22 +920,26 @@ function createStoreHandle(store, transaction) {
         unique: index.unique,
         multiEntry: index.multiEntry,
         objectStore: handle,
-        get: query => request(() => {
-          const entry = indexedEntries(query)[0];
-          return entry ? structuredCopy(entry.value) : undefined;
-        }),
-        getKey: query => request(() => {
-          const entry = indexedEntries(query)[0];
-          return entry ? entry.primaryKey : undefined;
-        }),
-        getAll: (query, count) => request(() => {
-          const values = indexedEntries(query).map(entry => structuredCopy(entry.value));
-          return count === undefined ? values : values.slice(0, count);
-        }),
-        getAllKeys: (query, count) => request(() => {
-          const keys = indexedEntries(query).map(entry => entry.primaryKey);
-          return count === undefined ? keys : keys.slice(0, count);
-        }),
+        get: query =>
+          request(() => {
+            const entry = indexedEntries(query)[0];
+            return entry ? structuredCopy(entry.value) : undefined;
+          }),
+        getKey: query =>
+          request(() => {
+            const entry = indexedEntries(query)[0];
+            return entry ? entry.primaryKey : undefined;
+          }),
+        getAll: (query, count) =>
+          request(() => {
+            const values = indexedEntries(query).map(entry => structuredCopy(entry.value));
+            return count === undefined ? values : values.slice(0, count);
+          }),
+        getAllKeys: (query, count) =>
+          request(() => {
+            const keys = indexedEntries(query).map(entry => entry.primaryKey);
+            return count === undefined ? keys : keys.slice(0, count);
+          }),
         count: query => request(() => indexedEntries(query).length)
       };
     }
@@ -1175,10 +1200,12 @@ export function createMemoryIndexedDB() {
     },
 
     databases() {
-      return Promise.resolve([...state.databases.values()].map(database => ({
-        name: database.name,
-        version: database.version
-      })));
+      return Promise.resolve(
+        [...state.databases.values()].map(database => ({
+          name: database.name,
+          version: database.version
+        }))
+      );
     },
 
     cmp: compareKeys,
@@ -1545,7 +1572,8 @@ export const exercises = [
     id: 'storage_ex1',
     title: 'Save and Load a Theme',
     difficulty: 'easy',
-    description: 'Use localStorage to remember the user\'s theme: saveTheme(name) stores it and loadTheme() returns it, defaulting to "light" when nothing is stored.',
+    description:
+      'Use localStorage to remember the user\'s theme: saveTheme(name) stores it and loadTheme() returns it, defaulting to "light" when nothing is stored.',
     template: `
 function saveTheme(name) {
   // store the theme under the key "theme"
@@ -1568,16 +1596,14 @@ console.log(loadTheme()); // "dark"
         check: code => /['"]light['"]/.test(code) && /getItem/.test(code)
       }
     ],
-    hints: [
-      'getItem returns null for a missing key',
-      'The nullish coalescing operator (??) is perfect for defaults'
-    ]
+    hints: ['getItem returns null for a missing key', 'The nullish coalescing operator (??) is perfect for defaults']
   },
   {
     id: 'storage_ex2',
     title: 'Store an Object with JSON',
     difficulty: 'easy',
-    description: 'localStorage only stores strings. Write saveUser(user) and loadUser() that serialise an object with JSON.stringify and revive it with JSON.parse.',
+    description:
+      'localStorage only stores strings. Write saveUser(user) and loadUser() that serialise an object with JSON.stringify and revive it with JSON.parse.',
     template: `
 function saveUser(user) {
   // serialise the object before storing it
@@ -1609,7 +1635,8 @@ console.log(loadUser().name); // "Alice"
     id: 'storage_ex3',
     title: 'Persist a Wizard Step in sessionStorage',
     difficulty: 'easy',
-    description: 'Use sessionStorage so a multi-step form remembers its current step across reloads but forgets it when the tab closes.',
+    description:
+      'Use sessionStorage so a multi-step form remembers its current step across reloads but forgets it when the tab closes.',
     template: `
 function setStep(step) {
   // store the step number
@@ -1641,7 +1668,8 @@ console.log(getStep() + 1); // 4, not "31"
     id: 'storage_ex4',
     title: 'Safe JSON Storage Wrapper',
     difficulty: 'medium',
-    description: 'Build createJSONStorage(storage) with get(key, fallback) and set(key, value) that works for both localStorage and sessionStorage and returns the fallback when the stored JSON is corrupt.',
+    description:
+      'Build createJSONStorage(storage) with get(key, fallback) and set(key, value) that works for both localStorage and sessionStorage and returns the fallback when the stored JSON is corrupt.',
     template: `
 function createJSONStorage(storage) {
   return {
@@ -1682,7 +1710,8 @@ console.log(session.get('missing', [])); // []
     id: 'storage_ex5',
     title: 'Cache API Responses with Expiry',
     difficulty: 'medium',
-    description: 'Implement cachedFetch(url, ttlMs) that stores each response in localStorage together with a timestamp and only hits the network when the cached copy is missing or older than ttlMs.',
+    description:
+      'Implement cachedFetch(url, ttlMs) that stores each response in localStorage together with a timestamp and only hits the network when the cached copy is missing or older than ttlMs.',
     template: `
 async function cachedFetch(url, ttlMs = 60000) {
   const cacheKey = 'cache:' + url;
@@ -1714,7 +1743,8 @@ async function cachedFetch(url, ttlMs = 60000) {
     id: 'storage_ex6',
     title: 'Sync Theme Across Tabs',
     difficulty: 'medium',
-    description: 'Listen for the storage event so that when one tab changes the theme in localStorage every other open tab updates its document immediately.',
+    description:
+      'Listen for the storage event so that when one tab changes the theme in localStorage every other open tab updates its document immediately.',
     template: `
 function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
@@ -1737,16 +1767,14 @@ function setTheme(theme) {
         check: code => /event\.key|e\.key/.test(code) && /newValue/.test(code)
       }
     ],
-    hints: [
-      'The event fires only in other tabs of the same origin',
-      'event.key is null when clear() was called'
-    ]
+    hints: ['The event fires only in other tabs of the same origin', 'event.key is null when clear() was called']
   },
   {
     id: 'storage_ex7',
     title: 'Open an IndexedDB Database with a Schema',
     difficulty: 'medium',
-    description: 'Write openTasksDB() that opens an IndexedDB database named "tasks" at version 1, creates a "tasks" object store with an auto-incrementing id and an index on "status" during onupgradeneeded, and resolves with the connection.',
+    description:
+      'Write openTasksDB() that opens an IndexedDB database named "tasks" at version 1, creates a "tasks" object store with an auto-incrementing id and an index on "status" during onupgradeneeded, and resolves with the connection.',
     template: `
 function openTasksDB() {
   return new Promise((resolve, reject) => {
@@ -1783,7 +1811,8 @@ function openTasksDB() {
     id: 'storage_ex8',
     title: 'Promise Wrapper for IndexedDB Requests',
     difficulty: 'hard',
-    description: 'Write promisify(request) and then a saveTask(db, task) function that uses an IndexedDB readwrite transaction, awaits the store.add request, and resolves only after the transaction completes.',
+    description:
+      'Write promisify(request) and then a saveTask(db, task) function that uses an IndexedDB readwrite transaction, awaits the store.add request, and resolves only after the transaction completes.',
     template: `
 function promisify(request) {
   return new Promise((resolve, reject) => {
@@ -1826,7 +1855,8 @@ async function saveTask(db, task) {
     id: 'storage_ex9',
     title: 'Offline-First Task Queue',
     difficulty: 'hard',
-    description: 'Build a queue in IndexedDB that records actions while offline and replays them in insertion order when the browser comes back online, deleting each entry after it syncs successfully.',
+    description:
+      'Build a queue in IndexedDB that records actions while offline and replays them in insertion order when the browser comes back online, deleting each entry after it syncs successfully.',
     template: `
 async function enqueue(db, action) {
   // add { action, createdAt: Date.now() } to the "outbox" store
@@ -1862,7 +1892,8 @@ window.addEventListener('online', () => replayOutbox(db, sendToServer));
     id: 'storage_ex10',
     title: 'Storage Strategy Selector',
     difficulty: 'hard',
-    description: 'Implement a persist(key, value, options) facade that routes small persistent values to localStorage, per-tab values to sessionStorage and large or binary values to IndexedDB, exposing a single async get/set/remove API.',
+    description:
+      'Implement a persist(key, value, options) facade that routes small persistent values to localStorage, per-tab values to sessionStorage and large or binary values to IndexedDB, exposing a single async get/set/remove API.',
     template: `
 function createPersistence({ sizeThresholdKB = 256 } = {}) {
   function pick(value, { perTab }) {

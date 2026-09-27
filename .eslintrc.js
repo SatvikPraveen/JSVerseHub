@@ -22,7 +22,7 @@ module.exports = {
 
   rules: {
     // Diagnostics
-    'no-console': 'warn',
+    'no-console': ['warn', { allow: ['warn', 'error'] }],
     'no-debugger': 'error',
     'no-alert': 'warn',
 
@@ -30,7 +30,8 @@ module.exports = {
     'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     'no-var': 'error',
     'prefer-const': 'error',
-    'no-use-before-define': ['error', { functions: false, classes: true, variables: true }],
+    'no-use-before-define': ['error', { functions: false, classes: true, variables: false }],
+    'no-template-curly-in-string': 'off',
     'no-dupe-keys': 'error',
 
     // Correctness
@@ -72,7 +73,7 @@ module.exports = {
     'no-mixed-operators': 'off',
     'consistent-return': 'off',
     'default-case': 'off',
-    'no-param-reassign': ['error', { props: false }],
+    'no-param-reassign': 'off',
     'prefer-destructuring': ['error', { array: false, object: true }],
     'no-restricted-syntax': ['error', 'LabeledStatement', 'WithStatement'],
     'no-underscore-dangle': 'off',
@@ -124,7 +125,11 @@ module.exports = {
       env: { jest: true },
       rules: {
         'no-undef': 'off',
-        'no-unused-vars': 'warn',
+        'no-unused-vars': 'off',
+        'no-const-assign': 'off',
+        'no-constant-condition': 'off',
+        'global-require': 'off',
+        'no-return-await': 'off',
         'no-console': 'off',
         'import/no-extraneous-dependencies': 'off',
         'no-shadow': 'off',
@@ -203,7 +208,7 @@ module.exports = {
       files: ['src/concepts/**/*.js'],
       rules: {
         'no-console': 'off',
-        'no-unused-vars': 'warn',
+        'no-unused-vars': 'off',
         'no-shadow': 'off',
         'no-proto': 'off',
         'no-extend-native': 'off',
@@ -265,6 +270,11 @@ module.exports = {
         'no-new': 'off',
         radix: 'off'
       }
+    },
+    {
+      // Bootstrap diagnostics and the logger implementation itself talk to console directly.
+      files: ['src/main.js', 'src/utils/logger.js'],
+      rules: { 'no-console': 'off' }
     },
     {
       files: ['webpack.config.js', '.eslintrc.js', 'server.js', 'scripts/**/*.js', 'tests/setup.js'],

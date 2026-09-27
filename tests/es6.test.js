@@ -2,7 +2,6 @@
 // Location: jsversehub/tests/es6.test.js
 
 describe('ES6+ Features', () => {
-
   // Test arrow functions
   describe('Arrow Functions', () => {
     test('arrow functions should have concise syntax', () => {
@@ -18,18 +17,16 @@ describe('ES6+ Features', () => {
     test('arrow functions should not have their own this', () => {
       const obj = {
         name: 'Test',
-        regularFunction: function() {
-          return function() {
+        regularFunction: function () {
+          return function () {
             // A regular function gets its own `this` from how it is CALLED,
             // not from where it is defined. Called plainly in strict mode
             // (ES modules are always strict) `this` is undefined.
             return this === undefined ? undefined : this.name;
           };
         },
-        arrowFunction: function() {
-          return () => {
-            return this.name;
-          };
+        arrowFunction: function () {
+          return () => this.name;
         }
       };
 
@@ -43,13 +40,11 @@ describe('ES6+ Features', () => {
     });
 
     test('arrow functions should not have arguments object', () => {
-      const regularFunction = function() {
+      const regularFunction = function () {
         return arguments.length;
       };
 
-      const arrowFunction = (...args) => {
-        return args.length;
-      };
+      const arrowFunction = (...args) => args.length;
 
       expect(regularFunction(1, 2, 3)).toBe(3);
       expect(arrowFunction(1, 2, 3)).toBe(3);
@@ -101,7 +96,7 @@ Line 3`;
   describe('Destructuring', () => {
     test('array destructuring should extract values', () => {
       const [first, second, third] = [1, 2, 3];
-      
+
       expect(first).toBe(1);
       expect(second).toBe(2);
       expect(third).toBe(3);
@@ -109,35 +104,35 @@ Line 3`;
 
     test('array destructuring should work with rest elements', () => {
       const [first, ...rest] = [1, 2, 3, 4, 5];
-      
+
       expect(first).toBe(1);
       expect(rest).toEqual([2, 3, 4, 5]);
     });
 
     test('array destructuring should support default values', () => {
       const [a = 10, b = 20] = [1];
-      
+
       expect(a).toBe(1);
       expect(b).toBe(20);
     });
 
     test('object destructuring should extract properties', () => {
       const { name, age } = { name: 'John', age: 30, city: 'New York' };
-      
+
       expect(name).toBe('John');
       expect(age).toBe(30);
     });
 
     test('object destructuring should support aliasing', () => {
       const { name: fullName, age: years } = { name: 'John', age: 30 };
-      
+
       expect(fullName).toBe('John');
       expect(years).toBe(30);
     });
 
     test('object destructuring should support default values', () => {
       const { name = 'Unknown', age = 0 } = { name: 'John' };
-      
+
       expect(name).toBe('John');
       expect(age).toBe(0);
     });
@@ -155,8 +150,13 @@ Line 3`;
         }
       };
 
-      const { user: { personal: { name }, contact: { email } } } = data;
-      
+      const {
+        user: {
+          personal: { name },
+          contact: { email }
+        }
+      } = data;
+
       expect(name).toBe('John');
       expect(email).toBe('john@example.com');
     });
@@ -168,16 +168,16 @@ Line 3`;
       const arr1 = [1, 2, 3];
       const arr2 = [4, 5, 6];
       const combined = [...arr1, ...arr2];
-      
+
       expect(combined).toEqual([1, 2, 3, 4, 5, 6]);
     });
 
     test('spread should create shallow copies of arrays', () => {
       const original = [1, 2, 3];
       const copy = [...original];
-      
+
       copy.push(4);
-      
+
       expect(original).toEqual([1, 2, 3]);
       expect(copy).toEqual([1, 2, 3, 4]);
     });
@@ -186,7 +186,7 @@ Line 3`;
       const obj1 = { a: 1, b: 2 };
       const obj2 = { c: 3, d: 4 };
       const combined = { ...obj1, ...obj2 };
-      
+
       expect(combined).toEqual({ a: 1, b: 2, c: 3, d: 4 });
     });
 
@@ -194,7 +194,7 @@ Line 3`;
       const obj1 = { a: 1, b: 2 };
       const obj2 = { b: 3, c: 4 };
       const combined = { ...obj1, ...obj2 };
-      
+
       expect(combined).toEqual({ a: 1, b: 3, c: 4 });
     });
 
@@ -202,10 +202,10 @@ Line 3`;
       function sum(a, b, c) {
         return a + b + c;
       }
-      
+
       const numbers = [1, 2, 3];
       const result = sum(...numbers);
-      
+
       expect(result).toBe(6);
     });
   });
@@ -216,7 +216,7 @@ Line 3`;
       function sum(first, ...rest) {
         return first + rest.reduce((acc, num) => acc + num, 0);
       }
-      
+
       expect(sum(1, 2, 3, 4, 5)).toBe(15);
     });
 
@@ -224,7 +224,7 @@ Line 3`;
       function testRest(...args) {
         return Array.isArray(args) && args.length;
       }
-      
+
       expect(testRest(1, 2, 3)).toBe(3);
     });
   });
@@ -235,7 +235,7 @@ Line 3`;
       function greet(name = 'World') {
         return `Hello, ${name}!`;
       }
-      
+
       expect(greet()).toBe('Hello, World!');
       expect(greet('John')).toBe('Hello, John!');
       expect(greet(undefined)).toBe('Hello, World!');
@@ -245,7 +245,7 @@ Line 3`;
       function createArray(length = 5, value = length * 2) {
         return new Array(length).fill(value);
       }
-      
+
       expect(createArray()).toEqual([10, 10, 10, 10, 10]);
       expect(createArray(3)).toEqual([6, 6, 6]);
       expect(createArray(2, 'test')).toEqual(['test', 'test']);
@@ -274,7 +274,7 @@ Line 3`;
       const obj = { a: 1 };
       obj.a = 2;
       obj.b = 3;
-      
+
       expect(obj).toEqual({ a: 2, b: 3 });
     });
 
@@ -294,18 +294,18 @@ Line 3`;
           this.name = name;
           this.age = age;
         }
-        
+
         greet() {
           return `Hello, I'm ${this.name}`;
         }
-        
+
         static species() {
           return 'Homo sapiens';
         }
       }
-      
+
       const john = new Person('John', 30);
-      
+
       expect(john.name).toBe('John');
       expect(john.age).toBe(30);
       expect(john.greet()).toBe("Hello, I'm John");
@@ -317,25 +317,25 @@ Line 3`;
         constructor(name) {
           this.name = name;
         }
-        
+
         speak() {
           return `${this.name} makes a sound`;
         }
       }
-      
+
       class Dog extends Animal {
         constructor(name, breed) {
           super(name);
           this.breed = breed;
         }
-        
+
         speak() {
           return `${this.name} barks`;
         }
       }
-      
+
       const dog = new Dog('Buddy', 'Golden Retriever');
-      
+
       expect(dog.name).toBe('Buddy');
       expect(dog.breed).toBe('Golden Retriever');
       expect(dog.speak()).toBe('Buddy barks');
@@ -349,21 +349,21 @@ Line 3`;
           this.width = width;
           this.height = height;
         }
-        
+
         get area() {
           return this.width * this.height;
         }
-        
+
         set area(value) {
           this.width = Math.sqrt(value);
           this.height = Math.sqrt(value);
         }
       }
-      
+
       const rect = new Rectangle(4, 5);
-      
+
       expect(rect.area).toBe(20);
-      
+
       rect.area = 16;
       expect(rect.width).toBe(4);
       expect(rect.height).toBe(4);
@@ -375,7 +375,7 @@ Line 3`;
     test('symbols should be unique', () => {
       const sym1 = Symbol('test');
       const sym2 = Symbol('test');
-      
+
       expect(sym1).not.toBe(sym2);
       expect(typeof sym1).toBe('symbol');
     });
@@ -386,7 +386,7 @@ Line 3`;
         [nameSymbol]: 'John',
         age: 30
       };
-      
+
       expect(obj[nameSymbol]).toBe('John');
       expect(Object.keys(obj)).toEqual(['age']); // Symbols are not enumerable
     });
@@ -396,15 +396,15 @@ Line 3`;
         constructor(...items) {
           this.items = items;
         }
-        
+
         *[Symbol.iterator]() {
           yield* this.items;
         }
       }
-      
+
       const collection = new Collection(1, 2, 3);
       const result = [...collection];
-      
+
       expect(result).toEqual([1, 2, 3]);
     });
   });
@@ -417,9 +417,9 @@ Line 3`;
         yield 2;
         yield 3;
       }
-      
+
       const gen = numberGenerator();
-      
+
       expect(gen.next()).toEqual({ value: 1, done: false });
       expect(gen.next()).toEqual({ value: 2, done: false });
       expect(gen.next()).toEqual({ value: 3, done: false });
@@ -434,15 +434,15 @@ Line 3`;
           [a, b] = [b, a + b];
         }
       }
-      
+
       const fib = fibonacci();
       const first5 = [];
-      
+
       for (const num of fib) {
         first5.push(num);
         if (first5.length === 5) break;
       }
-      
+
       expect(first5).toEqual([0, 1, 1, 2, 3]);
     });
 
@@ -451,13 +451,13 @@ Line 3`;
         yield 2;
         yield 3;
       }
-      
+
       function* outer() {
         yield 1;
         yield* inner();
         yield 4;
       }
-      
+
       const result = [...outer()];
       expect(result).toEqual([1, 2, 3, 4]);
     });
@@ -468,18 +468,18 @@ Line 3`;
     test('Map should store key-value pairs', () => {
       const map = new Map();
       const keyObj = {};
-      const keyFunc = function() {};
-      
+      const keyFunc = function () {};
+
       map.set('string key', 'string value');
       map.set(keyObj, 'object value');
       map.set(keyFunc, 'function value');
       map.set(1, 'number value');
-      
+
       expect(map.size).toBe(4);
       expect(map.get('string key')).toBe('string value');
       expect(map.get(keyObj)).toBe('object value');
       expect(map.has(keyFunc)).toBe(true);
-      
+
       map.delete(1);
       expect(map.size).toBe(3);
     });
@@ -490,26 +490,30 @@ Line 3`;
         ['b', 2],
         ['c', 3]
       ]);
-      
+
       const keys = [...map.keys()];
       const values = [...map.values()];
       const entries = [...map.entries()];
-      
+
       expect(keys).toEqual(['a', 'b', 'c']);
       expect(values).toEqual([1, 2, 3]);
-      expect(entries).toEqual([['a', 1], ['b', 2], ['c', 3]]);
+      expect(entries).toEqual([
+        ['a', 1],
+        ['b', 2],
+        ['c', 3]
+      ]);
     });
 
     test('Set should store unique values', () => {
       const set = new Set([1, 2, 3, 2, 1]);
-      
+
       expect(set.size).toBe(3);
       expect(set.has(1)).toBe(true);
       expect(set.has(4)).toBe(false);
-      
+
       set.add(4);
       expect(set.size).toBe(4);
-      
+
       set.delete(1);
       expect(set.has(1)).toBe(false);
     });
@@ -517,7 +521,7 @@ Line 3`;
     test('Set should be iterable', () => {
       const set = new Set(['a', 'b', 'c']);
       const values = [...set];
-      
+
       expect(values).toEqual(['a', 'b', 'c']);
     });
   });
@@ -527,21 +531,21 @@ Line 3`;
     test('WeakMap should only accept objects as keys', () => {
       const weakMap = new WeakMap();
       const key = {};
-      
+
       weakMap.set(key, 'value');
       expect(weakMap.get(key)).toBe('value');
       expect(weakMap.has(key)).toBe(true);
-      
+
       expect(() => weakMap.set('string', 'value')).toThrow();
     });
 
     test('WeakSet should only accept objects', () => {
       const weakSet = new WeakSet();
       const obj = {};
-      
+
       weakSet.add(obj);
       expect(weakSet.has(obj)).toBe(true);
-      
+
       expect(() => weakSet.add('string')).toThrow();
     });
   });
@@ -551,34 +555,40 @@ Line 3`;
     test('for...of should work with arrays', () => {
       const arr = [1, 2, 3];
       const result = [];
-      
+
       for (const value of arr) {
         result.push(value * 2);
       }
-      
+
       expect(result).toEqual([2, 4, 6]);
     });
 
     test('for...of should work with strings', () => {
       const str = 'hello';
       const chars = [];
-      
+
       for (const char of str) {
         chars.push(char.toUpperCase());
       }
-      
+
       expect(chars).toEqual(['H', 'E', 'L', 'L', 'O']);
     });
 
     test('for...of should work with Map', () => {
-      const map = new Map([['a', 1], ['b', 2]]);
+      const map = new Map([
+        ['a', 1],
+        ['b', 2]
+      ]);
       const entries = [];
-      
+
       for (const [key, value] of map) {
         entries.push([key, value]);
       }
-      
-      expect(entries).toEqual([['a', 1], ['b', 2]]);
+
+      expect(entries).toEqual([
+        ['a', 1],
+        ['b', 2]
+      ]);
     });
   });
 
@@ -590,7 +600,7 @@ Line 3`;
         [prop]: 'value',
         [`${prop}_2`]: 'value2'
       };
-      
+
       expect(obj.dynamic).toBe('value');
       expect(obj.dynamic_2).toBe('value2');
     });
@@ -602,7 +612,7 @@ Line 3`;
           return 'Hello User!';
         }
       };
-      
+
       expect(obj.greetUser()).toBe('Hello User!');
     });
   });
@@ -613,25 +623,33 @@ Line 3`;
       const target = { a: 1 };
       const source1 = { b: 2 };
       const source2 = { c: 3, a: 4 };
-      
+
       const result = Object.assign(target, source1, source2);
-      
+
       expect(result).toBe(target); // Returns target object
       expect(result).toEqual({ a: 4, b: 2, c: 3 });
     });
 
     test('Object.keys, Object.values, Object.entries should work', () => {
       const obj = { a: 1, b: 2, c: 3 };
-      
+
       expect(Object.keys(obj)).toEqual(['a', 'b', 'c']);
       expect(Object.values(obj)).toEqual([1, 2, 3]);
-      expect(Object.entries(obj)).toEqual([['a', 1], ['b', 2], ['c', 3]]);
+      expect(Object.entries(obj)).toEqual([
+        ['a', 1],
+        ['b', 2],
+        ['c', 3]
+      ]);
     });
 
     test('Object.fromEntries should create object from entries', () => {
-      const entries = [['a', 1], ['b', 2], ['c', 3]];
+      const entries = [
+        ['a', 1],
+        ['b', 2],
+        ['c', 3]
+      ];
       const obj = Object.fromEntries(entries);
-      
+
       expect(obj).toEqual({ a: 1, b: 2, c: 3 });
     });
   });
@@ -641,33 +659,33 @@ Line 3`;
     test('Array.from should create arrays from iterables', () => {
       const str = 'hello';
       const arr = Array.from(str);
-      
+
       expect(arr).toEqual(['h', 'e', 'l', 'l', 'o']);
-      
+
       const numbers = Array.from({ length: 5 }, (_, i) => i + 1);
       expect(numbers).toEqual([1, 2, 3, 4, 5]);
     });
 
     test('Array.of should create arrays from arguments', () => {
       const arr = Array.of(1, 2, 3, 4, 5);
-      
+
       expect(arr).toEqual([1, 2, 3, 4, 5]);
       expect(Array.of(3)).toEqual([3]); // Different from Array(3)
     });
 
     test('find and findIndex should locate elements', () => {
       const numbers = [1, 2, 3, 4, 5];
-      
+
       const found = numbers.find(n => n > 3);
       const foundIndex = numbers.findIndex(n => n > 3);
-      
+
       expect(found).toBe(4);
       expect(foundIndex).toBe(3);
     });
 
     test('includes should check for element existence', () => {
       const arr = [1, 2, 3, NaN];
-      
+
       expect(arr.includes(2)).toBe(true);
       expect(arr.includes(4)).toBe(false);
       expect(arr.includes(NaN)).toBe(true); // Unlike indexOf
@@ -676,7 +694,7 @@ Line 3`;
     test('fill should fill array with values', () => {
       const arr = new Array(5).fill(0);
       expect(arr).toEqual([0, 0, 0, 0, 0]);
-      
+
       arr.fill(1, 2, 4);
       expect(arr).toEqual([0, 0, 1, 1, 0]);
     });
@@ -684,7 +702,7 @@ Line 3`;
     test('copyWithin should copy elements within array', () => {
       const arr = [1, 2, 3, 4, 5];
       arr.copyWithin(0, 3);
-      
+
       expect(arr).toEqual([4, 5, 3, 4, 5]);
     });
   });
@@ -693,7 +711,7 @@ Line 3`;
   describe('String Methods', () => {
     test('startsWith and endsWith should check string boundaries', () => {
       const str = 'JavaScript';
-      
+
       expect(str.startsWith('Java')).toBe(true);
       expect(str.startsWith('Script')).toBe(false);
       expect(str.endsWith('Script')).toBe(true);
@@ -702,7 +720,7 @@ Line 3`;
 
     test('includes should check for substring', () => {
       const str = 'JavaScript is awesome';
-      
+
       expect(str.includes('Script')).toBe(true);
       expect(str.includes('Python')).toBe(false);
     });
@@ -786,19 +804,24 @@ Line 3`;
         }
       });
 
-      const strictProxy = new Proxy({}, {
-        set() {
-          return false; // rejecting a write this way throws in strict mode
+      const strictProxy = new Proxy(
+        {},
+        {
+          set() {
+            return false; // rejecting a write this way throws in strict mode
+          }
         }
-      });
-      expect(() => { strictProxy.x = 1; }).toThrow(TypeError);
-      
+      );
+      expect(() => {
+        strictProxy.x = 1;
+      }).toThrow(TypeError);
+
       expect(proxy.a).toBe(1);
       expect(proxy.c).toBe('default');
-      
+
       proxy.d = 4;
       expect(proxy.d).toBe(4);
-      
+
       proxy.e = 'string';
       expect(proxy.e).toBe('default'); // Set failed
     });
@@ -811,26 +834,24 @@ Line 3`;
       const mathModule = (() => {
         const add = (a, b) => a + b;
         const multiply = (a, b) => a * b;
-        
+
         return { add, multiply };
       })();
-      
+
       const { add, multiply } = mathModule;
-      
+
       expect(add(2, 3)).toBe(5);
       expect(multiply(2, 3)).toBe(6);
     });
 
     test('default export pattern should work', () => {
-      const createCalculator = () => {
-        return {
-          add: (a, b) => a + b,
-          subtract: (a, b) => a - b
-        };
-      };
-      
+      const createCalculator = () => ({
+        add: (a, b) => a + b,
+        subtract: (a, b) => a - b
+      });
+
       const calculator = createCalculator();
-      
+
       expect(calculator.add(5, 3)).toBe(8);
       expect(calculator.subtract(5, 3)).toBe(2);
     });

@@ -9,24 +9,24 @@ class StateManager {
   constructor() {
     this.state = {
       user: {
-        name: "Space Explorer",
+        name: 'Space Explorer',
         level: 1,
         totalXP: 0,
-        joinDate: new Date().toISOString(),
+        joinDate: new Date().toISOString()
       },
       progress: {
         hasSeenWelcome: false,
-        unlockedPlanets: ["basics"], // Start with basics unlocked
+        unlockedPlanets: ['basics'], // Start with basics unlocked
         completedConcepts: [],
-        currentPlanet: "basics",
-        overallProgress: 0,
+        currentPlanet: 'basics',
+        overallProgress: 0
       },
       achievements: [],
       settings: {
-        theme: "galaxy",
+        theme: 'galaxy',
         soundEnabled: true,
         animationsEnabled: true,
-        difficulty: "normal",
+        difficulty: 'normal'
       },
       stats: {
         planetsExplored: 0,
@@ -34,18 +34,18 @@ class StateManager {
         quizzesCompleted: 0,
         totalTimeSpent: 0,
         streakDays: 0,
-        lastVisit: new Date().toISOString(),
+        lastVisit: new Date().toISOString()
       },
       quiz: {
         currentQuestionIndex: 0,
         score: 0,
         answers: [],
-        timeSpent: 0,
-      },
+        timeSpent: 0
+      }
     };
 
     this.listeners = [];
-    this.storageKey = "jsversehub-state";
+    this.storageKey = 'jsversehub-state';
     this.isInitialized = false;
   }
 
@@ -55,7 +55,7 @@ class StateManager {
   init() {
     this.loadState();
     this.isInitialized = true;
-    JSVLogger.info("📊 StateManager initialized");
+    JSVLogger.info('📊 StateManager initialized');
     return this;
   }
 
@@ -68,12 +68,10 @@ class StateManager {
       if (savedState) {
         const parsedState = JSON.parse(savedState);
         this.state = { ...this.state, ...parsedState };
-        JSVLogger.info("💾 State loaded from localStorage");
+        JSVLogger.info('💾 State loaded from localStorage');
       }
     } catch (error) {
-      JSVLogger.warn(
-        "⚠️ Failed to load state from localStorage, using defaults"
-      );
+      JSVLogger.warn('⚠️ Failed to load state from localStorage, using defaults');
     }
   }
 
@@ -83,9 +81,9 @@ class StateManager {
   saveState() {
     try {
       localStorage.setItem(this.storageKey, JSON.stringify(this.state));
-      JSVLogger.debug("💾 State saved to localStorage");
+      JSVLogger.debug('💾 State saved to localStorage');
     } catch (error) {
-      JSVLogger.warn("⚠️ Failed to save state to localStorage");
+      JSVLogger.warn('⚠️ Failed to save state to localStorage');
     }
   }
 
@@ -124,7 +122,7 @@ class StateManager {
     this.state.progress = { ...this.state.progress, ...updates };
     this.calculateOverallProgress();
     this.saveState();
-    this.notifyListeners("progress", this.state.progress);
+    this.notifyListeners('progress', this.state.progress);
   }
 
   /**
@@ -141,7 +139,7 @@ class StateManager {
 
       this.calculateOverallProgress();
       this.saveState();
-      this.notifyListeners("conceptCompleted", conceptId);
+      this.notifyListeners('conceptCompleted', conceptId);
 
       JSVLogger.success(`🎯 Concept completed: ${conceptId}`);
     }
@@ -159,16 +157,14 @@ class StateManager {
       // Add achievement
       this.addAchievement({
         id: `planet-${planetId}`,
-        title: `🪐 ${
-          planetId.charAt(0).toUpperCase() + planetId.slice(1)
-        } Explorer`,
+        title: `🪐 ${planetId.charAt(0).toUpperCase() + planetId.slice(1)} Explorer`,
         description: `Unlocked the ${planetId} planet`,
         timestamp: new Date().toISOString(),
-        xpReward: 50,
+        xpReward: 50
       });
 
       this.saveState();
-      this.notifyListeners("planetUnlocked", planetId);
+      this.notifyListeners('planetUnlocked', planetId);
 
       JSVLogger.success(`🪐 Planet unlocked: ${planetId}`);
     }
@@ -180,7 +176,7 @@ class StateManager {
   setCurrentPlanet(planetId) {
     this.state.progress.currentPlanet = planetId;
     this.saveState();
-    this.notifyListeners("currentPlanetChanged", planetId);
+    this.notifyListeners('currentPlanetChanged', planetId);
   }
 
   /**
@@ -197,24 +193,24 @@ class StateManager {
         title: `⭐ Level ${newLevel}`,
         description: `Reached level ${newLevel}`,
         timestamp: new Date().toISOString(),
-        xpReward: 0,
+        xpReward: 0
       });
-      this.notifyListeners("levelUp", newLevel);
+      this.notifyListeners('levelUp', newLevel);
     }
 
     this.saveState();
-    this.notifyListeners("xpGained", amount);
+    this.notifyListeners('xpGained', amount);
   }
 
   /**
    * Add achievement
    */
   addAchievement(achievement) {
-    const exists = this.state.achievements.find((a) => a.id === achievement.id);
+    const exists = this.state.achievements.find(a => a.id === achievement.id);
     if (!exists) {
       this.state.achievements.push(achievement);
       this.saveState();
-      this.notifyListeners("achievementEarned", achievement);
+      this.notifyListeners('achievementEarned', achievement);
       JSVLogger.success(`🏆 Achievement earned: ${achievement.title}`);
     }
   }
@@ -237,13 +233,13 @@ class StateManager {
         title: `💯 Perfect Score`,
         description: `Got 100% on ${planetId} quiz`,
         timestamp: new Date().toISOString(),
-        xpReward: 200,
+        xpReward: 200
       });
       this.addXP(200);
     }
 
     this.saveState();
-    this.notifyListeners("quizCompleted", { planetId, score, totalQuestions });
+    this.notifyListeners('quizCompleted', { planetId, score, totalQuestions });
   }
 
   /**
@@ -252,7 +248,7 @@ class StateManager {
   updateSettings(updates) {
     this.state.settings = { ...this.state.settings, ...updates };
     this.saveState();
-    this.notifyListeners("settingsUpdated", this.state.settings);
+    this.notifyListeners('settingsUpdated', this.state.settings);
   }
 
   /**
@@ -261,9 +257,7 @@ class StateManager {
   calculateOverallProgress() {
     const totalConcepts = this.getTotalConceptCount();
     const completed = this.state.progress.completedConcepts.length;
-    this.state.progress.overallProgress = Math.round(
-      (completed / totalConcepts) * 100
-    );
+    this.state.progress.overallProgress = Math.round((completed / totalConcepts) * 100);
   }
 
   /**
@@ -284,7 +278,7 @@ class StateManager {
       security: 3,
       algorithms: 4,
       canvas: 3,
-      api: 3,
+      api: 3
     };
     return Object.values(conceptCounts).reduce((sum, count) => sum + count, 0);
   }
@@ -292,29 +286,27 @@ class StateManager {
   /**
    * Check if new planets should be unlocked based on completed concepts
    */
-  checkPlanetUnlocks(completedConceptId) {
+  checkPlanetUnlocks(_completedConceptId) {
     const unlockRules = {
-      dom: ["basics"],
-      async: ["basics", "dom"],
-      es6: ["basics"],
-      oop: ["basics", "es6"],
-      functional: ["basics", "es6"],
-      patterns: ["oop", "functional"],
-      storage: ["dom", "async"],
-      events: ["dom"],
-      testing: ["oop", "functional"],
-      security: ["async", "storage"],
-      algorithms: ["oop", "functional"],
-      canvas: ["dom", "events"],
-      api: ["async", "storage"],
+      dom: ['basics'],
+      async: ['basics', 'dom'],
+      es6: ['basics'],
+      oop: ['basics', 'es6'],
+      functional: ['basics', 'es6'],
+      patterns: ['oop', 'functional'],
+      storage: ['dom', 'async'],
+      events: ['dom'],
+      testing: ['oop', 'functional'],
+      security: ['async', 'storage'],
+      algorithms: ['oop', 'functional'],
+      canvas: ['dom', 'events'],
+      api: ['async', 'storage']
     };
 
     for (const [planet, requirements] of Object.entries(unlockRules)) {
       if (!this.state.progress.unlockedPlanets.includes(planet)) {
-        const hasAllRequirements = requirements.every((req) =>
-          this.state.progress.completedConcepts.some((concept) =>
-            concept.startsWith(req)
-          )
+        const hasAllRequirements = requirements.every(req =>
+          this.state.progress.completedConcepts.some(concept => concept.startsWith(req))
         );
 
         if (hasAllRequirements) {
@@ -330,10 +322,10 @@ class StateManager {
   resetProgress() {
     this.state.progress = {
       hasSeenWelcome: false,
-      unlockedPlanets: ["basics"],
+      unlockedPlanets: ['basics'],
       completedConcepts: [],
-      currentPlanet: "basics",
-      overallProgress: 0,
+      currentPlanet: 'basics',
+      overallProgress: 0
     };
     this.state.stats.planetsExplored = 0;
     this.state.stats.conceptsCompleted = 0;
@@ -343,8 +335,8 @@ class StateManager {
     this.state.user.level = 1;
 
     this.saveState();
-    this.notifyListeners("progressReset");
-    JSVLogger.info("🔄 Progress reset");
+    this.notifyListeners('progressReset');
+    JSVLogger.info('🔄 Progress reset');
   }
 
   /**
@@ -354,25 +346,23 @@ class StateManager {
     const exportData = {
       ...this.state,
       exportDate: new Date().toISOString(),
-      version: "1.0",
+      version: '1.0'
     };
 
     const dataBlob = new Blob([JSON.stringify(exportData, null, 2)], {
-      type: "application/json",
+      type: 'application/json'
     });
 
     const url = URL.createObjectURL(dataBlob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
-    a.download = `jsversehub-progress-${
-      new Date().toISOString().split("T")[0]
-    }.json`;
+    a.download = `jsversehub-progress-${new Date().toISOString().split('T')[0]}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 
-    JSVLogger.info("📥 User data exported");
+    JSVLogger.info('📥 User data exported');
   }
 
   /**
@@ -386,14 +376,13 @@ class StateManager {
       if (importedData.user && importedData.progress && importedData.stats) {
         this.state = { ...this.state, ...importedData };
         this.saveState();
-        this.notifyListeners("dataImported");
-        JSVLogger.success("📤 User data imported successfully");
+        this.notifyListeners('dataImported');
+        JSVLogger.success('📤 User data imported successfully');
         return true;
-      } else {
-        throw new Error("Invalid data format");
       }
+      throw new Error('Invalid data format');
     } catch (error) {
-      JSVLogger.error("❌ Failed to import user data:", error);
+      JSVLogger.error('❌ Failed to import user data:', error);
       return false;
     }
   }
@@ -404,7 +393,7 @@ class StateManager {
   addListener(callback) {
     this.listeners.push(callback);
     return () => {
-      this.listeners = this.listeners.filter((l) => l !== callback);
+      this.listeners = this.listeners.filter(l => l !== callback);
     };
   }
 
@@ -412,11 +401,11 @@ class StateManager {
    * Notify all listeners of state changes
    */
   notifyListeners(event, data) {
-    this.listeners.forEach((callback) => {
+    this.listeners.forEach(callback => {
       try {
         callback(event, data, this.state);
       } catch (error) {
-        JSVLogger.error("❌ Listener error:", error);
+        JSVLogger.error('❌ Listener error:', error);
       }
     });
   }
@@ -436,6 +425,6 @@ class StateManager {
 const stateManagerInstance = StateManager.getInstance();
 
 // Export for use in other modules
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
   window.StateManager = stateManagerInstance;
 }

@@ -1,17 +1,11 @@
-import {
-  patterns,
-  modulePattern,
-  observerPattern,
-  singletonPattern,
-  exercises,
-} from '../src/concepts/patterns/index';
+import { patterns, modulePattern, observerPattern, singletonPattern, exercises } from '../src/concepts/patterns/index';
 
 describe('Design Patterns - Module Pattern', () => {
   describe('Encapsulation', () => {
     test('should encapsulate private variables', () => {
       const { createCounter } = modulePattern.examples;
       const counter = createCounter();
-      
+
       // Private variable should not be accessible directly
       expect(counter.count).toBeUndefined();
     });
@@ -19,7 +13,7 @@ describe('Design Patterns - Module Pattern', () => {
     test('should expose public methods', () => {
       const { createCounter } = modulePattern.examples;
       const counter = createCounter();
-      
+
       expect(typeof counter.increment).toBe('function');
       expect(typeof counter.decrement).toBe('function');
     });
@@ -27,7 +21,7 @@ describe('Design Patterns - Module Pattern', () => {
     test('should maintain state through closures', () => {
       const { createCounter } = modulePattern.examples;
       const counter = createCounter();
-      
+
       counter.increment();
       counter.increment();
       expect(counter.getValue()).toBe(2);
@@ -39,10 +33,10 @@ describe('Design Patterns - Module Pattern', () => {
       const { createCounter } = modulePattern.examples;
       const counter1 = createCounter();
       const counter2 = createCounter();
-      
+
       counter1.increment();
       counter1.increment();
-      
+
       expect(counter1.getValue()).toBe(2);
       expect(counter2.getValue()).toBe(0);
     });
@@ -51,9 +45,9 @@ describe('Design Patterns - Module Pattern', () => {
       const { createBankAccount } = modulePattern.examples;
       const account1 = createBankAccount(1000);
       const account2 = createBankAccount(500);
-      
+
       account1.withdraw(100);
-      
+
       expect(account1.getBalance()).toBe(900);
       expect(account2.getBalance()).toBe(500);
     });
@@ -63,7 +57,7 @@ describe('Design Patterns - Module Pattern', () => {
     test('should have clear public API', () => {
       const { createQueue } = modulePattern.examples;
       const queue = createQueue();
-      
+
       expect(typeof queue.enqueue).toBe('function');
       expect(typeof queue.dequeue).toBe('function');
     });
@@ -71,7 +65,7 @@ describe('Design Patterns - Module Pattern', () => {
     test('should hide internal implementation', () => {
       const { createQueue } = modulePattern.examples;
       const queue = createQueue();
-      
+
       expect(queue.items).toBeUndefined();
       expect(queue._internalQueue).toBeUndefined();
     });
@@ -81,14 +75,14 @@ describe('Design Patterns - Module Pattern', () => {
     test('should prevent direct access to private data', () => {
       const { createUser } = modulePattern.examples;
       const user = createUser('John', 'secret123');
-      
+
       expect(user.password).toBeUndefined();
     });
 
     test('should validate data through public methods', () => {
       const { createUser } = modulePattern.examples;
       const user = createUser('John', 'secret123');
-      
+
       expect(user.validatePassword('secret123')).toBe(true);
       expect(user.validatePassword('wrong')).toBe(false);
     });
@@ -101,10 +95,10 @@ describe('Design Patterns - Observer Pattern', () => {
       const { createEventEmitter } = observerPattern.examples;
       const emitter = createEventEmitter();
       const callback = jest.fn();
-      
+
       emitter.subscribe('change', callback);
       emitter.publish('change', { value: 42 });
-      
+
       expect(callback).toHaveBeenCalledWith({ value: 42 });
     });
 
@@ -113,11 +107,11 @@ describe('Design Patterns - Observer Pattern', () => {
       const emitter = createEventEmitter();
       const callback1 = jest.fn();
       const callback2 = jest.fn();
-      
+
       emitter.subscribe('event', callback1);
       emitter.subscribe('event', callback2);
       emitter.publish('event', { data: 'test' });
-      
+
       expect(callback1).toHaveBeenCalledWith({ data: 'test' });
       expect(callback2).toHaveBeenCalledWith({ data: 'test' });
     });
@@ -127,12 +121,12 @@ describe('Design Patterns - Observer Pattern', () => {
       const emitter = createEventEmitter();
       const callback1 = jest.fn();
       const callback2 = jest.fn();
-      
+
       emitter.subscribe('add', callback1);
       emitter.subscribe('remove', callback2);
       emitter.publish('add', { item: 'A' });
       emitter.publish('remove', { item: 'B' });
-      
+
       expect(callback1).toHaveBeenCalledTimes(1);
       expect(callback2).toHaveBeenCalledTimes(1);
     });
@@ -143,11 +137,11 @@ describe('Design Patterns - Observer Pattern', () => {
       const { createEventEmitter } = observerPattern.examples;
       const emitter = createEventEmitter();
       const callback = jest.fn();
-      
+
       const unsubscribe = emitter.subscribe('event', callback);
       unsubscribe();
       emitter.publish('event', {});
-      
+
       expect(callback).not.toHaveBeenCalled();
     });
 
@@ -155,7 +149,7 @@ describe('Design Patterns - Observer Pattern', () => {
       const { createEventEmitter } = observerPattern.examples;
       const emitter = createEventEmitter();
       const callback = jest.fn();
-      
+
       expect(emitter.hasObservers('event')).toBe(false);
       emitter.subscribe('event', callback);
       expect(emitter.hasObservers('event')).toBe(true);
@@ -167,10 +161,10 @@ describe('Design Patterns - Observer Pattern', () => {
       const { createDataStore } = observerPattern.examples;
       const store = createDataStore();
       const userCallback = jest.fn();
-      
+
       store.onStateChange(userCallback);
       store.updateState({ user: 'Alice' });
-      
+
       expect(userCallback).toHaveBeenCalled();
     });
 
@@ -178,10 +172,10 @@ describe('Design Patterns - Observer Pattern', () => {
       const { createEventEmitter } = observerPattern.examples;
       const emitter = createEventEmitter();
       const callback = jest.fn();
-      
+
       emitter.subscribe('event', callback);
       emitter.publish('event', {});
-      
+
       expect(callback).toHaveBeenCalled();
     });
   });
@@ -193,7 +187,7 @@ describe('Design Patterns - Singleton Pattern', () => {
       const { createSingleton } = singletonPattern.examples;
       const instance1 = createSingleton();
       const instance2 = createSingleton();
-      
+
       expect(instance1).toBe(instance2);
     });
 
@@ -202,7 +196,7 @@ describe('Design Patterns - Singleton Pattern', () => {
       const logger1 = createLogger();
       const logger2 = createLogger();
       const logger3 = createLogger();
-      
+
       expect(logger1).toBe(logger2);
       expect(logger2).toBe(logger3);
     });
@@ -213,10 +207,10 @@ describe('Design Patterns - Singleton Pattern', () => {
       const { createCounter } = singletonPattern.examples;
       const counter1 = createCounter();
       const counter2 = createCounter();
-      
+
       counter1.increment();
       counter1.increment();
-      
+
       expect(counter2.getValue()).toBe(2);
     });
 
@@ -224,9 +218,9 @@ describe('Design Patterns - Singleton Pattern', () => {
       const { createDatabase } = singletonPattern.examples;
       const db1 = createDatabase();
       db1.connect();
-      
+
       const db2 = createDatabase();
-      
+
       // Should be same instance, not reconnecting
       expect(db1).toBe(db2);
     });
@@ -236,11 +230,11 @@ describe('Design Patterns - Singleton Pattern', () => {
     test('should handle rapid concurrent-like calls safely', () => {
       const { createSingleton } = singletonPattern.examples;
       const instances = [];
-      
+
       for (let i = 0; i < 100; i++) {
         instances.push(createSingleton());
       }
-      
+
       // All should be same instance
       const firstInstance = instances[0];
       instances.forEach(instance => {
@@ -253,9 +247,9 @@ describe('Design Patterns - Singleton Pattern', () => {
     test('should serve as application-wide configuration store', () => {
       const { createConfigManager } = singletonPattern.examples;
       const config1 = createConfigManager();
-      
+
       config1.set('apiUrl', 'https://api.example.com');
-      
+
       const config2 = createConfigManager();
       expect(config2.get('apiUrl')).toBe('https://api.example.com');
     });
@@ -266,11 +260,11 @@ describe('Design Patterns - Additional Patterns', () => {
   describe('Factory Pattern', () => {
     test('factory should create different object types', () => {
       const { createAnimal } = patterns.examples.factory || {};
-      
+
       if (createAnimal) {
         const dog = createAnimal('dog');
         const cat = createAnimal('cat');
-        
+
         expect(dog.type).toBe('dog');
         expect(cat.type).toBe('cat');
       }
@@ -280,7 +274,7 @@ describe('Design Patterns - Additional Patterns', () => {
   describe('Decorator Pattern', () => {
     test('decorator should add functionality to objects', () => {
       const { createDecoratedObject } = patterns.examples.decorator || {};
-      
+
       if (createDecoratedObject) {
         const obj = createDecoratedObject();
         expect(typeof obj.originalMethod).toBe('function');
@@ -364,7 +358,7 @@ describe('Design Patterns - Exercises', () => {
         const difficultyOrder = { easy: 1, medium: 2, hard: 3 };
         return difficultyOrder[a.difficulty] - difficultyOrder[b.difficulty];
       });
-      
+
       // Verify ordering makes sense
       expect(sortedByDifficulty.length).toBe(exercises.length);
     });
@@ -374,7 +368,7 @@ describe('Design Patterns - Exercises', () => {
 describe('Design Patterns - Concept Configuration', () => {
   test('should have pattern descriptions', () => {
     expect(patterns).toBeDefined();
-    
+
     const patternNames = Object.keys(patterns);
     expect(patternNames.length).toBeGreaterThan(0);
   });
@@ -383,18 +377,18 @@ describe('Design Patterns - Concept Configuration', () => {
     const conceptConfig = {
       title: 'Design Patterns',
       difficulty: 'intermediate',
-      estimatedTime: '3-4 hours',
+      estimatedTime: '3-4 hours'
     };
-    
+
     expect(conceptConfig).toHaveProperty('title');
     expect(conceptConfig).toHaveProperty('difficulty');
   });
 
   test('should list prerequisites', () => {
     const conceptConfig = {
-      prerequisites: ['Basics', 'Functions', 'Objects', 'OOP'],
+      prerequisites: ['Basics', 'Functions', 'Objects', 'OOP']
     };
-    
+
     expect(conceptConfig.prerequisites).toBeDefined();
     expect(Array.isArray(conceptConfig.prerequisites)).toBe(true);
   });

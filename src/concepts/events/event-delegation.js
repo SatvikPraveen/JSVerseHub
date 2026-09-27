@@ -5,7 +5,7 @@
  * Event Delegation Strategies and Performance Optimization
  */
 export const delegationStrategies = {
-  concept: "Advanced Event Delegation Patterns",
+  concept: 'Advanced Event Delegation Patterns',
   explanation: `
     Event delegation is a cornerstone pattern for scalable JavaScript applications.
     This module covers advanced delegation patterns, performance considerations,
@@ -17,8 +17,8 @@ export const delegationStrategies = {
  * Strategy 1: Direct Element Matching
  */
 export const directMatching = {
-  name: "Direct Element Matching",
-  description: "Match directly against the clicked element",
+  name: 'Direct Element Matching',
+  description: 'Match directly against the clicked element',
   examples: {
     basic: `
 // Simple delegation with direct matching
@@ -55,8 +55,8 @@ container.addEventListener('click', (e) => {
  * Strategy 2: Using matches() Method
  */
 export const matchesMethod = {
-  name: "Using matches() CSS Selector",
-  description: "Match using CSS selectors for powerful querying",
+  name: 'Using matches() CSS Selector',
+  description: 'Match using CSS selectors for powerful querying',
   examples: {
     cssSelectors: `
 // Using matches() with CSS selectors
@@ -84,7 +84,7 @@ form.addEventListener('click', (e) => {
   }
 });
     `,
-    
+
     combinedMatchers: `
 // Multiple matchers in one listener
 const app = document.querySelector('.app');
@@ -122,8 +122,8 @@ app.addEventListener('click', (e) => {
  * Strategy 3: Using closest() Method
  */
 export const closestMethod = {
-  name: "Using closest() for Flexible Selection",
-  description: "Find the closest matching ancestor element",
+  name: 'Using closest() for Flexible Selection',
+  description: 'Find the closest matching ancestor element',
   examples: {
     ancestorTraversal: `
 // Using closest() to find parent element
@@ -158,7 +158,7 @@ todoList.addEventListener('click', (e) => {
 //   </div>
 // </div>
     `,
-    
+
     nestedStructures: `
 // Handling deeply nested structures with closest()
 const table = document.querySelector('table');
@@ -195,8 +195,8 @@ table.addEventListener('click', (e) => {
  * Strategy 4: Event Type Based Delegation
  */
 export const eventTypeBasedDelegation = {
-  name: "Event Type Based Delegation",
-  description: "Different handlers for different event types",
+  name: 'Event Type Based Delegation',
+  description: 'Different handlers for different event types',
   examples: {
     multipleEvents: `
 // Delegate multiple event types on same listener
@@ -232,7 +232,7 @@ function handleFormSubmit(e) {
   submitForm();
 }
     `,
-    
+
     focusEvents: `
 // Delegate focus/blur events (don't bubble by default)
 const form = document.querySelector('form');
@@ -258,8 +258,8 @@ form.addEventListener('focusout', (e) => {
  * Strategy 5: Data Attributes for Delegation
  */
 export const dataAttributeDelegation = {
-  name: "Data Attributes for Action Routing",
-  description: "Use data attributes to route actions",
+  name: 'Data Attributes for Action Routing',
+  description: 'Use data attributes to route actions',
   examples: {
     actionRouting: `
 // Route actions using data attributes
@@ -299,7 +299,7 @@ app.addEventListener('click', (e) => {
 //   <a data-action="navigate" data-url="/page">Link</a>
 // </div>
     `,
-    
+
     parameterPassing: `
 // Pass parameters through data attributes
 const list = document.querySelector('.list');
@@ -331,7 +331,7 @@ function executeCommand(command, params) {
  * Performance Best Practices
  */
 export const performanceBestPractices = {
-  name: "Performance Optimization",
+  name: 'Performance Optimization',
   examples: {
     listenerPlacement: `
 // GOOD: Single listener at container level
@@ -353,7 +353,7 @@ items.forEach(item => {
 // - Individual listeners: 10,000 listeners, significant memory
 // - Difference: ~100x more memory usage!
     `,
-    
+
     eventDelegationWithDynamicContent: `
 // Delegation automatically works with dynamic content
 const container = document.querySelector('.container');
@@ -394,7 +394,7 @@ function addItemBad(text) {
   container.appendChild(item);
 }
     `,
-    
+
     stopPropagationCosts: `
 // Be careful with stopPropagation() - can prevent other listeners
 const parent = document.querySelector('.parent');
@@ -418,7 +418,7 @@ child.addEventListener('click', (e) => {
   }
 });
     `,
-    
+
     passiveListeners: `
 // Improve scroll/touchmove performance with passive listeners
 // Passive listeners can't call preventDefault()
@@ -447,7 +447,7 @@ function handleScroll(e) {
  * Common Pitfalls and Solutions
  */
 export const commonPitfalls = {
-  name: "Common Pitfalls",
+  name: 'Common Pitfalls',
   examples: {
     targetVsCurrentTarget: `
 // Pitfall: Confusing event.target with event.currentTarget
@@ -470,7 +470,7 @@ if (e.target.matches('.specific-class')) {
   handleClick(e.target);
 }
     `,
-    
+
     dynamicSelectorsNeedReevaluation: `
 // Pitfall: Dynamically added elements not matching selector
 const list = document.querySelector('.list');
@@ -497,7 +497,7 @@ list.addEventListener('click', (e) => {
   }
 });
     `,
-    
+
     preventingBubblingTooEagerly: `
 // Pitfall: Stopping propagation prevents other listeners
 const form = document.querySelector('form');
@@ -524,7 +524,7 @@ input.addEventListener('keydown', (e) => {
   }
 });
     `,
-    
+
     memoryLeaksWithEventListeners: `
 // Pitfall: Not removing event listeners (memory leak)
 class Component {

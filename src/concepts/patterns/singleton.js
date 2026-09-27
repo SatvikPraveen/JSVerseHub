@@ -2,9 +2,9 @@
 // Design Patterns - Singleton Pattern in JavaScript
 
 export const singletonContent = {
-  title: "Singleton Pattern",
-  description: "Learn to implement and use the Singleton pattern for single instance control",
-  
+  title: 'Singleton Pattern',
+  description: 'Learn to implement and use the Singleton pattern for single instance control',
+
   theory: {
     introduction: `
       The Singleton pattern ensures that a class has only one instance and provides a global 
@@ -12,11 +12,11 @@ export const singletonContent = {
       connections, logging services, configuration objects, or any service that should have 
       exactly one instance throughout the application lifecycle.
     `,
-    
+
     concepts: [
       {
-        name: "Basic Singleton Implementation",
-        explanation: "Creating a singleton using closure and IIFE",
+        name: 'Basic Singleton Implementation',
+        explanation: 'Creating a singleton using closure and IIFE',
         example: `
 // Basic Singleton using IIFE and closure
 const Logger = (function() {
@@ -170,10 +170,10 @@ config1.subscribe((key, value) => {
 config1.set('timeout', 10000); // Triggers observer notification
         `
       },
-      
+
       {
-        name: "Lazy Initialization Singleton",
-        explanation: "Delaying singleton creation until first access",
+        name: 'Lazy Initialization Singleton',
+        explanation: 'Delaying singleton creation until first access',
         example: `
 // Lazy initialization singleton for expensive operations
 const DatabaseConnection = (function() {
@@ -380,10 +380,10 @@ async function testThreadSafeSingleton() {
 testThreadSafeSingleton();
         `
       },
-      
+
       {
-        name: "Modern Singleton with Modules",
-        explanation: "Using ES6 modules to create singleton-like behavior",
+        name: 'Modern Singleton with Modules',
+        explanation: 'Using ES6 modules to create singleton-like behavior',
         example: `
 // Modern singleton using ES6 modules
 // File: cacheManager.js
@@ -607,10 +607,10 @@ logger.log('Test message');
 console.log('Available singletons:', AppSingletons.listInstances());
         `
       },
-      
+
       {
-        name: "Singleton with Dependency Injection",
-        explanation: "Creating flexible singletons that accept dependencies",
+        name: 'Singleton with Dependency Injection',
+        explanation: 'Creating flexible singletons that accept dependencies',
         example: `
 // Singleton with dependency injection
 class ServiceContainer {
@@ -876,11 +876,11 @@ console.log('Utils info:', registry.info('utils'));
       }
     ]
   },
-  
+
   practicalExamples: [
     {
-      title: "Application State Manager",
-      description: "Global state management using singleton pattern",
+      title: 'Application State Manager',
+      description: 'Global state management using singleton pattern',
       code: `
 // Global Application State Manager
 class AppStateManager {
@@ -1164,10 +1164,10 @@ unsubscribeTheme();
 unsubscribeAll();
       `
     },
-    
+
     {
-      title: "API Cache Manager",
-      description: "Singleton cache manager for API responses with TTL and LRU eviction",
+      title: 'API Cache Manager',
+      description: 'Singleton cache manager for API responses with TTL and LRU eviction',
       code: `
 // Advanced API Cache Manager Singleton
 class APICacheManager {
@@ -1578,13 +1578,14 @@ console.log('API Cache Manager ready for use');
       `
     }
   ],
-  
+
   exercises: [
     {
-      id: "singleton-basic",
-      title: "Simple Settings Manager",
-      difficulty: "easy",
-      prompt: "Create a singleton Settings Manager that can store and retrieve application settings with persistence to localStorage.",
+      id: 'singleton-basic',
+      title: 'Simple Settings Manager',
+      difficulty: 'easy',
+      prompt:
+        'Create a singleton Settings Manager that can store and retrieve application settings with persistence to localStorage.',
       solution: `
 class SettingsManager {
   static instance;
@@ -1658,12 +1659,13 @@ console.log('Settings from second instance:', settings2.getAll());
 export { SettingsManager };
       `
     },
-    
+
     {
-      id: "singleton-advanced",
-      title: "Event Bus with Namespaces",
-      difficulty: "hard",
-      prompt: "Create a singleton Event Bus that supports namespaced events, wildcard subscriptions, and event history with replay capabilities.",
+      id: 'singleton-advanced',
+      title: 'Event Bus with Namespaces',
+      difficulty: 'hard',
+      prompt:
+        'Create a singleton Event Bus that supports namespaced events, wildcard subscriptions, and event history with replay capabilities.',
       solution: `
 class EventBus {
   static instance;
@@ -1996,119 +1998,124 @@ export { EventBus };
       `
     }
   ],
-  
+
   quiz: [
     {
-      question: "What is the main purpose of the Singleton pattern?",
+      question: 'What is the main purpose of the Singleton pattern?',
       options: [
-        "To create multiple instances of a class",
-        "To ensure a class has only one instance and provide global access to it",
-        "To make classes inherit from each other",
-        "To hide implementation details"
+        'To create multiple instances of a class',
+        'To ensure a class has only one instance and provide global access to it',
+        'To make classes inherit from each other',
+        'To hide implementation details'
       ],
       correct: 1,
-      explanation: "The Singleton pattern ensures that a class has only one instance throughout the application and provides a global point of access to that instance."
+      explanation:
+        'The Singleton pattern ensures that a class has only one instance throughout the application and provides a global point of access to that instance.'
     },
-    
+
     {
-      question: "Which approach is commonly used to implement Singleton in JavaScript?",
+      question: 'Which approach is commonly used to implement Singleton in JavaScript?',
       options: [
-        "Using global variables only",
-        "Using closures and IIFE or static class properties",
-        "Using multiple constructors",
-        "Using prototype inheritance"
+        'Using global variables only',
+        'Using closures and IIFE or static class properties',
+        'Using multiple constructors',
+        'Using prototype inheritance'
       ],
       correct: 1,
-      explanation: "Singletons in JavaScript are commonly implemented using closures with IIFE (Immediately Invoked Function Expression) or using static class properties to store the single instance."
+      explanation:
+        'Singletons in JavaScript are commonly implemented using closures with IIFE (Immediately Invoked Function Expression) or using static class properties to store the single instance.'
     },
-    
+
     {
-      question: "What is lazy initialization in the context of Singleton pattern?",
+      question: 'What is lazy initialization in the context of Singleton pattern?',
       options: [
-        "Creating the instance immediately when the class is defined",
+        'Creating the instance immediately when the class is defined',
         "Creating the instance only when it's first requested",
-        "Creating multiple instances at once",
-        "Delaying all method calls"
+        'Creating multiple instances at once',
+        'Delaying all method calls'
       ],
       correct: 1,
-      explanation: "Lazy initialization means creating the singleton instance only when it's first accessed or requested, which can improve performance by avoiding unnecessary object creation."
+      explanation:
+        "Lazy initialization means creating the singleton instance only when it's first accessed or requested, which can improve performance by avoiding unnecessary object creation."
     },
-    
+
     {
-      question: "What is a potential drawback of the Singleton pattern?",
+      question: 'What is a potential drawback of the Singleton pattern?',
       options: [
-        "It improves performance",
-        "It makes code more modular",
-        "It can make unit testing difficult and create tight coupling",
-        "It reduces memory usage"
+        'It improves performance',
+        'It makes code more modular',
+        'It can make unit testing difficult and create tight coupling',
+        'It reduces memory usage'
       ],
       correct: 2,
-      explanation: "The Singleton pattern can make unit testing difficult because it creates global state, and it can lead to tight coupling between classes that depend on the singleton instance."
+      explanation:
+        'The Singleton pattern can make unit testing difficult because it creates global state, and it can lead to tight coupling between classes that depend on the singleton instance.'
     },
-    
+
     {
-      question: "How can you implement thread-safe Singleton in JavaScript?",
+      question: 'How can you implement thread-safe Singleton in JavaScript?',
       options: [
-        "JavaScript is single-threaded, so no special handling is needed",
-        "Use multiple locks",
-        "Use async/await for instance creation and check creation flags",
-        "Use worker threads"
+        'JavaScript is single-threaded, so no special handling is needed',
+        'Use multiple locks',
+        'Use async/await for instance creation and check creation flags',
+        'Use worker threads'
       ],
       correct: 2,
-      explanation: "While JavaScript is single-threaded in most contexts, with async operations you might need to use flags and checks during instance creation to prevent race conditions, especially when dealing with asynchronous initialization."
+      explanation:
+        'While JavaScript is single-threaded in most contexts, with async operations you might need to use flags and checks during instance creation to prevent race conditions, especially when dealing with asynchronous initialization.'
     }
   ],
-  
+
   bestPractices: [
-    "Use lazy initialization to improve performance",
-    "Consider dependency injection to make singletons more testable",
-    "Be aware of memory leaks - singletons live for the entire application lifecycle",
-    "Use ES6 modules for simpler singleton-like behavior when appropriate",
-    "Implement proper cleanup methods for singletons that manage resources",
-    "Consider using a registry pattern for managing multiple singleton instances",
-    "Document singleton dependencies clearly to avoid circular dependencies",
-    "Use TypeScript or JSDoc for better type safety with singleton instances"
+    'Use lazy initialization to improve performance',
+    'Consider dependency injection to make singletons more testable',
+    'Be aware of memory leaks - singletons live for the entire application lifecycle',
+    'Use ES6 modules for simpler singleton-like behavior when appropriate',
+    'Implement proper cleanup methods for singletons that manage resources',
+    'Consider using a registry pattern for managing multiple singleton instances',
+    'Document singleton dependencies clearly to avoid circular dependencies',
+    'Use TypeScript or JSDoc for better type safety with singleton instances'
   ],
-  
+
   commonMistakes: [
-    "Creating singletons when a regular object would suffice",
-    "Not handling asynchronous initialization properly",
-    "Making singletons too complex with too many responsibilities",
-    "Forgetting to implement proper error handling in singleton creation",
-    "Not providing a way to reset or clear singleton state for testing",
-    "Creating tight coupling between singletons and other classes",
+    'Creating singletons when a regular object would suffice',
+    'Not handling asynchronous initialization properly',
+    'Making singletons too complex with too many responsibilities',
+    'Forgetting to implement proper error handling in singleton creation',
+    'Not providing a way to reset or clear singleton state for testing',
+    'Creating tight coupling between singletons and other classes',
     "Not considering the singleton's lifecycle and cleanup needs",
-    "Using singletons to store temporary or request-specific data"
+    'Using singletons to store temporary or request-specific data'
   ],
-  
+
   relatedPatterns: [
     {
-      name: "Factory Pattern",
-      relationship: "Factories can be implemented as singletons to centralize object creation"
+      name: 'Factory Pattern',
+      relationship: 'Factories can be implemented as singletons to centralize object creation'
     },
     {
-      name: "Observer Pattern", 
-      relationship: "Singletons often implement the Observer pattern for state change notifications"
+      name: 'Observer Pattern',
+      relationship: 'Singletons often implement the Observer pattern for state change notifications'
     },
     {
-      name: "Registry Pattern",
-      relationship: "Registries are commonly implemented as singletons to manage global collections"
+      name: 'Registry Pattern',
+      relationship: 'Registries are commonly implemented as singletons to manage global collections'
     },
     {
-      name: "Module Pattern",
-      relationship: "ES6 modules provide singleton-like behavior with better encapsulation"
+      name: 'Module Pattern',
+      relationship: 'ES6 modules provide singleton-like behavior with better encapsulation'
     }
   ],
-  
+
   realWorldApplications: [
-    "Application configuration managers",
-    "Logging services and error handlers",
-    "Database connection pools",
-    "Cache managers and storage services",
-    "Event bus/message broker systems",
-    "Authentication and session managers",
-    "Performance monitoring and analytics",
-    "Feature flag and A/B testing managers"
+    'Application configuration managers',
+    'Logging services and error handlers',
+    'Database connection pools',
+    'Cache managers and storage services',
+    'Event bus/message broker systems',
+    'Authentication and session managers',
+    'Performance monitoring and analytics',
+    'Feature flag and A/B testing managers'
   ]
 };
 

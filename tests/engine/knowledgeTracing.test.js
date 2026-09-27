@@ -95,7 +95,12 @@ describe('Bayesian Knowledge Tracing', () => {
   describe('KnowledgeTracer', () => {
     const makeStore = () => {
       let data = null;
-      return { load: () => data, save: d => { data = JSON.parse(JSON.stringify(d)); } };
+      return {
+        load: () => data,
+        save: d => {
+          data = JSON.parse(JSON.stringify(d));
+        }
+      };
     };
 
     test('tracks per-skill mastery and persists', () => {

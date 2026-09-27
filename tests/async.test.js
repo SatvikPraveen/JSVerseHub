@@ -2,12 +2,11 @@
 // Location: jsversehub/tests/async.test.js
 
 describe('Asynchronous JavaScript Concepts', () => {
-  
   // Test callbacks
   describe('Callbacks', () => {
-    test('callback functions should execute after main function', (done) => {
+    test('callback functions should execute after main function', done => {
       let result = '';
-      
+
       function mainFunction(callback) {
         result += 'main ';
         setTimeout(() => {
@@ -15,40 +14,40 @@ describe('Asynchronous JavaScript Concepts', () => {
           callback();
         }, 10);
       }
-      
+
       function callbackFunction() {
         result += 'callback';
         expect(result).toBe('main async callback');
         done();
       }
-      
+
       mainFunction(callbackFunction);
     });
 
-    test('callback hell should be manageable with proper structure', (done) => {
+    test('callback hell should be manageable with proper structure', done => {
       let steps = [];
-      
+
       function step1(callback) {
         setTimeout(() => {
           steps.push('step1');
           callback();
         }, 10);
       }
-      
+
       function step2(callback) {
         setTimeout(() => {
           steps.push('step2');
           callback();
         }, 10);
       }
-      
+
       function step3(callback) {
         setTimeout(() => {
           steps.push('step3');
           callback();
         }, 10);
       }
-      
+
       step1(() => {
         step2(() => {
           step3(() => {
@@ -59,7 +58,7 @@ describe('Asynchronous JavaScript Concepts', () => {
       });
     });
 
-    test('error-first callbacks should handle errors', (done) => {
+    test('error-first callbacks should handle errors', done => {
       function asyncOperation(shouldFail, callback) {
         setTimeout(() => {
           if (shouldFail) {
@@ -69,11 +68,11 @@ describe('Asynchronous JavaScript Concepts', () => {
           }
         }, 10);
       }
-      
+
       asyncOperation(false, (error, result) => {
         expect(error).toBeNull();
         expect(result).toBe('success');
-        
+
         asyncOperation(true, (error, result) => {
           expect(error).toBeInstanceOf(Error);
           expect(error.message).toBe('Operation failed');
@@ -87,10 +86,10 @@ describe('Asynchronous JavaScript Concepts', () => {
   // Test Promises
   describe('Promises', () => {
     test('Promise should resolve with correct value', async () => {
-      const promise = new Promise((resolve) => {
+      const promise = new Promise(resolve => {
         setTimeout(() => resolve('resolved value'), 10);
       });
-      
+
       const result = await promise;
       expect(result).toBe('resolved value');
     });
@@ -99,84 +98,69 @@ describe('Asynchronous JavaScript Concepts', () => {
       const promise = new Promise((_, reject) => {
         setTimeout(() => reject(new Error('rejected')), 10);
       });
-      
+
       await expect(promise).rejects.toThrow('rejected');
     });
 
-    test('Promise.then should chain correctly', () => {
-      return Promise.resolve(5)
+    test('Promise.then should chain correctly', () =>
+      Promise.resolve(5)
         .then(value => value * 2)
         .then(value => value + 3)
         .then(value => {
           expect(value).toBe(13);
-        });
-    });
+        }));
 
-    test('Promise.catch should handle errors', () => {
-      return Promise.reject(new Error('test error'))
+    test('Promise.catch should handle errors', () =>
+      Promise.reject(new Error('test error'))
         .catch(error => {
           expect(error.message).toBe('test error');
           return 'handled';
         })
         .then(value => {
           expect(value).toBe('handled');
-        });
-    });
+        }));
 
     test('Promise.finally should always execute', async () => {
       let finallyExecuted = false;
-      
-      await Promise.resolve('success')
-        .finally(() => {
-          finallyExecuted = true;
-        });
-      
+
+      await Promise.resolve('success').finally(() => {
+        finallyExecuted = true;
+      });
+
       expect(finallyExecuted).toBe(true);
-      
+
       finallyExecuted = false;
-      
+
       await Promise.reject(new Error('error'))
         .catch(() => {})
         .finally(() => {
           finallyExecuted = true;
         });
-      
+
       expect(finallyExecuted).toBe(true);
     });
 
     test('Promise.all should resolve when all promises resolve', async () => {
-      const promises = [
-        Promise.resolve(1),
-        Promise.resolve(2),
-        Promise.resolve(3)
-      ];
-      
+      const promises = [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)];
+
       const results = await Promise.all(promises);
       expect(results).toEqual([1, 2, 3]);
     });
 
     test('Promise.all should reject if any promise rejects', async () => {
-      const promises = [
-        Promise.resolve(1),
-        Promise.reject(new Error('failed')),
-        Promise.resolve(3)
-      ];
-      
+      const promises = [Promise.resolve(1), Promise.reject(new Error('failed')), Promise.resolve(3)];
+
       await expect(Promise.all(promises)).rejects.toThrow('failed');
     });
 
     test('Promise.allSettled should wait for all promises regardless of outcome', async () => {
-      const promises = [
-        Promise.resolve(1),
-        Promise.reject(new Error('failed')),
-        Promise.resolve(3)
-      ];
-      
+      const promises = [Promise.resolve(1), Promise.reject(new Error('failed')), Promise.resolve(3)];
+
       const results = await Promise.allSettled(promises);
-      
+
       expect(results[0]).toEqual({ status: 'fulfilled', value: 1 });
-      expect(results[1]).toEqual({ 
-        status: 'rejected', 
+      expect(results[1]).toEqual({
+        status: 'rejected',
         reason: expect.objectContaining({ message: 'failed' })
       });
       expect(results[2]).toEqual({ status: 'fulfilled', value: 3 });
@@ -185,7 +169,7 @@ describe('Asynchronous JavaScript Concepts', () => {
     test('Promise.race should resolve with first settled promise', async () => {
       const slowPromise = new Promise(resolve => setTimeout(() => resolve('slow'), 100));
       const fastPromise = new Promise(resolve => setTimeout(() => resolve('fast'), 10));
-      
+
       const result = await Promise.race([slowPromise, fastPromise]);
       expect(result).toBe('fast');
     });
@@ -197,7 +181,7 @@ describe('Asynchronous JavaScript Concepts', () => {
       async function asyncFunc() {
         return 'hello';
       }
-      
+
       const result = asyncFunc();
       expect(result).toBeInstanceOf(Promise);
       return expect(result).resolves.toBe('hello');
@@ -207,11 +191,11 @@ describe('Asynchronous JavaScript Concepts', () => {
       function delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
       }
-      
+
       const start = Date.now();
       await delay(50);
       const end = Date.now();
-      
+
       expect(end - start).toBeGreaterThanOrEqual(45);
     });
 
@@ -219,14 +203,14 @@ describe('Asynchronous JavaScript Concepts', () => {
       async function throwError() {
         throw new Error('async error');
       }
-      
+
       let caughtError;
       try {
         await throwError();
       } catch (error) {
         caughtError = error;
       }
-      
+
       expect(caughtError).toBeInstanceOf(Error);
       expect(caughtError.message).toBe('async error');
     });
@@ -236,12 +220,12 @@ describe('Asynchronous JavaScript Concepts', () => {
         await new Promise(resolve => setTimeout(resolve, 10));
         return `data-${id}`;
       }
-      
+
       const start = Date.now();
       const result1 = await fetchData(1);
       const result2 = await fetchData(2);
       const end = Date.now();
-      
+
       expect(result1).toBe('data-1');
       expect(result2).toBe('data-2');
       expect(end - start).toBeGreaterThanOrEqual(18); // Two 10ms delays
@@ -252,14 +236,11 @@ describe('Asynchronous JavaScript Concepts', () => {
         await new Promise(resolve => setTimeout(resolve, 20));
         return `data-${id}`;
       }
-      
+
       const start = Date.now();
-      const [result1, result2] = await Promise.all([
-        fetchData(1),
-        fetchData(2)
-      ]);
+      const [result1, result2] = await Promise.all([fetchData(1), fetchData(2)]);
       const end = Date.now();
-      
+
       expect(result1).toBe('data-1');
       expect(result2).toBe('data-2');
       expect(end - start).toBeLessThan(35); // Should be ~20ms, not 40ms
@@ -268,9 +249,9 @@ describe('Asynchronous JavaScript Concepts', () => {
 
   // Test setTimeout and setInterval
   describe('Timers', () => {
-    test('setTimeout should execute after specified delay', (done) => {
+    test('setTimeout should execute after specified delay', done => {
       const start = Date.now();
-      
+
       setTimeout(() => {
         const end = Date.now();
         expect(end - start).toBeGreaterThanOrEqual(45);
@@ -278,24 +259,24 @@ describe('Asynchronous JavaScript Concepts', () => {
       }, 50);
     });
 
-    test('clearTimeout should cancel timeout', (done) => {
+    test('clearTimeout should cancel timeout', done => {
       let executed = false;
-      
+
       const timeoutId = setTimeout(() => {
         executed = true;
       }, 50);
-      
+
       clearTimeout(timeoutId);
-      
+
       setTimeout(() => {
         expect(executed).toBe(false);
         done();
       }, 100);
     });
 
-    test('setInterval should execute repeatedly', (done) => {
+    test('setInterval should execute repeatedly', done => {
       let count = 0;
-      
+
       const intervalId = setInterval(() => {
         count++;
         if (count === 3) {
@@ -306,17 +287,17 @@ describe('Asynchronous JavaScript Concepts', () => {
       }, 20);
     });
 
-    test('clearInterval should stop interval', (done) => {
+    test('clearInterval should stop interval', done => {
       let count = 0;
-      
+
       const intervalId = setInterval(() => {
         count++;
       }, 10);
-      
+
       setTimeout(() => {
         clearInterval(intervalId);
         const finalCount = count;
-        
+
         setTimeout(() => {
           expect(count).toBe(finalCount); // Should not have increased
           done();
@@ -327,23 +308,23 @@ describe('Asynchronous JavaScript Concepts', () => {
 
   // Test Event Loop concepts
   describe('Event Loop', () => {
-    test('microtasks should execute before macrotasks', (done) => {
+    test('microtasks should execute before macrotasks', done => {
       const order = [];
-      
+
       setTimeout(() => {
         order.push('setTimeout');
         expect(order).toEqual(['promise', 'setTimeout']);
         done();
       }, 0);
-      
+
       Promise.resolve().then(() => {
         order.push('promise');
       });
     });
 
-    test('nested setTimeout should maintain order', (done) => {
+    test('nested setTimeout should maintain order', done => {
       const order = [];
-      
+
       setTimeout(() => {
         order.push('first');
         setTimeout(() => {
@@ -352,21 +333,21 @@ describe('Asynchronous JavaScript Concepts', () => {
           done();
         }, 0);
       }, 0);
-      
+
       setTimeout(() => {
         order.push('second');
       }, 0);
     });
 
-    test('Promise.resolve should be faster than setTimeout', (done) => {
+    test('Promise.resolve should be faster than setTimeout', done => {
       const order = [];
-      
+
       setTimeout(() => {
         order.push('timeout');
         expect(order).toEqual(['promise', 'timeout']);
         done();
       }, 0);
-      
+
       Promise.resolve().then(() => {
         order.push('promise');
       });
@@ -411,7 +392,7 @@ describe('Asynchronous JavaScript Concepts', () => {
       const response = await fetch('/api/success');
       expect(response.ok).toBe(true);
       expect(response.status).toBe(200);
-      
+
       const data = await response.json();
       expect(data).toEqual({ data: 'success' });
     });
@@ -420,7 +401,7 @@ describe('Asynchronous JavaScript Concepts', () => {
       const response = await fetch('/api/error');
       expect(response.ok).toBe(false);
       expect(response.status).toBe(404);
-      
+
       const data = await response.json();
       expect(data).toEqual({ error: 'Not found' });
     });
@@ -448,13 +429,13 @@ describe('Asynchronous JavaScript Concepts', () => {
     test('async forEach should not work as expected', async () => {
       const numbers = [1, 2, 3];
       const results = [];
-      
+
       // This won't work as expected because forEach doesn't wait
-      numbers.forEach(async (num) => {
+      numbers.forEach(async num => {
         await new Promise(resolve => setTimeout(resolve, 10));
         results.push(num * 2);
       });
-      
+
       // Results array will be empty immediately
       expect(results).toEqual([]);
     });
@@ -462,12 +443,12 @@ describe('Asynchronous JavaScript Concepts', () => {
     test('for...of loop should work with async/await', async () => {
       const numbers = [1, 2, 3];
       const results = [];
-      
+
       for (const num of numbers) {
         await new Promise(resolve => setTimeout(resolve, 10));
         results.push(num * 2);
       }
-      
+
       expect(results).toEqual([2, 4, 6]);
     });
 
@@ -476,10 +457,10 @@ describe('Asynchronous JavaScript Concepts', () => {
         await new Promise(resolve => setTimeout(resolve, 10));
         return num * 2;
       }
-      
+
       const numbers = [1, 2, 3];
       const results = await Promise.all(numbers.map(processNumber));
-      
+
       expect(results).toEqual([2, 4, 6]);
     });
 
@@ -488,13 +469,13 @@ describe('Asynchronous JavaScript Concepts', () => {
         await new Promise(resolve => setTimeout(resolve, 10));
         return num * 2;
       }
-      
+
       const numbers = [1, 2, 3];
       const promises = numbers.map(processNumber);
-      
+
       // Map creates an array of Promises
       expect(promises[0]).toBeInstanceOf(Promise);
-      
+
       const results = await Promise.all(promises);
       expect(results).toEqual([2, 4, 6]);
     });
@@ -504,7 +485,7 @@ describe('Asynchronous JavaScript Concepts', () => {
   describe('Async Error Handling', () => {
     test('unhandled promise rejection should be catchable', async () => {
       const promise = Promise.reject(new Error('unhandled'));
-      
+
       await expect(promise).rejects.toThrow('unhandled');
     });
 
@@ -512,11 +493,11 @@ describe('Asynchronous JavaScript Concepts', () => {
       async function throwingFunction() {
         throw new Error('async error');
       }
-      
+
       async function callingFunction() {
         return await throwingFunction();
       }
-      
+
       await expect(callingFunction()).rejects.toThrow('async error');
     });
 
@@ -524,14 +505,14 @@ describe('Asynchronous JavaScript Concepts', () => {
       function syncError() {
         throw new Error('sync error');
       }
-      
+
       async function asyncError() {
         throw new Error('async error');
       }
-      
+
       // Sync error
       expect(() => syncError()).toThrow('sync error');
-      
+
       // Async error
       await expect(asyncError()).rejects.toThrow('async error');
     });

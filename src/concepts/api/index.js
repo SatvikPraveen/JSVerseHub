@@ -5,26 +5,19 @@
  * API Integration Configuration
  */
 export const apiConfig = {
-  title: "API Integration",
-  description: "Master API interactions, REST principles, and async data fetching",
-  difficulty: "intermediate-advanced",
-  estimatedTime: "120 minutes",
-  topics: [
-    "HTTP Basics",
-    "Fetch API",
-    "REST Principles",
-    "Error Handling",
-    "Authentication",
-    "Response Processing"
-  ],
-  prerequisites: ["JavaScript Basics", "Async/Await", "JSON"],
+  title: 'API Integration',
+  description: 'Master API interactions, REST principles, and async data fetching',
+  difficulty: 'intermediate-advanced',
+  estimatedTime: '120 minutes',
+  topics: ['HTTP Basics', 'Fetch API', 'REST Principles', 'Error Handling', 'Authentication', 'Response Processing'],
+  prerequisites: ['JavaScript Basics', 'Async/Await', 'JSON'],
   learningObjectives: [
-    "Understand HTTP methods and status codes",
-    "Use Fetch API for data requests",
-    "Apply REST principles correctly",
-    "Handle errors and edge cases",
-    "Work with APIs requiring authentication",
-    "Parse and transform API responses"
+    'Understand HTTP methods and status codes',
+    'Use Fetch API for data requests',
+    'Apply REST principles correctly',
+    'Handle errors and edge cases',
+    'Work with APIs requiring authentication',
+    'Parse and transform API responses'
   ]
 };
 
@@ -32,7 +25,7 @@ export const apiConfig = {
  * HTTP Basics
  */
 export const httpBasics = {
-  concept: "HTTP Basics",
+  concept: 'HTTP Basics',
   explanation: `
     HTTP (HyperText Transfer Protocol) is the foundation of web communication.
     
@@ -63,7 +56,7 @@ export const httpBasics = {
     - Headers: Response metadata
     - Body: Response data
   `,
-  
+
   examples: {
     httpMethods: `
 // Different HTTP methods for different operations
@@ -96,7 +89,7 @@ DELETE /api/users/1
 HEAD /api/users
 // Returns: Headers only, no body
     `,
-    
+
     statusCodes: `
 // Understanding HTTP status codes
 
@@ -133,7 +126,7 @@ HEAD /api/users
 // Server temporarily down
 { "error": "Service under maintenance" }
     `,
-    
+
     headersConcept: `
 // HTTP headers provide metadata
 
@@ -176,7 +169,7 @@ Access-Control-Allow-Origin: *
  * Fetch API Fundamentals
  */
 export const fetchApi = {
-  concept: "Fetch API",
+  concept: 'Fetch API',
   explanation: `
     Fetch API provides a modern way to make HTTP requests using Promises.
     
@@ -194,7 +187,7 @@ export const fetchApi = {
     - credentials: 'include' for cookies
     - cache: 'default', 'no-cache', etc.
   `,
-  
+
   examples: {
     basicFetch: `
 // Basic GET request
@@ -231,7 +224,7 @@ async function getUsers() {
 
 getUsers();
     `,
-    
+
     postRequest: `
 // POST request to create data
 async function createUser(userData) {
@@ -262,7 +255,7 @@ createUser({
   age: 30
 });
     `,
-    
+
     requestOptions: `
 // Fetch with various options
 async function fetchWithOptions(url, options = {}) {
@@ -307,7 +300,7 @@ async function fetchWithOptions(url, options = {}) {
   }
 }
     `,
-    
+
     handleResponse: `
 // Handle different response types
 async function processResponse(response) {
@@ -341,7 +334,7 @@ const data = await fetch(url).then(processResponse);
  * REST Principles
  */
 export const restPrinciples = {
-  concept: "REST (Representational State Transfer)",
+  concept: 'REST (Representational State Transfer)',
   explanation: `
     REST is an architectural style for designing web APIs.
     
@@ -360,7 +353,7 @@ export const restPrinciples = {
     - Use IDs: /users/1 not /users/getById/1
     - Plural for collections: /users not /user
   `,
-  
+
   examples: {
     restfulUrls: `
 // RESTful URL patterns
@@ -389,7 +382,7 @@ GET    /api/users?search=john        // Search
 GET    /api/v1/users                 // API version 1
 GET    /api/v2/users                 // API version 2
     `,
-    
+
     requestResponse: `
 // RESTful request/response examples
 
@@ -454,7 +447,7 @@ RESPONSE: 204 No Content
  * Error Handling in APIs
  */
 export const apiErrorHandling = {
-  concept: "API Error Handling",
+  concept: 'API Error Handling',
   explanation: `
     Proper error handling is critical for robust applications.
     
@@ -472,7 +465,7 @@ export const apiErrorHandling = {
     - Log errors for debugging
     - Implement retry logic for transient errors
   `,
-  
+
   examples: {
     errorHandling: `
 // Comprehensive error handling
@@ -521,7 +514,7 @@ async function fetchWithErrorHandling(url, options = {}) {
   }
 }
     `,
-    
+
     retryLogic: `
 // Retry failed requests
 async function fetchWithRetry(url, options = {}, maxRetries = 3) {
@@ -559,7 +552,7 @@ async function fetchWithRetry(url, options = {}, maxRetries = 3) {
   throw lastError;
 }
     `,
-    
+
     timeouts: `
 // Implement request timeout
 function fetchWithTimeout(url, options = {}, timeout = 5000) {
@@ -599,7 +592,7 @@ async function fetchWithAbort(url, options = {}, timeout = 5000) {
  * Authentication
  */
 export const authentication = {
-  concept: "API Authentication",
+  concept: 'API Authentication',
   explanation: `
     Authentication verifies user identity. Common methods:
     
@@ -617,7 +610,7 @@ export const authentication = {
     - Refresh tokens periodically
     - Validate tokens server-side
   `,
-  
+
   examples: {
     authMethods: `
 // API Key authentication
@@ -671,7 +664,7 @@ async function getOAuthToken(clientId, clientSecret, code) {
   return data.access_token;
 }
     `,
-    
+
     tokenStorage: `
 // Secure token storage and management
 class TokenManager {
@@ -737,7 +730,7 @@ class TokenManager {
  * Response Processing
  */
 export const responseProcessing = {
-  concept: "Response Processing",
+  concept: 'Response Processing',
   explanation: `
     Properly processing API responses ensures data integrity.
     
@@ -749,7 +742,7 @@ export const responseProcessing = {
     5. Handle rate limiting
     6. Parse different content types
   `,
-  
+
   examples: {
     dataTransformation: `
 // Transform API response to app format
@@ -787,7 +780,7 @@ function validateUser(user) {
   return user;
 }
     `,
-    
+
     pagination: `
 // Handle paginated responses
 async function getAllUsers() {
@@ -831,7 +824,7 @@ async function getAllUsersCursor() {
   return allUsers;
 }
     `,
-    
+
     caching: `
 // Simple response caching
 class APICache {
@@ -879,10 +872,10 @@ const users = await apiCache.fetch('/api/users');
  */
 export const exercises = [
   {
-    id: "api_ex1",
-    title: "First API Request",
-    difficulty: "easy",
-    description: "Make your first API request using fetch",
+    id: 'api_ex1',
+    title: 'First API Request',
+    difficulty: 'easy',
+    description: 'Make your first API request using fetch',
     template: `
 // Use the free JSONPlaceholder API
 // https://jsonplaceholder.typicode.com
@@ -908,29 +901,29 @@ getPost();
     `,
     tests: [
       {
-        description: "Should use fetch",
-        check: (code) => code.includes('fetch')
+        description: 'Should use fetch',
+        check: code => code.includes('fetch')
       },
       {
-        description: "Should use async/await",
-        check: (code) => code.includes('async') && code.includes('await')
+        description: 'Should use async/await',
+        check: code => code.includes('async') && code.includes('await')
       },
       {
-        description: "Should check response.ok",
-        check: (code) => code.includes('response.ok')
+        description: 'Should check response.ok',
+        check: code => code.includes('response.ok')
       }
     ],
     hints: [
-      "Use https://jsonplaceholder.typicode.com/posts/1",
-      "Check response.ok before parsing",
-      "Use await response.json()"
+      'Use https://jsonplaceholder.typicode.com/posts/1',
+      'Check response.ok before parsing',
+      'Use await response.json()'
     ]
   },
   {
-    id: "api_ex2",
-    title: "POST Request",
-    difficulty: "medium",
-    description: "Create new data with POST request",
+    id: 'api_ex2',
+    title: 'POST Request',
+    difficulty: 'medium',
+    description: 'Create new data with POST request',
     template: `
 // Create a new post using JSONPlaceholder
 // https://jsonplaceholder.typicode.com/posts
@@ -965,29 +958,25 @@ createPost('My Post', 'This is my first post');
     `,
     tests: [
       {
-        description: "Should use POST method",
-        check: (code) => code.includes("'POST'") || code.includes('"POST"')
+        description: 'Should use POST method',
+        check: code => code.includes("'POST'") || code.includes('"POST"')
       },
       {
-        description: "Should use JSON.stringify",
-        check: (code) => code.includes('JSON.stringify')
+        description: 'Should use JSON.stringify',
+        check: code => code.includes('JSON.stringify')
       },
       {
-        description: "Should set Content-Type header",
-        check: (code) => code.includes('Content-Type')
+        description: 'Should set Content-Type header',
+        check: code => code.includes('Content-Type')
       }
     ],
-    hints: [
-      "Use method: 'POST'",
-      "Include proper headers",
-      "Use JSON.stringify for body"
-    ]
+    hints: ["Use method: 'POST'", 'Include proper headers', 'Use JSON.stringify for body']
   },
   {
-    id: "api_ex3",
-    title: "Error Handling",
-    difficulty: "hard",
-    description: "Handle API errors gracefully",
+    id: 'api_ex3',
+    title: 'Error Handling',
+    difficulty: 'hard',
+    description: 'Handle API errors gracefully',
     template: `
 // Create robust error handling
 
@@ -1012,18 +1001,18 @@ fetchUserData(99999);
     `,
     tests: [
       {
-        description: "Should check response.ok or status",
-        check: (code) => code.includes('response.ok') || code.includes('response.status')
+        description: 'Should check response.ok or status',
+        check: code => code.includes('response.ok') || code.includes('response.status')
       },
       {
-        description: "Should have try/catch",
-        check: (code) => code.includes('try') && code.includes('catch')
+        description: 'Should have try/catch',
+        check: code => code.includes('try') && code.includes('catch')
       }
     ],
     hints: [
-      "Check if response.ok is false",
-      "Throw error with descriptive message",
-      "Catch and log network errors separately"
+      'Check if response.ok is false',
+      'Throw error with descriptive message',
+      'Catch and log network errors separately'
     ]
   }
 ];
@@ -1033,56 +1022,46 @@ fetchUserData(99999);
  */
 export const quiz = [
   {
-    id: "aq1",
-    question: "Which HTTP method is used to retrieve data?",
-    options: [
-      "POST",
-      "GET",
-      "PUT",
-      "DELETE"
-    ],
+    id: 'aq1',
+    question: 'Which HTTP method is used to retrieve data?',
+    options: ['POST', 'GET', 'PUT', 'DELETE'],
     correct: 1,
-    explanation: "GET is used to retrieve data from the server without modifying it"
+    explanation: 'GET is used to retrieve data from the server without modifying it'
   },
   {
-    id: "aq2",
-    question: "What does HTTP status code 404 mean?",
-    options: [
-      "Unauthorized",
-      "Bad Request",
-      "Not Found",
-      "Server Error"
-    ],
+    id: 'aq2',
+    question: 'What does HTTP status code 404 mean?',
+    options: ['Unauthorized', 'Bad Request', 'Not Found', 'Server Error'],
     correct: 2,
-    explanation: "404 means the requested resource was not found on the server"
+    explanation: '404 means the requested resource was not found on the server'
   },
   {
-    id: "aq3",
-    question: "When should you use PATCH instead of PUT?",
+    id: 'aq3',
+    question: 'When should you use PATCH instead of PUT?',
     options: [
-      "Always use PUT",
-      "When you want to delete data",
+      'Always use PUT',
+      'When you want to delete data',
       "When you're doing a partial update",
-      "When retrieving data"
+      'When retrieving data'
     ],
     correct: 2,
-    explanation: "PATCH is for partial updates, PUT replaces the entire resource"
+    explanation: 'PATCH is for partial updates, PUT replaces the entire resource'
   },
   {
-    id: "aq4",
-    question: "What does response.ok check?",
+    id: 'aq4',
+    question: 'What does response.ok check?',
     options: [
-      "If response is an object",
-      "If HTTP status is in 200-299 range",
-      "If content-type is JSON",
-      "If request was successful"
+      'If response is an object',
+      'If HTTP status is in 200-299 range',
+      'If content-type is JSON',
+      'If request was successful'
     ],
     correct: 1,
-    explanation: "response.ok is true if the HTTP status code is 200-299"
+    explanation: 'response.ok is true if the HTTP status code is 200-299'
   },
   {
-    id: "aq5",
-    question: "Which is the correct way to send JSON data in a POST request?",
+    id: 'aq5',
+    question: 'Which is the correct way to send JSON data in a POST request?',
     options: [
       "body: { key: 'value' }",
       "body: '<json></json>'",
@@ -1090,7 +1069,7 @@ export const quiz = [
       "data: { key: 'value' }"
     ],
     correct: 2,
-    explanation: "JSON must be stringified before sending in request body"
+    explanation: 'JSON must be stringified before sending in request body'
   }
 ];
 

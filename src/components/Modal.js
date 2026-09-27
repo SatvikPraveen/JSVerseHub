@@ -6,746 +6,770 @@
  */
 
 class Modal {
-    constructor(options = {}) {
-        this.options = {
-            id: options.id || `modal-${Date.now()}`,
-            title: options.title || '',
-            content: options.content || '',
-            size: options.size || 'medium', // small, medium, large, fullscreen
-            closable: options.closable !== false,
-            backdrop: options.backdrop !== false,
-            keyboard: options.keyboard !== false,
-            animation: options.animation !== false,
-            autoFocus: options.autoFocus !== false,
-            className: options.className || '',
-            onShow: options.onShow || null,
-            onHide: options.onHide || null,
-            onConfirm: options.onConfirm || null,
-            onCancel: options.onCancel || null
-        };
+  constructor(options = {}) {
+    this.options = {
+      id: options.id || `modal-${Date.now()}`,
+      title: options.title || '',
+      content: options.content || '',
+      size: options.size || 'medium', // small, medium, large, fullscreen
+      closable: options.closable !== false,
+      backdrop: options.backdrop !== false,
+      keyboard: options.keyboard !== false,
+      animation: options.animation !== false,
+      autoFocus: options.autoFocus !== false,
+      className: options.className || '',
+      onShow: options.onShow || null,
+      onHide: options.onHide || null,
+      onConfirm: options.onConfirm || null,
+      onCancel: options.onCancel || null
+    };
 
-        this.isVisible = false;
-        this.element = null;
-        this.backdrop = null;
-        this.content = null;
-        this.focusableElements = [];
-        this.previousActiveElement = null;
+    this.isVisible = false;
+    this.element = null;
+    this.backdrop = null;
+    this.content = null;
+    this.focusableElements = [];
+    this.previousActiveElement = null;
 
-        this.createModal();
-        this.setupEventListeners();
+    this.createModal();
+    this.setupEventListeners();
+  }
+
+  /**
+   * Create modal DOM structure
+   */
+  createModal() {
+    // Create modal container
+    this.element = document.createElement('div');
+    this.element.id = this.options.id;
+    this.element.className = `modal ${this.options.className}`;
+    this.element.setAttribute('tabindex', '-1');
+    this.element.setAttribute('role', 'dialog');
+    this.element.setAttribute('aria-modal', 'true');
+    if (this.options.title) {
+      this.element.setAttribute('aria-labelledby', `${this.options.id}-title`);
     }
 
-    /**
-     * Create modal DOM structure
-     */
-    createModal() {
-        // Create modal container
-        this.element = document.createElement('div');
-        this.element.id = this.options.id;
-        this.element.className = `modal ${this.options.className}`;
-        this.element.setAttribute('tabindex', '-1');
-        this.element.setAttribute('role', 'dialog');
-        this.element.setAttribute('aria-modal', 'true');
-        if (this.options.title) {
-            this.element.setAttribute('aria-labelledby', `${this.options.id}-title`);
-        }
+    // Create modal backdrop
+    if (this.options.backdrop) {
+      this.backdrop = document.createElement('div');
+      this.backdrop.className = 'modal-backdrop';
+      this.element.appendChild(this.backdrop);
+    }
 
-        // Create modal backdrop
-        if (this.options.backdrop) {
-            this.backdrop = document.createElement('div');
-            this.backdrop.className = 'modal-backdrop';
-            this.element.appendChild(this.backdrop);
-        }
+    // Create modal content
+    this.content = document.createElement('div');
+    this.content.className = `modal-content ${this.getSizeClass()}`;
 
-        // Create modal content
-        this.content = document.createElement('div');
-        this.content.className = `modal-content ${this.getSizeClass()}`;
-        
-        // Add close button if closable
-        if (this.options.closable) {
-            const closeButton = document.createElement('button');
-            closeButton.className = 'close-btn';
-            closeButton.innerHTML = `
+    // Add close button if closable
+    if (this.options.closable) {
+      const closeButton = document.createElement('button');
+      closeButton.className = 'close-btn';
+      closeButton.innerHTML = `
                 <img src="images/ui/close-btn.png" alt="Close" onerror="this.innerHTML='×'">
             `;
-            closeButton.setAttribute('aria-label', 'Close modal');
-            this.content.appendChild(closeButton);
-        }
-
-        // Add content
-        this.updateContent();
-
-        this.element.appendChild(this.content);
-        document.body.appendChild(this.element);
-
-        JSVLogger.debug(`Modal created: ${this.options.id}`);
+      closeButton.setAttribute('aria-label', 'Close modal');
+      this.content.appendChild(closeButton);
     }
 
-    /**
-     * Get CSS class for modal size
-     */
-    getSizeClass() {
-        const sizeClasses = {
-            small: 'modal-sm',
-            medium: '',
-            large: 'modal-lg',
-            fullscreen: 'modal-fullscreen'
-        };
-        return sizeClasses[this.options.size] || '';
+    // Add content
+    this.updateContent();
+
+    this.element.appendChild(this.content);
+    document.body.appendChild(this.element);
+
+    JSVLogger.debug(`Modal created: ${this.options.id}`);
+  }
+
+  /**
+   * Get CSS class for modal size
+   */
+  getSizeClass() {
+    const sizeClasses = {
+      small: 'modal-sm',
+      medium: '',
+      large: 'modal-lg',
+      fullscreen: 'modal-fullscreen'
+    };
+    return sizeClasses[this.options.size] || '';
+  }
+
+  /**
+   * Update modal content
+   */
+  updateContent() {
+    if (!this.content) return;
+
+    const contentContainer = this.content.querySelector('.modal-body') || document.createElement('div');
+
+    if (!contentContainer.classList.contains('modal-body')) {
+      contentContainer.className = 'modal-body';
+      this.content.appendChild(contentContainer);
     }
 
-    /**
-     * Update modal content
-     */
-    updateContent() {
-        if (!this.content) return;
+    // Add title if provided
+    if (this.options.title) {
+      let titleElement = this.content.querySelector('.modal-title');
+      if (!titleElement) {
+        const header = document.createElement('div');
+        header.className = 'modal-header';
 
-        const contentContainer = this.content.querySelector('.modal-body') || 
-                               document.createElement('div');
-        
-        if (!contentContainer.classList.contains('modal-body')) {
-            contentContainer.className = 'modal-body';
-            this.content.appendChild(contentContainer);
-        }
+        titleElement = document.createElement('h2');
+        titleElement.className = 'modal-title';
+        titleElement.id = `${this.options.id}-title`;
 
-        // Add title if provided
-        if (this.options.title) {
-            let titleElement = this.content.querySelector('.modal-title');
-            if (!titleElement) {
-                const header = document.createElement('div');
-                header.className = 'modal-header';
-                
-                titleElement = document.createElement('h2');
-                titleElement.className = 'modal-title';
-                titleElement.id = `${this.options.id}-title`;
-                
-                header.appendChild(titleElement);
-                this.content.insertBefore(header, contentContainer);
-            }
-            titleElement.textContent = this.options.title;
-        }
-
-        // Update content
-        if (typeof this.options.content === 'string') {
-            contentContainer.innerHTML = this.options.content;
-        } else if (this.options.content instanceof Node) {
-            contentContainer.innerHTML = '';
-            contentContainer.appendChild(this.options.content);
-        }
-
-        // Update focusable elements
-        this.updateFocusableElements();
+        header.appendChild(titleElement);
+        this.content.insertBefore(header, contentContainer);
+      }
+      titleElement.textContent = this.options.title;
     }
 
-    /**
-     * Setup event listeners
-     */
-    setupEventListeners() {
-        if (!this.element) return;
+    // Update content
+    if (typeof this.options.content === 'string') {
+      contentContainer.innerHTML = this.options.content;
+    } else if (this.options.content instanceof Node) {
+      contentContainer.innerHTML = '';
+      contentContainer.appendChild(this.options.content);
+    }
 
-        // Close button click
-        const closeBtn = this.element.querySelector('.close-btn');
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => this.hide());
+    // Update focusable elements
+    this.updateFocusableElements();
+  }
+
+  /**
+   * Setup event listeners
+   */
+  setupEventListeners() {
+    if (!this.element) return;
+
+    // Close button click
+    const closeBtn = this.element.querySelector('.close-btn');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => this.hide());
+    }
+
+    // Backdrop click
+    if (this.options.backdrop && this.backdrop) {
+      this.backdrop.addEventListener('click', () => {
+        if (this.options.backdrop === true) {
+          this.hide();
         }
+      });
+    }
 
-        // Backdrop click
-        if (this.options.backdrop && this.backdrop) {
-            this.backdrop.addEventListener('click', () => {
-                if (this.options.backdrop === true) {
-                    this.hide();
-                }
-            });
+    // Keyboard events
+    this.element.addEventListener('keydown', e => {
+      this.handleKeydown(e);
+    });
+
+    // Animation events
+    this.element.addEventListener('transitionend', e => {
+      if (e.target === this.element) {
+        this.handleTransitionEnd(e);
+      }
+    });
+  }
+
+  /**
+   * Handle keydown events
+   */
+  handleKeydown(event) {
+    if (!this.isVisible) return;
+
+    switch (event.key) {
+      case 'Escape':
+        if (this.options.keyboard && this.options.closable) {
+          event.preventDefault();
+          this.hide();
         }
+        break;
 
-        // Keyboard events
-        this.element.addEventListener('keydown', (e) => {
-            this.handleKeydown(e);
+      case 'Tab':
+        this.handleTabKey(event);
+        break;
+
+      case 'Enter':
+        if (event.target.classList.contains('btn-primary')) {
+          event.preventDefault();
+          if (this.options.onConfirm) {
+            this.options.onConfirm();
+          }
+        }
+        break;
+    }
+  }
+
+  /**
+   * Handle Tab key for focus management
+   */
+  handleTabKey(event) {
+    if (this.focusableElements.length === 0) return;
+
+    const firstElement = this.focusableElements[0];
+    const lastElement = this.focusableElements[this.focusableElements.length - 1];
+
+    if (event.shiftKey) {
+      // Shift + Tab
+      if (document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      }
+    } else {
+      // Tab
+      // eslint-disable-next-line no-lonely-if -- mirrors the shift+tab branch above for readability
+      if (document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    }
+  }
+
+  /**
+   * Handle transition end events
+   */
+  handleTransitionEnd(event) {
+    if (!this.isVisible && event.propertyName === 'opacity') {
+      this.element.style.display = 'none';
+    }
+  }
+
+  /**
+   * Update focusable elements list
+   */
+  updateFocusableElements() {
+    if (!this.element) return;
+
+    const focusableSelectors = [
+      'a[href]',
+      'button:not([disabled])',
+      'input:not([disabled])',
+      'select:not([disabled])',
+      'textarea:not([disabled])',
+      '[tabindex]:not([tabindex="-1"])'
+    ];
+
+    this.focusableElements = Array.from(this.element.querySelectorAll(focusableSelectors.join(', '))).filter(
+      el => el.offsetParent !== null && !el.hidden
+    );
+  }
+
+  /**
+   * Show modal
+   */
+  show() {
+    if (this.isVisible) return this;
+
+    // Store currently focused element
+    this.previousActiveElement = document.activeElement;
+
+    // Trigger onShow callback
+    if (this.options.onShow) {
+      const result = this.options.onShow();
+      if (result === false) return this;
+    }
+
+    // Show modal
+    this.element.style.display = 'flex';
+    this.element.classList.add('show');
+    this.isVisible = true;
+
+    // Handle animations
+    if (this.options.animation) {
+      // Force reflow
+      this.element.offsetHeight; // eslint-disable-line no-unused-expressions -- reading forces a reflow
+      this.element.classList.add('fade-in');
+    }
+
+    // Focus management
+    if (this.options.autoFocus) {
+      this.setInitialFocus();
+    }
+
+    // Prevent body scroll
+    document.body.classList.add('modal-open');
+
+    // Add to modal stack
+    Modal.addToStack(this);
+
+    JSVLogger.debug(`Modal shown: ${this.options.id}`);
+    return this;
+  }
+
+  /**
+   * Hide modal
+   */
+  hide() {
+    if (!this.isVisible) return this;
+
+    // Trigger onHide callback
+    if (this.options.onHide) {
+      const result = this.options.onHide();
+      if (result === false) return this;
+    }
+
+    // Hide modal
+    this.element.classList.remove('show');
+    this.isVisible = false;
+
+    // Handle animations
+    if (this.options.animation) {
+      this.element.classList.add('fade-out');
+      setTimeout(() => {
+        this.element.classList.remove('fade-out');
+        this.element.style.display = 'none';
+      }, 300);
+    } else {
+      this.element.style.display = 'none';
+    }
+
+    // Restore focus
+    if (this.previousActiveElement && typeof this.previousActiveElement.focus === 'function') {
+      this.previousActiveElement.focus();
+    }
+
+    // Remove from modal stack
+    Modal.removeFromStack(this);
+
+    // Allow body scroll if no modals are open
+    if (Modal.getStackCount() === 0) {
+      document.body.classList.remove('modal-open');
+    }
+
+    JSVLogger.debug(`Modal hidden: ${this.options.id}`);
+    return this;
+  }
+
+  /**
+   * Toggle modal visibility
+   */
+  toggle() {
+    return this.isVisible ? this.hide() : this.show();
+  }
+
+  /**
+   * Set initial focus
+   */
+  setInitialFocus() {
+    this.updateFocusableElements();
+
+    if (this.focusableElements.length > 0) {
+      // Focus first focusable element or close button
+      const primaryButton = this.element.querySelector('.btn-primary');
+      const firstFocusable = primaryButton || this.focusableElements[0];
+      firstFocusable.focus();
+    } else {
+      // Focus the modal itself
+      this.element.focus();
+    }
+  }
+
+  /**
+   * Update modal options
+   */
+  setOptions(newOptions) {
+    this.options = { ...this.options, ...newOptions };
+    this.updateContent();
+    return this;
+  }
+
+  /**
+   * Set modal title
+   */
+  setTitle(title) {
+    this.options.title = title;
+    this.updateContent();
+    return this;
+  }
+
+  /**
+   * Set modal content
+   */
+  setContent(content) {
+    this.options.content = content;
+    this.updateContent();
+    return this;
+  }
+
+  /**
+   * Add footer with buttons
+   */
+  setFooter(buttons) {
+    if (!this.content) return this;
+
+    // Remove existing footer
+    const existingFooter = this.content.querySelector('.modal-footer');
+    if (existingFooter) {
+      existingFooter.remove();
+    }
+
+    if (!buttons || buttons.length === 0) return this;
+
+    // Create footer
+    const footer = document.createElement('div');
+    footer.className = 'modal-footer';
+
+    buttons.forEach(button => {
+      const btn = document.createElement('button');
+      btn.className = `btn ${button.className || 'btn-secondary'}`;
+      btn.textContent = button.text || 'Button';
+
+      if (button.handler) {
+        btn.addEventListener('click', e => {
+          const result = button.handler(e, this);
+          if (result !== false && button.close !== false) {
+            this.hide();
+          }
         });
+      }
 
-        // Animation events
-        this.element.addEventListener('transitionend', (e) => {
-            if (e.target === this.element) {
-                this.handleTransitionEnd(e);
-            }
-        });
-    }
+      footer.appendChild(btn);
+    });
 
-    /**
-     * Handle keydown events
-     */
-    handleKeydown(event) {
-        if (!this.isVisible) return;
+    this.content.appendChild(footer);
+    this.updateFocusableElements();
+    return this;
+  }
 
-        switch (event.key) {
-            case 'Escape':
-                if (this.options.keyboard && this.options.closable) {
-                    event.preventDefault();
-                    this.hide();
-                }
-                break;
+  /**
+   * Add loading state
+   */
+  setLoading(isLoading, message = 'Loading...') {
+    if (!this.content) return this;
 
-            case 'Tab':
-                this.handleTabKey(event);
-                break;
+    const loadingOverlay = this.content.querySelector('.modal-loading');
 
-            case 'Enter':
-                if (event.target.classList.contains('btn-primary')) {
-                    event.preventDefault();
-                    if (this.options.onConfirm) {
-                        this.options.onConfirm();
-                    }
-                }
-                break;
-        }
-    }
-
-    /**
-     * Handle Tab key for focus management
-     */
-    handleTabKey(event) {
-        if (this.focusableElements.length === 0) return;
-
-        const firstElement = this.focusableElements[0];
-        const lastElement = this.focusableElements[this.focusableElements.length - 1];
-
-        if (event.shiftKey) {
-            // Shift + Tab
-            if (document.activeElement === firstElement) {
-                event.preventDefault();
-                lastElement.focus();
-            }
-        } else {
-            // Tab
-            if (document.activeElement === lastElement) {
-                event.preventDefault();
-                firstElement.focus();
-            }
-        }
-    }
-
-    /**
-     * Handle transition end events
-     */
-    handleTransitionEnd(event) {
-        if (!this.isVisible && event.propertyName === 'opacity') {
-            this.element.style.display = 'none';
-        }
-    }
-
-    /**
-     * Update focusable elements list
-     */
-    updateFocusableElements() {
-        if (!this.element) return;
-
-        const focusableSelectors = [
-            'a[href]',
-            'button:not([disabled])',
-            'input:not([disabled])',
-            'select:not([disabled])',
-            'textarea:not([disabled])',
-            '[tabindex]:not([tabindex="-1"])'
-        ];
-
-        this.focusableElements = Array.from(
-            this.element.querySelectorAll(focusableSelectors.join(', '))
-        ).filter(el => {
-            return el.offsetParent !== null && !el.hidden;
-        });
-    }
-
-    /**
-     * Show modal
-     */
-    show() {
-        if (this.isVisible) return this;
-
-        // Store currently focused element
-        this.previousActiveElement = document.activeElement;
-
-        // Trigger onShow callback
-        if (this.options.onShow) {
-            const result = this.options.onShow();
-            if (result === false) return this;
-        }
-
-        // Show modal
-        this.element.style.display = 'flex';
-        this.element.classList.add('show');
-        this.isVisible = true;
-
-        // Handle animations
-        if (this.options.animation) {
-            // Force reflow
-            this.element.offsetHeight;
-            this.element.classList.add('fade-in');
-        }
-
-        // Focus management
-        if (this.options.autoFocus) {
-            this.setInitialFocus();
-        }
-
-        // Prevent body scroll
-        document.body.classList.add('modal-open');
-
-        // Add to modal stack
-        Modal.addToStack(this);
-
-        JSVLogger.debug(`Modal shown: ${this.options.id}`);
-        return this;
-    }
-
-    /**
-     * Hide modal
-     */
-    hide() {
-        if (!this.isVisible) return this;
-
-        // Trigger onHide callback
-        if (this.options.onHide) {
-            const result = this.options.onHide();
-            if (result === false) return this;
-        }
-
-        // Hide modal
-        this.element.classList.remove('show');
-        this.isVisible = false;
-
-        // Handle animations
-        if (this.options.animation) {
-            this.element.classList.add('fade-out');
-            setTimeout(() => {
-                this.element.classList.remove('fade-out');
-                this.element.style.display = 'none';
-            }, 300);
-        } else {
-            this.element.style.display = 'none';
-        }
-
-        // Restore focus
-        if (this.previousActiveElement && typeof this.previousActiveElement.focus === 'function') {
-            this.previousActiveElement.focus();
-        }
-
-        // Remove from modal stack
-        Modal.removeFromStack(this);
-
-        // Allow body scroll if no modals are open
-        if (Modal.getStackCount() === 0) {
-            document.body.classList.remove('modal-open');
-        }
-
-        JSVLogger.debug(`Modal hidden: ${this.options.id}`);
-        return this;
-    }
-
-    /**
-     * Toggle modal visibility
-     */
-    toggle() {
-        return this.isVisible ? this.hide() : this.show();
-    }
-
-    /**
-     * Set initial focus
-     */
-    setInitialFocus() {
-        this.updateFocusableElements();
-        
-        if (this.focusableElements.length > 0) {
-            // Focus first focusable element or close button
-            const primaryButton = this.element.querySelector('.btn-primary');
-            const firstFocusable = primaryButton || this.focusableElements[0];
-            firstFocusable.focus();
-        } else {
-            // Focus the modal itself
-            this.element.focus();
-        }
-    }
-
-    /**
-     * Update modal options
-     */
-    setOptions(newOptions) {
-        this.options = { ...this.options, ...newOptions };
-        this.updateContent();
-        return this;
-    }
-
-    /**
-     * Set modal title
-     */
-    setTitle(title) {
-        this.options.title = title;
-        this.updateContent();
-        return this;
-    }
-
-    /**
-     * Set modal content
-     */
-    setContent(content) {
-        this.options.content = content;
-        this.updateContent();
-        return this;
-    }
-
-    /**
-     * Add footer with buttons
-     */
-    setFooter(buttons) {
-        if (!this.content) return this;
-
-        // Remove existing footer
-        const existingFooter = this.content.querySelector('.modal-footer');
-        if (existingFooter) {
-            existingFooter.remove();
-        }
-
-        if (!buttons || buttons.length === 0) return this;
-
-        // Create footer
-        const footer = document.createElement('div');
-        footer.className = 'modal-footer';
-
-        buttons.forEach(button => {
-            const btn = document.createElement('button');
-            btn.className = `btn ${button.className || 'btn-secondary'}`;
-            btn.textContent = button.text || 'Button';
-            
-            if (button.handler) {
-                btn.addEventListener('click', (e) => {
-                    const result = button.handler(e, this);
-                    if (result !== false && button.close !== false) {
-                        this.hide();
-                    }
-                });
-            }
-
-            footer.appendChild(btn);
-        });
-
-        this.content.appendChild(footer);
-        this.updateFocusableElements();
-        return this;
-    }
-
-    /**
-     * Add loading state
-     */
-    setLoading(isLoading, message = 'Loading...') {
-        if (!this.content) return this;
-
-        const loadingOverlay = this.content.querySelector('.modal-loading');
-        
-        if (isLoading) {
-            if (!loadingOverlay) {
-                const overlay = document.createElement('div');
-                overlay.className = 'modal-loading';
-                overlay.innerHTML = `
+    if (isLoading) {
+      if (!loadingOverlay) {
+        const overlay = document.createElement('div');
+        overlay.className = 'modal-loading';
+        overlay.innerHTML = `
                     <div class="loading-spinner"></div>
                     <div class="loading-message">${message}</div>
                 `;
-                this.content.appendChild(overlay);
+        this.content.appendChild(overlay);
+      }
+      this.content.classList.add('loading');
+    } else {
+      if (loadingOverlay) {
+        loadingOverlay.remove();
+      }
+      this.content.classList.remove('loading');
+    }
+
+    return this;
+  }
+
+  /**
+   * Destroy modal
+   */
+  destroy() {
+    this.hide();
+
+    if (this.element && this.element.parentNode) {
+      this.element.parentNode.removeChild(this.element);
+    }
+
+    Modal.removeFromStack(this);
+
+    JSVLogger.debug(`Modal destroyed: ${this.options.id}`);
+  }
+
+  /**
+   * Get modal element
+   */
+  getElement() {
+    return this.element;
+  }
+
+  /**
+   * Check if modal is visible
+   */
+  isOpen() {
+    return this.isVisible;
+  }
+
+  // Static methods for modal management
+
+  /**
+   * Modal stack for managing multiple modals
+   */
+  static modalStack = [];
+
+  /**
+   * Add modal to stack
+   */
+  static addToStack(modal) {
+    if (!this.modalStack.includes(modal)) {
+      this.modalStack.push(modal);
+    }
+  }
+
+  /**
+   * Remove modal from stack
+   */
+  static removeFromStack(modal) {
+    const index = this.modalStack.indexOf(modal);
+    if (index > -1) {
+      this.modalStack.splice(index, 1);
+    }
+  }
+
+  /**
+   * Get stack count
+   */
+  static getStackCount() {
+    return this.modalStack.length;
+  }
+
+  /**
+   * Close all modals
+   */
+  static closeAll() {
+    const modalsToClose = [...this.modalStack];
+    modalsToClose.forEach(modal => modal.hide());
+  }
+
+  /**
+   * Create alert modal
+   */
+  static alert(title, message, options = {}) {
+    const modal = new Modal({
+      title,
+      content: `<p>${message}</p>`,
+      size: 'small',
+      ...options
+    });
+
+    modal.setFooter([
+      {
+        text: 'OK',
+        className: 'btn-primary',
+        handler: () => {
+          if (options.onConfirm) {
+            options.onConfirm();
+          }
+        }
+      }
+    ]);
+
+    modal.show();
+    return modal;
+  }
+
+  /**
+   * Create confirm modal
+   */
+  static confirm(title, message, options = {}) {
+    return new Promise(resolve => {
+      const modal = new Modal({
+        title,
+        content: `<p>${message}</p>`,
+        size: 'small',
+        ...options
+      });
+
+      modal.setFooter([
+        {
+          text: options.cancelText || 'Cancel',
+          className: 'btn-secondary',
+          handler: () => {
+            resolve(false);
+            if (options.onCancel) {
+              options.onCancel();
             }
-            this.content.classList.add('loading');
-        } else {
-            if (loadingOverlay) {
-                loadingOverlay.remove();
+          }
+        },
+        {
+          text: options.confirmText || 'OK',
+          className: 'btn-primary',
+          handler: () => {
+            resolve(true);
+            if (options.onConfirm) {
+              options.onConfirm();
             }
-            this.content.classList.remove('loading');
+          }
         }
+      ]);
 
-        return this;
-    }
+      modal.show();
+    });
+  }
 
-    /**
-     * Destroy modal
-     */
-    destroy() {
-        this.hide();
-        
-        if (this.element && this.element.parentNode) {
-            this.element.parentNode.removeChild(this.element);
-        }
-
-        Modal.removeFromStack(this);
-        
-        JSVLogger.debug(`Modal destroyed: ${this.options.id}`);
-    }
-
-    /**
-     * Get modal element
-     */
-    getElement() {
-        return this.element;
-    }
-
-    /**
-     * Check if modal is visible
-     */
-    isOpen() {
-        return this.isVisible;
-    }
-
-    // Static methods for modal management
-
-    /**
-     * Modal stack for managing multiple modals
-     */
-    static modalStack = [];
-
-    /**
-     * Add modal to stack
-     */
-    static addToStack(modal) {
-        if (!this.modalStack.includes(modal)) {
-            this.modalStack.push(modal);
-        }
-    }
-
-    /**
-     * Remove modal from stack
-     */
-    static removeFromStack(modal) {
-        const index = this.modalStack.indexOf(modal);
-        if (index > -1) {
-            this.modalStack.splice(index, 1);
-        }
-    }
-
-    /**
-     * Get stack count
-     */
-    static getStackCount() {
-        return this.modalStack.length;
-    }
-
-    /**
-     * Close all modals
-     */
-    static closeAll() {
-        const modalsToClose = [...this.modalStack];
-        modalsToClose.forEach(modal => modal.hide());
-    }
-
-    /**
-     * Create alert modal
-     */
-    static alert(title, message, options = {}) {
-        const modal = new Modal({
-            title,
-            content: `<p>${message}</p>`,
-            size: 'small',
-            ...options
-        });
-
-        modal.setFooter([
-            {
-                text: 'OK',
-                className: 'btn-primary',
-                handler: () => {
-                    if (options.onConfirm) {
-                        options.onConfirm();
-                    }
-                }
-            }
-        ]);
-
-        modal.show();
-        return modal;
-    }
-
-    /**
-     * Create confirm modal
-     */
-    static confirm(title, message, options = {}) {
-        return new Promise((resolve) => {
-            const modal = new Modal({
-                title,
-                content: `<p>${message}</p>`,
-                size: 'small',
-                ...options
-            });
-
-            modal.setFooter([
-                {
-                    text: options.cancelText || 'Cancel',
-                    className: 'btn-secondary',
-                    handler: () => {
-                        resolve(false);
-                        if (options.onCancel) {
-                            options.onCancel();
-                        }
-                    }
-                },
-                {
-                    text: options.confirmText || 'OK',
-                    className: 'btn-primary',
-                    handler: () => {
-                        resolve(true);
-                        if (options.onConfirm) {
-                            options.onConfirm();
-                        }
-                    }
-                }
-            ]);
-
-            modal.show();
-        });
-    }
-
-    /**
-     * Create prompt modal
-     */
-    static prompt(title, message, defaultValue = '', options = {}) {
-        return new Promise((resolve) => {
-            const inputId = `prompt-input-${Date.now()}`;
-            const content = `
+  /**
+   * Create prompt modal
+   */
+  static prompt(title, message, defaultValue = '', options = {}) {
+    return new Promise(resolve => {
+      const inputId = `prompt-input-${Date.now()}`;
+      const content = `
                 <p>${message}</p>
                 <div class="form-group">
-                    <input type="text" id="${inputId}" class="form-control" value="${defaultValue}" placeholder="${options.placeholder || ''}">
+                    <input type="text" id="${inputId}" class="form-control" value="${defaultValue}" placeholder="${
+        options.placeholder || ''
+      }">
                 </div>
             `;
 
-            const modal = new Modal({
-                title,
-                content,
-                size: 'small',
-                ...options
-            });
+      const modal = new Modal({
+        title,
+        content,
+        size: 'small',
+        ...options
+      });
 
-            modal.setFooter([
-                {
-                    text: 'Cancel',
-                    className: 'btn-secondary',
-                    handler: () => {
-                        resolve(null);
-                    }
-                },
-                {
-                    text: 'OK',
-                    className: 'btn-primary',
-                    handler: () => {
-                        const input = document.getElementById(inputId);
-                        resolve(input ? input.value : '');
-                    }
-                }
-            ]);
+      modal.setFooter([
+        {
+          text: 'Cancel',
+          className: 'btn-secondary',
+          handler: () => {
+            resolve(null);
+          }
+        },
+        {
+          text: 'OK',
+          className: 'btn-primary',
+          handler: () => {
+            const input = document.getElementById(inputId);
+            resolve(input ? input.value : '');
+          }
+        }
+      ]);
 
-            modal.show();
+      modal.show();
 
-            // Focus input after modal is shown
-            setTimeout(() => {
-                const input = document.getElementById(inputId);
-                if (input) {
-                    input.focus();
-                    input.select();
-                }
-            }, 100);
-        });
-    }
+      // Focus input after modal is shown
+      setTimeout(() => {
+        const input = document.getElementById(inputId);
+        if (input) {
+          input.focus();
+          input.select();
+        }
+      }, 100);
+    });
+  }
 
-    /**
-     * Create loading modal
-     */
-    static loading(message = 'Loading...', options = {}) {
-        const modal = new Modal({
-            content: `
+  /**
+   * Create loading modal
+   */
+  static loading(message = 'Loading...', options = {}) {
+    const modal = new Modal({
+      content: `
                 <div class="text-center">
                     <div class="loading-spinner large"></div>
                     <p class="loading-message">${message}</p>
                 </div>
             `,
-            size: 'small',
-            closable: false,
-            backdrop: false,
-            keyboard: false,
-            ...options
-        });
+      size: 'small',
+      closable: false,
+      backdrop: false,
+      keyboard: false,
+      ...options
+    });
 
-        modal.show();
-        return modal;
-    }
+    modal.show();
+    return modal;
+  }
 
-    /**
-     * Create concept display modal
-     */
-    static concept(conceptData, options = {}) {
-        const modal = new Modal({
-            title: conceptData.title || 'JavaScript Concept',
-            content: `
+  /**
+   * Create concept display modal
+   */
+  static concept(conceptData, options = {}) {
+    const modal = new Modal({
+      title: conceptData.title || 'JavaScript Concept',
+      content: `
                 <div class="concept-modal-content">
                     <div class="concept-description">
                         <p>${conceptData.description || 'Learn this JavaScript concept.'}</p>
                     </div>
                     
-                    ${conceptData.sections ? `
+                    ${
+                      conceptData.sections
+                        ? `
                         <div class="concept-sections">
-                            ${conceptData.sections.map(section => `
+                            ${conceptData.sections
+                              .map(
+                                section => `
                                 <div class="concept-section">
                                     <h3>${section.title}</h3>
                                     <p>${section.content.description}</p>
-                                    ${section.content.examples ? `
+                                    ${
+                                      section.content.examples
+                                        ? `
                                         <div class="code-examples">
-                                            ${section.content.examples.map(example => `
+                                            ${section.content.examples
+                                              .map(
+                                                example => `
                                                 <div class="code-example">
                                                     <pre><code>${example}</code></pre>
                                                 </div>
-                                            `).join('')}
+                                            `
+                                              )
+                                              .join('')}
                                         </div>
-                                    ` : ''}
+                                    `
+                                        : ''
+                                    }
                                 </div>
-                            `).join('')}
+                            `
+                              )
+                              .join('')}
                         </div>
-                    ` : ''}
+                    `
+                        : ''
+                    }
 
-                    ${conceptData.exercises ? `
+                    ${
+                      conceptData.exercises
+                        ? `
                         <div class="concept-exercises">
                             <h3>🎯 Exercises</h3>
                             <p>Complete these exercises to master the concept:</p>
                             <ul>
-                                ${conceptData.exercises.map(exercise => `
+                                ${conceptData.exercises
+                                  .map(
+                                    exercise => `
                                     <li>
                                         <strong>${exercise.title}</strong> 
                                         <span class="difficulty ${exercise.difficulty}">(${exercise.difficulty})</span>
                                         <p>${exercise.description}</p>
                                     </li>
-                                `).join('')}
+                                `
+                                  )
+                                  .join('')}
                             </ul>
                         </div>
-                    ` : ''}
+                    `
+                        : ''
+                    }
                 </div>
             `,
-            size: 'large',
-            ...options
-        });
+      size: 'large',
+      ...options
+    });
 
-        modal.setFooter([
-            {
-                text: 'Start Learning',
-                className: 'btn-primary',
-                handler: () => {
-                    if (options.onStartLearning) {
-                        options.onStartLearning(conceptData);
-                    }
-                }
-            },
-            {
-                text: 'Take Quiz',
-                className: 'btn-secondary',
-                handler: () => {
-                    if (options.onStartQuiz) {
-                        options.onStartQuiz(conceptData);
-                    }
-                }
-            }
-        ]);
+    modal.setFooter([
+      {
+        text: 'Start Learning',
+        className: 'btn-primary',
+        handler: () => {
+          if (options.onStartLearning) {
+            options.onStartLearning(conceptData);
+          }
+        }
+      },
+      {
+        text: 'Take Quiz',
+        className: 'btn-secondary',
+        handler: () => {
+          if (options.onStartQuiz) {
+            options.onStartQuiz(conceptData);
+          }
+        }
+      }
+    ]);
 
-        return modal;
-    }
+    return modal;
+  }
 }
 
 // CSS styles for modal component
@@ -1111,5 +1135,5 @@ document.head.appendChild(modalStyles);
 
 // Export for use in other modules
 if (typeof window !== 'undefined') {
-    window.Modal = Modal;
+  window.Modal = Modal;
 }

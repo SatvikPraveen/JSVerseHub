@@ -2,19 +2,19 @@
 // Interactive exercises for JavaScript Basics
 
 export const exerciseConfig = {
-  category: "JavaScript Basics",
+  category: 'JavaScript Basics',
   totalExercises: 12,
-  difficulty: "beginner",
-  estimatedTime: "45 minutes"
+  difficulty: 'beginner',
+  estimatedTime: '45 minutes'
 };
 
 // Exercise 1: Variable Declaration and Types
 export const exercise1 = {
-  id: "basics_variables",
-  title: "Variables and Data Types",
-  difficulty: "easy",
-  description: "Practice declaring variables and understanding data types",
-  
+  id: 'basics_variables',
+  title: 'Variables and Data Types',
+  difficulty: 'easy',
+  description: 'Practice declaring variables and understanding data types',
+
   instructions: `
     Create variables for a user profile with the following information:
     - firstName (string): "John"
@@ -25,7 +25,7 @@ export const exercise1 = {
     
     Then log each variable and its type to the console.
   `,
-  
+
   starterCode: `
 // Declare your variables here
 let firstName = 
@@ -41,7 +41,7 @@ console.log('age:', , 'type:', );
 console.log('isEmployed:', , 'type:', );
 console.log('salary:', , 'type:', );
   `,
-  
+
   solution: `
 // Declare your variables here
 let firstName = "John";
@@ -57,36 +57,36 @@ console.log('age:', age, 'type:', typeof age);
 console.log('isEmployed:', isEmployed, 'type:', typeof isEmployed);
 console.log('salary:', salary, 'type:', typeof salary);
   `,
-  
+
   tests: [
     {
-      description: "Should declare firstName as a string",
-      test: (code) => code.includes('firstName') && code.includes('"John"')
+      description: 'Should declare firstName as a string',
+      test: code => code.includes('firstName') && code.includes('"John"')
     },
     {
-      description: "Should declare lastName as a constant",
-      test: (code) => code.includes('const lastName')
+      description: 'Should declare lastName as a constant',
+      test: code => code.includes('const lastName')
     },
     {
-      description: "Should use typeof operator",
-      test: (code) => code.includes('typeof')
+      description: 'Should use typeof operator',
+      test: code => code.includes('typeof')
     }
   ],
-  
+
   hints: [
-    "Use let for variables that might change",
+    'Use let for variables that might change',
     "Use const for values that won't change",
-    "typeof operator returns the type as a string"
+    'typeof operator returns the type as a string'
   ]
 };
 
 // Exercise 2: Arithmetic Operations
 export const exercise2 = {
-  id: "basics_operators",
-  title: "Arithmetic Operations",
-  difficulty: "easy",
-  description: "Perform calculations using various operators",
-  
+  id: 'basics_operators',
+  title: 'Arithmetic Operations',
+  difficulty: 'easy',
+  description: 'Perform calculations using various operators',
+
   instructions: `
     Create a simple calculator that:
     1. Takes two numbers (a = 15, b = 4)
@@ -94,7 +94,7 @@ export const exercise2 = {
     3. Stores results in appropriately named variables
     4. Logs the results in a formatted way
   `,
-  
+
   starterCode: `
 const a = 15;
 const b = 4;
@@ -111,7 +111,7 @@ const power =
 console.log(\`\${a} + \${b} = \${sum}\`);
 // Add more console.log statements for other operations
   `,
-  
+
   solution: `
 const a = 15;
 const b = 4;
@@ -132,36 +132,36 @@ console.log(\`\${a} / \${b} = \${quotient}\`);
 console.log(\`\${a} % \${b} = \${remainder}\`);
 console.log(\`\${a} ** \${b} = \${power}\`);
   `,
-  
+
   tests: [
     {
-      description: "Should calculate sum correctly",
+      description: 'Should calculate sum correctly',
       test: (code, results) => results && results.sum === 19
     },
     {
-      description: "Should use exponentiation operator",
-      test: (code) => code.includes('**')
+      description: 'Should use exponentiation operator',
+      test: code => code.includes('**')
     },
     {
-      description: "Should use template literals for output",
-      test: (code) => code.includes('`') && code.includes('${')
+      description: 'Should use template literals for output',
+      test: code => code.includes('`') && code.includes('${')
     }
   ],
-  
+
   hints: [
-    "** is the exponentiation operator",
-    "% is the modulus (remainder) operator",
-    "Use template literals with backticks for formatted strings"
+    '** is the exponentiation operator',
+    '% is the modulus (remainder) operator',
+    'Use template literals with backticks for formatted strings'
   ]
 };
 
 // Exercise 3: Comparison and Logical Operators
 export const exercise3 = {
-  id: "basics_comparisons",
-  title: "Comparisons and Logic",
-  difficulty: "easy",
-  description: "Practice comparison and logical operators",
-  
+  id: 'basics_comparisons',
+  title: 'Comparisons and Logic',
+  difficulty: 'easy',
+  description: 'Practice comparison and logical operators',
+
   instructions: `
     Given three variables, create boolean expressions that check:
     1. If x is greater than y
@@ -170,7 +170,7 @@ export const exercise3 = {
     4. If x is greater than y AND y is less than z
     5. If x is less than 10 OR z is greater than 20
   `,
-  
+
   starterCode: `
 const x = 12;
 const y = 8;
@@ -190,7 +190,7 @@ console.log('x !== z:', isXNotEqualToZ);
 console.log('x > y && y < z:', bothConditionsTrue);
 console.log('x < 10 || z > 20:', eitherConditionTrue);
   `,
-  
+
   solution: `
 const x = 12;
 const y = 8;
@@ -210,36 +210,36 @@ console.log('x !== z:', isXNotEqualToZ);
 console.log('x > y && y < z:', bothConditionsTrue);
 console.log('x < 10 || z > 20:', eitherConditionTrue);
   `,
-  
+
   tests: [
     {
-      description: "Should use strict equality (===)",
-      test: (code) => code.includes('===')
+      description: 'Should use strict equality (===)',
+      test: code => code.includes('===')
     },
     {
-      description: "Should use logical AND (&&)",
-      test: (code) => code.includes('&&')
+      description: 'Should use logical AND (&&)',
+      test: code => code.includes('&&')
     },
     {
-      description: "Should use logical OR (||)",
-      test: (code) => code.includes('||')
+      description: 'Should use logical OR (||)',
+      test: code => code.includes('||')
     }
   ],
-  
+
   hints: [
-    "Use === for strict equality (no type coercion)",
-    "&& requires both conditions to be true",
-    "|| requires at least one condition to be true"
+    'Use === for strict equality (no type coercion)',
+    '&& requires both conditions to be true',
+    '|| requires at least one condition to be true'
   ]
 };
 
 // Exercise 4: Control Flow - If/Else
 export const exercise4 = {
-  id: "basics_conditionals",
-  title: "Conditional Statements",
-  difficulty: "medium",
-  description: "Create a grade calculator using if/else statements",
-  
+  id: 'basics_conditionals',
+  title: 'Conditional Statements',
+  difficulty: 'medium',
+  description: 'Create a grade calculator using if/else statements',
+
   instructions: `
     Create a function that takes a numeric score and returns a letter grade:
     - 90-100: "A"
@@ -250,7 +250,7 @@ export const exercise4 = {
     
     Test it with scores: 95, 87, 73, 62, 45
   `,
-  
+
   starterCode: `
 function getGrade(score) {
   // Write your if/else logic here
@@ -263,7 +263,7 @@ scores.forEach(score => {
   console.log(\`Score: \${score}, Grade: \${getGrade(score)}\`);
 });
   `,
-  
+
   solution: `
 function getGrade(score) {
   if (score >= 90) {
@@ -285,36 +285,36 @@ scores.forEach(score => {
   console.log(\`Score: \${score}, Grade: \${getGrade(score)}\`);
 });
   `,
-  
+
   tests: [
     {
       description: "Should return 'A' for score 95",
-      test: (code, fn) => fn && fn(95) === "A"
+      test: (code, fn) => fn && fn(95) === 'A'
     },
     {
       description: "Should return 'F' for score 45",
-      test: (code, fn) => fn && fn(45) === "F"
+      test: (code, fn) => fn && fn(45) === 'F'
     },
     {
-      description: "Should use else if statements",
-      test: (code) => code.includes('else if')
+      description: 'Should use else if statements',
+      test: code => code.includes('else if')
     }
   ],
-  
+
   hints: [
-    "Start with the highest grade range first",
-    "Use else if for multiple conditions",
-    "Remember to return the grade letter"
+    'Start with the highest grade range first',
+    'Use else if for multiple conditions',
+    'Remember to return the grade letter'
   ]
 };
 
 // Exercise 5: Loops - For Loop
 export const exercise5 = {
-  id: "basics_for_loops",
-  title: "For Loops",
-  difficulty: "medium",
-  description: "Use for loops to process data",
-  
+  id: 'basics_for_loops',
+  title: 'For Loops',
+  difficulty: 'medium',
+  description: 'Use for loops to process data',
+
   instructions: `
     Create a program that:
     1. Uses a for loop to generate numbers 1-10
@@ -323,7 +323,7 @@ export const exercise5 = {
     4. Store odd numbers in an array called 'oddNumbers'
     5. Print both arrays and their lengths
   `,
-  
+
   starterCode: `
 const evenNumbers = [];
 const oddNumbers = [];
@@ -337,7 +337,7 @@ console.log('Odd numbers:', oddNumbers);
 console.log('Even count:', evenNumbers.length);
 console.log('Odd count:', oddNumbers.length);
   `,
-  
+
   solution: `
 const evenNumbers = [];
 const oddNumbers = [];
@@ -357,36 +357,36 @@ console.log('Odd numbers:', oddNumbers);
 console.log('Even count:', evenNumbers.length);
 console.log('Odd count:', oddNumbers.length);
   `,
-  
+
   tests: [
     {
-      description: "Should use a for loop",
-      test: (code) => code.includes('for') && code.includes('i++')
+      description: 'Should use a for loop',
+      test: code => code.includes('for') && code.includes('i++')
     },
     {
-      description: "Should check for even/odd using modulus",
-      test: (code) => code.includes('% 2')
+      description: 'Should check for even/odd using modulus',
+      test: code => code.includes('% 2')
     },
     {
-      description: "Should use push method to add to arrays",
-      test: (code) => code.includes('.push(')
+      description: 'Should use push method to add to arrays',
+      test: code => code.includes('.push(')
     }
   ],
-  
+
   hints: [
-    "Use modulus operator (%) to check even/odd",
-    "i % 2 === 0 means the number is even",
-    "Use push() method to add elements to arrays"
+    'Use modulus operator (%) to check even/odd',
+    'i % 2 === 0 means the number is even',
+    'Use push() method to add elements to arrays'
   ]
 };
 
 // Exercise 6: Functions - Basic Function Creation
 export const exercise6 = {
-  id: "basics_functions",
-  title: "Function Creation",
-  difficulty: "medium",
-  description: "Create and use different types of functions",
-  
+  id: 'basics_functions',
+  title: 'Function Creation',
+  difficulty: 'medium',
+  description: 'Create and use different types of functions',
+
   instructions: `
     Create three versions of a function that calculates the area of a rectangle:
     1. Function declaration
@@ -396,7 +396,7 @@ export const exercise6 = {
     Each should take width and height parameters and return the area.
     Test all three with width=5, height=10.
   `,
-  
+
   starterCode: `
 // Function declaration
 function calculateAreaDeclaration(width, height) {
@@ -419,7 +419,7 @@ console.log('Declaration result:', calculateAreaDeclaration(width, height));
 console.log('Expression result:', calculateAreaExpression(width, height));
 console.log('Arrow result:', calculateAreaArrow(width, height));
   `,
-  
+
   solution: `
 // Function declaration
 function calculateAreaDeclaration(width, height) {
@@ -442,36 +442,36 @@ console.log('Declaration result:', calculateAreaDeclaration(width, height));
 console.log('Expression result:', calculateAreaExpression(width, height));
 console.log('Arrow result:', calculateAreaArrow(width, height));
   `,
-  
+
   tests: [
     {
-      description: "Should have three different function types",
-      test: (code) => code.includes('function ') && code.includes('function(') && code.includes('=>')
+      description: 'Should have three different function types',
+      test: code => code.includes('function ') && code.includes('function(') && code.includes('=>')
     },
     {
-      description: "Arrow function should be concise",
-      test: (code) => code.includes('=>') && !code.match(/=>\s*{[\s\S]*return/)
+      description: 'Arrow function should be concise',
+      test: code => code.includes('=>') && !code.match(/=>\s*{[\s\S]*return/)
     },
     {
-      description: "All functions should return the same result",
+      description: 'All functions should return the same result',
       test: (code, results) => results && results.length === 3 && results[0] === results[1] && results[1] === results[2]
     }
   ],
-  
+
   hints: [
-    "Function declaration: function name() {}",
-    "Function expression: const name = function() {}",
-    "Arrow function: const name = () => expression"
+    'Function declaration: function name() {}',
+    'Function expression: const name = function() {}',
+    'Arrow function: const name = () => expression'
   ]
 };
 
 // Exercise 7: Scope Challenge
 export const exercise7 = {
-  id: "basics_scope",
-  title: "Variable Scope",
-  difficulty: "hard",
-  description: "Understand and demonstrate variable scope",
-  
+  id: 'basics_scope',
+  title: 'Variable Scope',
+  difficulty: 'hard',
+  description: 'Understand and demonstrate variable scope',
+
   instructions: `
     Create a function that demonstrates different scopes:
     1. Global variable: globalVar = "global"
@@ -480,7 +480,7 @@ export const exercise7 = {
     4. Block-scoped variable using let
     5. Show how each can be accessed from different locations
   `,
-  
+
   starterCode: `
 // Global variable
 const globalVar = "global";
@@ -515,7 +515,7 @@ function demonstrateScope(message) {
 // Test the function
 demonstrateScope("Hello from parameter!");
   `,
-  
+
   solution: `
 // Global variable
 const globalVar = "global";
@@ -550,36 +550,36 @@ function demonstrateScope(message) {
 // Test the function
 demonstrateScope("Hello from parameter!");
   `,
-  
+
   tests: [
     {
-      description: "Should demonstrate global scope access",
-      test: (code) => code.includes('globalVar') && code.includes('const globalVar')
+      description: 'Should demonstrate global scope access',
+      test: code => code.includes('globalVar') && code.includes('const globalVar')
     },
     {
-      description: "Should show block scope limitation",
-      test: (code) => code.includes('try') && code.includes('catch')
+      description: 'Should show block scope limitation',
+      test: code => code.includes('try') && code.includes('catch')
     },
     {
-      description: "Should use let for block-scoped variable",
-      test: (code) => code.includes('let blockScoped')
+      description: 'Should use let for block-scoped variable',
+      test: code => code.includes('let blockScoped')
     }
   ],
-  
+
   hints: [
-    "Global variables are accessible everywhere",
-    "Block-scoped variables (let/const) are only accessible within their block",
-    "Use try/catch to handle ReferenceError"
+    'Global variables are accessible everywhere',
+    'Block-scoped variables (let/const) are only accessible within their block',
+    'Use try/catch to handle ReferenceError'
   ]
 };
 
 // Exercise 8: Hoisting Demonstration
 export const exercise8 = {
-  id: "basics_hoisting",
-  title: "Variable Hoisting",
-  difficulty: "hard",
-  description: "Understand how hoisting works with different variable declarations",
-  
+  id: 'basics_hoisting',
+  title: 'Variable Hoisting',
+  difficulty: 'hard',
+  description: 'Understand how hoisting works with different variable declarations',
+
   instructions: `
     Create examples that demonstrate hoisting behavior:
     1. Show var hoisting
@@ -587,7 +587,7 @@ export const exercise8 = {
     3. Show temporal dead zone with let/const
     4. Explain what happens in each case
   `,
-  
+
   starterCode: `
 // Demonstrate hoisting behavior
 console.log('=== Hoisting Demo ===');
@@ -627,7 +627,7 @@ var notHoisted = function() {
 
 console.log('After function expression declaration:', notHoisted());
   `,
-  
+
   solution: `
 // Demonstrate hoisting behavior
 console.log('=== Hoisting Demo ===');
@@ -667,36 +667,36 @@ var notHoisted = function() {
 
 console.log('After function expression declaration:', notHoisted());
   `,
-  
+
   tests: [
     {
-      description: "Should demonstrate var hoisting",
-      test: (code) => code.includes('console.log') && code.includes('myVar') && code.includes('var myVar')
+      description: 'Should demonstrate var hoisting',
+      test: code => code.includes('console.log') && code.includes('myVar') && code.includes('var myVar')
     },
     {
-      description: "Should show function declaration hoisting",
-      test: (code) => code.includes('hoistedFunction()') && code.includes('function hoistedFunction')
+      description: 'Should show function declaration hoisting',
+      test: code => code.includes('hoistedFunction()') && code.includes('function hoistedFunction')
     },
     {
-      description: "Should handle temporal dead zone with try/catch",
-      test: (code) => code.includes('try') && code.includes('catch') && code.includes('let')
+      description: 'Should handle temporal dead zone with try/catch',
+      test: code => code.includes('try') && code.includes('catch') && code.includes('let')
     }
   ],
-  
+
   hints: [
-    "var declarations are hoisted but initialized as undefined",
-    "Function declarations are fully hoisted",
-    "let/const are hoisted but in temporal dead zone"
+    'var declarations are hoisted but initialized as undefined',
+    'Function declarations are fully hoisted',
+    'let/const are hoisted but in temporal dead zone'
   ]
 };
 
 // Exercise 9: FizzBuzz Challenge
 export const exercise9 = {
-  id: "basics_fizzbuzz",
-  title: "FizzBuzz Classic",
-  difficulty: "medium",
-  description: "Implement the classic FizzBuzz problem",
-  
+  id: 'basics_fizzbuzz',
+  title: 'FizzBuzz Classic',
+  difficulty: 'medium',
+  description: 'Implement the classic FizzBuzz problem',
+
   instructions: `
     Write a program that prints numbers from 1 to 30, but:
     - For multiples of 3, print "Fizz" instead of the number
@@ -705,7 +705,7 @@ export const exercise9 = {
     
     Store all outputs in an array and also log each one.
   `,
-  
+
   starterCode: `
 const fizzBuzzResults = [];
 
@@ -719,7 +719,7 @@ for (let i = 1; i <= 30; i++) {
 console.log('FizzBuzz Results:', fizzBuzzResults);
 console.log('Total items:', fizzBuzzResults.length);
   `,
-  
+
   solution: `
 const fizzBuzzResults = [];
 
@@ -744,36 +744,36 @@ for (let i = 1; i <= 30; i++) {
 console.log('FizzBuzz Results:', fizzBuzzResults);
 console.log('Total items:', fizzBuzzResults.length);
   `,
-  
+
   tests: [
     {
-      description: "Should check for multiples of 15 first",
-      test: (code) => code.includes('% 15') || (code.includes('% 3') && code.includes('% 5'))
+      description: 'Should check for multiples of 15 first',
+      test: code => code.includes('% 15') || (code.includes('% 3') && code.includes('% 5'))
     },
     {
-      description: "Should use modulus operator for divisibility",
-      test: (code) => code.includes('% 3') && code.includes('% 5')
+      description: 'Should use modulus operator for divisibility',
+      test: code => code.includes('% 3') && code.includes('% 5')
     },
     {
-      description: "Should store results in array",
-      test: (code) => code.includes('.push(')
+      description: 'Should store results in array',
+      test: code => code.includes('.push(')
     }
   ],
-  
+
   hints: [
-    "Check for multiples of 15 first (divisible by both 3 and 5)",
-    "Use modulus operator (%) to check divisibility",
-    "Order matters: check 15, then 3, then 5"
+    'Check for multiples of 15 first (divisible by both 3 and 5)',
+    'Use modulus operator (%) to check divisibility',
+    'Order matters: check 15, then 3, then 5'
   ]
 };
 
 // Exercise 10: Function with Default Parameters
 export const exercise10 = {
-  id: "basics_default_params",
-  title: "Default Parameters",
-  difficulty: "medium",
-  description: "Create functions using default parameters and rest syntax",
-  
+  id: 'basics_default_params',
+  title: 'Default Parameters',
+  difficulty: 'medium',
+  description: 'Create functions using default parameters and rest syntax',
+
   instructions: `
     Create a function called 'createProfile' that:
     1. Takes name (required), age (default: 18), city (default: "Unknown")
@@ -781,7 +781,7 @@ export const exercise10 = {
     3. Returns an object with all the information
     4. Test with different combinations of parameters
   `,
-  
+
   starterCode: `
 // Create the function with default parameters and rest syntax
 function createProfile(name, age = 18, city = "Unknown", ...hobbies) {
@@ -796,7 +796,7 @@ console.log('Test 3:', createProfile("Charlie", 30, "New York"));
 console.log('Test 4:', createProfile("Diana", 28, "Paris", "reading", "swimming", "cooking"));
 console.log('Test 5:', createProfile("Eve", undefined, "London", "painting"));
   `,
-  
+
   solution: `
 // Create the function with default parameters and rest syntax
 function createProfile(name, age = 18, city = "Unknown", ...hobbies) {
@@ -817,36 +817,36 @@ console.log('Test 3:', createProfile("Charlie", 30, "New York"));
 console.log('Test 4:', createProfile("Diana", 28, "Paris", "reading", "swimming", "cooking"));
 console.log('Test 5:', createProfile("Eve", undefined, "London", "painting"));
   `,
-  
+
   tests: [
     {
-      description: "Should use default parameters",
-      test: (code) => code.includes('= 18') && code.includes('= "Unknown"')
+      description: 'Should use default parameters',
+      test: code => code.includes('= 18') && code.includes('= "Unknown"')
     },
     {
-      description: "Should use rest parameters",
-      test: (code) => code.includes('...hobbies')
+      description: 'Should use rest parameters',
+      test: code => code.includes('...hobbies')
     },
     {
-      description: "Should return an object",
-      test: (code) => code.includes('return') && code.includes('{')
+      description: 'Should return an object',
+      test: code => code.includes('return') && code.includes('{')
     }
   ],
-  
+
   hints: [
-    "Default parameters: param = defaultValue",
-    "Rest parameters: ...paramName captures remaining arguments",
-    "Return an object with all the profile information"
+    'Default parameters: param = defaultValue',
+    'Rest parameters: ...paramName captures remaining arguments',
+    'Return an object with all the profile information'
   ]
 };
 
 // Exercise 11: Advanced Control Flow
 export const exercise11 = {
-  id: "basics_advanced_control",
-  title: "Advanced Control Flow",
-  difficulty: "hard",
-  description: "Combine multiple control flow concepts",
-  
+  id: 'basics_advanced_control',
+  title: 'Advanced Control Flow',
+  difficulty: 'hard',
+  description: 'Combine multiple control flow concepts',
+
   instructions: `
     Create a number analyzer that:
     1. Takes an array of numbers
@@ -855,7 +855,7 @@ export const exercise11 = {
     4. Count totals in each category
     5. Return a comprehensive report object
   `,
-  
+
   starterCode: `
 function analyzeNumbers(numbers) {
   const report = {
@@ -882,7 +882,7 @@ console.log('Test 2:', analyzeNumbers(testArray2));
 console.log('Test 3:', analyzeNumbers(testArray3));
 console.log('Test 4:', analyzeNumbers(testArray4));
   `,
-  
+
   solution: `
 function analyzeNumbers(numbers) {
   const report = {
@@ -926,36 +926,36 @@ console.log('Test 2:', analyzeNumbers(testArray2));
 console.log('Test 3:', analyzeNumbers(testArray3));
 console.log('Test 4:', analyzeNumbers(testArray4));
   `,
-  
+
   tests: [
     {
-      description: "Should use for...of loop or similar iteration",
-      test: (code) => code.includes('for') && (code.includes('of') || code.includes('i++'))
+      description: 'Should use for...of loop or similar iteration',
+      test: code => code.includes('for') && (code.includes('of') || code.includes('i++'))
     },
     {
-      description: "Should categorize numbers correctly",
-      test: (code) => code.includes('> 0') && code.includes('< 0')
+      description: 'Should categorize numbers correctly',
+      test: code => code.includes('> 0') && code.includes('< 0')
     },
     {
-      description: "Should check even/odd for positive numbers",
-      test: (code) => code.includes('% 2')
+      description: 'Should check even/odd for positive numbers',
+      test: code => code.includes('% 2')
     }
   ],
-  
+
   hints: [
-    "Use for...of to iterate through the array",
-    "Use if/else if/else for categorization",
-    "Check even/odd only for positive numbers"
+    'Use for...of to iterate through the array',
+    'Use if/else if/else for categorization',
+    'Check even/odd only for positive numbers'
   ]
 };
 
 // Exercise 12: Comprehensive Challenge
 export const exercise12 = {
-  id: "basics_final_challenge",
-  title: "JavaScript Basics Final Challenge",
-  difficulty: "hard",
-  description: "A comprehensive exercise combining all basic concepts",
-  
+  id: 'basics_final_challenge',
+  title: 'JavaScript Basics Final Challenge',
+  difficulty: 'hard',
+  description: 'A comprehensive exercise combining all basic concepts',
+
   instructions: `
     Create a student management system with the following features:
     1. A Student constructor-like function (using regular function)
@@ -963,7 +963,7 @@ export const exercise12 = {
     3. A class roster array to store multiple students
     4. Functions to find top performer, class average, and generate report
   `,
-  
+
   starterCode: `
 // Student creation function
 function createStudent(name, id) {
@@ -1016,7 +1016,7 @@ classRoster[2].addGrade(88);
 console.log("Class Report:");
 console.log(generateClassReport());
   `,
-  
+
   solution: `
 // Student creation function
 function createStudent(name, id) {
@@ -1145,33 +1145,33 @@ classRoster[2].addGrade(88);
 console.log("Class Report:");
 console.log(generateClassReport());
   `,
-  
+
   tests: [
     {
-      description: "Should create student objects with methods",
-      test: (code) => code.includes('addGrade') && code.includes('calculateAverage')
+      description: 'Should create student objects with methods',
+      test: code => code.includes('addGrade') && code.includes('calculateAverage')
     },
     {
-      description: "Should manage class roster array",
-      test: (code) => code.includes('classRoster') && code.includes('push')
+      description: 'Should manage class roster array',
+      test: code => code.includes('classRoster') && code.includes('push')
     },
     {
-      description: "Should calculate averages and generate reports",
-      test: (code) => code.includes('reduce') || code.includes('sum')
+      description: 'Should calculate averages and generate reports',
+      test: code => code.includes('reduce') || code.includes('sum')
     }
   ],
-  
+
   hints: [
-    "Use object methods to encapsulate student behavior",
-    "Store students in an array for easy management",
-    "Use reduce() or loops to calculate averages"
+    'Use object methods to encapsulate student behavior',
+    'Store students in an array for easy management',
+    'Use reduce() or loops to calculate averages'
   ]
 };
 
 // Exercise utilities
 export const exerciseUtils = {
   // Function to run exercise code safely
-  runExercise: function(exerciseCode, exerciseId) {
+  runExercise: function (exerciseCode, exerciseId) {
     try {
       // Create a safe execution context
       const result = new Function(exerciseCode)();
@@ -1188,15 +1188,15 @@ export const exerciseUtils = {
       };
     }
   },
-  
+
   // Function to validate exercise solution
-  validateSolution: function(userCode, exercise) {
+  validateSolution: function (userCode, exercise) {
     const results = {
       passed: 0,
       total: exercise.tests.length,
       details: []
     };
-    
+
     exercise.tests.forEach((test, index) => {
       try {
         const passed = test.test(userCode);
@@ -1213,12 +1213,12 @@ export const exerciseUtils = {
         });
       }
     });
-    
+
     return results;
   },
-  
+
   // Progress tracking
-  trackProgress: function(exerciseId, completed = false) {
+  trackProgress: function (exerciseId, completed = false) {
     const progress = JSON.parse(localStorage.getItem('jsverse_basics_progress') || '{}');
     progress[exerciseId] = {
       completed: completed,
@@ -1228,18 +1228,28 @@ export const exerciseUtils = {
     localStorage.setItem('jsverse_basics_progress', JSON.stringify(progress));
     return progress;
   },
-  
+
   // Get overall progress
-  getProgress: function() {
+  getProgress: function () {
     const progress = JSON.parse(localStorage.getItem('jsverse_basics_progress') || '{}');
     const exercises = [
-      exercise1, exercise2, exercise3, exercise4, exercise5, exercise6,
-      exercise7, exercise8, exercise9, exercise10, exercise11, exercise12
+      exercise1,
+      exercise2,
+      exercise3,
+      exercise4,
+      exercise5,
+      exercise6,
+      exercise7,
+      exercise8,
+      exercise9,
+      exercise10,
+      exercise11,
+      exercise12
     ];
-    
+
     const completed = exercises.filter(ex => progress[ex.id]?.completed).length;
     const total = exercises.length;
-    
+
     return {
       completed,
       total,
@@ -1251,8 +1261,18 @@ export const exerciseUtils = {
 
 // Export all exercises
 export const allExercises = [
-  exercise1, exercise2, exercise3, exercise4, exercise5, exercise6,
-  exercise7, exercise8, exercise9, exercise10, exercise11, exercise12
+  exercise1,
+  exercise2,
+  exercise3,
+  exercise4,
+  exercise5,
+  exercise6,
+  exercise7,
+  exercise8,
+  exercise9,
+  exercise10,
+  exercise11,
+  exercise12
 ];
 
 export default {

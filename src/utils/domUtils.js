@@ -9,20 +9,20 @@ const DOMUtils = {
   /**
    * Create element with attributes and content
    */
-  createElement(tag, attributes = {}, content = "") {
+  createElement(tag, attributes = {}, content = '') {
     const element = document.createElement(tag);
 
     // Set attributes
     Object.entries(attributes).forEach(([key, value]) => {
-      if (key === "className") {
+      if (key === 'className') {
         element.className = value;
-      } else if (key === "innerHTML") {
+      } else if (key === 'innerHTML') {
         element.innerHTML = value;
-      } else if (key === "textContent") {
+      } else if (key === 'textContent') {
         element.textContent = value;
-      } else if (key.startsWith("data-")) {
+      } else if (key.startsWith('data-')) {
         element.setAttribute(key, value);
-      } else if (key === "style" && typeof value === "object") {
+      } else if (key === 'style' && typeof value === 'object') {
         Object.assign(element.style, value);
       } else {
         element.setAttribute(key, value);
@@ -31,7 +31,7 @@ const DOMUtils = {
 
     // Set content
     if (content) {
-      if (typeof content === "string") {
+      if (typeof content === 'string') {
         element.innerHTML = content;
       } else if (content instanceof Node) {
         element.appendChild(content);
@@ -141,11 +141,11 @@ const DOMUtils = {
   /**
    * Show element (remove hidden class or set display)
    */
-  show(element, display = "") {
+  show(element, display = '') {
     if (!element) return false;
 
-    if (this.hasClass(element, "hidden")) {
-      this.removeClass(element, "hidden");
+    if (this.hasClass(element, 'hidden')) {
+      this.removeClass(element, 'hidden');
     } else {
       element.style.display = display;
     }
@@ -159,27 +159,26 @@ const DOMUtils = {
   hide(element) {
     if (!element) return false;
 
-    if (element.classList.contains("hidden")) {
+    if (element.classList.contains('hidden')) {
       return true; // Already hidden
     }
 
-    this.addClass(element, "hidden");
+    this.addClass(element, 'hidden');
     return true;
   },
 
   /**
    * Toggle element visibility
    */
-  toggle(element, display = "") {
+  toggle(element, display = '') {
     if (!element) return false;
 
     if (this.isVisible(element)) {
       this.hide(element);
       return false;
-    } else {
-      this.show(element, display);
-      return true;
     }
+    this.show(element, display);
+    return true;
   },
 
   /**
@@ -188,16 +187,12 @@ const DOMUtils = {
   isVisible(element) {
     if (!element) return false;
 
-    if (this.hasClass(element, "hidden")) {
+    if (this.hasClass(element, 'hidden')) {
       return false;
     }
 
     const style = window.getComputedStyle(element);
-    return (
-      style.display !== "none" &&
-      style.visibility !== "hidden" &&
-      style.opacity !== "0"
-    );
+    return style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0';
   },
 
   /**
@@ -225,7 +220,7 @@ const DOMUtils = {
       paddingTop: parseFloat(style.paddingTop),
       paddingRight: parseFloat(style.paddingRight),
       paddingBottom: parseFloat(style.paddingBottom),
-      paddingLeft: parseFloat(style.paddingLeft),
+      paddingLeft: parseFloat(style.paddingLeft)
     };
   },
 
@@ -235,9 +230,9 @@ const DOMUtils = {
   setPosition(element, x, y) {
     if (!element) return false;
 
-    element.style.position = "absolute";
-    element.style.left = typeof x === "number" ? `${x}px` : x;
-    element.style.top = typeof y === "number" ? `${y}px` : y;
+    element.style.position = 'absolute';
+    element.style.left = typeof x === 'number' ? `${x}px` : x;
+    element.style.top = typeof y === 'number' ? `${y}px` : y;
 
     return true;
   },
@@ -245,10 +240,10 @@ const DOMUtils = {
   /**
    * Animate element using CSS transitions
    */
-  animate(element, properties, duration = 300, easing = "ease") {
-    if (!element) return Promise.reject(new Error("Element not found"));
+  animate(element, properties, duration = 300, easing = 'ease') {
+    if (!element) return Promise.reject(new Error('Element not found'));
 
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const originalTransition = element.style.transition;
 
       // Set transition
@@ -262,16 +257,16 @@ const DOMUtils = {
       // Wait for transition to complete
       const handleTransitionEnd = () => {
         element.style.transition = originalTransition;
-        element.removeEventListener("transitionend", handleTransitionEnd);
+        element.removeEventListener('transitionend', handleTransitionEnd);
         resolve();
       };
 
-      element.addEventListener("transitionend", handleTransitionEnd);
+      element.addEventListener('transitionend', handleTransitionEnd);
 
       // Fallback timeout
       setTimeout(() => {
         element.style.transition = originalTransition;
-        element.removeEventListener("transitionend", handleTransitionEnd);
+        element.removeEventListener('transitionend', handleTransitionEnd);
         resolve();
       }, duration + 50);
     });
@@ -281,60 +276,56 @@ const DOMUtils = {
    * Fade in element
    */
   fadeIn(element, duration = 300) {
-    if (!element) return Promise.reject(new Error("Element not found"));
+    if (!element) return Promise.reject(new Error('Element not found'));
 
-    element.style.opacity = "0";
+    element.style.opacity = '0';
     this.show(element);
 
-    return this.animate(element, { opacity: "1" }, duration);
+    return this.animate(element, { opacity: '1' }, duration);
   },
 
   /**
    * Fade out element
    */
   fadeOut(element, duration = 300) {
-    if (!element) return Promise.reject(new Error("Element not found"));
+    if (!element) return Promise.reject(new Error('Element not found'));
 
-    return this.animate(element, { opacity: "0" }, duration).then(() =>
-      this.hide(element)
-    );
+    return this.animate(element, { opacity: '0' }, duration).then(() => this.hide(element));
   },
 
   /**
    * Slide down element
    */
   slideDown(element, duration = 300) {
-    if (!element) return Promise.reject(new Error("Element not found"));
+    if (!element) return Promise.reject(new Error('Element not found'));
 
     const originalHeight = element.style.height;
     const originalOverflow = element.style.overflow;
 
-    element.style.height = "0";
-    element.style.overflow = "hidden";
+    element.style.height = '0';
+    element.style.overflow = 'hidden';
     this.show(element);
 
-    const targetHeight = element.scrollHeight + "px";
+    const targetHeight = `${element.scrollHeight}px`;
 
-    return this.animate(element, { height: targetHeight }, duration).then(
-      () => {
-        element.style.height = originalHeight;
-        element.style.overflow = originalOverflow;
-      }
-    );
+    return this.animate(element, { height: targetHeight }, duration).then(() => {
+      element.style.height = originalHeight;
+      element.style.overflow = originalOverflow;
+    });
   },
 
   /**
    * Slide up element
    */
   slideUp(element, duration = 300) {
-    if (!element) return Promise.reject(new Error("Element not found"));
+    if (!element) return Promise.reject(new Error('Element not found'));
 
     const originalHeight = element.style.height;
     const originalOverflow = element.style.overflow;
 
-    element.style.overflow = "hidden";
+    element.style.overflow = 'hidden';
 
-    return this.animate(element, { height: "0" }, duration).then(() => {
+    return this.animate(element, { height: '0' }, duration).then(() => {
       this.hide(element);
       element.style.height = originalHeight;
       element.style.overflow = originalOverflow;
@@ -349,7 +340,7 @@ const DOMUtils = {
 
     if (selector) {
       // Event delegation
-      const delegatedHandler = (e) => {
+      const delegatedHandler = e => {
         const target = e.target.closest(selector);
         if (target && element.contains(target)) {
           handler.call(target, e);
@@ -357,10 +348,9 @@ const DOMUtils = {
       };
       element.addEventListener(event, delegatedHandler);
       return delegatedHandler;
-    } else {
-      element.addEventListener(event, handler);
-      return handler;
     }
+    element.addEventListener(event, handler);
+    return handler;
   },
 
   /**
@@ -381,7 +371,7 @@ const DOMUtils = {
     const event = new CustomEvent(eventName, {
       bubbles: true,
       cancelable: true,
-      detail,
+      detail
     });
 
     return element.dispatchEvent(event);
@@ -399,16 +389,16 @@ const DOMUtils = {
       }
 
       const observer = new MutationObserver(() => {
-        const element = this.find(selector, parent);
-        if (element) {
+        const found = this.find(selector, parent);
+        if (found) {
           observer.disconnect();
-          resolve(element);
+          resolve(found);
         }
       });
 
       observer.observe(parent, {
         childList: true,
-        subtree: true,
+        subtree: true
       });
 
       setTimeout(() => {
@@ -425,9 +415,9 @@ const DOMUtils = {
     if (!element) return false;
 
     const defaultOptions = {
-      behavior: "smooth",
-      block: "center",
-      inline: "nearest",
+      behavior: 'smooth',
+      block: 'center',
+      inline: 'nearest'
     };
 
     element.scrollIntoView({ ...defaultOptions, ...options });
@@ -438,8 +428,8 @@ const DOMUtils = {
    * Get element's text content without HTML
    */
   getText(element) {
-    if (!element) return "";
-    return element.textContent || element.innerText || "";
+    if (!element) return '';
+    return element.textContent || element.innerText || '';
   },
 
   /**
@@ -455,7 +445,7 @@ const DOMUtils = {
    * Get element's HTML content
    */
   getHTML(element) {
-    if (!element) return "";
+    if (!element) return '';
     return element.innerHTML;
   },
 
@@ -473,7 +463,7 @@ const DOMUtils = {
    */
   empty(element) {
     if (!element) return false;
-    element.innerHTML = "";
+    element.innerHTML = '';
     return true;
   },
 
@@ -505,10 +495,7 @@ const DOMUtils = {
       return false;
     }
 
-    referenceElement.parentNode.insertBefore(
-      newElement,
-      referenceElement.nextSibling
-    );
+    referenceElement.parentNode.insertBefore(newElement, referenceElement.nextSibling);
     return true;
   },
 
@@ -530,10 +517,8 @@ const DOMUtils = {
     if (!element) return false;
 
     const rect = element.getBoundingClientRect();
-    const windowHeight =
-      window.innerHeight || document.documentElement.clientHeight;
-    const windowWidth =
-      window.innerWidth || document.documentElement.clientWidth;
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    const windowWidth = window.innerWidth || document.documentElement.clientWidth;
 
     return (
       rect.top >= -threshold &&
@@ -569,7 +554,9 @@ const DOMUtils = {
       if (!inThrottle) {
         func.apply(this, args);
         inThrottle = true;
-        setTimeout(() => (inThrottle = false), limit);
+        setTimeout(() => {
+          inThrottle = false;
+        }, limit);
       }
     };
   },
@@ -608,9 +595,9 @@ const DOMUtils = {
     Object.entries(data).forEach(([key, value]) => {
       const field = form.querySelector(`[name="${key}"]`);
       if (field) {
-        if (field.type === "checkbox") {
+        if (field.type === 'checkbox') {
           field.checked = Boolean(value);
-        } else if (field.type === "radio") {
+        } else if (field.type === 'radio') {
           const radio = form.querySelector(`[name="${key}"][value="${value}"]`);
           if (radio) radio.checked = true;
         } else {
@@ -620,10 +607,10 @@ const DOMUtils = {
     });
 
     return true;
-  },
+  }
 };
 
 // Export for use in other modules
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
   window.DOMUtils = DOMUtils;
 }

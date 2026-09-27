@@ -2,20 +2,20 @@
 // ES6 Arrow Functions - Syntax, behavior, and best practices
 
 export const arrowFunctionsConfig = {
-  title: "ES6 Arrow Functions",
-  description: "Master arrow function syntax, lexical this, and use cases",
-  difficulty: "beginner-intermediate",
-  estimatedTime: "30 minutes"
+  title: 'ES6 Arrow Functions',
+  description: 'Master arrow function syntax, lexical this, and use cases',
+  difficulty: 'beginner-intermediate',
+  estimatedTime: '30 minutes'
 };
 
 // Basic Arrow Function Syntax
 export const basicSyntax = {
-  concept: "Basic Arrow Function Syntax",
+  concept: 'Basic Arrow Function Syntax',
   explanation: `
     Arrow functions provide a more concise way to write functions in JavaScript.
     They have different behavior regarding 'this' binding and cannot be used as constructors.
   `,
-  
+
   examples: {
     syntaxVariations: `
 // Traditional function expression
@@ -57,7 +57,7 @@ console.log(double(4)); // 8
 console.log(greet()); // "Hello World!"
 console.log(createUser("Alice", 30)); // { name: "Alice", age: 30, id: 0.123... }
     `,
-    
+
     comparisonWithRegularFunctions: `
 // Comparison between regular functions and arrow functions
 
@@ -120,7 +120,7 @@ const result = numbers
 
 console.log(result); // 42 (3*3 + 4*3 + 5*3 = 9 + 12 + 15)
     `,
-    
+
     concisePatterns: `
 // Concise patterns with arrow functions
 
@@ -171,12 +171,12 @@ console.log(createList("Shopping", "milk", "bread", "eggs"));
 
 // Lexical This Binding
 export const lexicalThis = {
-  concept: "Lexical This Binding",
+  concept: 'Lexical This Binding',
   explanation: `
     Arrow functions don't have their own 'this' context. They inherit 'this' 
     from the enclosing scope, which is different from regular functions.
   `,
-  
+
   examples: {
     thisBinding: `
 // Traditional function vs Arrow function 'this' binding
@@ -245,7 +245,7 @@ const button = {
   }
 };
     `,
-    
+
     classMethodsAndThis: `
 // Arrow functions in classes and this binding
 class Counter {
@@ -317,7 +317,7 @@ const result = counter.processNumbers(numbers);
 console.log(counter.count); // 26 (10 + 1 + 2 + 3 + 4 + 5)
 console.log(result); // 30 (2 + 4 + 6 + 8 + 10)
     `,
-    
+
     asyncAndThis: `
 // Arrow functions with async operations and 'this'
 class ApiClient {
@@ -407,12 +407,12 @@ async function demonstrateAsyncThis() {
 
 // When NOT to use Arrow Functions
 export const whenNotToUse = {
-  concept: "When NOT to Use Arrow Functions",
+  concept: 'When NOT to Use Arrow Functions',
   explanation: `
     Arrow functions aren't always the right choice. There are specific scenarios
     where regular functions are more appropriate or necessary.
   `,
-  
+
   examples: {
     objectMethods: `
 // 1. Object methods that need 'this' context
@@ -470,7 +470,7 @@ function Person(name) {
 const alice = new Person('Alice');
 console.log(alice.name); // "Alice"
     `,
-    
+
     methodsRequiringThis: `
 // 3. Methods that need dynamic 'this'
 const element = {
@@ -519,7 +519,7 @@ const numbers = [1, 2, 3];
 // const wrongResult = numbers.customMapWrong(x => x * 2); // Won't work
 const correctResult = numbers.customMap(x => x * 2); // [2, 4, 6]
     `,
-    
+
     argumentsAndHoisting: `
 // 5. Functions that need 'arguments' object
 // ❌ Arrow functions don't have 'arguments'
@@ -577,7 +577,7 @@ function* numberGenerator() {
 const generator = numberGenerator();
 console.log(generator.next()); // { value: 1, done: false }
     `,
-    
+
     performanceConsiderations: `
 // 8. Performance considerations
 class EventHandler {
@@ -635,12 +635,12 @@ console.log(operations.compute('add', 5, 3)); // 8
 
 // Best Practices and Use Cases
 export const bestPractices = {
-  concept: "Best Practices and Use Cases",
+  concept: 'Best Practices and Use Cases',
   explanation: `
     Guidelines for when to use arrow functions effectively and how to write
     clean, maintainable code with them.
   `,
-  
+
   examples: {
     arrayMethods: `
 // ✅ Excellent use cases for arrow functions
@@ -706,7 +706,7 @@ const discountedPrices = products.map(product => ({
 
 console.log(discountedPrices);
     `,
-    
+
     eventHandling: `
 // 5. Event handling with proper context
 class TodoApp {
@@ -778,7 +778,7 @@ app.addTodo('Build a project');
 app.toggleTodo(1);
 app.setFilter('active');
     `,
-    
+
     asyncPatterns: `
 // 6. Async/await with arrow functions
 class DataService {
@@ -881,7 +881,7 @@ const loadUserDashboard = async (userId) => {
 
 // loadUserDashboard(123).then(dashboard => console.log(dashboard));
     `,
-    
+
     functionalProgramming: `
 // 7. Functional programming utilities
 const fp = {

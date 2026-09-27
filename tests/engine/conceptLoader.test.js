@@ -10,45 +10,45 @@ const mockConceptLoader = {
   loadedConcepts: new Map(),
   loadingPromises: new Map(),
   cache: new Map(),
-  
+
   // Core loading methods
   loadConcept: jest.fn(),
   preloadConcept: jest.fn(),
   unloadConcept: jest.fn(),
-  
+
   // Batch operations
   loadMultipleConcepts: jest.fn(),
   preloadAdjacentConcepts: jest.fn(),
-  
+
   // Cache management
   clearCache: jest.fn(),
   getCachedConcept: jest.fn(),
   setCachedConcept: jest.fn(),
-  
+
   // Module validation
   validateConceptModule: jest.fn(),
   isConceptLoaded: jest.fn(),
-  
+
   // Dynamic import handling
   importConceptModule: jest.fn(),
   handleImportError: jest.fn(),
-  
+
   // Resource management
   loadConceptResources: jest.fn(),
   unloadConceptResources: jest.fn(),
-  
+
   // Progress tracking
   getLoadingProgress: jest.fn(),
   onLoadingProgress: jest.fn(),
-  
+
   // Error handling
   handleLoadingError: jest.fn(),
   retryLoading: jest.fn(),
-  
+
   // Performance optimization
   prioritizeLoading: jest.fn(),
   deferLoading: jest.fn(),
-  
+
   // Reset for tests
   reset: jest.fn(() => {
     mockConceptLoader.loadedConcepts.clear();
@@ -63,7 +63,7 @@ describe('Concept Loader Engine', () => {
   beforeEach(() => {
     conceptLoader = { ...mockConceptLoader };
     conceptLoader.reset();
-    
+
     // Set up DOM
     document.body.innerHTML = `
       <div id="concept-container"></div>
@@ -95,13 +95,13 @@ describe('Concept Loader Engine', () => {
         demos: []
       };
 
-      conceptLoader.loadConcept.mockImplementation((id) => {
+      conceptLoader.loadConcept.mockImplementation(id => {
         conceptLoader.loadedConcepts.set(id, mockModule);
         return Promise.resolve(mockModule);
       });
 
       const result = await conceptLoader.loadConcept(conceptId);
-      
+
       expect(conceptLoader.loadConcept).toHaveBeenCalledWith(conceptId);
       expect(result).toEqual(mockModule);
     });
@@ -110,18 +110,14 @@ describe('Concept Loader Engine', () => {
       const conceptId = 'non-existent';
       const error = new Error('Module not found');
 
-      conceptLoader.loadConcept.mockImplementation((id) => {
-        return Promise.reject(error);
-      });
+      conceptLoader.loadConcept.mockImplementation(id => Promise.reject(error));
 
       await expect(conceptLoader.loadConcept(conceptId)).rejects.toThrow('Module not found');
       expect(conceptLoader.loadConcept).toHaveBeenCalledWith(conceptId);
     });
 
     test('should check if concept is already loaded', () => {
-      conceptLoader.isConceptLoaded.mockImplementation((id) => {
-        return conceptLoader.loadedConcepts.has(id);
-      });
+      conceptLoader.isConceptLoaded.mockImplementation(id => conceptLoader.loadedConcepts.has(id));
 
       // Mock a loaded concept
       conceptLoader.loadedConcepts.set('basics', { id: 'basics' });
@@ -134,12 +130,12 @@ describe('Concept Loader Engine', () => {
       const conceptId = 'basics';
       let loadCount = 0;
 
-      conceptLoader.loadConcept.mockImplementation((id) => {
+      conceptLoader.loadConcept.mockImplementation(id => {
         if (conceptLoader.loadingPromises.has(id)) {
           return conceptLoader.loadingPromises.get(id);
         }
 
-        const promise = new Promise((resolve) => {
+        const promise = new Promise(resolve => {
           loadCount++;
           setTimeout(() => {
             const module = { id, loadCount };
@@ -171,21 +167,22 @@ describe('Concept Loader Engine', () => {
       const conceptId = 'dom';
       const mockModule = { id: 'dom', preloaded: true };
 
-      conceptLoader.preloadConcept.mockImplementation((id) => {
-        // Simulate background loading
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            conceptLoader.cache.set(id, mockModule);
-            resolve(mockModule);
-          }, 5);
-        });
-      });
+      conceptLoader.preloadConcept.mockImplementation(
+        id =>
+          // Simulate background loading
+          new Promise(resolve => {
+            setTimeout(() => {
+              conceptLoader.cache.set(id, mockModule);
+              resolve(mockModule);
+            }, 5);
+          })
+      );
 
       const preloadPromise = conceptLoader.preloadConcept(conceptId);
-      
+
       // Should not block
       expect(preloadPromise).toBeInstanceOf(Promise);
-      
+
       const result = await preloadPromise;
       expect(result).toEqual(mockModule);
       expect(conceptLoader.preloadConcept).toHaveBeenCalledWith(conceptId);
@@ -195,27 +192,23 @@ describe('Concept Loader Engine', () => {
       const currentConcept = 'basics';
       const adjacentConcepts = ['dom', 'events'];
 
-      conceptLoader.preloadAdjacentConcepts.mockImplementation((conceptId) => {
+      conceptLoader.preloadAdjacentConcepts.mockImplementation(conceptId => {
         const adjacencyMap = {
-          'basics': ['dom', 'events'],
-          'dom': ['basics', 'async', 'events'],
-          'async': ['dom', 'promises', 'es6']
+          basics: ['dom', 'events'],
+          dom: ['basics', 'async', 'events'],
+          async: ['dom', 'promises', 'es6']
         };
 
         const adjacent = adjacencyMap[conceptId] || [];
-        const preloadPromises = adjacent.map(id => 
-          conceptLoader.preloadConcept(id)
-        );
+        const preloadPromises = adjacent.map(id => conceptLoader.preloadConcept(id));
 
         return Promise.all(preloadPromises);
       });
 
-      conceptLoader.preloadConcept.mockImplementation((id) => {
-        return Promise.resolve({ id, preloaded: true });
-      });
+      conceptLoader.preloadConcept.mockImplementation(id => Promise.resolve({ id, preloaded: true }));
 
       const results = await conceptLoader.preloadAdjacentConcepts(currentConcept);
-      
+
       expect(conceptLoader.preloadAdjacentConcepts).toHaveBeenCalledWith(currentConcept);
       expect(results).toHaveLength(2);
       expect(results[0].id).toBe('dom');
@@ -227,23 +220,24 @@ describe('Concept Loader Engine', () => {
   describe('Batch Loading Operations', () => {
     test('should load multiple concepts simultaneously', async () => {
       const conceptIds = ['basics', 'dom', 'async'];
-      
-      conceptLoader.loadMultipleConcepts.mockImplementation((ids) => {
-        const loadPromises = ids.map(id => {
-          return new Promise((resolve) => {
-            setTimeout(() => {
-              const module = { id, title: `${id} Module` };
-              conceptLoader.loadedConcepts.set(id, module);
-              resolve(module);
-            }, Math.random() * 20);
-          });
-        });
+
+      conceptLoader.loadMultipleConcepts.mockImplementation(ids => {
+        const loadPromises = ids.map(
+          id =>
+            new Promise(resolve => {
+              setTimeout(() => {
+                const module = { id, title: `${id} Module` };
+                conceptLoader.loadedConcepts.set(id, module);
+                resolve(module);
+              }, Math.random() * 20);
+            })
+        );
 
         return Promise.all(loadPromises);
       });
 
       const results = await conceptLoader.loadMultipleConcepts(conceptIds);
-      
+
       expect(conceptLoader.loadMultipleConcepts).toHaveBeenCalledWith(conceptIds);
       expect(results).toHaveLength(3);
       expect(results.map(r => r.id)).toEqual(conceptIds);
@@ -252,7 +246,7 @@ describe('Concept Loader Engine', () => {
     test('should handle partial failures in batch loading', async () => {
       const conceptIds = ['basics', 'invalid', 'dom'];
 
-      conceptLoader.loadMultipleConcepts.mockImplementation((ids) => {
+      conceptLoader.loadMultipleConcepts.mockImplementation(ids => {
         const loadPromises = ids.map(id => {
           if (id === 'invalid') {
             return Promise.reject(new Error(`Failed to load ${id}`));
@@ -264,7 +258,7 @@ describe('Concept Loader Engine', () => {
       });
 
       const results = await conceptLoader.loadMultipleConcepts(conceptIds);
-      
+
       expect(results[0].status).toBe('fulfilled');
       expect(results[1].status).toBe('rejected');
       expect(results[2].status).toBe('fulfilled');
@@ -286,7 +280,7 @@ describe('Concept Loader Engine', () => {
       });
 
       const result = conceptLoader.setCachedConcept(conceptId, module);
-      
+
       expect(conceptLoader.setCachedConcept).toHaveBeenCalledWith(conceptId, module);
       expect(result).toBe(true);
     });
@@ -295,21 +289,19 @@ describe('Concept Loader Engine', () => {
       const conceptId = 'basics';
       const cachedModule = { id: conceptId, cached: true, cachedAt: Date.now() };
 
-      conceptLoader.getCachedConcept.mockImplementation((id) => {
-        return conceptLoader.cache.get(id);
-      });
+      conceptLoader.getCachedConcept.mockImplementation(id => conceptLoader.cache.get(id));
 
       // Mock cache entry
       conceptLoader.cache.set(conceptId, cachedModule);
 
       const result = conceptLoader.getCachedConcept(conceptId);
-      
+
       expect(conceptLoader.getCachedConcept).toHaveBeenCalledWith(conceptId);
       expect(result).toEqual(cachedModule);
     });
 
     test('should clear cache when needed', () => {
-      conceptLoader.clearCache.mockImplementation((selective) => {
+      conceptLoader.clearCache.mockImplementation(selective => {
         if (selective && Array.isArray(selective)) {
           selective.forEach(id => conceptLoader.cache.delete(id));
         } else {
@@ -323,7 +315,7 @@ describe('Concept Loader Engine', () => {
       conceptLoader.cache.set('dom', { id: 'dom' });
 
       conceptLoader.clearCache(['basics']);
-      
+
       expect(conceptLoader.clearCache).toHaveBeenCalledWith(['basics']);
     });
 
@@ -347,7 +339,7 @@ describe('Concept Loader Engine', () => {
       }
 
       const finalSize = conceptLoader.manageCacheSize();
-      
+
       expect(conceptLoader.manageCacheSize).toHaveBeenCalled();
     });
   });
@@ -365,14 +357,14 @@ describe('Concept Loader Engine', () => {
       };
 
       const invalidModule = {
-        id: 'invalid',
+        id: 'invalid'
         // Missing required fields
       };
 
-      conceptLoader.validateConceptModule.mockImplementation((module) => {
+      conceptLoader.validateConceptModule.mockImplementation(module => {
         const requiredFields = ['id', 'title', 'content'];
-        const hasRequiredFields = requiredFields.every(field => 
-          module && typeof module[field] === 'string' && module[field].length > 0
+        const hasRequiredFields = requiredFields.every(
+          field => module && typeof module[field] === 'string' && module[field].length > 0
         );
 
         return {
@@ -383,7 +375,7 @@ describe('Concept Loader Engine', () => {
 
       const validResult = conceptLoader.validateConceptModule(validModule);
       const invalidResult = conceptLoader.validateConceptModule(invalidModule);
-      
+
       expect(validResult.valid).toBe(true);
       expect(invalidResult.valid).toBe(false);
       expect(invalidResult.errors).toContain('Missing required fields');
@@ -397,13 +389,11 @@ describe('Concept Loader Engine', () => {
         content: 'Advanced content'
       };
 
-      conceptLoader.validateDependencies = jest.fn().mockImplementation((module) => {
+      conceptLoader.validateDependencies = jest.fn().mockImplementation(module => {
         if (!module.dependencies) return { valid: true };
 
         const loadedIds = Array.from(conceptLoader.loadedConcepts.keys());
-        const missingDeps = module.dependencies.filter(dep => 
-          !loadedIds.includes(dep)
-        );
+        const missingDeps = module.dependencies.filter(dep => !loadedIds.includes(dep));
 
         return {
           valid: missingDeps.length === 0,
@@ -415,7 +405,7 @@ describe('Concept Loader Engine', () => {
       conceptLoader.loadedConcepts.set('basics', { id: 'basics' });
 
       const result = conceptLoader.validateDependencies(moduleWithDeps);
-      
+
       expect(result.valid).toBe(false);
       expect(result.missingDependencies).toContain('dom');
     });
@@ -432,23 +422,24 @@ describe('Concept Loader Engine', () => {
       ];
 
       conceptLoader.loadConceptResources.mockImplementation((id, resourceList) => {
-        const loadPromises = resourceList.map(resource => {
-          return new Promise((resolve) => {
-            setTimeout(() => {
-              resolve({
-                ...resource,
-                loaded: true,
-                loadTime: Date.now()
-              });
-            }, 10);
-          });
-        });
+        const loadPromises = resourceList.map(
+          resource =>
+            new Promise(resolve => {
+              setTimeout(() => {
+                resolve({
+                  ...resource,
+                  loaded: true,
+                  loadTime: Date.now()
+                });
+              }, 10);
+            })
+        );
 
         return Promise.all(loadPromises);
       });
 
       const results = await conceptLoader.loadConceptResources(conceptId, resources);
-      
+
       expect(conceptLoader.loadConceptResources).toHaveBeenCalledWith(conceptId, resources);
       expect(results).toHaveLength(3);
       expect(results.every(r => r.loaded)).toBe(true);
@@ -457,11 +448,11 @@ describe('Concept Loader Engine', () => {
     test('should unload concept resources on cleanup', () => {
       const conceptId = 'basics';
 
-      conceptLoader.unloadConceptResources.mockImplementation((id) => {
+      conceptLoader.unloadConceptResources.mockImplementation(id => {
         // Mock resource cleanup
         const stylesheets = Array.from(document.querySelectorAll(`link[data-concept="${id}"]`));
         stylesheets.forEach(link => link.remove());
-        
+
         return {
           conceptId: id,
           unloaded: stylesheets.length,
@@ -470,7 +461,7 @@ describe('Concept Loader Engine', () => {
       });
 
       const result = conceptLoader.unloadConceptResources(conceptId);
-      
+
       expect(conceptLoader.unloadConceptResources).toHaveBeenCalledWith(conceptId);
       expect(result.conceptId).toBe(conceptId);
     });
@@ -480,8 +471,8 @@ describe('Concept Loader Engine', () => {
   describe('Progress Tracking', () => {
     test('should track loading progress', () => {
       const conceptId = 'async';
-      
-      conceptLoader.getLoadingProgress.mockImplementation((id) => {
+
+      conceptLoader.getLoadingProgress.mockImplementation(id => {
         const progressData = {
           conceptId: id,
           stage: 'loading',
@@ -493,13 +484,13 @@ describe('Concept Loader Engine', () => {
       });
 
       const progress = conceptLoader.getLoadingProgress(conceptId);
-      
+
       expect(conceptLoader.getLoadingProgress).toHaveBeenCalledWith(conceptId);
       expect(progress.percentage).toBe(75);
       expect(progress.stage).toBe('loading');
     });
 
-    test('should emit progress events', (done) => {
+    test('should emit progress events', done => {
       const conceptId = 'dom';
       let progressUpdates = [];
 
@@ -518,7 +509,7 @@ describe('Concept Loader Engine', () => {
             // The registered listener below records each update; pushing
             // here as well would double-count every stage.
             callback({ conceptId: id, ...update });
-            
+
             if (index === stages.length - 1) {
               expect(progressUpdates).toHaveLength(5);
               expect(progressUpdates[0].stage).toBe('initializing');
@@ -531,7 +522,7 @@ describe('Concept Loader Engine', () => {
         return 'progress-listener-1';
       });
 
-      conceptLoader.onLoadingProgress(conceptId, (progress) => {
+      conceptLoader.onLoadingProgress(conceptId, progress => {
         progressUpdates.push(progress);
       });
     });
@@ -558,7 +549,7 @@ describe('Concept Loader Engine', () => {
       });
 
       const errorInfo = conceptLoader.handleLoadingError(networkError, conceptId);
-      
+
       expect(conceptLoader.handleLoadingError).toHaveBeenCalledWith(networkError, conceptId);
       expect(errorInfo.shouldRetry).toBe(true);
       expect(errorInfo.retryDelay).toBe(1000);
@@ -568,33 +559,34 @@ describe('Concept Loader Engine', () => {
       const conceptId = 'retry-test';
       let attemptCount = 0;
 
-      conceptLoader.retryLoading.mockImplementation((id, maxRetries = 3) => {
-        return new Promise((resolve, reject) => {
-          const attemptLoad = () => {
-            attemptCount++;
-            
-            if (attemptCount < 3) {
-              // Fail first two attempts
-              setTimeout(() => {
-                const delay = Math.pow(2, attemptCount - 1) * 100; // Exponential backoff
-                setTimeout(attemptLoad, delay);
-              }, 10);
-            } else {
-              // Succeed on third attempt
-              resolve({
-                conceptId: id,
-                attempts: attemptCount,
-                loaded: true
-              });
-            }
-          };
+      conceptLoader.retryLoading.mockImplementation(
+        (id, maxRetries = 3) =>
+          new Promise((resolve, reject) => {
+            const attemptLoad = () => {
+              attemptCount++;
 
-          attemptLoad();
-        });
-      });
+              if (attemptCount < 3) {
+                // Fail first two attempts
+                setTimeout(() => {
+                  const delay = 2 ** (attemptCount - 1) * 100; // Exponential backoff
+                  setTimeout(attemptLoad, delay);
+                }, 10);
+              } else {
+                // Succeed on third attempt
+                resolve({
+                  conceptId: id,
+                  attempts: attemptCount,
+                  loaded: true
+                });
+              }
+            };
+
+            attemptLoad();
+          })
+      );
 
       const result = await conceptLoader.retryLoading(conceptId, 3);
-      
+
       expect(conceptLoader.retryLoading).toHaveBeenCalledWith(conceptId, 3);
       expect(result.attempts).toBe(3);
       expect(result.loaded).toBe(true);
@@ -603,21 +595,18 @@ describe('Concept Loader Engine', () => {
     test('should provide fallback content when loading fails', async () => {
       const conceptId = 'fallback-test';
 
-      conceptLoader.loadWithFallback = jest.fn().mockImplementation((id) => {
+      conceptLoader.loadWithFallback = jest.fn().mockImplementation(id =>
         // Simulate loading failure, then fallback
-        return Promise.reject(new Error('Loading failed'))
-          .catch(() => {
-            return {
-              id,
-              title: `${id} (Offline Mode)`,
-              content: 'Fallback content available',
-              isFallback: true
-            };
-          });
-      });
+        Promise.reject(new Error('Loading failed')).catch(() => ({
+          id,
+          title: `${id} (Offline Mode)`,
+          content: 'Fallback content available',
+          isFallback: true
+        }))
+      );
 
       const result = await conceptLoader.loadWithFallback(conceptId);
-      
+
       expect(result.isFallback).toBe(true);
       expect(result.title).toContain('(Offline Mode)');
     });
@@ -644,7 +633,7 @@ describe('Concept Loader Engine', () => {
       });
 
       const result = conceptLoader.prioritizeLoading(concepts, priority);
-      
+
       expect(conceptLoader.prioritizeLoading).toHaveBeenCalledWith(concepts, priority);
       expect(result[0].conceptId).toBe('async');
       expect(result[1].conceptId).toBe('basics');
@@ -654,38 +643,39 @@ describe('Concept Loader Engine', () => {
     test('should implement lazy loading for non-critical resources', async () => {
       const conceptId = 'lazy-test';
 
-      conceptLoader.lazyLoadResources = jest.fn().mockImplementation((id) => {
-        return new Promise((resolve) => {
-          // Simulate lazy loading with intersection observer
-          setTimeout(() => {
-            resolve({
-              conceptId: id,
-              lazyResources: ['demo-videos', 'interactive-examples'],
-              loadedLazily: true
-            });
-          }, 50);
-        });
-      });
+      conceptLoader.lazyLoadResources = jest.fn().mockImplementation(
+        id =>
+          new Promise(resolve => {
+            // Simulate lazy loading with intersection observer
+            setTimeout(() => {
+              resolve({
+                conceptId: id,
+                lazyResources: ['demo-videos', 'interactive-examples'],
+                loadedLazily: true
+              });
+            }, 50);
+          })
+      );
 
       const result = await conceptLoader.lazyLoadResources(conceptId);
-      
+
       expect(result.loadedLazily).toBe(true);
       expect(result.lazyResources).toContain('demo-videos');
     });
 
     test('should defer loading of low-priority concepts', () => {
       const lowPriorityConcepts = ['advanced-patterns', 'optimization'];
-      
-      conceptLoader.deferLoading.mockImplementation((conceptList, delay = 5000) => {
-        return conceptList.map(id => ({
+
+      conceptLoader.deferLoading.mockImplementation((conceptList, delay = 5000) =>
+        conceptList.map(id => ({
           conceptId: id,
           deferred: true,
           scheduledFor: Date.now() + delay
-        }));
-      });
+        }))
+      );
 
       const result = conceptLoader.deferLoading(lowPriorityConcepts);
-      
+
       expect(conceptLoader.deferLoading).toHaveBeenCalledWith(lowPriorityConcepts);
       expect(result.every(item => item.deferred)).toBe(true);
     });
@@ -696,20 +686,20 @@ describe('Concept Loader Engine', () => {
     test('should unload concepts to free memory', () => {
       const conceptId = 'memory-test';
 
-      conceptLoader.unloadConcept.mockImplementation((id) => {
+      conceptLoader.unloadConcept.mockImplementation(id => {
         const wasLoaded = conceptLoader.loadedConcepts.has(id);
-        
+
         if (wasLoaded) {
           conceptLoader.loadedConcepts.delete(id);
           conceptLoader.cache.delete(id);
-          
+
           return {
             conceptId: id,
             unloaded: true,
             memoryFreed: true
           };
         }
-        
+
         return { conceptId: id, unloaded: false };
       });
 
@@ -717,7 +707,7 @@ describe('Concept Loader Engine', () => {
       conceptLoader.loadedConcepts.set(conceptId, { id: conceptId });
 
       const result = conceptLoader.unloadConcept(conceptId);
-      
+
       expect(conceptLoader.unloadConcept).toHaveBeenCalledWith(conceptId);
       expect(result.unloaded).toBe(true);
       expect(result.memoryFreed).toBe(true);
@@ -727,11 +717,11 @@ describe('Concept Loader Engine', () => {
       conceptLoader.cleanup = jest.fn().mockImplementation(() => {
         const loadedCount = conceptLoader.loadedConcepts.size;
         const cachedCount = conceptLoader.cache.size;
-        
+
         conceptLoader.loadedConcepts.clear();
         conceptLoader.cache.clear();
         conceptLoader.loadingPromises.clear();
-        
+
         return {
           cleanedUp: true,
           unloadedConcepts: loadedCount,
@@ -745,7 +735,7 @@ describe('Concept Loader Engine', () => {
       conceptLoader.cache.set('test3', {});
 
       const result = conceptLoader.cleanup();
-      
+
       expect(conceptLoader.cleanup).toHaveBeenCalled();
       expect(result.cleanedUp).toBe(true);
       expect(result.unloadedConcepts).toBe(2);

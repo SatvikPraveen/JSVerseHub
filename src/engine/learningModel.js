@@ -71,7 +71,12 @@ export class LearningModel {
   }
 
   sectionViewed(conceptId, sectionId) {
-    this.analytics.record(VERBS.VIEWED, { type: OBJECT_TYPES.SECTION, id: `${conceptId}:${sectionId}` }, {}, { conceptId });
+    this.analytics.record(
+      VERBS.VIEWED,
+      { type: OBJECT_TYPES.SECTION, id: `${conceptId}:${sectionId}` },
+      {},
+      { conceptId }
+    );
   }
 
   exerciseAttempted(conceptId, exerciseId, { passed = null, hintsUsed = 0 } = {}) {
@@ -83,7 +88,11 @@ export class LearningModel {
     );
     if (passed !== null) {
       this.tracer.observe(conceptId, passed);
-      this.scheduler.recordAnswer(`${conceptId}:exercise:${exerciseId}`, { correct: passed, hintsUsed }, { conceptId, kind: 'exercise' });
+      this.scheduler.recordAnswer(
+        `${conceptId}:exercise:${exerciseId}`,
+        { correct: passed, hintsUsed },
+        { conceptId, kind: 'exercise' }
+      );
       this.emit();
     }
   }
@@ -127,7 +136,12 @@ export class LearningModel {
   reviewCompleted(cardId, quality) {
     const [conceptId] = cardId.split(':');
     const card = this.scheduler.recordReview(cardId, quality, { conceptId });
-    this.analytics.record(VERBS.REVIEWED, { type: OBJECT_TYPES.REVIEW_CARD, id: cardId }, { quality, nextInterval: card.interval }, { conceptId });
+    this.analytics.record(
+      VERBS.REVIEWED,
+      { type: OBJECT_TYPES.REVIEW_CARD, id: cardId },
+      { quality, nextInterval: card.interval },
+      { conceptId }
+    );
     this.emit();
     return card;
   }
@@ -155,7 +169,11 @@ export class LearningModel {
       reviews: this.scheduler.cards,
       mastery: this.tracer.skills
     };
-    this.analytics.record(VERBS.EXPORTED, { type: OBJECT_TYPES.APPLICATION, id: 'jsversehub' }, { events: this.analytics.count() });
+    this.analytics.record(
+      VERBS.EXPORTED,
+      { type: OBJECT_TYPES.APPLICATION, id: 'jsversehub' },
+      { events: this.analytics.count() }
+    );
     return payload;
   }
 

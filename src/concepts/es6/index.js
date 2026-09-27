@@ -2,28 +2,28 @@
 // ES6+ Features - Modern JavaScript syntax and capabilities
 
 export const es6Config = {
-  title: "ES6+ Modern JavaScript",
-  description: "Master modern JavaScript features and best practices",
-  difficulty: "intermediate",
-  estimatedTime: "45 minutes",
+  title: 'ES6+ Modern JavaScript',
+  description: 'Master modern JavaScript features and best practices',
+  difficulty: 'intermediate',
+  estimatedTime: '45 minutes',
   topics: [
-    "Arrow Functions",
-    "Destructuring",
-    "Template Literals",
-    "Spread & Rest Operators",
-    "ES Modules",
-    "Classes & Inheritance"
+    'Arrow Functions',
+    'Destructuring',
+    'Template Literals',
+    'Spread & Rest Operators',
+    'ES Modules',
+    'Classes & Inheritance'
   ]
 };
 
 // Arrow Functions
 export const arrowFunctions = {
-  concept: "Arrow Functions",
+  concept: 'Arrow Functions',
   explanation: `
     Arrow functions provide a more concise syntax for writing functions
     and have lexical 'this' binding, making them ideal for callbacks.
   `,
-  
+
   examples: {
     basicSyntax: `
 // Traditional function
@@ -50,7 +50,7 @@ console.log(doubled); // [2, 4, 6, 8, 10]
 console.log(evens);   // [2, 4]
 console.log(sum);     // 15
     `,
-    
+
     lexicalThis: `
 // Arrow functions vs regular functions with 'this'
 
@@ -97,12 +97,12 @@ const timer = new Timer();
 timer.start(); // Works correctly
     `
   },
-  
+
   exercises: [
     {
-      id: "arrow_conversion",
-      question: "Convert this traditional function to arrow function syntax: function double(x) { return x * 2; }",
-      solution: "const double = x => x * 2;",
+      id: 'arrow_conversion',
+      question: 'Convert this traditional function to arrow function syntax: function double(x) { return x * 2; }',
+      solution: 'const double = x => x * 2;',
       hint: "Single parameter doesn't need parentheses, single expression has implicit return"
     }
   ]
@@ -110,12 +110,12 @@ timer.start(); // Works correctly
 
 // Destructuring
 export const destructuring = {
-  concept: "Destructuring",
+  concept: 'Destructuring',
   explanation: `
     Destructuring allows unpacking values from arrays or properties from objects
     into distinct variables, making code more readable and concise.
   `,
-  
+
   examples: {
     arrayDestructuring: `
 // Basic array destructuring
@@ -147,7 +147,7 @@ const matrix = [[1, 2], [3, 4]];
 const [[a1, a2], [b1, b2]] = matrix;
 console.log(a1, a2, b1, b2); // 1, 2, 3, 4
     `,
-    
+
     objectDestructuring: `
 // Basic object destructuring
 const user = {
@@ -201,25 +201,26 @@ function displayUser({ name, age, country = "Unknown" }) {
 displayUser(user); // "Alice is 30 years old from USA"
     `
   },
-  
+
   exercises: [
     {
-      id: "destructuring_practice",
-      question: "Destructure this object to get firstName and lastName: const person = { firstName: 'John', lastName: 'Doe', age: 25 };",
-      solution: "const { firstName, lastName } = person;",
-      hint: "Use curly braces for object destructuring"
+      id: 'destructuring_practice',
+      question:
+        "Destructure this object to get firstName and lastName: const person = { firstName: 'John', lastName: 'Doe', age: 25 };",
+      solution: 'const { firstName, lastName } = person;',
+      hint: 'Use curly braces for object destructuring'
     }
   ]
 };
 
 // Template Literals
 export const templateLiterals = {
-  concept: "Template Literals",
+  concept: 'Template Literals',
   explanation: `
     Template literals use backticks and allow embedded expressions,
     multi-line strings, and string interpolation.
   `,
-  
+
   examples: {
     basic: `
 // Traditional string concatenation
@@ -255,7 +256,7 @@ const user = { name: "Bob", role: "admin" };
 const badge = \`\${user.name} (\${user.role === "admin" ? "👑 Admin" : "👤 User"})\`;
 console.log(badge); // "Bob (👑 Admin)"
     `,
-    
+
     advanced: `
 // Tagged template literals
 function highlight(strings, ...values) {
@@ -288,25 +289,26 @@ const safe = escapeHTML\`User input: \${userInput}\`;
 console.log(safe); // "User input: &lt;script&gt;alert('xss')&lt;/script&gt;"
     `
   },
-  
+
   exercises: [
     {
-      id: "template_literals_practice",
-      question: "Create a template literal that outputs 'Hello, [name]! You are [age] years old.' using variables name='John' and age=25",
-      solution: "const name = 'John'; const age = 25; const message = \`Hello, \${name}! You are \${age} years old.\`;",
-      hint: "Use backticks and \${} for interpolation"
+      id: 'template_literals_practice',
+      question:
+        "Create a template literal that outputs 'Hello, [name]! You are [age] years old.' using variables name='John' and age=25",
+      solution: "const name = 'John'; const age = 25; const message = `Hello, ${name}! You are ${age} years old.`;",
+      hint: 'Use backticks and ${} for interpolation'
     }
   ]
 };
 
 // Spread and Rest Operators
 export const spreadRest = {
-  concept: "Spread & Rest Operators",
+  concept: 'Spread & Rest Operators',
   explanation: `
     The spread operator (...) expands iterables, while the rest operator
     gathers remaining elements into an array.
   `,
-  
+
   examples: {
     spreadOperator: `
 // Spread with arrays
@@ -342,7 +344,7 @@ const user = { id: 1, name: "Bob" };
 const updatedUser = { ...user, name: "Bobby", active: true };
 console.log(updatedUser); // { id: 1, name: "Bobby", active: true }
     `,
-    
+
     restOperator: `
 // Rest in function parameters
 function sum(...numbers) {
@@ -377,25 +379,25 @@ console.log(name, age);    // "Alice", 30
 console.log(otherInfo);    // { email: "alice@example.com", country: "USA" }
     `
   },
-  
+
   exercises: [
     {
-      id: "spread_rest_practice",
-      question: "Write a function that takes any number of arguments and returns their average using rest parameters",
-      solution: "const average = (...numbers) => numbers.reduce((sum, n) => sum + n, 0) / numbers.length;",
-      hint: "Use ...numbers in parameters, then reduce to sum and divide by length"
+      id: 'spread_rest_practice',
+      question: 'Write a function that takes any number of arguments and returns their average using rest parameters',
+      solution: 'const average = (...numbers) => numbers.reduce((sum, n) => sum + n, 0) / numbers.length;',
+      hint: 'Use ...numbers in parameters, then reduce to sum and divide by length'
     }
   ]
 };
 
 // ES Modules (Enhanced)
 export const esModules = {
-  concept: "ES Modules",
+  concept: 'ES Modules',
   explanation: `
     ES Modules provide a standardized way to organize and share code across files.
     They support named exports, default exports, dynamic imports, and tree-shaking.
   `,
-  
+
   examples: {
     namedExports: `
 // ===== File: mathUtils.js =====
@@ -453,7 +455,7 @@ console.log(math.PI);               // 3.14159
 export { add, multiply } from './mathUtils.js';
 export { subtract as minus } from './mathUtils.js';
     `,
-    
+
     defaultExports: `
 // ===== File: UserService.js =====
 // Default export - one per file (typically the main thing)
@@ -503,7 +505,7 @@ export const helper2 = () => { };
 // Import both
 import mainFunction, { helper1, helper2 } from './utils.js';
     `,
-    
+
     dynamicImports: `
 // Dynamic imports - load modules on demand (returns a Promise)
 
@@ -553,7 +555,7 @@ async function safeImport(modulePath) {
 // Dynamic import with destructuring
 const { default: Component, helper } = await import('./component.js');
     `,
-    
+
     modulePatterns: `
 // Module patterns and best practices
 
@@ -637,11 +639,11 @@ export async function fetchData(endpoint) {
 // configure('https://staging.example.com');
     `
   },
-  
+
   exercises: [
     {
-      id: "modules_practice",
-      question: "Create a module that exports a greet function (named export) and a default export of a User class",
+      id: 'modules_practice',
+      question: 'Create a module that exports a greet function (named export) and a default export of a User class',
       solution: `// user.js
 export function greet(name) {
   return \`Hello, \${name}!\`;
@@ -662,12 +664,12 @@ import User, { greet } from './user.js';`,
 
 // Classes (brief - already covered in OOP planet)
 export const classes = {
-  concept: "ES6 Classes",
+  concept: 'ES6 Classes',
   explanation: `
     ES6 classes provide a cleaner syntax for creating objects and implementing inheritance,
     though they're syntactic sugar over JavaScript's prototype-based inheritance.
   `,
-  
+
   examples: {
     basicClasses: `
 // Class declaration
@@ -722,11 +724,11 @@ const emp = new Employee('Bob', 25, 'Developer');
 console.log(emp.greet()); // "Hello, I'm Bob, I'm a Developer"
     `
   },
-  
+
   exercises: [
     {
-      id: "class_practice",
-      question: "Create a Rectangle class with width, height properties and an area() method",
+      id: 'class_practice',
+      question: 'Create a Rectangle class with width, height properties and an area() method',
       solution: `class Rectangle {
   constructor(width, height) {
     this.width = width;
@@ -736,7 +738,7 @@ console.log(emp.greet()); // "Hello, I'm Bob, I'm a Developer"
     return this.width * this.height;
   }
 }`,
-      hint: "Use constructor for properties and regular method for area()"
+      hint: 'Use constructor for properties and regular method for area()'
     }
   ]
 };
@@ -749,18 +751,19 @@ export const progressConfig = {
     total: 6,
     completed: 0
   },
-  
+
   updateProgress(conceptId, exerciseId = null) {
     if (exerciseId) {
       this.exercises.completed++;
     } else {
       this.conceptsCompleted++;
     }
-    
+
     return {
       conceptProgress: (this.conceptsCompleted / this.totalConcepts) * 100,
       exerciseProgress: (this.exercises.completed / this.exercises.total) * 100,
-      overallProgress: ((this.conceptsCompleted + this.exercises.completed) / (this.totalConcepts + this.exercises.total)) * 100
+      overallProgress:
+        ((this.conceptsCompleted + this.exercises.completed) / (this.totalConcepts + this.exercises.total)) * 100
     };
   }
 };

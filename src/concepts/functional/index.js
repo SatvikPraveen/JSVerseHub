@@ -295,9 +295,18 @@ function debounce(fn, delay) {
 }
 
 // Predicate combinators
-const not = predicate => (...args) => !predicate(...args);
-const both = (p, q) => (...args) => p(...args) && q(...args);
-const either = (p, q) => (...args) => p(...args) || q(...args);
+const not =
+  predicate =>
+  (...args) =>
+    !predicate(...args);
+const both =
+  (p, q) =>
+  (...args) =>
+    p(...args) && q(...args);
+const either =
+  (p, q) =>
+  (...args) =>
+    p(...args) || q(...args);
 
 export const higherOrderFunctions = {
   concept: 'Higher-Order Functions',
@@ -419,10 +428,13 @@ function sumArray(numbers) {
 }
 
 function countOccurrences(items) {
-  return items.reduce((counts, item) => ({
-    ...counts,
-    [item]: (counts[item] ?? 0) + 1
-  }), {});
+  return items.reduce(
+    (counts, item) => ({
+      ...counts,
+      [item]: (counts[item] ?? 0) + 1
+    }),
+    {}
+  );
 }
 
 function groupByProperty(items, key) {
@@ -588,7 +600,8 @@ export const exercises = [
     id: 1,
     title: 'Make It Pure',
     difficulty: 'easy',
-    description: 'The function below mutates its argument. Rewrite addTag(post, tag) so it returns a new post object with the tag appended and leaves the original untouched.',
+    description:
+      'The function below mutates its argument. Rewrite addTag(post, tag) so it returns a new post object with the tag appended and leaves the original untouched.',
     template: `
 // Impure version (mutates the input):
 // function addTag(post, tag) {
@@ -607,11 +620,12 @@ function addTag(post, tag) {
       },
       {
         description: 'Should not mutate the original post',
-        check: (code, addTag) => safely(() => {
-          const post = { title: 'x', tags: ['a'] };
-          addTag(post, 'b');
-          return post.tags.length === 1;
-        })
+        check: (code, addTag) =>
+          safely(() => {
+            const post = { title: 'x', tags: ['a'] };
+            addTag(post, 'b');
+            return post.tags.length === 1;
+          })
       }
     ],
     hints: ['Spread the object and spread the tags array', 'Never call push on an argument']
@@ -620,7 +634,8 @@ function addTag(post, tag) {
     id: 2,
     title: 'Square the Odds',
     difficulty: 'easy',
-    description: 'Write squareOdds(numbers) that returns the squares of only the odd numbers, in original order, using filter and map.',
+    description:
+      'Write squareOdds(numbers) that returns the squares of only the odd numbers, in original order, using filter and map.',
     template: `
 function squareOdds(numbers) {
   // Your code here
@@ -642,7 +657,8 @@ function squareOdds(numbers) {
     id: 3,
     title: 'Function Factory',
     difficulty: 'easy',
-    description: 'Write makeGreeter(greeting) that returns a function taking a name and returning "<greeting>, <name>!".',
+    description:
+      'Write makeGreeter(greeting) that returns a function taking a name and returning "<greeting>, <name>!".',
     template: `
 function makeGreeter(greeting) {
   // Return a function that uses 'greeting' via closure
@@ -664,7 +680,8 @@ function makeGreeter(greeting) {
     id: 4,
     title: 'Implement pipe',
     difficulty: 'medium',
-    description: 'Implement pipe(...fns) that returns a function applying each fn left-to-right to its input. pipe() with no functions should return the identity function.',
+    description:
+      'Implement pipe(...fns) that returns a function applying each fn left-to-right to its input. pipe() with no functions should return the identity function.',
     template: `
 function pipe(...fns) {
   // Your code here (hint: reduce)
@@ -673,7 +690,14 @@ function pipe(...fns) {
     tests: [
       {
         description: 'pipe(add1, double)(5) should be 12',
-        check: (code, pipeFn) => safely(() => pipeFn(x => x + 1, x => x * 2)(5) === 12)
+        check: (code, pipeFn) =>
+          safely(
+            () =>
+              pipeFn(
+                x => x + 1,
+                x => x * 2
+              )(5) === 12
+          )
       },
       {
         description: 'pipe() should be the identity',
@@ -686,7 +710,8 @@ function pipe(...fns) {
     id: 5,
     title: 'Group and Count with reduce',
     difficulty: 'medium',
-    description: 'Write countBy(items, fn) that returns an object mapping each result of fn(item) to the number of items producing it, e.g. countBy([1,2,3], n => n % 2 ? "odd" : "even") -> { odd: 2, even: 1 }.',
+    description:
+      'Write countBy(items, fn) that returns an object mapping each result of fn(item) to the number of items producing it, e.g. countBy([1,2,3], n => n % 2 ? "odd" : "even") -> { odd: 2, even: 1 }.',
     template: `
 function countBy(items, fn) {
   // Your code here (use reduce with an object accumulator)
@@ -695,10 +720,11 @@ function countBy(items, fn) {
     tests: [
       {
         description: 'Should count by the derived key',
-        check: (code, countBy) => safely(() => {
-          const out = countBy([1, 2, 3], n => (n % 2 ? 'odd' : 'even'));
-          return out.odd === 2 && out.even === 1;
-        })
+        check: (code, countBy) =>
+          safely(() => {
+            const out = countBy([1, 2, 3], n => (n % 2 ? 'odd' : 'even'));
+            return out.odd === 2 && out.even === 1;
+          })
       },
       {
         description: 'Should return {} for an empty array',
@@ -711,7 +737,8 @@ function countBy(items, fn) {
     id: 6,
     title: 'Memoize a Pure Function',
     difficulty: 'medium',
-    description: 'Implement memoize(fn) so that repeated calls with the same arguments return a cached result instead of calling fn again. Support any number of primitive arguments.',
+    description:
+      'Implement memoize(fn) so that repeated calls with the same arguments return a cached result instead of calling fn again. Support any number of primitive arguments.',
     template: `
 function memoize(fn) {
   // Use a Map keyed by the serialised arguments
@@ -724,12 +751,18 @@ function memoize(fn) {
       },
       {
         description: 'Should call the underlying function only once per argument set',
-        check: (code, memoizeFn) => safely(() => {
-          let calls = 0;
-          const m = memoizeFn(n => { calls += 1; return n * n; });
-          m(4); m(4); m(5);
-          return calls === 2;
-        })
+        check: (code, memoizeFn) =>
+          safely(() => {
+            let calls = 0;
+            const m = memoizeFn(n => {
+              calls += 1;
+              return n * n;
+            });
+            m(4);
+            m(4);
+            m(5);
+            return calls === 2;
+          })
       }
     ],
     hints: ['JSON.stringify(args) makes a usable cache key for primitives', 'Check cache.has(key) before computing']
@@ -738,7 +771,8 @@ function memoize(fn) {
     id: 7,
     title: 'Curry with Arbitrary Arity',
     difficulty: 'hard',
-    description: 'Implement curry(fn) that works for functions of any fixed arity: curry(f)(1)(2)(3), curry(f)(1, 2)(3), and curry(f)(1, 2, 3) must all equal f(1, 2, 3).',
+    description:
+      'Implement curry(fn) that works for functions of any fixed arity: curry(f)(1)(2)(3), curry(f)(1, 2)(3), and curry(f)(1, 2, 3) must all equal f(1, 2, 3).',
     template: `
 function curry(fn) {
   // Use fn.length to know how many arguments are needed
@@ -747,18 +781,20 @@ function curry(fn) {
     tests: [
       {
         description: 'All call shapes should produce the same result',
-        check: (code, curryFn) => safely(() => {
-          const f = curryFn((a, b, c) => a + b + c);
-          return f(1)(2)(3) === 6 && f(1, 2)(3) === 6 && f(1, 2, 3) === 6;
-        })
+        check: (code, curryFn) =>
+          safely(() => {
+            const f = curryFn((a, b, c) => a + b + c);
+            return f(1)(2)(3) === 6 && f(1, 2)(3) === 6 && f(1, 2, 3) === 6;
+          })
       },
       {
         description: 'Partial applications should be reusable',
-        check: (code, curryFn) => safely(() => {
-          const addFn = curryFn((a, b) => a + b);
-          const add10 = addFn(10);
-          return add10(1) === 11 && add10(2) === 12;
-        })
+        check: (code, curryFn) =>
+          safely(() => {
+            const addFn = curryFn((a, b) => a + b);
+            const add10 = addFn(10);
+            return add10(1) === 11 && add10(2) === 12;
+          })
       }
     ],
     hints: ['Recursively accumulate arguments until args.length >= fn.length']
@@ -767,7 +803,8 @@ function curry(fn) {
     id: 8,
     title: 'Immutable Nested Update',
     difficulty: 'hard',
-    description: 'Implement setIn(obj, path, value) that returns a new object with the value set at the given key path, copying only the objects along the path and sharing everything else structurally.',
+    description:
+      'Implement setIn(obj, path, value) that returns a new object with the value set at the given key path, copying only the objects along the path and sharing everything else structurally.',
     template: `
 function setIn(obj, path, value) {
   // Recursive: copy one level, recurse into the next key
@@ -776,28 +813,34 @@ function setIn(obj, path, value) {
     tests: [
       {
         description: 'Should set a nested value without mutating the original',
-        check: (code, setInFn) => safely(() => {
-          const src = { a: { b: { c: 1 } }, x: { y: 2 } };
-          const out = setInFn(src, ['a', 'b', 'c'], 9);
-          return out.a.b.c === 9 && src.a.b.c === 1;
-        })
+        check: (code, setInFn) =>
+          safely(() => {
+            const src = { a: { b: { c: 1 } }, x: { y: 2 } };
+            const out = setInFn(src, ['a', 'b', 'c'], 9);
+            return out.a.b.c === 9 && src.a.b.c === 1;
+          })
       },
       {
         description: 'Untouched branches should be shared, not copied',
-        check: (code, setInFn) => safely(() => {
-          const src = { a: { b: 1 }, x: { y: 2 } };
-          const out = setInFn(src, ['a', 'b'], 3);
-          return out.x === src.x && out.a !== src.a;
-        })
+        check: (code, setInFn) =>
+          safely(() => {
+            const src = { a: { b: 1 }, x: { y: 2 } };
+            const out = setInFn(src, ['a', 'b'], 3);
+            return out.x === src.x && out.a !== src.a;
+          })
       }
     ],
-    hints: ['Base case: path is empty, return value', 'const [head, ...rest] = path; return { ...obj, [head]: setIn(obj[head], rest, value) }']
+    hints: [
+      'Base case: path is empty, return value',
+      'const [head, ...rest] = path; return { ...obj, [head]: setIn(obj[head], rest, value) }'
+    ]
   },
   {
     id: 9,
     title: 'Transducer-style Single-Pass Pipeline',
     difficulty: 'hard',
-    description: 'Write processOrders(orders) that, in a single reduce pass (no intermediate arrays), returns { revenue, count } for paid orders whose total is at least 50.',
+    description:
+      'Write processOrders(orders) that, in a single reduce pass (no intermediate arrays), returns { revenue, count } for paid orders whose total is at least 50.',
     template: `
 function processOrders(orders) {
   // One reduce call: filter (paid && total >= 50), map to total, sum and count
@@ -806,25 +849,30 @@ function processOrders(orders) {
     tests: [
       {
         description: 'Should compute revenue and count in one pass',
-        check: (code, processOrders) => safely(() => {
-          const out = processOrders([
-            { total: 120, paid: true },
-            { total: 30, paid: true },
-            { total: 80, paid: false },
-            { total: 50, paid: true }
-          ]);
-          return out.revenue === 170 && out.count === 2;
-        })
+        check: (code, processOrders) =>
+          safely(() => {
+            const out = processOrders([
+              { total: 120, paid: true },
+              { total: 30, paid: true },
+              { total: 80, paid: false },
+              { total: 50, paid: true }
+            ]);
+            return out.revenue === 170 && out.count === 2;
+          })
       },
       {
         description: 'Should return zeros for an empty input',
-        check: (code, processOrders) => safely(() => {
-          const out = processOrders([]);
-          return out.revenue === 0 && out.count === 0;
-        })
+        check: (code, processOrders) =>
+          safely(() => {
+            const out = processOrders([]);
+            return out.revenue === 0 && out.count === 0;
+          })
       }
     ],
-    hints: ['The accumulator can be an object: { revenue: 0, count: 0 }', 'Return the accumulator unchanged when an order does not qualify']
+    hints: [
+      'The accumulator can be an object: { revenue: 0, count: 0 }',
+      'Return the accumulator unchanged when an order does not qualify'
+    ]
   }
 ];
 
@@ -847,8 +895,8 @@ export const progressConfig = {
     return {
       conceptProgress: (this.conceptsCompleted / this.totalConcepts) * 100,
       exerciseProgress: (this.exercises.completed / this.exercises.total) * 100,
-      overallProgress: ((this.conceptsCompleted + this.exercises.completed)
-        / (this.totalConcepts + this.exercises.total)) * 100
+      overallProgress:
+        ((this.conceptsCompleted + this.exercises.completed) / (this.totalConcepts + this.exercises.total)) * 100
     };
   }
 };

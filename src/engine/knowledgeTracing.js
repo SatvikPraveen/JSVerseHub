@@ -148,7 +148,12 @@ export class KnowledgeTracer {
     return Object.fromEntries(
       Object.entries(this.skills).map(([id, s]) => [
         id,
-        { pKnown: s.pKnown, mastered: s.pKnown >= this.masteryThreshold, opportunities: s.opportunities, accuracy: s.opportunities ? s.correct / s.opportunities : null }
+        {
+          pKnown: s.pKnown,
+          mastered: s.pKnown >= this.masteryThreshold,
+          opportunities: s.opportunities,
+          accuracy: s.opportunities ? s.correct / s.opportunities : null
+        }
       ])
     );
   }

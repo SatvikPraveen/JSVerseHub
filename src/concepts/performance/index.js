@@ -1,7 +1,7 @@
 /**
  * Performance Optimization Concept
  * Learn web performance optimization, measurement, and best practices
- * 
+ *
  * Topics Covered:
  * 1. Performance Measurement - Metrics, APIs, tools
  * 2. Code Optimization - Efficient algorithms, caching, memoization
@@ -32,9 +32,9 @@ const performanceMeasurement = {
     const result = fn();
     const end = performance.now();
     const duration = end - start;
-    
+
     console.log(`⏱️  ${label}: ${duration.toFixed(2)}ms`);
-    
+
     return {
       label,
       duration,
@@ -68,9 +68,8 @@ const performanceMeasurement = {
     // Prefer the Navigation Timing Level 2 entry; fall back to the legacy
     // performance.timing object; degrade to zeros when neither exists
     // (e.g. non-browser environments or jsdom).
-    const navEntry = typeof performance.getEntriesByType === 'function'
-      ? performance.getEntriesByType('navigation')[0]
-      : undefined;
+    const navEntry =
+      typeof performance.getEntriesByType === 'function' ? performance.getEntriesByType('navigation')[0] : undefined;
     const legacy = performance.timing;
 
     if (!navEntry && !legacy) {
@@ -94,9 +93,7 @@ const performanceMeasurement = {
     // absolute timestamps relative to navigationStart.
     const timing = navEntry || legacy;
     const origin = navEntry ? navEntry.startTime : legacy.navigationStart;
-    const navigationType = navEntry
-      ? navEntry.type
-      : (performance.navigation ? performance.navigation.type : 'unknown');
+    const navigationType = navEntry ? navEntry.type : performance.navigation ? performance.navigation.type : 'unknown';
 
     return {
       available: true,
@@ -124,11 +121,11 @@ const performanceMeasurement = {
       return [];
     }
     const resources = performance.getEntriesByType('resource');
-    
+
     if (resourceName) {
       return resources.filter(r => r.name.includes(resourceName));
     }
-    
+
     return resources.map(r => ({
       name: r.name,
       duration: r.duration,
@@ -150,7 +147,7 @@ const performanceMeasurement = {
       return null;
     }
 
-    const observer = new PerformanceObserver((list) => {
+    const observer = new PerformanceObserver(list => {
       for (const entry of list.getEntries()) {
         callback(entry);
       }
@@ -215,23 +212,23 @@ const codeOptimization = {
    */
   memoize(fn) {
     const cache = new Map();
-    
-    return function(...args) {
+
+    return function (...args) {
       const key = JSON.stringify(args);
-      
+
       if (cache.has(key)) {
         return cache.get(key);
       }
-      
+
       const result = fn.apply(this, args);
       cache.set(key, result);
-      
+
       // Limit cache size to prevent memory leaks
       if (cache.size > 1000) {
         const firstKey = cache.keys().next().value;
         cache.delete(firstKey);
       }
-      
+
       return result;
     };
   },
@@ -244,8 +241,8 @@ const codeOptimization = {
    */
   debounce(fn, delay) {
     let timeoutId;
-    
-    return function(...args) {
+
+    return function (...args) {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => fn.apply(this, args), delay);
     };
@@ -259,10 +256,10 @@ const codeOptimization = {
    */
   throttle(fn, interval) {
     let lastCall = 0;
-    
-    return function(...args) {
+
+    return function (...args) {
       const now = Date.now();
-      
+
       if (now - lastCall >= interval) {
         lastCall = now;
         fn.apply(this, args);
@@ -277,8 +274,8 @@ const codeOptimization = {
    */
   throttleRAF(fn) {
     let rafId = null;
-    
-    return function(...args) {
+
+    return function (...args) {
       if (rafId === null) {
         rafId = requestAnimationFrame(() => {
           fn.apply(this, args);
@@ -297,10 +294,10 @@ const codeOptimization = {
   batch(fn, batchSize = 100) {
     let items = [];
     let timeoutId;
-    
-    return function(item) {
+
+    return function (item) {
       items.push(item);
-      
+
       if (items.length >= batchSize) {
         fn(items);
         items = [];
@@ -335,10 +332,10 @@ const memoryManagement = {
   detectMemoryLeaks(fn, iterations = 100) {
     const measurements = [];
     const initialMemory = performance.memory?.usedJSHeapSize || 0;
-    
+
     for (let i = 0; i < iterations; i++) {
       fn();
-      
+
       if (i % 10 === 0 && performance.memory) {
         measurements.push({
           iteration: i,
@@ -346,16 +343,16 @@ const memoryManagement = {
         });
       }
     }
-    
+
     if (measurements.length < 2) {
       return { available: false };
     }
-    
+
     const finalMemory = measurements[measurements.length - 1].memory;
     const startMemory = measurements[0].memory;
     const growth = finalMemory - startMemory;
     const growthRate = (growth / startMemory) * 100;
-    
+
     return {
       initialMemory,
       finalMemory,
@@ -385,7 +382,7 @@ const memoryManagement = {
       this.ObjectClass = ObjectClass;
       this.available = [];
       this.inUse = new Set();
-      
+
       for (let i = 0; i < initialSize; i++) {
         this.available.push(new ObjectClass());
       }
@@ -397,13 +394,13 @@ const memoryManagement = {
      */
     acquire() {
       let obj;
-      
+
       if (this.available.length > 0) {
         obj = this.available.pop();
       } else {
         obj = new this.ObjectClass();
       }
-      
+
       this.inUse.add(obj);
       return obj;
     }
@@ -449,12 +446,12 @@ const domOptimization = {
    */
   batchUpdate(items, createElementFn) {
     const fragment = document.createDocumentFragment();
-    
+
     items.forEach(item => {
       const element = createElementFn(item);
       fragment.appendChild(element);
     });
-    
+
     return fragment;
   },
 
@@ -466,7 +463,7 @@ const domOptimization = {
   batchReadWrite(readFn, writeFn) {
     // Read phase
     const readData = readFn();
-    
+
     // Write phase
     writeFn(readData);
   },
@@ -524,12 +521,12 @@ const domOptimization = {
   batchClassUpdate(element, classesToAdd = [], classesToRemove = []) {
     // Read current classes
     const current = element.className.split(' ');
-    
+
     // Batch modifications
     const updated = new Set(current);
     classesToAdd.forEach(cls => updated.add(cls));
     classesToRemove.forEach(cls => updated.delete(cls));
-    
+
     // Single write
     element.className = Array.from(updated).join(' ');
   }
@@ -555,7 +552,7 @@ const resourceOptimization = {
     }
 
     const images = container.querySelectorAll(imageSelector);
-    const imageObserver = new IntersectionObserver((entries) => {
+    const imageObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const img = entry.target;
@@ -580,7 +577,7 @@ const resourceOptimization = {
       return;
     }
 
-    const observer = new IntersectionObserver((entries) => {
+    const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           loaderFn();
@@ -637,10 +634,7 @@ const renderingOptimization = {
    * @param {Object} options - Animation options
    */
   setupGPUAcceleration(element, options = {}) {
-    const {
-      useTransform3d = true,
-      useWillChange = true
-    } = options;
+    const { useTransform3d = true, useWillChange = true } = options;
 
     if (useTransform3d) {
       element.style.transform = 'translate3d(0, 0, 0)';
@@ -679,20 +673,20 @@ const renderingOptimization = {
    * @returns {Promise} FPS measurement
    */
   measureFPS() {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       let frames = 0;
       const startTime = performance.now();
-      
+
       const countFrame = () => {
         frames++;
-        
+
         if (performance.now() - startTime < 1000) {
           requestAnimationFrame(countFrame);
         } else {
           resolve(frames);
         }
       };
-      
+
       requestAnimationFrame(countFrame);
     });
   }
@@ -712,9 +706,9 @@ const bestPractices = {
   PerformanceBudget: class {
     constructor(budgets = {}) {
       this.budgets = {
-        loadTime: 3000,        // 3 seconds
+        loadTime: 3000, // 3 seconds
         interactiveTime: 5000, // 5 seconds
-        bundleSize: 200,       // 200KB
+        bundleSize: 200, // 200KB
         ...budgets
       };
       this.measurements = {};
@@ -729,11 +723,11 @@ const bestPractices = {
     isWithinBudget(metric, value) {
       const budget = this.budgets[metric];
       if (!budget) return true;
-      
+
       const withinBudget = value <= budget;
       const status = withinBudget ? '✅' : '❌';
       console.log(`${status} ${metric}: ${value}/${budget}`);
-      
+
       return withinBudget;
     }
   },
@@ -765,7 +759,8 @@ const exercises = [
   {
     id: 'perf-memoize',
     title: 'Implement Function Memoization',
-    description: 'Create a memoized fibonacci function that caches results. Measure performance improvement with and without memoization.',
+    description:
+      'Create a memoized fibonacci function that caches results. Measure performance improvement with and without memoization.',
     difficulty: 'intermediate',
     hints: [
       'Use a Map to store previous results',
@@ -776,7 +771,8 @@ const exercises = [
   {
     id: 'perf-dom-batch',
     title: 'Optimize DOM Updates',
-    description: 'Create a function that adds 1000 elements to the DOM. First do it naively, then batch with DocumentFragment. Measure reflow count.',
+    description:
+      'Create a function that adds 1000 elements to the DOM. First do it naively, then batch with DocumentFragment. Measure reflow count.',
     difficulty: 'intermediate',
     hints: [
       'Use batchUpdate() for DocumentFragment approach',
@@ -812,12 +808,7 @@ const quiz = [
   {
     id: 'q2',
     question: 'Which technique prevents layout thrashing?',
-    options: [
-      'Using setTimeout',
-      'Batch reading then writing DOM properties',
-      'Minifying CSS',
-      'Using inline styles'
-    ],
+    options: ['Using setTimeout', 'Batch reading then writing DOM properties', 'Minifying CSS', 'Using inline styles'],
     correct: 1
   },
   {
@@ -845,12 +836,7 @@ const quiz = [
   {
     id: 'q5',
     question: 'What does debouncing prevent?',
-    options: [
-      'Memory leaks',
-      'Excessive function calls during rapid events',
-      'CSS animation jank',
-      'DOM reflows'
-    ],
+    options: ['Memory leaks', 'Excessive function calls during rapid events', 'CSS animation jank', 'DOM reflows'],
     correct: 1
   }
 ];
@@ -862,7 +848,8 @@ const quiz = [
 const conceptConfig = {
   id: 'performance',
   title: 'Performance Optimization',
-  description: 'Master web performance optimization, profiling, and best practices. Learn to measure, analyze, and improve application speed.',
+  description:
+    'Master web performance optimization, profiling, and best practices. Learn to measure, analyze, and improve application speed.',
   icon: 'zap',
   level: 'advanced',
   estimatedTime: '5-7 hours',

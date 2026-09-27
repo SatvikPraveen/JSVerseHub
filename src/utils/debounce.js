@@ -51,7 +51,9 @@ function throttle(func, limit) {
     if (!inThrottle) {
       func.apply(context, args);
       inThrottle = true;
-      setTimeout(() => (inThrottle = false), limit);
+      setTimeout(() => {
+        inThrottle = false;
+      }, limit);
     }
   };
 }
@@ -64,12 +66,7 @@ function throttle(func, limit) {
  * @returns {Function} Advanced debounced function with additional methods
  */
 function advancedDebounce(func, wait, options = {}) {
-  const {
-    immediate = false,
-    maxWait = null,
-    leading = false,
-    trailing = true,
-  } = options;
+  const { maxWait = null, leading = false, trailing = true } = options;
 
   let timeout;
   let maxTimeout;
@@ -102,9 +99,7 @@ function advancedDebounce(func, wait, options = {}) {
     const timeSinceLastInvoke = time - lastInvokeTime;
     const timeWaiting = wait - timeSinceLastCall;
 
-    return maxWait !== null
-      ? Math.min(timeWaiting, maxWait - timeSinceLastInvoke)
-      : timeWaiting;
+    return maxWait !== null ? Math.min(timeWaiting, maxWait - timeSinceLastInvoke) : timeWaiting;
   }
 
   function shouldInvoke(time) {
@@ -306,8 +301,8 @@ function batch(func, wait = 0) {
         timeout = null;
 
         // Execute all batched calls
-        allCalls.forEach(({ context, args }) => {
-          func.apply(context, args);
+        allCalls.forEach(call => {
+          func.apply(call.context, call.args);
         });
       }, wait);
     }
@@ -369,7 +364,7 @@ function rateLimit(func, maxCalls, period) {
 
     // Check if we've exceeded the rate limit
     if (calls.length >= maxCalls) {
-      JSVLogger.warn("Rate limit exceeded");
+      JSVLogger.warn('Rate limit exceeded');
       return;
     }
 
@@ -401,8 +396,8 @@ function retry(func, maxRetries = 3, baseDelay = 1000) {
         }
 
         // Exponential backoff
-        const delay = baseDelay * Math.pow(2, attempt);
-        await new Promise((resolve) => setTimeout(resolve, delay));
+        const delay = baseDelay * 2 ** attempt;
+        await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
 
@@ -419,8 +414,8 @@ function retry(func, maxRetries = 3, baseDelay = 1000) {
 function debounceAll(functions, wait) {
   const debounced = {};
 
-  Object.keys(functions).forEach((key) => {
-    if (typeof functions[key] === "function") {
+  Object.keys(functions).forEach(key => {
+    if (typeof functions[key] === 'function') {
       debounced[key] = debounce(functions[key], wait);
     } else {
       debounced[key] = functions[key];
@@ -442,9 +437,7 @@ function performanceWrap(func, label) {
     const result = func.apply(this, args);
     const endTime = performance.now();
 
-    JSVLogger.debug(
-      `Performance [${label}]: ${(endTime - startTime).toFixed(2)}ms`
-    );
+    JSVLogger.debug(`Performance [${label}]: ${(endTime - startTime).toFixed(2)}ms`);
 
     return result;
   };
@@ -464,11 +457,11 @@ const PerformanceUtils = {
   rateLimit,
   retry,
   debounceAll,
-  performanceWrap,
+  performanceWrap
 };
 
 // Export for use in other modules
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
   window.debounce = debounce;
   window.throttle = throttle;
   window.PerformanceUtils = PerformanceUtils;

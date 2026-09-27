@@ -34,7 +34,7 @@ describe('Performance Optimization Concept', () => {
 
     test('should get memory usage if available', () => {
       const memory = performanceMeasurement.getMemoryUsage();
-      
+
       if (memory.available === false) {
         expect(memory.available).toBe(false);
       } else {
@@ -46,7 +46,7 @@ describe('Performance Optimization Concept', () => {
 
     test('should get navigation timing', () => {
       const timing = performanceMeasurement.getNavigationTiming();
-      
+
       expect(timing).toHaveProperty('redirectTime');
       expect(timing).toHaveProperty('domainLookupTime');
       expect(timing).toHaveProperty('connectTime');
@@ -55,7 +55,7 @@ describe('Performance Optimization Concept', () => {
 
     test('should get resource timing', () => {
       const resources = performanceMeasurement.getResourceTiming();
-      
+
       expect(Array.isArray(resources)).toBe(true);
       if (resources.length > 0) {
         expect(resources[0]).toHaveProperty('name');
@@ -67,7 +67,7 @@ describe('Performance Optimization Concept', () => {
     test('should create performance observer', () => {
       const callback = jest.fn();
       const observer = performanceMeasurement.createObserver(callback, 'measure');
-      
+
       expect(observer).toBeInstanceOf(PerformanceObserver);
       observer.disconnect();
     });
@@ -75,7 +75,7 @@ describe('Performance Optimization Concept', () => {
     test('should mark performance points', () => {
       performanceMeasurement.mark('testMark');
       const marks = performance.getEntriesByName('testMark');
-      
+
       expect(marks.length).toBeGreaterThan(0);
       expect(marks[0].name).toBe('testMark');
     });
@@ -83,11 +83,11 @@ describe('Performance Optimization Concept', () => {
     test('should measure between marks', () => {
       performance.clearMarks();
       performance.clearMeasures();
-      
+
       performanceMeasurement.mark('start');
       performanceMeasurement.mark('end');
       performanceMeasurement.measure('testMeasure', 'start', 'end');
-      
+
       const measures = performance.getEntriesByName('testMeasure');
       expect(measures.length).toBeGreaterThan(0);
     });
@@ -100,7 +100,7 @@ describe('Performance Optimization Concept', () => {
   describe('Code Optimization', () => {
     test('should memoize function results', () => {
       let callCount = 0;
-      const fibonacci = codeOptimization.memoize((n) => {
+      const fibonacci = codeOptimization.memoize(n => {
         callCount++;
         if (n <= 1) return n;
         return fibonacci(n - 1) + fibonacci(n - 2);
@@ -109,7 +109,7 @@ describe('Performance Optimization Concept', () => {
       const result1 = fibonacci(5);
       const callCount1 = callCount;
       callCount = 0;
-      
+
       const result2 = fibonacci(5);
       const callCount2 = callCount;
 
@@ -118,7 +118,7 @@ describe('Performance Optimization Concept', () => {
       expect(callCount2).toBeLessThan(callCount1);
     });
 
-    test('should debounce function calls', (done) => {
+    test('should debounce function calls', done => {
       let callCount = 0;
       const debounced = codeOptimization.debounce(() => {
         callCount++;
@@ -136,7 +136,7 @@ describe('Performance Optimization Concept', () => {
       }, 100);
     });
 
-    test('should throttle function calls', (done) => {
+    test('should throttle function calls', done => {
       let callCount = 0;
       const throttled = codeOptimization.throttle(() => {
         callCount++;
@@ -154,9 +154,9 @@ describe('Performance Optimization Concept', () => {
       }, 100);
     });
 
-    test('should batch function calls', (done) => {
+    test('should batch function calls', done => {
       let batchedItems = [];
-      const batchFn = codeOptimization.batch((items) => {
+      const batchFn = codeOptimization.batch(items => {
         batchedItems = items;
       }, 3);
 
@@ -170,7 +170,7 @@ describe('Performance Optimization Concept', () => {
       done();
     });
 
-    test('should have RAF-based throttle', (done) => {
+    test('should have RAF-based throttle', done => {
       let callCount = 0;
       const rafThrottled = codeOptimization.throttleRAF(() => {
         callCount++;
@@ -265,7 +265,7 @@ describe('Performance Optimization Concept', () => {
 
   describe('DOM Optimization', () => {
     test('should batch DOM updates with fragment', () => {
-      const createElement = (item) => {
+      const createElement = item => {
         const div = document.createElement('div');
         div.textContent = item;
         return div;
@@ -291,11 +291,7 @@ describe('Performance Optimization Concept', () => {
       const element = document.createElement('div');
       element.className = 'existing';
 
-      domOptimization.batchClassUpdate(
-        element,
-        ['new-class', 'another-class'],
-        ['existing']
-      );
+      domOptimization.batchClassUpdate(element, ['new-class', 'another-class'], ['existing']);
 
       expect(element.className).toContain('new-class');
       expect(element.className).toContain('another-class');
@@ -305,18 +301,13 @@ describe('Performance Optimization Concept', () => {
     test('should create virtual scroller', () => {
       const container = document.createElement('div');
       const items = Array.from({ length: 100 }, (_, i) => i);
-      const renderFn = jest.fn((item) => {
+      const renderFn = jest.fn(item => {
         const div = document.createElement('div');
         div.textContent = item;
         return div;
       });
 
-      const scroller = new domOptimization.VirtualScroller(
-        container,
-        20,
-        items,
-        renderFn
-      );
+      const scroller = new domOptimization.VirtualScroller(container, 20, items, renderFn);
 
       expect(scroller).toBeTruthy();
       expect(scroller.items.length).toBe(100);
@@ -351,7 +342,7 @@ describe('Performance Optimization Concept', () => {
 
     test('should prefetch resources', () => {
       resourceOptimization.prefetch(['https://example.com/script.js'], 'script');
-      
+
       const links = document.querySelectorAll('link[rel="prefetch"]');
       expect(links.length).toBeGreaterThan(0);
 
@@ -361,7 +352,7 @@ describe('Performance Optimization Concept', () => {
 
     test('should preload resources', () => {
       resourceOptimization.preload(['https://example.com/style.css'], 'style');
-      
+
       const links = document.querySelectorAll('link[rel="preload"]');
       expect(links.length).toBeGreaterThan(0);
 

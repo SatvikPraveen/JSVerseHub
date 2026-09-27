@@ -2,9 +2,9 @@
 // Functional Programming - Higher-Order Functions in JavaScript
 
 export const higherOrderContent = {
-  title: "Higher-Order Functions",
-  description: "Master functions that take other functions as arguments or return functions",
-  
+  title: 'Higher-Order Functions',
+  description: 'Master functions that take other functions as arguments or return functions',
+
   theory: {
     introduction: `
       Higher-order functions are functions that either take other functions as arguments, 
@@ -12,11 +12,11 @@ export const higherOrderContent = {
       programming and enable powerful patterns like function composition, currying, and decorators.
       JavaScript's built-in array methods like map, filter, and reduce are examples of higher-order functions.
     `,
-    
+
     concepts: [
       {
-        name: "Functions as Arguments",
-        explanation: "Passing functions to other functions to customize behavior",
+        name: 'Functions as Arguments',
+        explanation: 'Passing functions to other functions to customize behavior',
         example: `
 // Basic higher-order function
 function processArray(array, processor) {
@@ -104,10 +104,10 @@ const oldestUserInfo = findAndTransform(
 console.log(oldestUserInfo); // "Charlie (35 years old)"
         `
       },
-      
+
       {
-        name: "Functions Returning Functions",
-        explanation: "Creating specialized functions by returning new functions",
+        name: 'Functions Returning Functions',
+        explanation: 'Creating specialized functions by returning new functions',
         example: `
 // Function factories
 function createMultiplier(factor) {
@@ -226,10 +226,10 @@ const usersApi = jsonApiClient('/users');
 // usersApi.get() makes a GET request to https://api.example.com/users
         `
       },
-      
+
       {
-        name: "Function Decorators",
-        explanation: "Wrapping functions to add additional behavior",
+        name: 'Function Decorators',
+        explanation: 'Wrapping functions to add additional behavior',
         example: `
 // Basic decorator pattern
 function withLogging(fn) {
@@ -382,10 +382,10 @@ setTimeout(() => {
 }, 2000);
         `
       },
-      
+
       {
-        name: "Currying and Partial Application",
-        explanation: "Creating specialized functions through currying and partial application",
+        name: 'Currying and Partial Application',
+        explanation: 'Creating specialized functions through currying and partial application',
         example: `
 // Manual currying
 function add(a) {
@@ -513,11 +513,11 @@ console.log(validateEmail("test")); // { valid: false, error: "Must contain @" }
       }
     ]
   },
-  
+
   practicalExamples: [
     {
-      title: "Event System with Higher-Order Functions",
-      description: "A flexible event system using function composition and decorators",
+      title: 'Event System with Higher-Order Functions',
+      description: 'A flexible event system using function composition and decorators',
       code: `
 // Event emitter using higher-order functions
 function createEventEmitter() {
@@ -666,10 +666,10 @@ emitter.emit('admin.action', 'admin.delete_user');
 emitter.emit('admin.action', 'regular.action'); // Won't fire (condition fails)
       `
     },
-    
+
     {
-      title: "Functional Data Pipeline",
-      description: "Data processing pipeline using higher-order functions and composition",
+      title: 'Functional Data Pipeline',
+      description: 'Data processing pipeline using higher-order functions and composition',
       code: `
 // Core pipeline functions
 const pipe = (...functions) => (input) => functions.reduce((acc, fn) => fn(acc), input);
@@ -883,13 +883,13 @@ console.log("Top 3 Earners:", topEarners(rawUserData));
       `
     }
   ],
-  
+
   exercises: [
     {
-      id: "higher-order-basic",
-      title: "Create Array Utilities",
-      difficulty: "easy", 
-      prompt: "Create higher-order functions for array operations: createFilter, createMapper, and createReducer.",
+      id: 'higher-order-basic',
+      title: 'Create Array Utilities',
+      difficulty: 'easy',
+      prompt: 'Create higher-order functions for array operations: createFilter, createMapper, and createReducer.',
       solution: `
 // Higher-order array utility functions
 function createFilter(predicate) {
@@ -932,12 +932,12 @@ console.log(mapSquare(mixedNumbers));      // [4, 1, 0, 1, 4, 9]
 console.log(findMax(mixedNumbers));        // 3
       `
     },
-    
+
     {
-      id: "higher-order-intermediate", 
-      title: "Function Decorator System",
-      difficulty: "medium",
-      prompt: "Create a decorator system with timing, caching, and retry decorators that can be composed together.",
+      id: 'higher-order-intermediate',
+      title: 'Function Decorator System',
+      difficulty: 'medium',
+      prompt: 'Create a decorator system with timing, caching, and retry decorators that can be composed together.',
       solution: `
 // Decorator functions
 function withTiming(fn) {
@@ -1067,42 +1067,45 @@ try {
       `
     }
   ],
-  
+
   quiz: [
     {
-      question: "What is a higher-order function?",
+      question: 'What is a higher-order function?',
       options: [
-        "A function that returns a number",
-        "A function that takes other functions as arguments or returns a function",
-        "A function that has more than 3 parameters",
-        "A function that uses arrow syntax"
+        'A function that returns a number',
+        'A function that takes other functions as arguments or returns a function',
+        'A function that has more than 3 parameters',
+        'A function that uses arrow syntax'
       ],
       correct: 1,
-      explanation: "A higher-order function either takes other functions as arguments, returns a function as its result, or both."
+      explanation:
+        'A higher-order function either takes other functions as arguments, returns a function as its result, or both.'
     },
-    
+
     {
-      question: "What is the difference between currying and partial application?",
+      question: 'What is the difference between currying and partial application?',
       options: [
-        "They are the same thing",
-        "Currying creates a series of unary functions, partial application fixes some arguments",
-        "Currying is for objects, partial application is for functions",
-        "Partial application creates unary functions, currying fixes arguments"
+        'They are the same thing',
+        'Currying creates a series of unary functions, partial application fixes some arguments',
+        'Currying is for objects, partial application is for functions',
+        'Partial application creates unary functions, currying fixes arguments'
       ],
       correct: 1,
-      explanation: "Currying transforms a function into a series of unary functions. Partial application creates a new function by fixing some arguments of the original function."
+      explanation:
+        'Currying transforms a function into a series of unary functions. Partial application creates a new function by fixing some arguments of the original function.'
     },
-    
+
     {
-      question: "What does function composition allow you to do?",
+      question: 'What does function composition allow you to do?',
       options: [
-        "Combine multiple functions into a single function",
-        "Create private variables in functions",
-        "Make functions run faster",
-        "Prevent function side effects"
+        'Combine multiple functions into a single function',
+        'Create private variables in functions',
+        'Make functions run faster',
+        'Prevent function side effects'
       ],
       correct: 0,
-      explanation: "Function composition allows you to combine multiple functions into a single function, where the output of one function becomes the input of the next."
+      explanation:
+        'Function composition allows you to combine multiple functions into a single function, where the output of one function becomes the input of the next.'
     }
   ]
 };

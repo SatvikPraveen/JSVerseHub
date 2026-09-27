@@ -2,19 +2,19 @@
 // Object-Oriented Programming - Classes in JavaScript
 
 export const classesContent = {
-  title: "JavaScript Classes",
-  description: "Master ES6 classes and modern object-oriented programming patterns",
-  
+  title: 'JavaScript Classes',
+  description: 'Master ES6 classes and modern object-oriented programming patterns',
+
   theory: {
     introduction: `
       Classes in JavaScript provide a clean syntax for creating objects and handling inheritance.
       They're syntactic sugar over JavaScript's prototype-based inheritance but make OOP more accessible.
     `,
-    
+
     concepts: [
       {
-        name: "Class Declaration",
-        explanation: "Basic class syntax with constructor and methods",
+        name: 'Class Declaration',
+        explanation: 'Basic class syntax with constructor and methods',
         example: `
 class Spaceship {
   constructor(name, fuel = 100) {
@@ -50,10 +50,10 @@ enterprise.accelerate(20);
 enterprise.brake();
         `
       },
-      
+
       {
-        name: "Static Methods",
-        explanation: "Methods that belong to the class itself, not instances",
+        name: 'Static Methods',
+        explanation: 'Methods that belong to the class itself, not instances',
         example: `
 class MathUtils {
   static add(a, b) {
@@ -80,10 +80,10 @@ console.log(MathUtils.factorial(5)); // 120
 console.log(MathUtils.randomBetween(1, 10));
         `
       },
-      
+
       {
-        name: "Private Fields",
-        explanation: "Private properties and methods using # syntax",
+        name: 'Private Fields',
+        explanation: 'Private properties and methods using # syntax',
         example: `
 class BankAccount {
   #balance = 0;
@@ -139,10 +139,10 @@ console.log(account.withdraw(30, "1234"));
 // console.log(account.#balance); // SyntaxError - cannot access private field
         `
       },
-      
+
       {
-        name: "Getters and Setters",
-        explanation: "Control access to object properties with get/set",
+        name: 'Getters and Setters',
+        explanation: 'Control access to object properties with get/set',
         example: `
 class Temperature {
   constructor(celsius = 0) {
@@ -197,11 +197,11 @@ console.log(temp.celsius); // 37.78
       }
     ]
   },
-  
+
   practicalExamples: [
     {
-      title: "Game Character System",
-      description: "A complete character class for a game",
+      title: 'Game Character System',
+      description: 'A complete character class for a game',
       code: `
 class GameCharacter {
   constructor(name, characterClass) {
@@ -278,10 +278,10 @@ hero.addItem({ name: "Iron Sword", damage: 25 });
 console.log(hero.getStats());
       `
     },
-    
+
     {
-      title: "Task Management System",
-      description: "A task manager with priority and status tracking",
+      title: 'Task Management System',
+      description: 'A task manager with priority and status tracking',
       code: `
 class Task {
   static #idCounter = 1;
@@ -380,13 +380,14 @@ console.log(taskManager.getSummary());
       `
     }
   ],
-  
+
   exercises: [
     {
-      id: "class-basic",
-      title: "Create a Book Class",
-      difficulty: "easy",
-      prompt: "Create a Book class with title, author, pages, and currentPage properties. Add methods to read pages and get reading progress.",
+      id: 'class-basic',
+      title: 'Create a Book Class',
+      difficulty: 'easy',
+      prompt:
+        'Create a Book class with title, author, pages, and currentPage properties. Add methods to read pages and get reading progress.',
       solution: `
 class Book {
   constructor(title, author, pages) {
@@ -415,12 +416,13 @@ class Book {
 }
       `
     },
-    
+
     {
-      id: "class-intermediate",
-      title: "Vehicle Fleet Management",
-      difficulty: "medium",
-      prompt: "Create a Vehicle base class and Car/Truck subclasses with fuel tracking, maintenance schedules, and fleet statistics.",
+      id: 'class-intermediate',
+      title: 'Vehicle Fleet Management',
+      difficulty: 'medium',
+      prompt:
+        'Create a Vehicle base class and Car/Truck subclasses with fuel tracking, maintenance schedules, and fleet statistics.',
       solution: `
 class Vehicle {
   constructor(make, model, year, fuelCapacity) {
@@ -485,37 +487,32 @@ class Truck extends Vehicle {
       `
     }
   ],
-  
+
   quiz: [
     {
-      question: "What is the correct way to define a private field in a JavaScript class?",
-      options: [
-        "private #fieldName;",
-        "#fieldName;",
-        "_fieldName;",
-        "this.#fieldName;"
-      ],
+      question: 'What is the correct way to define a private field in a JavaScript class?',
+      options: ['private #fieldName;', '#fieldName;', '_fieldName;', 'this.#fieldName;'],
       correct: 1,
-      explanation: "Private fields are defined with the # prefix directly in the class body."
+      explanation: 'Private fields are defined with the # prefix directly in the class body.'
     },
-    
+
     {
-      question: "Which keyword is used to call the parent class constructor?",
-      options: ["parent()", "super()", "base()", "inherit()"],
+      question: 'Which keyword is used to call the parent class constructor?',
+      options: ['parent()', 'super()', 'base()', 'inherit()'],
       correct: 1,
-      explanation: "The super() keyword is used to call the parent class constructor in JavaScript."
+      explanation: 'The super() keyword is used to call the parent class constructor in JavaScript.'
     },
-    
+
     {
-      question: "Static methods in a class:",
+      question: 'Static methods in a class:',
       options: [
-        "Can access instance properties",
-        "Must be called on class instances",
-        "Are called on the class itself",
-        "Cannot call other static methods"
+        'Can access instance properties',
+        'Must be called on class instances',
+        'Are called on the class itself',
+        'Cannot call other static methods'
       ],
       correct: 2,
-      explanation: "Static methods belong to the class itself and are called on the class, not instances."
+      explanation: 'Static methods belong to the class itself and are called on the class, not instances.'
     }
   ]
 };

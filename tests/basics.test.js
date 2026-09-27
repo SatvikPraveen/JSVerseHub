@@ -53,8 +53,8 @@ describe('JavaScript Basics Concepts', () => {
     test('should compare values correctly', () => {
       expect(5 == '5').toBe(true);
       expect(5 === '5').toBe(false);
-      expect(null == undefined).toBe(true);
-      expect(null === undefined).toBe(false);
+      expect(undefined == null).toBe(true);
+      expect(undefined === null).toBe(false);
     });
   });
 
@@ -63,7 +63,7 @@ describe('JavaScript Basics Concepts', () => {
     test('function declarations should be hoisted', () => {
       expect(typeof hoistedFunction).toBe('function');
       expect(hoistedFunction()).toBe('hoisted');
-      
+
       function hoistedFunction() {
         return 'hoisted';
       }
@@ -71,7 +71,7 @@ describe('JavaScript Basics Concepts', () => {
 
     test('function expressions should not be hoisted', () => {
       expect(typeof functionExpression).toBe('undefined');
-      var functionExpression = function() {
+      var functionExpression = function () {
         return 'expression';
       };
       expect(functionExpression()).toBe('expression');
@@ -80,15 +80,13 @@ describe('JavaScript Basics Concepts', () => {
     test('arrow functions should preserve lexical this', () => {
       const obj = {
         name: 'test',
-        regularFunction: function() {
-          return function() {
+        regularFunction: function () {
+          return function () {
             return this.name;
           };
         },
-        arrowFunction: function() {
-          return () => {
-            return this.name;
-          };
+        arrowFunction: function () {
+          return () => this.name;
         }
       };
 
@@ -205,7 +203,7 @@ describe('JavaScript Basics Concepts', () => {
   describe('Arrays', () => {
     test('array methods should work correctly', () => {
       const arr = [1, 2, 3, 4, 5];
-      
+
       expect(arr.length).toBe(5);
       expect(arr.push(6)).toBe(6);
       expect(arr.pop()).toBe(6);
@@ -216,7 +214,7 @@ describe('JavaScript Basics Concepts', () => {
 
     test('array iteration methods should work correctly', () => {
       const numbers = [1, 2, 3, 4, 5];
-      
+
       const doubled = numbers.map(n => n * 2);
       expect(doubled).toEqual([2, 4, 6, 8, 10]);
 
@@ -243,7 +241,7 @@ describe('JavaScript Basics Concepts', () => {
       };
 
       expect(obj.name).toBe('John');
-      expect(obj['age']).toBe(30);
+      expect(obj.age).toBe(30);
       expect(obj.greet()).toBe("Hello, I'm John");
 
       obj.city = 'New York';
@@ -258,7 +256,11 @@ describe('JavaScript Basics Concepts', () => {
 
       expect(Object.keys(obj)).toEqual(['a', 'b', 'c']);
       expect(Object.values(obj)).toEqual([1, 2, 3]);
-      expect(Object.entries(obj)).toEqual([['a', 1], ['b', 2], ['c', 3]]);
+      expect(Object.entries(obj)).toEqual([
+        ['a', 1],
+        ['b', 2],
+        ['c', 3]
+      ]);
 
       const copy = Object.assign({}, obj);
       expect(copy).toEqual(obj);
@@ -271,7 +273,7 @@ describe('JavaScript Basics Concepts', () => {
     test('closure should maintain access to outer variables', () => {
       function createCounter() {
         let count = 0;
-        return function() {
+        return function () {
           return ++count;
         };
       }
@@ -283,7 +285,7 @@ describe('JavaScript Basics Concepts', () => {
     });
 
     test('IIFE should create isolated scope', () => {
-      const result = (function(x) {
+      const result = (function (x) {
         return x * 2;
       })(5);
 
@@ -315,7 +317,7 @@ describe('JavaScript Basics Concepts', () => {
 
     test('finally block should always execute', () => {
       let finallyExecuted = false;
-      
+
       try {
         throw new Error('Test error');
       } catch (error) {
@@ -323,7 +325,7 @@ describe('JavaScript Basics Concepts', () => {
       } finally {
         finallyExecuted = true;
       }
-      
+
       expect(finallyExecuted).toBe(true);
     });
 
@@ -348,7 +350,7 @@ describe('JavaScript Basics Concepts', () => {
   describe('Regular Expressions', () => {
     test('regex should match patterns correctly', () => {
       const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      
+
       expect(emailPattern.test('user@example.com')).toBe(true);
       expect(emailPattern.test('invalid.email')).toBe(false);
       expect(emailPattern.test('user@domain')).toBe(false);
@@ -356,7 +358,7 @@ describe('JavaScript Basics Concepts', () => {
 
     test('regex flags should work correctly', () => {
       const text = 'Hello World, hello universe';
-      
+
       expect(text.match(/hello/g)).toEqual(['hello']);
       expect(text.match(/hello/gi)).toEqual(['Hello', 'hello']);
       expect(/hello/i.test(text)).toBe(true);
@@ -365,17 +367,17 @@ describe('JavaScript Basics Concepts', () => {
 
     test('regex methods should work correctly', () => {
       const text = 'The year is 2024';
-      
+
       // test()
       expect(/\d{4}/.test(text)).toBe(true);
-      
+
       // match()
       const match = text.match(/\d{4}/);
       expect(match[0]).toBe('2024');
-      
+
       // search()
       expect(text.search(/\d{4}/)).toBe(12);
-      
+
       // replace()
       expect(text.replace(/2024/, '2025')).toBe('The year is 2025');
     });
@@ -384,11 +386,11 @@ describe('JavaScript Basics Concepts', () => {
       const date = '2024-03-08';
       const pattern = /(\d{4})-(\d{2})-(\d{2})/;
       const match = date.match(pattern);
-      
+
       expect(match[1]).toBe('2024');
       expect(match[2]).toBe('03');
       expect(match[3]).toBe('08');
-      
+
       const formatted = date.replace(pattern, '$2/$3/$1');
       expect(formatted).toBe('03/08/2024');
     });
@@ -397,13 +399,13 @@ describe('JavaScript Basics Concepts', () => {
       const phonePattern = /^\d{3}-\d{3}-\d{4}$/;
       const urlPattern = /^https?:\/\/[^\s]+$/;
       const usernamePattern = /^[a-zA-Z][a-zA-Z0-9]{2,19}$/;
-      
+
       expect(phonePattern.test('123-456-7890')).toBe(true);
       expect(phonePattern.test('1234567890')).toBe(false);
-      
+
       expect(urlPattern.test('https://example.com')).toBe(true);
       expect(urlPattern.test('not a url')).toBe(false);
-      
+
       expect(usernamePattern.test('user123')).toBe(true);
       expect(usernamePattern.test('123user')).toBe(false);
       expect(usernamePattern.test('ab')).toBe(false);

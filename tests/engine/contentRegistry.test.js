@@ -38,7 +38,14 @@ describe('ContentRegistry normalisation', () => {
 
   test('normalizeExercise maps template/tests/hints and difficulty aliases', () => {
     const ex = normalizeExercise(
-      { id: 'e1', title: 'T', difficulty: 'beginner', description: 'd', template: '  code  ', tests: [{ description: 'x', check: () => true }] },
+      {
+        id: 'e1',
+        title: 'T',
+        difficulty: 'beginner',
+        description: 'd',
+        template: '  code  ',
+        tests: [{ description: 'x', check: () => true }]
+      },
       'basics',
       0
     );
@@ -48,17 +55,28 @@ describe('ContentRegistry normalisation', () => {
   });
 
   test('normalizeQuiz accepts arrays and {questions} and maps correct -> correctAnswer', () => {
-    const q = normalizeQuiz([{ question: 'Q?', options: ['a', 'b'], correct: 1, explanation: 'why' }], { timeLimit: 300 });
+    const q = normalizeQuiz([{ question: 'Q?', options: ['a', 'b'], correct: 1, explanation: 'why' }], {
+      timeLimit: 300
+    });
     expect(q.questions[0]).toMatchObject({ id: 'q1', correctAnswer: 1, explanation: 'why' });
     expect(q).toMatchObject({ timeLimit: 300, passingScore: 70, totalPoints: 10 });
-    expect(normalizeQuiz({ questions: [{ question: 'Q', options: ['a'], correctAnswer: 0 }] }).questions[0].correctAnswer).toBe(0);
+    expect(
+      normalizeQuiz({ questions: [{ question: 'Q', options: ['a'], correctAnswer: 0 }] }).questions[0].correctAnswer
+    ).toBe(0);
     expect(normalizeQuiz([])).toBeNull();
     expect(normalizeQuiz(undefined)).toBeNull();
   });
 
   test('normalizeConceptModule builds viewer data from an ESM-style bundle', () => {
     const mod = {
-      fooConfig: { title: 'Foo', description: 'About foo', difficulty: 'intermediate', estimatedTime: '1 hour', topics: ['A', 'B'], prerequisites: ['basics'] },
+      fooConfig: {
+        title: 'Foo',
+        description: 'About foo',
+        difficulty: 'intermediate',
+        estimatedTime: '1 hour',
+        topics: ['A', 'B'],
+        prerequisites: ['basics']
+      },
       alpha: { concept: 'Alpha', explanation: 'alpha explained', examples: { one: 'code1' }, keyPoints: ['k1'] },
       beta: { title: 'Beta', description: 'beta explained', examples: { two: 'code2' } },
       exercises: [{ id: 'x', title: 'X', difficulty: 'hard', description: 'do', template: 't' }],
@@ -92,7 +110,10 @@ describe('ContentRegistry normalisation', () => {
         return ctx;
       }
     };
-    const mod = { conceptConfig: { title: 'Canvas', level: 'advanced', topics: { basics: helpers }, prerequisites: [] }, canvasBasics: helpers };
+    const mod = {
+      conceptConfig: { title: 'Canvas', level: 'advanced', topics: { basics: helpers }, prerequisites: [] },
+      canvasBasics: helpers
+    };
     const data = normalizeConceptModule('canvas', mod);
     expect(data.overview.difficulty).toBe('Advanced');
     expect(data.sections).toHaveLength(1);
@@ -108,7 +129,9 @@ describe('ContentRegistry normalisation', () => {
 
 describe('ContentRegistry loading', () => {
   test('lazy-loads, caches and de-duplicates in-flight loads', async () => {
-    const loader = jest.fn(() => Promise.resolve({ cfg: { title: 'T', topics: [] }, s: { concept: 'S', explanation: 'e' } }));
+    const loader = jest.fn(() =>
+      Promise.resolve({ cfg: { title: 'T', topics: [] }, s: { concept: 'S', explanation: 'e' } })
+    );
     const reg = new ContentRegistry({ t: loader });
     const [a, b] = await Promise.all([reg.load('t'), reg.load('t')]);
     expect(a).toBe(b);
@@ -124,7 +147,9 @@ describe('ContentRegistry loading', () => {
 
   test('propagates loader failures and allows retry', async () => {
     let fail = true;
-    const reg = new ContentRegistry({ t: () => (fail ? Promise.reject(new Error('boom')) : Promise.resolve({ s: { concept: 'S', explanation: 'e' } })) });
+    const reg = new ContentRegistry({
+      t: () => (fail ? Promise.reject(new Error('boom')) : Promise.resolve({ s: { concept: 'S', explanation: 'e' } }))
+    });
     await expect(reg.load('t')).rejects.toThrow('boom');
     fail = false;
     expect((await reg.load('t')).sections).toHaveLength(1);

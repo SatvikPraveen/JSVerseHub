@@ -157,7 +157,7 @@ describe('DOM Manipulation Concepts', () => {
     test('innerText should handle text with styling', () => {
       const element = document.createElement('div');
       element.innerHTML = '<span style="display: none;">Hidden</span><span>Visible</span>';
-      
+
       // innerText respects styling (hidden elements), textContent doesn't
       expect(element.textContent).toBe('HiddenVisible');
       // Note: innerText behavior may vary in test environment
@@ -180,9 +180,9 @@ describe('DOM Manipulation Concepts', () => {
     test('removeAttribute should remove attributes', () => {
       const element = document.createElement('div');
       element.setAttribute('data-temp', 'value');
-      
+
       expect(element.hasAttribute('data-temp')).toBe(true);
-      
+
       element.removeAttribute('data-temp');
       expect(element.hasAttribute('data-temp')).toBe(false);
     });
@@ -205,13 +205,13 @@ describe('DOM Manipulation Concepts', () => {
     test('className should get and set CSS classes', () => {
       const element = document.createElement('div');
       element.className = 'class1 class2';
-      
+
       expect(element.className).toBe('class1 class2');
     });
 
     test('classList should provide class manipulation methods', () => {
       const element = document.createElement('div');
-      
+
       element.classList.add('first', 'second');
       expect(element.classList.contains('first')).toBe(true);
       expect(element.classList.contains('second')).toBe(true);
@@ -223,7 +223,7 @@ describe('DOM Manipulation Concepts', () => {
 
       element.classList.toggle('third');
       expect(element.classList.contains('third')).toBe(true);
-      
+
       element.classList.toggle('third');
       expect(element.classList.contains('third')).toBe(false);
 
@@ -237,7 +237,7 @@ describe('DOM Manipulation Concepts', () => {
   describe('Style Manipulation', () => {
     test('style property should get and set inline styles', () => {
       const element = document.createElement('div');
-      
+
       element.style.color = 'red';
       element.style.fontSize = '16px';
       element.style.backgroundColor = 'blue';
@@ -274,14 +274,14 @@ describe('DOM Manipulation Concepts', () => {
     test('parentNode should navigate to parent', () => {
       const child = document.querySelector('.first');
       const parent = child.parentNode;
-      
+
       expect(parent.className).toBe('parent');
     });
 
     test('children should get child elements', () => {
       const parent = document.querySelector('.parent');
       const children = parent.children;
-      
+
       expect(children.length).toBe(3);
       expect(children[0].className).toBe('child first');
       expect(children[1].className).toBe('child middle');
@@ -290,14 +290,14 @@ describe('DOM Manipulation Concepts', () => {
 
     test('firstElementChild and lastElementChild should get first/last children', () => {
       const parent = document.querySelector('.parent');
-      
+
       expect(parent.firstElementChild.className).toBe('child first');
       expect(parent.lastElementChild.className).toBe('child last');
     });
 
     test('nextElementSibling and previousElementSibling should navigate siblings', () => {
       const middle = document.querySelector('.middle');
-      
+
       expect(middle.previousElementSibling.className).toBe('child first');
       expect(middle.nextElementSibling.className).toBe('child last');
     });
@@ -341,7 +341,7 @@ describe('DOM Manipulation Concepts', () => {
       const button = document.createElement('button');
       let eventInfo = {};
 
-      button.addEventListener('click', (event) => {
+      button.addEventListener('click', event => {
         eventInfo = {
           type: event.type,
           target: event.target,
@@ -404,7 +404,7 @@ describe('DOM Manipulation Concepts', () => {
       expect(['loading', 'interactive', 'complete']).toContain(document.readyState);
     });
 
-    test('DOMContentLoaded event should be handled', (done) => {
+    test('DOMContentLoaded event should be handled', done => {
       // Since document is already loaded in test environment,
       // we'll simulate the behavior
       if (document.readyState === 'loading') {
@@ -423,7 +423,7 @@ describe('DOM Manipulation Concepts', () => {
   describe('Performance Considerations', () => {
     test('documentFragment should improve performance for multiple operations', () => {
       const fragment = document.createDocumentFragment();
-      
+
       for (let i = 0; i < 5; i++) {
         const div = document.createElement('div');
         div.textContent = `Item ${i + 1}`;
@@ -431,7 +431,7 @@ describe('DOM Manipulation Concepts', () => {
       }
 
       container.appendChild(fragment);
-      
+
       expect(container.children.length).toBe(5);
       expect(container.children[0].textContent).toBe('Item 1');
       expect(container.children[4].textContent).toBe('Item 5');

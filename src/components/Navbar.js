@@ -13,7 +13,7 @@ class Navbar {
     this.userStats = {
       planetsExplored: 0,
       conceptsCompleted: 0,
-      badgesEarned: 0,
+      badgesEarned: 0
     };
     this.isInitialized = false;
 
@@ -38,24 +38,23 @@ class Navbar {
       window.LearningModel.onChange(() => this.updateUserStats());
     }
 
-    JSVLogger.info("🧭 Navbar component initialized");
+    JSVLogger.info('🧭 Navbar component initialized');
   }
 
   /**
    * Find and cache DOM elements
    */
   findElements() {
-    this.navbar = document.getElementById("navbar");
-    this.progressValue = document.getElementById("progress-value");
-    this.themeToggle = document.getElementById("theme-toggle");
-    this.planetsExplored = document.getElementById("planets-explored");
-    this.conceptsCompleted = document.getElementById("concepts-mastered");
-    this.badgesEarned = document.getElementById("badges-earned");
-    this.reviewsDue = document.getElementById("reviews-due");
+    this.navbar = document.getElementById('navbar');
+    this.progressValue = document.getElementById('progress-value');
+    this.themeToggle = document.getElementById('theme-toggle');
+    this.planetsExplored = document.getElementById('planets-explored');
+    this.conceptsCompleted = document.getElementById('concepts-mastered');
+    this.badgesEarned = document.getElementById('badges-earned');
+    this.reviewsDue = document.getElementById('reviews-due');
 
     if (!this.navbar) {
-      JSVLogger.warn("⚠️ Navbar element not found");
-      return;
+      JSVLogger.warn('⚠️ Navbar element not found');
     }
   }
 
@@ -67,37 +66,37 @@ class Navbar {
 
     // Theme toggle
     if (this.themeToggle) {
-      this.themeToggle.addEventListener("click", (e) => {
+      this.themeToggle.addEventListener('click', e => {
         e.preventDefault();
         this.handleThemeToggle();
       });
     }
 
     // Logo click - navigate home
-    const logo = this.navbar.querySelector(".logo");
+    const logo = this.navbar.querySelector('.logo');
     if (logo) {
-      logo.addEventListener("click", (e) => {
+      logo.addEventListener('click', e => {
         e.preventDefault();
-        Navigation.navigateTo("/");
+        Navigation.navigateTo('/');
       });
     }
 
     // Progress click - show detailed progress
     if (this.progressValue) {
-      this.progressValue.addEventListener("click", (e) => {
+      this.progressValue.addEventListener('click', e => {
         e.preventDefault();
         this.showProgressModal();
       });
     }
 
     // Keyboard shortcuts
-    document.addEventListener("keydown", (e) => {
+    document.addEventListener('keydown', e => {
       this.handleKeyboardShortcuts(e);
     });
 
     // Scroll effects
     window.addEventListener(
-      "scroll",
+      'scroll',
       throttle(() => {
         this.handleScroll();
       }, 16)
@@ -105,7 +104,7 @@ class Navbar {
 
     // Window resize
     window.addEventListener(
-      "resize",
+      'resize',
       debounce(() => {
         this.handleResize();
       }, 250)
@@ -129,10 +128,10 @@ class Navbar {
    */
   animateThemeToggle() {
     if (this.themeToggle) {
-      this.themeToggle.style.transform = "scale(0.9) rotate(180deg)";
+      this.themeToggle.style.transform = 'scale(0.9) rotate(180deg)';
 
       setTimeout(() => {
-        this.themeToggle.style.transform = "scale(1) rotate(0deg)";
+        this.themeToggle.style.transform = 'scale(1) rotate(0deg)';
       }, 200);
     }
   }
@@ -142,19 +141,19 @@ class Navbar {
    */
   handleKeyboardShortcuts(event) {
     // Alt + H - Go home
-    if (event.altKey && event.key.toLowerCase() === "h") {
+    if (event.altKey && event.key.toLowerCase() === 'h') {
       event.preventDefault();
-      Navigation.navigateTo("/");
+      Navigation.navigateTo('/');
     }
 
     // Alt + T - Toggle theme
-    if (event.altKey && event.key.toLowerCase() === "t") {
+    if (event.altKey && event.key.toLowerCase() === 't') {
       event.preventDefault();
       this.handleThemeToggle();
     }
 
     // Alt + P - Show progress
-    if (event.altKey && event.key.toLowerCase() === "p") {
+    if (event.altKey && event.key.toLowerCase() === 'p') {
       event.preventDefault();
       this.showProgressModal();
     }
@@ -166,21 +165,21 @@ class Navbar {
   handleScroll() {
     if (!this.navbar) return;
 
-    const scrollY = window.scrollY;
+    const { scrollY } = window;
     const scrollThreshold = 50;
 
     // Add/remove scrolled class for styling
     if (scrollY > scrollThreshold) {
-      this.navbar.classList.add("scrolled");
+      this.navbar.classList.add('scrolled');
     } else {
-      this.navbar.classList.remove("scrolled");
+      this.navbar.classList.remove('scrolled');
     }
 
     // Hide/show navbar on scroll (optional)
     if (scrollY > this.lastScrollY && scrollY > 200) {
-      this.navbar.classList.add("nav-hidden");
+      this.navbar.classList.add('nav-hidden');
     } else {
-      this.navbar.classList.remove("nav-hidden");
+      this.navbar.classList.remove('nav-hidden');
     }
 
     this.lastScrollY = scrollY;
@@ -192,33 +191,33 @@ class Navbar {
   handleResize() {
     // Adjust navbar layout for mobile
     if (window.innerWidth <= 768) {
-      this.navbar.classList.add("mobile");
+      this.navbar.classList.add('mobile');
     } else {
-      this.navbar.classList.remove("mobile");
+      this.navbar.classList.remove('mobile');
     }
   }
 
   /**
    * Handle state changes from StateManager
    */
-  handleStateChange(event, data, state) {
+  handleStateChange(event, data, _state) {
     switch (event) {
-      case "progress":
+      case 'progress':
         this.updateProgressDisplay();
         break;
-      case "planetUnlocked":
+      case 'planetUnlocked':
         this.updateUserStats();
         this.showAchievementToast(`🪐 ${data} Planet Unlocked!`);
         break;
-      case "conceptCompleted":
+      case 'conceptCompleted':
         this.updateUserStats();
         this.updateProgressDisplay();
         break;
-      case "achievementEarned":
+      case 'achievementEarned':
         this.updateUserStats();
         this.showAchievementToast(`🏆 ${data.title}`);
         break;
-      case "levelUp":
+      case 'levelUp':
         this.showAchievementToast(`⭐ Level ${data} Reached!`);
         break;
     }
@@ -236,11 +235,11 @@ class Navbar {
 
       // Add visual feedback for progress milestones
       if (percentage >= 100) {
-        this.progressValue.classList.add("completed");
+        this.progressValue.classList.add('completed');
       } else if (percentage >= 75) {
-        this.progressValue.classList.add("high-progress");
+        this.progressValue.classList.add('high-progress');
       } else if (percentage >= 50) {
-        this.progressValue.classList.add("medium-progress");
+        this.progressValue.classList.add('medium-progress');
       }
     }
 
@@ -258,7 +257,7 @@ class Navbar {
     this.userStats = {
       planetsExplored: stats.planetsExplored,
       conceptsCompleted: stats.conceptsCompleted,
-      badgesEarned: achievements.length,
+      badgesEarned: achievements.length
     };
 
     // Update display elements
@@ -281,10 +280,10 @@ class Navbar {
    * Render the learner-model panel (BKT mastery + SM-2 review queue)
    */
   renderLearningModelPanel() {
-    if (!window.LearningModel) return "";
+    if (!window.LearningModel) return '';
     const summary = window.LearningModel.getSummary();
     const mastered = Object.entries(summary.mastery)
-      .filter(([id]) => !id.includes(":"))
+      .filter(([id]) => !id.includes(':'))
       .sort((a, b) => b[1].pKnown - a[1].pKnown);
     const rows = mastered.length
       ? mastered
@@ -292,11 +291,13 @@ class Navbar {
             ([id, m]) => `
               <div class="mastery-row">
                 <span class="mastery-label">${id}</span>
-                <span class="mastery-bar"><span class="mastery-fill" style="width: ${Math.round(m.pKnown * 100)}%"></span></span>
-                <span class="mastery-value">${Math.round(m.pKnown * 100)}%${m.mastered ? " ✓" : ""}</span>
+                <span class="mastery-bar"><span class="mastery-fill" style="width: ${Math.round(
+                  m.pKnown * 100
+                )}%"></span></span>
+                <span class="mastery-value">${Math.round(m.pKnown * 100)}%${m.mastered ? ' ✓' : ''}</span>
               </div>`
           )
-          .join("")
+          .join('')
       : '<p class="mastery-empty">Take a quiz to start building your mastery profile.</p>';
     return `
       <div class="learning-model">
@@ -314,9 +315,9 @@ class Navbar {
   exportLearningData() {
     if (!window.LearningModel) return;
     const payload = window.LearningModel.exportAll();
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
     a.download = `jsversehub-learning-data-${new Date().toISOString().slice(0, 10)}.json`;
     document.body.appendChild(a);
@@ -330,7 +331,7 @@ class Navbar {
    */
   updatePageTitle() {
     const progress = StateManager.getProgress();
-    const baseTitle = "JSVerseHub - Master JavaScript in a Galaxy";
+    const baseTitle = 'JSVerseHub - Master JavaScript in a Galaxy';
 
     if (progress.overallProgress > 0) {
       document.title = `${baseTitle} (${progress.overallProgress}%)`;
@@ -344,8 +345,8 @@ class Navbar {
    */
   showAchievementToast(message) {
     // Create toast element
-    const toast = document.createElement("div");
-    toast.className = "achievement-toast";
+    const toast = document.createElement('div');
+    toast.className = 'achievement-toast';
     toast.innerHTML = `
             <div class="toast-content">
                 <div class="toast-message">${message}</div>
@@ -374,12 +375,12 @@ class Navbar {
 
     // Animate in
     setTimeout(() => {
-      toast.style.transform = "translateX(0)";
+      toast.style.transform = 'translateX(0)';
     }, 100);
 
     // Auto-remove after 4 seconds
     setTimeout(() => {
-      toast.style.transform = "translateX(400px)";
+      toast.style.transform = 'translateX(400px)';
       setTimeout(() => {
         if (toast.parentNode) {
           toast.parentNode.removeChild(toast);
@@ -405,12 +406,8 @@ class Navbar {
                     <div class="overall-progress">
                         <h3>Overall Progress</h3>
                         <div class="progress-ring">
-                            <div class="progress-circle" data-progress="${
-                              progress.overallProgress
-                            }">
-                                <span class="progress-text">${
-                                  progress.overallProgress
-                                }%</span>
+                            <div class="progress-circle" data-progress="${progress.overallProgress}">
+                                <span class="progress-text">${progress.overallProgress}%</span>
                             </div>
                         </div>
                     </div>
@@ -447,7 +444,7 @@ class Navbar {
                         ${achievements
                           .slice(0, 3)
                           .map(
-                            (achievement) => `
+                            achievement => `
                             <div class="achievement-item">
                                 <div class="achievement-icon">🏆</div>
                                 <div class="achievement-text">
@@ -457,7 +454,7 @@ class Navbar {
                             </div>
                         `
                           )
-                          .join("")}
+                          .join('')}
                     </div>
                 </div>
 
@@ -473,9 +470,9 @@ class Navbar {
         `;
 
     this.showModal(modalContent);
-    const exportBtn = document.getElementById("export-learning-data");
+    const exportBtn = document.getElementById('export-learning-data');
     if (exportBtn) {
-      exportBtn.addEventListener("click", () => this.exportLearningData());
+      exportBtn.addEventListener('click', () => this.exportLearningData());
     }
   }
 
@@ -484,8 +481,8 @@ class Navbar {
    */
   showModal(content) {
     // Create modal backdrop
-    const modal = document.createElement("div");
-    modal.className = "modal progress-modal-container";
+    const modal = document.createElement('div');
+    modal.className = 'modal progress-modal-container';
     modal.innerHTML = `
             <div class="modal-content">
                 ${content}
@@ -512,32 +509,32 @@ class Navbar {
 
     // Show modal with animation
     setTimeout(() => {
-      modal.style.opacity = "1";
-      modal.classList.add("show");
+      modal.style.opacity = '1';
+      modal.classList.add('show');
     }, 10);
 
     // Close on backdrop click
-    modal.addEventListener("click", (e) => {
+    modal.addEventListener('click', e => {
       if (e.target === modal) {
         this.closeModal(modal);
       }
     });
 
     // Close on Escape key
-    const closeOnEscape = (e) => {
-      if (e.key === "Escape") {
+    const closeOnEscape = e => {
+      if (e.key === 'Escape') {
         this.closeModal(modal);
-        document.removeEventListener("keydown", closeOnEscape);
+        document.removeEventListener('keydown', closeOnEscape);
       }
     };
-    document.addEventListener("keydown", closeOnEscape);
+    document.addEventListener('keydown', closeOnEscape);
   }
 
   /**
    * Close modal with animation
    */
   closeModal(modal) {
-    modal.style.opacity = "0";
+    modal.style.opacity = '0';
     setTimeout(() => {
       if (modal.parentNode) {
         modal.parentNode.removeChild(modal);
@@ -550,7 +547,7 @@ class Navbar {
    */
   updateTheme(theme) {
     if (this.navbar) {
-      this.navbar.classList.remove("galaxy-theme", "cosmic-theme");
+      this.navbar.classList.remove('galaxy-theme', 'cosmic-theme');
       this.navbar.classList.add(`${theme}-theme`);
     }
   }
@@ -562,9 +559,9 @@ class Navbar {
     if (!this.navbar) return;
 
     if (visible) {
-      this.navbar.classList.remove("hidden");
+      this.navbar.classList.remove('hidden');
     } else {
-      this.navbar.classList.add("hidden");
+      this.navbar.classList.add('hidden');
     }
   }
 
@@ -574,14 +571,14 @@ class Navbar {
   addNavItem(item) {
     if (!this.navbar) return false;
 
-    const navRight = this.navbar.querySelector(".nav-right");
+    const navRight = this.navbar.querySelector('.nav-right');
     if (navRight) {
-      const navItem = document.createElement("div");
-      navItem.className = "nav-item";
+      const navItem = document.createElement('div');
+      navItem.className = 'nav-item';
       navItem.innerHTML = item.html;
 
       if (item.handler) {
-        navItem.addEventListener("click", item.handler);
+        navItem.addEventListener('click', item.handler);
       }
 
       navRight.insertBefore(navItem, navRight.lastElementChild);
@@ -596,10 +593,10 @@ class Navbar {
    */
   getState() {
     return {
-      isVisible: !this.navbar?.classList.contains("hidden"),
-      isScrolled: this.navbar?.classList.contains("scrolled"),
+      isVisible: !this.navbar?.classList.contains('hidden'),
+      isScrolled: this.navbar?.classList.contains('scrolled'),
       currentProgress: this.progressValue?.textContent,
-      userStats: this.userStats,
+      userStats: this.userStats
     };
   }
 
@@ -609,19 +606,19 @@ class Navbar {
   destroy() {
     // Remove event listeners
     if (this.themeToggle) {
-      this.themeToggle.removeEventListener("click", this.handleThemeToggle);
+      this.themeToggle.removeEventListener('click', this.handleThemeToggle);
     }
 
-    window.removeEventListener("scroll", this.handleScroll);
-    window.removeEventListener("resize", this.handleResize);
+    window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('resize', this.handleResize);
 
     this.isInitialized = false;
-    JSVLogger.info("🗑️ Navbar component destroyed");
+    JSVLogger.info('🗑️ Navbar component destroyed');
   }
 }
 
 // CSS styles for navbar enhancements
-const navbarStyles = document.createElement("style");
+const navbarStyles = document.createElement('style');
 navbarStyles.textContent = `
     .navbar.scrolled {
         background: rgba(26, 26, 46, 0.95);
@@ -775,6 +772,6 @@ navbarStyles.textContent = `
 document.head.appendChild(navbarStyles);
 
 // Export for use in other modules
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
   window.Navbar = Navbar;
 }

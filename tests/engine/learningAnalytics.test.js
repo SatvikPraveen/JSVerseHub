@@ -2,7 +2,12 @@ import { LearningAnalytics, VERBS, OBJECT_TYPES, SCHEMA_VERSION } from '../../sr
 
 const memStorage = () => {
   const m = new Map();
-  return { getItem: k => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, v), removeItem: k => m.delete(k), raw: m };
+  return {
+    getItem: k => (m.has(k) ? m.get(k) : null),
+    setItem: (k, v) => m.set(k, v),
+    removeItem: k => m.delete(k),
+    raw: m
+  };
 };
 
 describe('LearningAnalytics', () => {
@@ -85,7 +90,12 @@ describe('LearningAnalytics', () => {
   });
 
   test('exports JSON and CSV', () => {
-    analytics.record(VERBS.ANSWERED, { type: OBJECT_TYPES.QUESTION, id: 'q,1' }, { success: true, score: 1 }, { conceptId: 'a' });
+    analytics.record(
+      VERBS.ANSWERED,
+      { type: OBJECT_TYPES.QUESTION, id: 'q,1' },
+      { success: true, score: 1 },
+      { conceptId: 'a' }
+    );
     const json = JSON.parse(analytics.exportJSON());
     expect(json.events).toHaveLength(1);
     const csv = analytics.exportCSV().split('\n');

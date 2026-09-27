@@ -173,12 +173,7 @@ const asyncPatterns = {
    * @returns {Promise}
    */
   withTimeout(promise, ms) {
-    return Promise.race([
-      promise,
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Timeout')), ms)
-      )
-    ]);
+    return Promise.race([promise, new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), ms))]);
   },
 
   /**
@@ -198,7 +193,7 @@ const asyncPatterns = {
         lastError = error;
 
         if (i < maxRetries) {
-          const delay = initialDelay * Math.pow(2, i);
+          const delay = initialDelay * 2 ** i;
           await new Promise(resolve => setTimeout(resolve, delay));
         }
       }
@@ -259,7 +254,7 @@ const workerPool = {
       availableWorker.busy = true;
       this.activeCount++;
 
-      const messageHandler = (event) => {
+      const messageHandler = event => {
         availableWorker.worker.removeEventListener('message', messageHandler);
         availableWorker.worker.removeEventListener('error', errorHandler);
         availableWorker.busy = false;
@@ -268,7 +263,7 @@ const workerPool = {
         this.process();
       };
 
-      const errorHandler = (error) => {
+      const errorHandler = error => {
         availableWorker.worker.removeEventListener('message', messageHandler);
         availableWorker.worker.removeEventListener('error', errorHandler);
         availableWorker.busy = false;
@@ -333,7 +328,7 @@ const rafPatterns = {
      * Start RAF loop
      */
     start() {
-      const loop = (currentTime) => {
+      const loop = currentTime => {
         if (currentTime - this.lastTime >= this.frameTime) {
           this.callbacks.forEach(cb => cb(currentTime));
           this.lastTime = currentTime;
@@ -366,15 +361,9 @@ const observerPatterns = {
    */
   VisibilityObserver: class {
     constructor(options = {}) {
-      const {
-        threshold = 0.1,
-        rootMargin = '50px'
-      } = options;
+      const { threshold = 0.1, rootMargin = '50px' } = options;
 
-      this.observer = new IntersectionObserver(
-        (entries) => this.handleIntersection(entries),
-        { threshold, rootMargin }
-      );
+      this.observer = new IntersectionObserver(entries => this.handleIntersection(entries), { threshold, rootMargin });
 
       this.callbacks = new Map();
     }
@@ -525,21 +514,15 @@ const scrollOptimization = {
    */
   InfiniteScroll: class {
     constructor(container, loadMoreFn, options = {}) {
-      const {
-        threshold = 300,
-        margin = '100px'
-      } = options;
+      const { threshold = 300, margin = '100px' } = options;
 
       this.container = container;
       this.loadMoreFn = loadMoreFn;
       this.isLoading = false;
 
-      this.observer = new IntersectionObserver(
-        (entries) => this.handleIntersection(entries),
-        {
-          rootMargin: margin
-        }
-      );
+      this.observer = new IntersectionObserver(entries => this.handleIntersection(entries), {
+        rootMargin: margin
+      });
 
       this.sentinel = document.createElement('div');
       container.appendChild(this.sentinel);

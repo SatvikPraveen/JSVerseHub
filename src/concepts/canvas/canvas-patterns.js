@@ -45,7 +45,7 @@ const gameUtils = {
     start(clearFn) {
       this.running = true;
       this.lastTime = performance.now();
-      const loop = (currentTime) => {
+      const loop = currentTime => {
         this.deltaTime = (currentTime - this.lastTime) / 1000;
         this.lastTime = currentTime;
         this.frameCount++;
@@ -99,15 +99,7 @@ const gameUtils = {
    */
   Entity: class {
     constructor(options = {}) {
-      const {
-        x = 0,
-        y = 0,
-        width = 50,
-        height = 50,
-        vx = 0,
-        vy = 0,
-        color = '#000'
-      } = options;
+      const { x = 0, y = 0, width = 50, height = 50, vx = 0, vy = 0, color = '#000' } = options;
 
       this.x = x;
       this.y = y;
@@ -167,12 +159,7 @@ const drawingPatterns = {
    * @param {Object} options - Grid options
    */
   grid(ctx, cellSize, options = {}) {
-    const {
-      color = '#ccc',
-      lineWidth = 1,
-      width = ctx.canvas.width,
-      height = ctx.canvas.height
-    } = options;
+    const { color = '#ccc', lineWidth = 1, width = ctx.canvas.width, height = ctx.canvas.height } = options;
 
     ctx.strokeStyle = color;
     ctx.lineWidth = lineWidth;
@@ -201,16 +188,11 @@ const drawingPatterns = {
    * @param {Object} options - Checkerboard options
    */
   checkerboard(ctx, cellSize, options = {}) {
-    const {
-      color1 = '#fff',
-      color2 = '#000',
-      width = ctx.canvas.width,
-      height = ctx.canvas.height
-    } = options;
+    const { color1 = '#fff', color2 = '#000', width = ctx.canvas.width, height = ctx.canvas.height } = options;
 
     for (let y = 0; y < height; y += cellSize) {
       for (let x = 0; x < width; x += cellSize) {
-        ctx.fillStyle = ((x / cellSize + y / cellSize) % 2 === 0) ? color1 : color2;
+        ctx.fillStyle = (x / cellSize + y / cellSize) % 2 === 0 ? color1 : color2;
         ctx.fillRect(x, y, cellSize, cellSize);
       }
     }
@@ -226,11 +208,7 @@ const drawingPatterns = {
    * @param {Object} options - Grid options
    */
   polarGrid(ctx, centerX, centerY, circles, radials, options = {}) {
-    const {
-      maxRadius = 200,
-      color = '#ccc',
-      lineWidth = 1
-    } = options;
+    const { maxRadius = 200, color = '#ccc', lineWidth = 1 } = options;
 
     ctx.strokeStyle = color;
     ctx.lineWidth = lineWidth;
@@ -268,12 +246,7 @@ const drawingPatterns = {
    * @param {Object} options - Drawing options
    */
   roundedRect(ctx, x, y, width, height, radius, options = {}) {
-    const {
-      fill = true,
-      stroke = false,
-      fillColor = '#000',
-      strokeColor = '#000'
-    } = options;
+    const { fill = true, stroke = false, fillColor = '#000', strokeColor = '#000' } = options;
 
     ctx.beginPath();
     ctx.moveTo(x + radius, y);
@@ -304,12 +277,7 @@ const drawingPatterns = {
    * @param {Object} options - Curve options
    */
   bezierCurve(ctx, points, options = {}) {
-    const {
-      fill = false,
-      stroke = true,
-      strokeColor = '#000',
-      lineWidth = 2
-    } = options;
+    const { fill = false, stroke = true, strokeColor = '#000', lineWidth = 2 } = options;
 
     if (points.length < 2) return;
 
@@ -317,10 +285,10 @@ const drawingPatterns = {
     ctx.moveTo(points[0][0], points[0][1]);
 
     for (let i = 1; i < points.length - 2; i++) {
-      const cp1x = points[i][0] + (points[i + 1][0] - points[i - 1][0]) / 2 * 0.16;
-      const cp1y = points[i][1] + (points[i + 1][1] - points[i - 1][1]) / 2 * 0.16;
-      const cp2x = points[i + 1][0] + (points[i + 2][0] - points[i][0]) / 2 * -0.16;
-      const cp2y = points[i + 1][1] + (points[i + 2][1] - points[i][1]) / 2 * -0.16;
+      const cp1x = points[i][0] + ((points[i + 1][0] - points[i - 1][0]) / 2) * 0.16;
+      const cp1y = points[i][1] + ((points[i + 1][1] - points[i - 1][1]) / 2) * 0.16;
+      const cp2x = points[i + 1][0] + ((points[i + 2][0] - points[i][0]) / 2) * -0.16;
+      const cp2y = points[i + 1][1] + ((points[i + 2][1] - points[i][1]) / 2) * -0.16;
 
       ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, points[i + 1][0], points[i + 1][1]);
     }
@@ -348,11 +316,7 @@ const visualization = {
    * @param {Object} options - Chart options
    */
   barChart(ctx, x, y, width, height, data, options = {}) {
-    const {
-      colors = ['#ff6b6b', '#4ecdc4', '#45b7d1'],
-      padding = 10,
-      maxValue = Math.max(...data)
-    } = options;
+    const { colors = ['#ff6b6b', '#4ecdc4', '#45b7d1'], padding = 10, maxValue = Math.max(...data) } = options;
 
     const barWidth = (width - padding * (data.length - 1)) / data.length;
     const chartHeight = height;
@@ -377,10 +341,7 @@ const visualization = {
    * @param {Object} options - Chart options
    */
   pieChart(ctx, centerX, centerY, radius, data, options = {}) {
-    const {
-      colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24'],
-      labels = []
-    } = options;
+    const { colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f9ca24'], labels = [] } = options;
 
     const total = data.reduce((a, b) => a + b, 0);
     let currentAngle = -Math.PI / 2;
@@ -568,10 +529,7 @@ const performance = {
      * @private
      */
     rectsOverlap(r1, r2) {
-      return !(r1.x + r1.width < r2.x ||
-               r2.x + r2.width < r1.x ||
-               r1.y + r1.height < r2.y ||
-               r2.y + r2.height < r1.y);
+      return !(r1.x + r1.width < r2.x || r2.x + r2.width < r1.x || r1.y + r1.height < r2.y || r2.y + r2.height < r1.y);
     }
 
     /**

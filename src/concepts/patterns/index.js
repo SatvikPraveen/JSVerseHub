@@ -7,7 +7,8 @@ import { singletonContent } from './singleton';
 
 export const patternsConfig = {
   title: 'Design Patterns',
-  description: 'Recognise, implement and choose between the classic design patterns as they appear in idiomatic JavaScript',
+  description:
+    'Recognise, implement and choose between the classic design patterns as they appear in idiomatic JavaScript',
   difficulty: 'intermediate',
   estimatedTime: '3-4 hours',
   topics: [
@@ -869,9 +870,10 @@ registerNotification('sms', ({ phone }) => ({ send: () => \`Texting \${phone}\` 
 
       withRetry(fn, { attempts = 3 } = {}) {
         return function retried(...args) {
-          const attempt = remaining => Promise.resolve()
-            .then(() => fn.apply(this, args))
-            .catch(error => (remaining > 1 ? attempt(remaining - 1) : Promise.reject(error)));
+          const attempt = remaining =>
+            Promise.resolve()
+              .then(() => fn.apply(this, args))
+              .catch(error => (remaining > 1 ? attempt(remaining - 1) : Promise.reject(error)));
           return attempt(attempts);
         };
       },
@@ -882,7 +884,8 @@ registerNotification('sms', ({ phone }) => ({ send: () => \`Texting \${phone}\` 
     },
 
     strategy: {
-      description: 'Strategy objects make an algorithm pluggable so the context never changes when a new variant is added',
+      description:
+        'Strategy objects make an algorithm pluggable so the context never changes when a new variant is added',
 
       createShippingCalculator(initialStrategy = 'standard') {
         const strategies = {
@@ -958,15 +961,18 @@ registerNotification('sms', ({ phone }) => ({ send: () => \`Texting \${phone}\` 
 
       createLazy(factory) {
         let real = null;
-        return new Proxy({}, {
-          get(ignored, property) {
-            if (real === null) {
-              real = factory();
+        return new Proxy(
+          {},
+          {
+            get(ignored, property) {
+              if (real === null) {
+                real = factory();
+              }
+              const value = real[property];
+              return typeof value === 'function' ? value.bind(real) : value;
             }
-            const value = real[property];
-            return typeof value === 'function' ? value.bind(real) : value;
           }
-        });
+        );
       },
 
       createAccessLog(target) {
@@ -1089,7 +1095,8 @@ export const exercises = [
     id: 'patterns_ex1',
     title: 'Build a Counter Module',
     difficulty: 'easy',
-    description: 'Use the module pattern to build a counter with a private count and public increment, decrement and getValue methods.',
+    description:
+      'Use the module pattern to build a counter with a private count and public increment, decrement and getValue methods.',
     template: `
 function createCounter(start = 0) {
   // Declare the private "count" variable here
@@ -1123,7 +1130,8 @@ console.log(counter.count);      // undefined - stays private
     id: 'patterns_ex2',
     title: 'Create a Namespace with an IIFE',
     difficulty: 'easy',
-    description: 'Wrap helper functions in an immediately invoked function expression so only a StringUtils namespace object is exposed.',
+    description:
+      'Wrap helper functions in an immediately invoked function expression so only a StringUtils namespace object is exposed.',
     template: `
 const StringUtils = (function () {
   // private helper: capitalise the first letter of a word
@@ -1158,7 +1166,8 @@ console.log(typeof StringUtils.capitalizeWord);             // "undefined"
     id: 'patterns_ex3',
     title: 'Simple Event Emitter',
     difficulty: 'easy',
-    description: 'Implement subscribe(event, callback) and publish(event, payload) on top of a Map of arrays to practice the observer pattern.',
+    description:
+      'Implement subscribe(event, callback) and publish(event, payload) on top of a Map of arrays to practice the observer pattern.',
     template: `
 function createEmitter() {
   const topics = new Map();
@@ -1196,7 +1205,8 @@ emitter.publish('greet', 'Ada'); // "Hello, Ada"
     id: 'patterns_ex4',
     title: 'Unsubscribe and once() for the Emitter',
     difficulty: 'medium',
-    description: 'Extend the event emitter so subscribe returns an unsubscribe function and add once(), which removes the observer after its first notification.',
+    description:
+      'Extend the event emitter so subscribe returns an unsubscribe function and add once(), which removes the observer after its first notification.',
     template: `
 function createEmitter() {
   const topics = new Map();
@@ -1239,7 +1249,8 @@ function createEmitter() {
     id: 'patterns_ex5',
     title: 'Singleton Configuration Store',
     difficulty: 'medium',
-    description: 'Write getConfig() so that every call returns the same object, created lazily on the first call, with get/set methods and a reset hook for tests.',
+    description:
+      'Write getConfig() so that every call returns the same object, created lazily on the first call, with get/set methods and a reset hook for tests.',
     template: `
 const getConfig = (function () {
   let instance = null;
@@ -1274,16 +1285,14 @@ console.log(getConfig() === getConfig());     // true
         check: code => /reset/.test(code)
       }
     ],
-    hints: [
-      'The closure variable "instance" survives between calls',
-      'reset() just sets instance back to null'
-    ]
+    hints: ['The closure variable "instance" survives between calls', 'reset() just sets instance back to null']
   },
   {
     id: 'patterns_ex6',
     title: 'Notification Factory',
     difficulty: 'medium',
-    description: 'Build createNotification(type, options) that returns email, sms or push notification objects sharing a send() interface, and throws for unknown types.',
+    description:
+      'Build createNotification(type, options) that returns email, sms or push notification objects sharing a send() interface, and throws for unknown types.',
     template: `
 function createNotification(type, options = {}) {
   const creators = {
@@ -1317,7 +1326,8 @@ createNotification('fax'); // TypeError
     id: 'patterns_ex7',
     title: 'Memoize with a Decorator',
     difficulty: 'medium',
-    description: 'Write withMemoization(fn), a function decorator that caches results by JSON-serialised arguments and preserves the original this binding.',
+    description:
+      'Write withMemoization(fn), a function decorator that caches results by JSON-serialised arguments and preserves the original this binding.',
     template: `
 function withMemoization(fn) {
   const cache = new Map();
@@ -1351,7 +1361,8 @@ fastSquare(4); // cached, no log
     id: 'patterns_ex8',
     title: 'Undo/Redo Command Stack',
     difficulty: 'hard',
-    description: 'Implement a command manager with execute, undo and redo. Executing a new command must clear the redo stack, and undo/redo must return false when nothing is available.',
+    description:
+      'Implement a command manager with execute, undo and redo. Executing a new command must clear the redo stack, and undo/redo must return false when nothing is available.',
     template: `
 function createCommandManager() {
   const done = [];
@@ -1393,16 +1404,14 @@ console.log(editor.text); // ""
         check: code => /return\s+false/.test(code)
       }
     ],
-    hints: [
-      'Array.prototype.pop returns undefined for an empty stack',
-      'A redo is just executing the command again'
-    ]
+    hints: ['Array.prototype.pop returns undefined for an empty stack', 'A redo is just executing the command again']
   },
   {
     id: 'patterns_ex9',
     title: 'Observable Store with Selectors',
     difficulty: 'hard',
-    description: 'Create a state store whose subscribe(selector, listener) only notifies when the selected slice actually changes (compare with Object.is), combining the observer and module patterns.',
+    description:
+      'Create a state store whose subscribe(selector, listener) only notifies when the selected slice actually changes (compare with Object.is), combining the observer and module patterns.',
     template: `
 function createStore(initialState) {
   let state = initialState;
@@ -1447,7 +1456,8 @@ store.setState({ count: 1 });      // "count is 1"
     id: 'patterns_ex10',
     title: 'Validating Proxy',
     difficulty: 'hard',
-    description: 'Use the Proxy API to implement createValidated(target, schema) where each schema entry is a predicate; invalid assignments must throw a TypeError and reads pass through untouched.',
+    description:
+      'Use the Proxy API to implement createValidated(target, schema) where each schema entry is a predicate; invalid assignments must throw a TypeError and reads pass through untouched.',
     template: `
 function createValidated(target, schema) {
   return new Proxy(target, {

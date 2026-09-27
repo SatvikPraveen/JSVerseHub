@@ -2,20 +2,20 @@
 // ES6 Modules - Import/Export syntax and module patterns
 
 export const modulesConfig = {
-  title: "ES6 Modules",
-  description: "Master ES6 module system with import/export syntax",
-  difficulty: "intermediate",
-  estimatedTime: "35 minutes"
+  title: 'ES6 Modules',
+  description: 'Master ES6 module system with import/export syntax',
+  difficulty: 'intermediate',
+  estimatedTime: '35 minutes'
 };
 
 // Export Syntax Examples
 export const exportSyntax = {
-  concept: "Export Syntax",
+  concept: 'Export Syntax',
   explanation: `
     ES6 modules use export/import syntax to share code between files.
     There are named exports, default exports, and various patterns for organizing code.
   `,
-  
+
   examples: {
     namedExports: `
 // Named Exports - multiple exports from a single module
@@ -69,7 +69,7 @@ export { square as sq, cube as cb };
 // Re-export from another module
 // export { sin, cos, tan } from './trigUtils.js';
     `,
-    
+
     defaultExports: `
 // Default Exports - single main export from a module
 // File: userService.js
@@ -126,7 +126,7 @@ export const validateUser = (user) => {
 // const UserService = class { ... };
 // export { UserService as default };
     `,
-    
+
     mixedExports: `
 // Mixed Exports - combining default and named exports
 // File: apiClient.js
@@ -217,12 +217,12 @@ export const defaultClient = new ApiClient('https://api.example.com');
 
 // Import Syntax Examples
 export const importSyntax = {
-  concept: "Import Syntax",
+  concept: 'Import Syntax',
   explanation: `
     ES6 provides various ways to import modules, from importing specific exports
     to importing entire modules or renaming imports.
   `,
-  
+
   examples: {
     namedImports: `
 // Named Imports - importing specific exports
@@ -263,7 +263,7 @@ if (validateUser(user)) {
   console.log('User is valid');
 }
     `,
-    
+
     defaultImports: `
 // Default Imports - importing the default export
 // File: app.js
@@ -293,7 +293,7 @@ client.get(API_ENDPOINTS.USERS).then(users => {
   console.log('Users:', users);
 });
     `,
-    
+
     namespaceImports: `
 // Namespace Imports - import everything as an object
 // File: mathApp.js
@@ -325,7 +325,7 @@ import ApiClient, * as APIUtils from './apiClient.js';
 const mainClient = new ApiClient('https://api.example.com');
 console.log(APIUtils.HTTP_METHODS.GET);
     `,
-    
+
     dynamicImports: `
 // Dynamic Imports - runtime module loading
 // File: dynamicLoader.js
@@ -431,12 +431,12 @@ async function initializeApp() {
 
 // Module Patterns
 export const modulePatterns = {
-  concept: "Module Patterns",
+  concept: 'Module Patterns',
   explanation: `
     Common patterns for organizing and structuring ES6 modules,
     including barrel exports, plugin systems, and configuration modules.
   `,
-  
+
   examples: {
     barrelExports: `
 // Barrel Exports - re-exporting from multiple modules
@@ -477,7 +477,7 @@ export const Utils = {
 // import { debounce, ApiClient, isValidEmail } from './utils/index.js';
 // import { Utils } from './utils/index.js';
     `,
-    
+
     configurationModules: `
 // Configuration Modules - centralized configuration
 // File: config/database.js
@@ -555,7 +555,7 @@ export const config = {
 
 export default config;
     `,
-    
+
     pluginSystem: `
 // Plugin System - extensible module architecture
 // File: core/pluginManager.js
@@ -715,7 +715,7 @@ async function setupApp() {
   return pluginManager;
 }
     `,
-    
+
     factoryPattern: `
 // Factory Pattern with Modules
 // File: factories/componentFactory.js
@@ -828,12 +828,12 @@ export default serviceFactory;
 
 // Best Practices
 export const bestPractices = {
-  concept: "Module Best Practices",
+  concept: 'Module Best Practices',
   explanation: `
     Guidelines and patterns for writing maintainable, performant,
     and well-organized ES6 modules.
   `,
-  
+
   examples: {
     fileOrganization: `
 // File Organization Best Practices
@@ -932,7 +932,7 @@ import { logger } from './utils/logger.js';
 import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
     `,
-    
+
     performanceOptimization: `
 // Performance Optimization Techniques
 

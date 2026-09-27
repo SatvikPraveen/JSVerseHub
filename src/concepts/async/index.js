@@ -2,28 +2,28 @@
 // Asynchronous JavaScript - Callbacks, Promises, Async/Await, and Event Loop
 
 export const asyncConfig = {
-  title: "Asynchronous JavaScript",
-  description: "Master asynchronous programming patterns and concepts",
-  difficulty: "intermediate",
-  estimatedTime: "60 minutes",
+  title: 'Asynchronous JavaScript',
+  description: 'Master asynchronous programming patterns and concepts',
+  difficulty: 'intermediate',
+  estimatedTime: '60 minutes',
   topics: [
-    "Understanding the Event Loop",
-    "Callbacks and Callback Hell",
-    "Promises and Promise Chaining",
-    "Async/Await Syntax",
-    "Error Handling in Async Code",
-    "Parallel vs Sequential Execution"
+    'Understanding the Event Loop',
+    'Callbacks and Callback Hell',
+    'Promises and Promise Chaining',
+    'Async/Await Syntax',
+    'Error Handling in Async Code',
+    'Parallel vs Sequential Execution'
   ]
 };
 
 // Event Loop and Asynchronous Basics
 export const eventLoop = {
-  concept: "Event Loop and Asynchronous Basics",
+  concept: 'Event Loop and Asynchronous Basics',
   explanation: `
     JavaScript is single-threaded but can handle asynchronous operations through the event loop.
     Understanding how the event loop works is crucial for mastering async programming.
   `,
-  
+
   examples: {
     eventLoopBasics: `
 // Understanding synchronous vs asynchronous execution
@@ -81,7 +81,7 @@ setTimeout(() => console.log('setTimeout 2'), 0);
 
 // Output: Synchronous 1, Synchronous 2, Promise 1, Promise 2, setTimeout 1, setTimeout 2
     `,
-    
+
     taskQueues: `
 // Understanding different task queues
 console.log('=== Task Queue Priority Demo ===');
@@ -134,7 +134,7 @@ function demonstratePriority() {
 demonstratePriority();
 // Output: Promise 1, Promise 2, Timeout 1, Timeout 3, Timeout 2
     `,
-    
+
     webApis: `
 // Web APIs and asynchronous operations
 // These operations are handled by the browser, not JavaScript engine
@@ -183,12 +183,12 @@ setTimeout(() => {
 
 // Callbacks and Callback Hell
 export const callbacks = {
-  concept: "Callbacks and Callback Hell",
+  concept: 'Callbacks and Callback Hell',
   explanation: `
     Callbacks are functions passed as arguments to other functions.
     While useful for async operations, they can lead to "callback hell" - nested callbacks that are hard to read and maintain.
   `,
-  
+
   examples: {
     basicCallbacks: `
 // Basic callback pattern
@@ -245,7 +245,7 @@ readFileAsync('document.txt', (err, content) => {
   console.log('File content:', content);
 });
     `,
-    
+
     callbackHell: `
 // Callback Hell - The Pyramid of Doom
 function fetchUser(userId, callback) {
@@ -320,7 +320,7 @@ fetchUser(123, (err, user) => {
 // 4. Testing becomes complex
 // 5. No easy way to handle parallel operations
     `,
-    
+
     callbackSolutions: `
 // Solutions to callback hell
 
@@ -431,12 +431,12 @@ waterfall([
 
 // Promises
 export const promises = {
-  concept: "Promises",
+  concept: 'Promises',
   explanation: `
     Promises represent the eventual completion or failure of an asynchronous operation.
     They provide a cleaner alternative to callbacks and enable better error handling.
   `,
-  
+
   examples: {
     promiseBasics: `
 // Creating promises
@@ -503,7 +503,7 @@ createDelayedPromise('Success', 500)
   .then(result => console.log(result))
   .catch(error => console.error(error.message));
     `,
-    
+
     promiseChaining: `
 // Promise chaining - solving callback hell
 function fetchUserPromise(userId) {
@@ -601,7 +601,7 @@ Promise.resolve('start')
     console.log('After recovery:', value);
   });
     `,
-    
+
     promiseUtilities: `
 // Promise utility methods
 
@@ -739,12 +739,12 @@ executeSequentially(sequentialTasks)
 
 // Async/Await
 export const asyncAwait = {
-  concept: "Async/Await",
+  concept: 'Async/Await',
   explanation: `
     Async/await is syntactic sugar over promises that makes asynchronous code look and behave more like synchronous code.
     It provides a cleaner way to handle promises without chaining.
   `,
-  
+
   examples: {
     basicAsyncAwait: `
 // Converting promise chains to async/await
@@ -821,7 +821,7 @@ class AsyncClass {
   }
 }
     `,
-    
+
     errorHandling: `
 // Error handling with async/await
 async function robustAsyncFunction() {
@@ -928,7 +928,7 @@ async function errorWrapperPattern() {
   return [result1, result2];
 }
     `,
-    
+
     parallelExecution: `
 // Parallel execution with async/await
 async function parallelVsSequential() {
@@ -1016,7 +1016,7 @@ async function batchExample() {
   console.log('Batch results:', results);
 }
     `,
-    
+
     advancedPatterns: `
 // Advanced async/await patterns
 
@@ -1184,11 +1184,11 @@ async function runAllExamples() {
 
 // Practical Async Patterns
 export const practicalPatterns = {
-  concept: "Practical Async Patterns",
+  concept: 'Practical Async Patterns',
   explanation: `
     Real-world patterns and best practices for handling asynchronous operations in applications.
   `,
-  
+
   examples: {
     apiIntegration: `
 // API integration patterns
@@ -1299,7 +1299,7 @@ async function apiExample() {
   }
 }
     `,
-    
+
     dataProcessing: `
 // Data processing pipelines
 class DataProcessor {
@@ -1397,7 +1397,7 @@ async function dataProcessingExample() {
   }
 }
     `,
-    
+
     realTimeData: `
 // Real-time data handling patterns
 class RealTimeDataHandler {
@@ -1616,9 +1616,9 @@ class WebSocketManager {
 // Interactive exercises
 export const interactiveExercises = [
   {
-    id: "promise_chain_conversion",
-    title: "Convert Callbacks to Promises",
-    description: "Convert callback-based code to promise-based code",
+    id: 'promise_chain_conversion',
+    title: 'Convert Callbacks to Promises',
+    description: 'Convert callback-based code to promise-based code',
     template: `
 // Convert this callback-based function to return a promise
 function getUserData(userId, callback) {
@@ -1643,16 +1643,16 @@ getUserDataPromise(123)
     `,
     tests: [
       {
-        description: "Should return a promise",
+        description: 'Should return a promise',
         check: (code, fn) => fn && typeof fn(1).then === 'function'
       }
     ]
   },
-  
+
   {
-    id: "async_await_practice",
-    title: "Async/Await Implementation",
-    description: "Implement async/await patterns for multiple operations",
+    id: 'async_await_practice',
+    title: 'Async/Await Implementation',
+    description: 'Implement async/await patterns for multiple operations',
     template: `
 // Implement an async function that:
 // 1. Fetches user data
@@ -1680,8 +1680,8 @@ function fetchSettings(userId) {
     `,
     tests: [
       {
-        description: "Should be an async function",
-        check: (code) => code.includes('async') && code.includes('await')
+        description: 'Should be an async function',
+        check: code => code.includes('async') && code.includes('await')
       }
     ]
   }
@@ -1695,18 +1695,19 @@ export const progressConfig = {
     total: 8,
     completed: 0
   },
-  
+
   updateProgress(conceptId, exerciseId = null) {
     if (exerciseId) {
       this.exercises.completed++;
     } else {
       this.conceptsCompleted++;
     }
-    
+
     return {
       conceptProgress: (this.conceptsCompleted / this.totalConcepts) * 100,
       exerciseProgress: (this.exercises.completed / this.exercises.total) * 100,
-      overallProgress: ((this.conceptsCompleted + this.exercises.completed) / (this.totalConcepts + this.exercises.total)) * 100
+      overallProgress:
+        ((this.conceptsCompleted + this.exercises.completed) / (this.totalConcepts + this.exercises.total)) * 100
     };
   }
 };

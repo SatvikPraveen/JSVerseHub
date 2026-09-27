@@ -55,12 +55,19 @@ function memoryStorage() {
 }
 
 function csvEscape(value) {
-  const s = value === null || value === undefined ? '' : typeof value === 'object' ? JSON.stringify(value) : String(value);
+  const s =
+    value === null || value === undefined ? '' : typeof value === 'object' ? JSON.stringify(value) : String(value);
   return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 }
 
 export class LearningAnalytics {
-  constructor({ storage = null, maxEvents = DEFAULT_MAX_EVENTS, clock = () => Date.now(), enabled = true, storageKey = STORAGE_KEY } = {}) {
+  constructor({
+    storage = null,
+    maxEvents = DEFAULT_MAX_EVENTS,
+    clock = () => Date.now(),
+    enabled = true,
+    storageKey = STORAGE_KEY
+  } = {}) {
     this.storage = storage || (typeof localStorage !== 'undefined' ? localStorage : memoryStorage());
     this.maxEvents = maxEvents;
     this.clock = clock;
@@ -77,7 +84,8 @@ export class LearningAnalytics {
       const raw = this.storage.getItem(this.storageKey);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (parsed && Array.isArray(parsed.events)) return { actorId: parsed.actorId || randomId(), events: parsed.events };
+        if (parsed && Array.isArray(parsed.events))
+          return { actorId: parsed.actorId || randomId(), events: parsed.events };
       }
     } catch (_) {
       /* corrupted storage: start fresh */
@@ -87,7 +95,10 @@ export class LearningAnalytics {
 
   persist() {
     try {
-      this.storage.setItem(this.storageKey, JSON.stringify({ schemaVersion: SCHEMA_VERSION, actorId: this.state.actorId, events: this.state.events }));
+      this.storage.setItem(
+        this.storageKey,
+        JSON.stringify({ schemaVersion: SCHEMA_VERSION, actorId: this.state.actorId, events: this.state.events })
+      );
     } catch (_) {
       /* quota exceeded or storage unavailable: keep in memory */
     }
@@ -109,7 +120,8 @@ export class LearningAnalytics {
    */
   record(verb, object, result = {}, context = {}) {
     if (!this.enabled) return null;
-    if (!verb || !object || !object.type || !object.id) throw new TypeError('record(verb, {type, id}) requires a verb and an object with type and id');
+    if (!verb || !object || !object.type || !object.id)
+      throw new TypeError('record(verb, {type, id}) requires a verb and an object with type and id');
 
     const statement = {
       id: randomId(),
@@ -163,7 +175,9 @@ export class LearningAnalytics {
       byVerb[e.verb] = (byVerb[e.verb] || 0) + 1;
       const conceptId = e.context.conceptId || (e.object.type === OBJECT_TYPES.CONCEPT ? e.object.id : null);
       if (!conceptId) return;
-      const c = concepts[conceptId] || (concepts[conceptId] = { views: 0, answers: 0, correct: 0, firstViewed: null, completedAt: null });
+      const c =
+        concepts[conceptId] ||
+        (concepts[conceptId] = { views: 0, answers: 0, correct: 0, firstViewed: null, completedAt: null });
       const t = Date.parse(e.timestamp);
       if (e.verb === VERBS.VIEWED && e.object.type === OBJECT_TYPES.CONCEPT) {
         c.views += 1;
@@ -177,17 +191,45 @@ export class LearningAnalytics {
     });
     Object.values(concepts).forEach(c => {
       c.accuracy = c.answers ? c.correct / c.answers : null;
-      c.timeOnTaskMs = c.firstViewed !== null && c.completedAt !== null ? Math.max(0, c.completedAt - c.firstViewed) : null;
+      c.timeOnTaskMs =
+        c.firstViewed !== null && c.completedAt !== null ? Math.max(0, c.completedAt - c.firstViewed) : null;
     });
-    return { schemaVersion: SCHEMA_VERSION, actorId: this.state.actorId, totalEvents: this.state.events.length, byVerb, concepts };
+    return {
+      schemaVersion: SCHEMA_VERSION,
+      actorId: this.state.actorId,
+      totalEvents: this.state.events.length,
+      byVerb,
+      concepts
+    };
   }
 
   exportJSON() {
-    return JSON.stringify({ schemaVersion: SCHEMA_VERSION, exportedAt: new Date(this.clock()).toISOString(), actorId: this.state.actorId, events: this.state.events }, null, 2);
+    return JSON.stringify(
+      {
+        schemaVersion: SCHEMA_VERSION,
+        exportedAt: new Date(this.clock()).toISOString(),
+        actorId: this.state.actorId,
+        events: this.state.events
+      },
+      null,
+      2
+    );
   }
 
   exportCSV() {
-    const header = ['id', 'timestamp', 'sessionId', 'actorId', 'verb', 'objectType', 'objectId', 'success', 'score', 'responseTimeMs', 'context'];
+    const header = [
+      'id',
+      'timestamp',
+      'sessionId',
+      'actorId',
+      'verb',
+      'objectType',
+      'objectId',
+      'success',
+      'score',
+      'responseTimeMs',
+      'context'
+    ];
     const rows = this.state.events.map(e => [
       e.id,
       e.timestamp,

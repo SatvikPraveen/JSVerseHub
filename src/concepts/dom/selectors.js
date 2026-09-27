@@ -2,20 +2,20 @@
 // Advanced DOM Selectors - Comprehensive guide to element selection methods
 
 export const selectorConfig = {
-  title: "DOM Selectors Mastery",
-  description: "Master all methods of selecting DOM elements efficiently",
-  difficulty: "beginner-intermediate",
-  estimatedTime: "30 minutes"
+  title: 'DOM Selectors Mastery',
+  description: 'Master all methods of selecting DOM elements efficiently',
+  difficulty: 'beginner-intermediate',
+  estimatedTime: '30 minutes'
 };
 
 // Basic Selection Methods
 export const basicSelectors = {
-  concept: "Basic Selection Methods",
+  concept: 'Basic Selection Methods',
   explanation: `
     The foundation of DOM manipulation starts with selecting elements.
     JavaScript provides several methods, each optimized for different use cases.
   `,
-  
+
   examples: {
     getElementById: `
 // getElementById - Fastest method for single elements with unique IDs
@@ -37,7 +37,7 @@ if (header) {
 // Performance note: This is the fastest selection method
 // Use when you have unique IDs
     `,
-    
+
     getElementsByClassName: `
 // getElementsByClassName - Returns live HTMLCollection
 const buttons = document.getElementsByClassName('btn');
@@ -71,7 +71,7 @@ for (const button of buttons) {
   button.style.cursor = 'pointer';
 }
     `,
-    
+
     getElementsByTagName: `
 // getElementsByTagName - Select by HTML tag name
 const allDivs = document.getElementsByTagName('div');
@@ -97,7 +97,7 @@ function addClassToAllImages(className) {
 const sidebar = document.getElementById('sidebar');
 const sidebarLinks = sidebar.getElementsByTagName('a');
     `,
-    
+
     getElementsByName: `
 // getElementsByName - Select by name attribute (mainly for form elements)
 const usernameFields = document.getElementsByName('username');
@@ -137,12 +137,12 @@ function getSelectedRadioValue(name) {
 
 // Modern Query Selectors
 export const modernSelectors = {
-  concept: "Modern Query Selectors",
+  concept: 'Modern Query Selectors',
   explanation: `
     querySelector and querySelectorAll use CSS selectors and are more flexible
     than the basic methods. They return static NodeLists (snapshots).
   `,
-  
+
   examples: {
     querySelector: `
 // querySelector - Returns first matching element or null
@@ -176,7 +176,7 @@ const specificUser = document.querySelector('[data-user-id="123"]');
 // Combined selectors
 const specificElement = document.querySelector('div.container > .content p:not(.highlight)');
     `,
-    
+
     querySelectorAll: `
 // querySelectorAll - Returns static NodeList of all matching elements
 const allButtons = document.querySelectorAll('button');
@@ -232,11 +232,11 @@ console.log('After adding button - Static:', staticButtons.length, 'Live:', live
 
 // Advanced Selector Techniques
 export const advancedSelectors = {
-  concept: "Advanced Selector Techniques",
+  concept: 'Advanced Selector Techniques',
   explanation: `
     Advanced patterns and techniques for complex element selection scenarios.
   `,
-  
+
   examples: {
     contextualSelection: `
 // Contextual selection - selecting within specific containers
@@ -271,7 +271,7 @@ const childrenOfActiveParent = document.querySelectorAll('.active > *');
 const nextSibling = document.querySelector('.current + .next');
 const allFollowingSiblings = document.querySelectorAll('.current ~ *');
     `,
-    
+
     attributeSelectors: `
 // Advanced attribute selectors
 // Exact match
@@ -311,7 +311,7 @@ function selectByDataAttribute(attribute, value) {
 const electronics = selectByDataAttribute('category', 'electronics');
 const highPriority = selectByDataAttribute('priority', 'high');
     `,
-    
+
     pseudoSelectors: `
 // Structural pseudo-selectors
 const firstChild = document.querySelectorAll(':first-child');
@@ -352,7 +352,7 @@ const notFirstChild = document.querySelectorAll('li:not(:first-child)');
 // Complex negation
 const complexNot = document.querySelectorAll('button:not(.primary):not(.secondary)');
     `,
-    
+
     performanceOptimization: `
 // Performance considerations and optimizations
 
@@ -425,11 +425,11 @@ function handleItemClick(event) {
 
 // Selector Utility Functions
 export const selectorUtilities = {
-  concept: "Selector Utility Functions",
+  concept: 'Selector Utility Functions',
   explanation: `
     Useful utility functions to enhance DOM selection capabilities.
   `,
-  
+
   examples: {
     utilityFunctions: `
 // Utility functions for enhanced selection
@@ -548,7 +548,7 @@ function findElementsByData(dataKey, dataValue) {
   }
 }
     `,
-    
+
     selectorHelpers: `
 // Advanced selector helpers and patterns
 
@@ -706,11 +706,11 @@ const buttons2 = $('.button'); // Uses cache
 
 // Practical Examples and Exercises
 export const practicalExamples = {
-  concept: "Practical Selection Examples",
+  concept: 'Practical Selection Examples',
   explanation: `
     Real-world scenarios and common use cases for DOM selection.
   `,
-  
+
   examples: {
     formHandling: `
 // Form element selection and handling
@@ -756,7 +756,7 @@ function validateForm() {
   return errors;
 }
     `,
-    
+
     navigationHandling: `
 // Navigation and menu selection
 const navigation = document.querySelector('nav');
@@ -792,7 +792,7 @@ document.addEventListener('click', (e) => {
   }
 });
     `,
-    
+
     dataTableHandling: `
 // Data table selection and manipulation
 const table = document.querySelector('.data-table');

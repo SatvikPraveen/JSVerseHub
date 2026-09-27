@@ -24,8 +24,7 @@
   background-size: cover;
   background-position: center;
   border: 3px solid transparent;
-  box-shadow: 0 0 30px rgba(0, 212, 255, 0.3),
-    inset 0 0 30px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.3), inset 0 0 30px rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(2px);
 }
 
@@ -72,6 +71,7 @@
     transform: scale(1);
     box-shadow: 0 0 40px rgba(0, 212, 255, 0.5);
   }
+
   50% {
     transform: scale(1.05);
     box-shadow: 0 0 50px rgba(0, 212, 255, 0.7);
@@ -82,6 +82,7 @@
   0% {
     box-shadow: 0 0 50px rgba(0, 212, 255, 0.8);
   }
+
   100% {
     box-shadow: 0 0 70px rgba(0, 212, 255, 1);
   }
@@ -167,6 +168,7 @@
   0% {
     background-position: -100px 0;
   }
+
   100% {
     background-position: 100px 0;
   }
@@ -199,7 +201,7 @@
 }
 
 .planet-tooltip::after {
-  content: "";
+  content: '';
   position: absolute;
   bottom: -10px;
   left: 50%;
@@ -403,6 +405,7 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -413,11 +416,7 @@
   position: fixed;
   top: 100px;
   right: 20px;
-  background: linear-gradient(
-    135deg,
-    var(--success-color),
-    var(--accent-color)
-  );
+  background: linear-gradient(135deg, var(--success-color), var(--accent-color));
   color: white;
   padding: 1rem 1.5rem;
   border-radius: var(--border-radius);
@@ -470,7 +469,6 @@
 .control-btn {
   width: 50px;
   height: 50px;
-  border: none;
   border-radius: 50%;
   background: rgba(26, 26, 46, 0.9);
   color: var(--accent-color);

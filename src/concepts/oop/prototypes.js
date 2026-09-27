@@ -2,20 +2,20 @@
 // Object-Oriented Programming - Prototypes in JavaScript
 
 export const prototypesContent = {
-  title: "JavaScript Prototypes",
+  title: 'JavaScript Prototypes',
   description: "Understand JavaScript's prototype-based inheritance and object creation",
-  
+
   theory: {
     introduction: `
       JavaScript uses prototype-based inheritance rather than classical inheritance.
       Every object has a prototype, and objects inherit properties and methods from their prototype chain.
       Understanding prototypes is crucial for mastering JavaScript's object model.
     `,
-    
+
     concepts: [
       {
-        name: "Prototype Basics",
-        explanation: "Every function has a prototype property, and objects have __proto__",
+        name: 'Prototype Basics',
+        explanation: 'Every function has a prototype property, and objects have __proto__',
         example: `
 // Function constructor approach
 function Person(name, age) {
@@ -48,9 +48,9 @@ console.log(person1.__proto__ === Person.prototype); // true
 console.log(Person.prototype.constructor === Person); // true
         `
       },
-      
+
       {
-        name: "Prototype Chain",
+        name: 'Prototype Chain',
         explanation: "Objects inherit from their prototype's prototype, creating a chain",
         example: `
 // Create a base Animal constructor
@@ -130,10 +130,10 @@ console.log(myDog instanceof Animal); // true
 console.log(myDog instanceof Object); // true
         `
       },
-      
+
       {
-        name: "Object.create() Method",
-        explanation: "Modern way to create objects with specific prototypes",
+        name: 'Object.create() Method',
+        explanation: 'Modern way to create objects with specific prototypes',
         example: `
 // Create a prototype object
 const vehiclePrototype = {
@@ -187,10 +187,10 @@ const bike = createVehicle("Harley", "Sportster", 2020);
 bike.start(); // "Harley Sportster started"
         `
       },
-      
+
       {
-        name: "Prototype Methods and Properties",
-        explanation: "Working with prototype properties and understanding enumerable properties",
+        name: 'Prototype Methods and Properties',
+        explanation: 'Working with prototype properties and understanding enumerable properties',
         example: `
 function Calculator(initialValue = 0) {
   this.value = initialValue;
@@ -268,10 +268,10 @@ console.log("\\nOwn property names:", Object.getOwnPropertyNames(calc));
 console.log("Enumerable keys:", Object.keys(calc));
         `
       },
-      
+
       {
-        name: "Modifying Built-in Prototypes",
-        explanation: "Extending built-in objects (use with caution)",
+        name: 'Modifying Built-in Prototypes',
+        explanation: 'Extending built-in objects (use with caution)',
         example: `
 // Extending Array prototype (be careful with this in production!)
 Array.prototype.last = function() {
@@ -344,11 +344,11 @@ console.log("Safe approach:", StringUtils.capitalize("hello world"));
       }
     ]
   },
-  
+
   practicalExamples: [
     {
-      title: "Event Emitter System",
-      description: "A custom event system using prototype-based inheritance",
+      title: 'Event Emitter System',
+      description: 'A custom event system using prototype-based inheritance',
       code: `
 // Base EventEmitter constructor
 function EventEmitter() {
@@ -476,10 +476,10 @@ chatRoom.sendMessage("Bob", "Hi Alice!");
 chatRoom.removeUser("Alice");
       `
     },
-    
+
     {
-      title: "Plugin System Architecture",
-      description: "Extensible plugin system using prototypes",
+      title: 'Plugin System Architecture',
+      description: 'Extensible plugin system using prototypes',
       code: `
 // Base Plugin constructor
 function Plugin(name, version) {
@@ -645,13 +645,13 @@ analyticsPlugin.trackEvent("pageView", { page: "/home", user: "user123" });
       `
     }
   ],
-  
+
   exercises: [
     {
-      id: "prototype-basic",
-      title: "Create a Counter with Prototype",
-      difficulty: "easy",
-      prompt: "Create a Counter constructor with increment, decrement, and reset methods on its prototype.",
+      id: 'prototype-basic',
+      title: 'Create a Counter with Prototype',
+      difficulty: 'easy',
+      prompt: 'Create a Counter constructor with increment, decrement, and reset methods on its prototype.',
       solution: `
 function Counter(initialValue = 0) {
   this.value = initialValue;
@@ -687,12 +687,13 @@ counter.increment(3).decrement(1).increment(2);
 console.log(counter.getValue()); // 9
       `
     },
-    
+
     {
-      id: "prototype-intermediate",
-      title: "Library Book System",
-      difficulty: "medium",
-      prompt: "Create a Book constructor and Library constructor with methods to add, remove, and search books using prototypes.",
+      id: 'prototype-intermediate',
+      title: 'Library Book System',
+      difficulty: 'medium',
+      prompt:
+        'Create a Book constructor and Library constructor with methods to add, remove, and search books using prototypes.',
       solution: `
 function Book(title, author, isbn, year) {
   this.title = title;
@@ -777,42 +778,44 @@ Library.prototype.getBorrowedBooks = function() {
       `
     }
   ],
-  
+
   quiz: [
     {
-      question: "What is the relationship between an object and its prototype?",
+      question: 'What is the relationship between an object and its prototype?',
       options: [
-        "Objects copy properties from their prototype",
-        "Objects inherit properties through the prototype chain",
-        "Objects replace their prototype properties",
-        "Objects and prototypes are independent"
+        'Objects copy properties from their prototype',
+        'Objects inherit properties through the prototype chain',
+        'Objects replace their prototype properties',
+        'Objects and prototypes are independent'
       ],
       correct: 1,
-      explanation: "Objects inherit properties through the prototype chain - they look up the chain when a property is not found on the object itself."
+      explanation:
+        'Objects inherit properties through the prototype chain - they look up the chain when a property is not found on the object itself.'
     },
-    
+
     {
-      question: "What does Object.create() do?",
+      question: 'What does Object.create() do?',
       options: [
-        "Creates a copy of an existing object",
-        "Creates a new object with the specified prototype",
-        "Creates a new prototype for an object",
-        "Creates a new constructor function"
+        'Creates a copy of an existing object',
+        'Creates a new object with the specified prototype',
+        'Creates a new prototype for an object',
+        'Creates a new constructor function'
       ],
       correct: 1,
-      explanation: "Object.create() creates a new object with the specified object as its prototype."
+      explanation: 'Object.create() creates a new object with the specified object as its prototype.'
     },
-    
+
     {
-      question: "What is the correct way to set up inheritance with prototypes?",
+      question: 'What is the correct way to set up inheritance with prototypes?',
       options: [
-        "Child.prototype = Parent.prototype",
-        "Child.prototype = new Parent()",
-        "Child.prototype = Object.create(Parent.prototype)",
-        "Child.prototype = Object.assign(Parent.prototype)"
+        'Child.prototype = Parent.prototype',
+        'Child.prototype = new Parent()',
+        'Child.prototype = Object.create(Parent.prototype)',
+        'Child.prototype = Object.assign(Parent.prototype)'
       ],
       correct: 2,
-      explanation: "Object.create(Parent.prototype) creates a new object with Parent.prototype as its prototype, avoiding issues with shared references."
+      explanation:
+        'Object.create(Parent.prototype) creates a new object with Parent.prototype as its prototype, avoiding issues with shared references.'
     }
   ]
 };

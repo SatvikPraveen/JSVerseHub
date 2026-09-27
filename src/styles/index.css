@@ -14,7 +14,7 @@
   --secondary-bg: #1a1a2e;
   --accent-color: #00d4ff;
   --accent-secondary: #ff6b6b;
-  --text-primary: #ffffff;
+  --text-primary: #fff;
   --text-secondary: #b8b8b8;
   --planet-glow: rgba(0, 212, 255, 0.5);
   --success-color: #4ecdc4;
@@ -34,7 +34,7 @@
 }
 
 body {
-  font-family: "SpaceMono", "Courier New", monospace;
+  font-family: SpaceMono, 'Courier New', monospace;
   background: var(--primary-bg);
   color: var(--text-primary);
   overflow-x: hidden;
@@ -53,9 +53,11 @@ h3 {
 h1 {
   font-size: 2.5rem;
 }
+
 h2 {
   font-size: 2rem;
 }
+
 h3 {
   font-size: 1.5rem;
 }
@@ -83,18 +85,13 @@ p {
 }
 
 .btn::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.2),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   transition: left 0.5s ease;
 }
 
@@ -103,11 +100,7 @@ p {
 }
 
 .btn-primary {
-  background: linear-gradient(
-    135deg,
-    var(--accent-color),
-    var(--accent-secondary)
-  );
+  background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
   color: white;
   box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
 }
@@ -165,11 +158,7 @@ p {
 
 .nav-title {
   font-size: 1.8rem;
-  background: linear-gradient(
-    135deg,
-    var(--accent-color),
-    var(--accent-secondary)
-  );
+  background: linear-gradient(135deg, var(--accent-color), var(--accent-secondary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -296,6 +285,7 @@ p {
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.6;
   }
@@ -376,6 +366,7 @@ p {
     transform: translateX(100%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -414,6 +405,7 @@ p {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -423,6 +415,7 @@ p {
   from {
     opacity: 1;
   }
+
   to {
     opacity: 0;
   }

@@ -10,75 +10,75 @@ class RandomColorGenerator {
     // Predefined color palettes for different themes
     this.palettes = {
       galaxy: [
-        "#4c1d95",
-        "#7c3aed",
-        "#a855f7",
-        "#c084fc",
-        "#ddd6fe",
-        "#1e1b4b",
-        "#3730a3",
-        "#4f46e5",
-        "#6366f1",
-        "#818cf8",
+        '#4c1d95',
+        '#7c3aed',
+        '#a855f7',
+        '#c084fc',
+        '#ddd6fe',
+        '#1e1b4b',
+        '#3730a3',
+        '#4f46e5',
+        '#6366f1',
+        '#818cf8'
       ],
       cosmic: [
-        "#0f0f23",
-        "#16213e",
-        "#1a365d",
-        "#2d3748",
-        "#4a5568",
-        "#553c9a",
-        "#7c3aed",
-        "#9333ea",
-        "#a855f7",
-        "#c084fc",
+        '#0f0f23',
+        '#16213e',
+        '#1a365d',
+        '#2d3748',
+        '#4a5568',
+        '#553c9a',
+        '#7c3aed',
+        '#9333ea',
+        '#a855f7',
+        '#c084fc'
       ],
       neon: [
-        "#ff0080",
-        "#ff0040",
-        "#ff4000",
-        "#ff8000",
-        "#ffbf00",
-        "#80ff00",
-        "#00ff40",
-        "#00ff80",
-        "#00ffbf",
-        "#0080ff",
+        '#ff0080',
+        '#ff0040',
+        '#ff4000',
+        '#ff8000',
+        '#ffbf00',
+        '#80ff00',
+        '#00ff40',
+        '#00ff80',
+        '#00ffbf',
+        '#0080ff'
       ],
       retro: [
-        "#ff6b9d",
-        "#ffa8e4",
-        "#c7ceea",
-        "#a8d8ea",
-        "#7fcdcd",
-        "#7cc7c7",
-        "#82a0bc",
-        "#8e94f2",
-        "#ada0f2",
-        "#d4a5f7",
+        '#ff6b9d',
+        '#ffa8e4',
+        '#c7ceea',
+        '#a8d8ea',
+        '#7fcdcd',
+        '#7cc7c7',
+        '#82a0bc',
+        '#8e94f2',
+        '#ada0f2',
+        '#d4a5f7'
       ],
       nature: [
-        "#2d5016",
-        "#3d6b1d",
-        "#4d7c24",
-        "#5d8d2b",
-        "#6d9e32",
-        "#7daf39",
-        "#8dc040",
-        "#9dd147",
-        "#ade24e",
-        "#bdf355",
-      ],
+        '#2d5016',
+        '#3d6b1d',
+        '#4d7c24',
+        '#5d8d2b',
+        '#6d9e32',
+        '#7daf39',
+        '#8dc040',
+        '#9dd147',
+        '#ade24e',
+        '#bdf355'
+      ]
     };
 
     // Color harmony rules
     this.harmonyRules = {
-      monochromatic: (base) => this.generateMonochromatic(base),
-      analogous: (base) => this.generateAnalogous(base),
-      complementary: (base) => this.generateComplementary(base),
-      triadic: (base) => this.generateTriadic(base),
-      tetradic: (base) => this.generateTetradic(base),
-      splitComplementary: (base) => this.generateSplitComplementary(base),
+      monochromatic: base => this.generateMonochromatic(base),
+      analogous: base => this.generateAnalogous(base),
+      complementary: base => this.generateComplementary(base),
+      triadic: base => this.generateTriadic(base),
+      tetradic: base => this.generateTetradic(base),
+      splitComplementary: base => this.generateSplitComplementary(base)
     };
   }
 
@@ -88,14 +88,8 @@ class RandomColorGenerator {
    * @param {Object} options - Generation options
    * @returns {string} Generated color
    */
-  generateColor(format = "hex", options = {}) {
-    const {
-      hue = null,
-      saturation = null,
-      lightness = null,
-      alpha = 1,
-      palette = null,
-    } = options;
+  generateColor(format = 'hex', options = {}) {
+    const { hue = null, saturation = null, lightness = null, alpha = 1, palette = null } = options;
 
     if (palette && this.palettes[palette]) {
       return this.getRandomFromPalette(palette);
@@ -103,11 +97,10 @@ class RandomColorGenerator {
 
     // Generate HSL values
     const h = hue !== null ? hue : Math.floor(Math.random() * 360);
-    const s =
-      saturation !== null ? saturation : Math.floor(Math.random() * 101);
+    const s = saturation !== null ? saturation : Math.floor(Math.random() * 101);
     const l = lightness !== null ? lightness : Math.floor(Math.random() * 101);
 
-    return this.convertColor({ h, s, l, a: alpha }, "hsl", format);
+    return this.convertColor({ h, s, l, a: alpha }, 'hsl', format);
   }
 
   /**
@@ -133,7 +126,7 @@ class RandomColorGenerator {
    * @param {number} count - Number of colors to generate
    * @returns {Array} Array of colors
    */
-  generateColorScheme(baseColor, harmony = "analogous", count = 5) {
+  generateColorScheme(baseColor, harmony = 'analogous', count = 5) {
     const harmonyFunc = this.harmonyRules[harmony];
     if (!harmonyFunc) {
       JSVLogger.warn(`Harmony rule "${harmony}" not found`);
@@ -191,7 +184,7 @@ class RandomColorGenerator {
       this.hslToHex({ h, s, l }),
       this.hslToHex({ h: complementH, s, l }),
       this.hslToHex({ h, s: s * 0.7, l: l * 1.2 }),
-      this.hslToHex({ h: complementH, s: s * 0.7, l: l * 1.2 }),
+      this.hslToHex({ h: complementH, s: s * 0.7, l: l * 1.2 })
     ];
   }
 
@@ -206,7 +199,7 @@ class RandomColorGenerator {
     return [
       this.hslToHex({ h, s, l }),
       this.hslToHex({ h: (h + 120) % 360, s, l }),
-      this.hslToHex({ h: (h + 240) % 360, s, l }),
+      this.hslToHex({ h: (h + 240) % 360, s, l })
     ];
   }
 
@@ -222,7 +215,7 @@ class RandomColorGenerator {
       this.hslToHex({ h, s, l }),
       this.hslToHex({ h: (h + 90) % 360, s, l }),
       this.hslToHex({ h: (h + 180) % 360, s, l }),
-      this.hslToHex({ h: (h + 270) % 360, s, l }),
+      this.hslToHex({ h: (h + 270) % 360, s, l })
     ];
   }
 
@@ -238,7 +231,7 @@ class RandomColorGenerator {
     return [
       this.hslToHex({ h, s, l }),
       this.hslToHex({ h: (complement - 30 + 360) % 360, s, l }),
-      this.hslToHex({ h: (complement + 30) % 360, s, l }),
+      this.hslToHex({ h: (complement + 30) % 360, s, l })
     ];
   }
 
@@ -272,19 +265,19 @@ class RandomColorGenerator {
    * @param {number} colorCount - Number of colors in gradient
    * @returns {string} CSS gradient string
    */
-  generateRandomGradient(direction = "45deg", colorCount = 3) {
+  generateRandomGradient(direction = '45deg', colorCount = 3) {
     const colors = [];
 
     for (let i = 0; i < colorCount; i++) {
       colors.push(
-        this.generateColor("hex", {
+        this.generateColor('hex', {
           saturation: Math.floor(Math.random() * 30) + 70, // High saturation
-          lightness: Math.floor(Math.random() * 40) + 30, // Medium lightness
+          lightness: Math.floor(Math.random() * 40) + 30 // Medium lightness
         })
       );
     }
 
-    return `linear-gradient(${direction}, ${colors.join(", ")})`;
+    return `linear-gradient(${direction}, ${colors.join(', ')})`;
   }
 
   /**
@@ -299,16 +292,16 @@ class RandomColorGenerator {
 
     // Convert to RGB first (universal format)
     switch (fromFormat.toLowerCase()) {
-      case "hex":
+      case 'hex':
         rgb = this.hexToRgb(color);
         break;
-      case "hsl":
+      case 'hsl':
         rgb = this.hslToRgb(color);
         break;
-      case "hsv":
+      case 'hsv':
         rgb = this.hsvToRgb(color);
         break;
-      case "rgb":
+      case 'rgb':
         rgb = color;
         break;
       default:
@@ -317,13 +310,13 @@ class RandomColorGenerator {
 
     // Convert from RGB to target format
     switch (toFormat.toLowerCase()) {
-      case "hex":
+      case 'hex':
         return this.rgbToHex(rgb);
-      case "hsl":
+      case 'hsl':
         return this.rgbToHsl(rgb);
-      case "hsv":
+      case 'hsv':
         return this.rgbToHsv(rgb);
-      case "rgb":
+      case 'rgb':
         return rgb;
       default:
         throw new Error(`Unsupported target format: ${toFormat}`);
@@ -341,7 +334,7 @@ class RandomColorGenerator {
       ? {
           r: parseInt(result[1], 16),
           g: parseInt(result[2], 16),
-          b: parseInt(result[3], 16),
+          b: parseInt(result[3], 16)
         }
       : null;
   }
@@ -353,15 +346,12 @@ class RandomColorGenerator {
    */
   rgbToHex(rgb) {
     const { r, g, b } = rgb;
-    return (
-      "#" +
-      [r, g, b]
-        .map((x) => {
-          const hex = Math.max(0, Math.min(255, Math.round(x))).toString(16);
-          return hex.length === 1 ? "0" + hex : hex;
-        })
-        .join("")
-    );
+    return `#${[r, g, b]
+      .map(x => {
+        const hex = Math.max(0, Math.min(255, Math.round(x))).toString(16);
+        return hex.length === 1 ? `0${hex}` : hex;
+      })
+      .join('')}`;
   }
 
   /**
@@ -394,7 +384,7 @@ class RandomColorGenerator {
     return {
       r: Math.round(hue2rgb(p, q, h + 1 / 3) * 255),
       g: Math.round(hue2rgb(p, q, h) * 255),
-      b: Math.round(hue2rgb(p, q, h - 1 / 3) * 255),
+      b: Math.round(hue2rgb(p, q, h - 1 / 3) * 255)
     };
   }
 
@@ -411,9 +401,9 @@ class RandomColorGenerator {
 
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
-    let h,
-      s,
-      l = (max + min) / 2;
+    let h;
+    let s;
+    const l = (max + min) / 2;
 
     if (max === min) {
       h = s = 0;
@@ -438,7 +428,7 @@ class RandomColorGenerator {
     return {
       h: Math.round(h * 360),
       s: Math.round(s * 100),
-      l: Math.round(l * 100),
+      l: Math.round(l * 100)
     };
   }
 
@@ -479,7 +469,9 @@ class RandomColorGenerator {
     const q = v * (1 - f * s);
     const t = v * (1 - (1 - f) * s);
 
-    let r, g, b;
+    let r;
+    let g;
+    let b;
     switch (i % 6) {
       case 0:
         r = v;
@@ -516,7 +508,7 @@ class RandomColorGenerator {
     return {
       r: Math.round(r * 255),
       g: Math.round(g * 255),
-      b: Math.round(b * 255),
+      b: Math.round(b * 255)
     };
   }
 
@@ -558,7 +550,7 @@ class RandomColorGenerator {
     return {
       h: Math.round(h * 360),
       s: Math.round(s * 100),
-      v: Math.round(v * 100),
+      v: Math.round(v * 100)
     };
   }
 
@@ -587,7 +579,7 @@ class RandomColorGenerator {
    * @returns {string} Contrasting text color
    */
   getContrastColor(backgroundColor) {
-    return this.isLight(backgroundColor) ? "#000000" : "#ffffff";
+    return this.isLight(backgroundColor) ? '#000000' : '#ffffff';
   }
 
   /**
@@ -610,20 +602,14 @@ class RandomColorGenerator {
       security: { hue: [340, 360], sat: [80, 100], light: [45, 65] },
       algorithms: { hue: [30, 50], sat: [75, 95], light: [50, 70] },
       canvas: { hue: [140, 180], sat: [70, 90], light: [45, 65] },
-      api: { hue: [240, 280], sat: [65, 85], light: [50, 70] },
+      api: { hue: [240, 280], sat: [65, 85], light: [50, 70] }
     };
 
     const colorRange = planetColors[planetType] || planetColors.basics;
 
-    const h =
-      Math.floor(Math.random() * (colorRange.hue[1] - colorRange.hue[0])) +
-      colorRange.hue[0];
-    const s =
-      Math.floor(Math.random() * (colorRange.sat[1] - colorRange.sat[0])) +
-      colorRange.sat[0];
-    const l =
-      Math.floor(Math.random() * (colorRange.light[1] - colorRange.light[0])) +
-      colorRange.light[0];
+    const h = Math.floor(Math.random() * (colorRange.hue[1] - colorRange.hue[0])) + colorRange.hue[0];
+    const s = Math.floor(Math.random() * (colorRange.sat[1] - colorRange.sat[0])) + colorRange.sat[0];
+    const l = Math.floor(Math.random() * (colorRange.light[1] - colorRange.light[0])) + colorRange.light[0];
 
     return this.hslToHex({ h, s, l });
   }
@@ -661,6 +647,6 @@ class RandomColorGenerator {
 const randomColorGeneratorInstance = RandomColorGenerator.getInstance();
 
 // Export for use in other modules
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
   window.RandomColorGenerator = randomColorGeneratorInstance;
 }

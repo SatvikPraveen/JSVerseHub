@@ -10,7 +10,7 @@ describe('Modal Component', () => {
     container = document.createElement('div');
     container.id = 'modal-container';
     document.body.appendChild(container);
-    
+
     // Mock Modal class
     modal = {
       show: jest.fn(),
@@ -40,7 +40,7 @@ describe('Modal Component', () => {
   test('should show and hide modal', () => {
     modal.show();
     expect(modal.show).toHaveBeenCalled();
-    
+
     modal.hide();
     expect(modal.hide).toHaveBeenCalled();
   });
@@ -67,7 +67,7 @@ describe('Navbar Component', () => {
     container = document.createElement('nav');
     container.id = 'navbar';
     document.body.appendChild(container);
-    
+
     navbar = {
       addLink: jest.fn(),
       setActive: jest.fn(),
@@ -119,7 +119,7 @@ describe('GalaxyMap Component', () => {
     canvas.id = 'galaxy-canvas';
     container.appendChild(canvas);
     document.body.appendChild(container);
-    
+
     galaxyMap = {
       render: jest.fn(),
       addPlanet: jest.fn(),
@@ -186,7 +186,7 @@ describe('PlanetCard Component', () => {
     container = document.createElement('div');
     container.className = 'planet-card';
     document.body.appendChild(container);
-    
+
     planetCard = {
       setPlanet: jest.fn(),
       render: jest.fn(),
@@ -242,7 +242,7 @@ describe('ConceptViewer Component', () => {
     container = document.createElement('div');
     container.id = 'concept-viewer';
     document.body.appendChild(container);
-    
+
     conceptViewer = {
       loadConcept: jest.fn(),
       showConcept: jest.fn(),
@@ -299,10 +299,10 @@ describe('Component Integration', () => {
   test('Modal should work with other components', () => {
     const modal = { show: jest.fn(), hide: jest.fn() };
     const navbar = { render: jest.fn() };
-    
+
     modal.show();
     navbar.render();
-    
+
     expect(modal.show).toHaveBeenCalled();
     expect(navbar.render).toHaveBeenCalled();
   });
@@ -310,10 +310,10 @@ describe('Component Integration', () => {
   test('GalaxyMap should communicate with PlanetCard', () => {
     const galaxyMap = { selectPlanet: jest.fn() };
     const planetCard = { onClick: jest.fn() };
-    
+
     planetCard.onClick('basics');
     galaxyMap.selectPlanet('basics');
-    
+
     expect(planetCard.onClick).toHaveBeenCalledWith('basics');
     expect(galaxyMap.selectPlanet).toHaveBeenCalledWith('basics');
   });
@@ -321,11 +321,11 @@ describe('Component Integration', () => {
   test('ConceptViewer should show in Modal', () => {
     const modal = { show: jest.fn(), setContent: jest.fn() };
     const conceptViewer = { showConcept: jest.fn() };
-    
+
     modal.show();
     modal.setContent('<div id="concept-viewer"></div>');
     conceptViewer.showConcept('basics');
-    
+
     expect(modal.show).toHaveBeenCalled();
     expect(conceptViewer.showConcept).toHaveBeenCalledWith('basics');
   });

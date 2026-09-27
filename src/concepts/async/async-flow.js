@@ -2,20 +2,20 @@
 // Async Flow Control - Advanced patterns for managing asynchronous operations
 
 export const asyncFlowConfig = {
-  title: "Async Flow Control",
-  description: "Master advanced patterns for controlling asynchronous execution flow",
-  difficulty: "advanced",
-  estimatedTime: "45 minutes"
+  title: 'Async Flow Control',
+  description: 'Master advanced patterns for controlling asynchronous execution flow',
+  difficulty: 'advanced',
+  estimatedTime: '45 minutes'
 };
 
 // Sequential Execution Patterns
 export const sequentialPatterns = {
-  concept: "Sequential Execution Patterns",
+  concept: 'Sequential Execution Patterns',
   explanation: `
     Sequential execution ensures operations run one after another.
     Useful when later operations depend on results from earlier ones.
   `,
-  
+
   examples: {
     basicSequential: `
 // Basic sequential execution with async/await
@@ -122,7 +122,7 @@ async function canRecoverFromError(error, item) {
   return !error.message.includes('fatal');
 }
     `,
-    
+
     pipelinePattern: `
 // Pipeline pattern for sequential data transformation
 class AsyncPipeline {
@@ -236,7 +236,7 @@ async function pipelineExample() {
   }
 }
     `,
-    
+
     reducePattern: `
 // Using reduce for sequential async operations
 async function sequentialReduce(items, asyncReducer, initialValue) {
@@ -329,12 +329,12 @@ async function sequentialBuildExample() {
 
 // Parallel Execution Patterns
 export const parallelPatterns = {
-  concept: "Parallel Execution Patterns",
+  concept: 'Parallel Execution Patterns',
   explanation: `
     Parallel execution runs multiple operations simultaneously to improve performance.
     Useful when operations are independent of each other.
   `,
-  
+
   examples: {
     basicParallel: `
 // Basic parallel execution
@@ -420,7 +420,7 @@ async function parallelWithAllSettled(items) {
   return analysis;
 }
     `,
-    
+
     concurrencyControl: `
 // Controlled concurrency - limit parallel operations
 async function processWithConcurrencyLimit(items, processor, limit = 3) {
@@ -558,7 +558,7 @@ class AdaptiveBatchProcessor extends BatchProcessor {
   }
 }
     `,
-    
+
     racePatterns: `
 // Race patterns for competitive async operations
 
@@ -714,11 +714,11 @@ async function circuitBreakerExample() {
 
 // Mixed Flow Patterns
 export const mixedFlowPatterns = {
-  concept: "Mixed Flow Patterns",
+  concept: 'Mixed Flow Patterns',
   explanation: `
     Combining sequential and parallel execution patterns for complex workflows.
   `,
-  
+
   examples: {
     workflowOrchestrator: `
 // Workflow orchestrator combining sequential and parallel patterns
@@ -872,7 +872,7 @@ async function complexWorkflowExample() {
   }
 }
     `,
-    
+
     dependencyManagement: `
 // Dependency management for complex async flows
 class DependencyResolver {
@@ -1039,7 +1039,7 @@ async function dependencyWorkflowExample() {
   }
 }
     `,
-    
+
     stateManagement: `
 // State management for long-running async workflows
 class WorkflowState {

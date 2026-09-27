@@ -2,28 +2,28 @@
 // DOM Manipulation - Document Object Model concepts and practices
 
 export const domConfig = {
-  title: "DOM Manipulation",
-  description: "Master the Document Object Model and web page interaction",
-  difficulty: "beginner-intermediate",
-  estimatedTime: "45 minutes",
+  title: 'DOM Manipulation',
+  description: 'Master the Document Object Model and web page interaction',
+  difficulty: 'beginner-intermediate',
+  estimatedTime: '45 minutes',
   topics: [
-    "DOM Tree Structure",
-    "Element Selection",
-    "Element Manipulation",
-    "Event Handling",
-    "Dynamic Content Creation"
+    'DOM Tree Structure',
+    'Element Selection',
+    'Element Manipulation',
+    'Event Handling',
+    'Dynamic Content Creation'
   ]
 };
 
 // DOM Tree Structure and Understanding
 export const domStructure = {
-  concept: "DOM Tree Structure",
+  concept: 'DOM Tree Structure',
   explanation: `
     The DOM (Document Object Model) is a programming interface for web documents.
     It represents the page as a tree of objects that JavaScript can manipulate.
     Every HTML element, attribute, and text is a node in this tree.
   `,
-  
+
   examples: {
     domTree: `
 // Understanding the DOM hierarchy
@@ -63,7 +63,7 @@ console.log(document.URL);               // Current page URL
 console.log(document.domain);            // Domain name
 console.log(document.readyState);        // loading/interactive/complete
     `,
-    
+
     nodeNavigation: `
 // Navigating between nodes
 const mainElement = document.querySelector('main');
@@ -91,24 +91,24 @@ console.log(mainElement.childElementCount);    // Number of child elements
 console.log(mainElement.children.length);      // Same as above
     `
   },
-  
+
   exercises: [
     {
-      id: "dom_exploration",
-      question: "Navigate to the second paragraph in the main section and log its text content",
-      hint: "Use querySelector or children indexing to access specific elements"
+      id: 'dom_exploration',
+      question: 'Navigate to the second paragraph in the main section and log its text content',
+      hint: 'Use querySelector or children indexing to access specific elements'
     }
   ]
 };
 
 // Element Selection Methods
 export const elementSelection = {
-  concept: "Element Selection",
+  concept: 'Element Selection',
   explanation: `
     JavaScript provides multiple ways to select DOM elements.
     Choose the right method based on what you're trying to select and how specific you need to be.
   `,
-  
+
   examples: {
     basicSelection: `
 // Basic selection methods
@@ -133,7 +133,7 @@ const lastParagraph = document.querySelector('section p:last-of-type');
 const evenRows = document.querySelectorAll('tr:nth-child(even)');
 const activeButtons = document.querySelectorAll('button:not(:disabled)');
     `,
-    
+
     advancedSelection: `
 // Advanced selection techniques
 // Selecting within a specific parent
@@ -166,7 +166,7 @@ function selectByRole(role) {
 const buttons = selectByRole('button');
 const navigation = selectByRole('navigation');
     `,
-    
+
     selectionComparison: `
 // Performance and use case comparison
 // getElementById - Fastest for single elements with IDs
@@ -193,25 +193,25 @@ console.log('After adding element:', liveCollection.length, staticCollection.len
 // liveCollection will have increased by 1, staticCollection stays the same
     `
   },
-  
+
   exercises: [
     {
-      id: "selector_practice",
-      question: "Select all images inside articles that have an alt attribute",
+      id: 'selector_practice',
+      question: 'Select all images inside articles that have an alt attribute',
       solution: "document.querySelectorAll('article img[alt]')",
-      hint: "Use attribute selectors with querySelectorAll"
+      hint: 'Use attribute selectors with querySelectorAll'
     }
   ]
 };
 
 // Element Manipulation
 export const elementManipulation = {
-  concept: "Element Manipulation",
+  concept: 'Element Manipulation',
   explanation: `
     Once you've selected elements, you can modify their content, attributes, styles, and structure.
     JavaScript provides many properties and methods to manipulate DOM elements dynamically.
   `,
-  
+
   examples: {
     contentManipulation: `
 // Content manipulation
@@ -242,7 +242,7 @@ function safeInsertHTML(element, htmlString) {
   element.innerHTML = temp.innerHTML;
 }
     `,
-    
+
     attributeManipulation: `
 // Attribute manipulation
 const image = document.querySelector('img');
@@ -288,7 +288,7 @@ console.log(element.classList.contains('active')); // Check if class exists
 element.classList.add('class1', 'class2', 'class3');
 element.classList.remove('class1', 'class2');
     `,
-    
+
     styleManipulation: `
 // Style manipulation
 const box = document.querySelector('.box');
@@ -336,24 +336,24 @@ function slideIn(element) {
 }
     `
   },
-  
+
   exercises: [
     {
-      id: "element_styling",
-      question: "Change all links in navigation to have blue color and remove underlines",
-      hint: "Select nav links and modify their style properties or add CSS classes"
+      id: 'element_styling',
+      question: 'Change all links in navigation to have blue color and remove underlines',
+      hint: 'Select nav links and modify their style properties or add CSS classes'
     }
   ]
 };
 
 // Event Handling
 export const eventHandling = {
-  concept: "Event Handling",
+  concept: 'Event Handling',
   explanation: `
     Events are actions that happen in the browser - clicks, key presses, form submissions, etc.
     JavaScript can listen for these events and respond with custom behavior.
   `,
-  
+
   examples: {
     basicEvents: `
 // Basic event handling
@@ -393,7 +393,7 @@ button.addEventListener('click', handleButtonClick, {
   capture: true    // Capture phase instead of bubble phase
 });
     `,
-    
+
     eventTypes: `
 // Different types of events
 const input = document.querySelector('input');
@@ -449,7 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM fully loaded');
 });
     `,
-    
+
     eventDelegation: `
 // Event delegation - handling events on parent elements
 const todoList = document.querySelector('.todo-list');
@@ -507,24 +507,24 @@ document.addEventListener('todoAdded', (e) => {
 document.dispatchEvent(customEvent);
     `
   },
-  
+
   exercises: [
     {
-      id: "event_practice",
-      question: "Create a button that changes color when clicked and shows coordinates when mouse moves over it",
-      hint: "Use click and mousemove events, modify styles and display coordinates"
+      id: 'event_practice',
+      question: 'Create a button that changes color when clicked and shows coordinates when mouse moves over it',
+      hint: 'Use click and mousemove events, modify styles and display coordinates'
     }
   ]
 };
 
 // Dynamic Content Creation
 export const dynamicContent = {
-  concept: "Dynamic Content Creation",
+  concept: 'Dynamic Content Creation',
   explanation: `
     JavaScript can create new HTML elements, modify existing ones, and restructure the DOM tree.
     This enables dynamic, interactive web applications that respond to user actions and data changes.
   `,
-  
+
   examples: {
     createElement: `
 // Creating elements
@@ -594,7 +594,7 @@ const user = {
 
 const userCard = createUserCard(user);
     `,
-    
+
     domInsertion: `
 // Different ways to insert elements
 const container = document.querySelector('.container');
@@ -641,7 +641,7 @@ const deepClone = original.cloneNode(true);       // Element + all children
 
 container.appendChild(deepClone);
     `,
-    
+
     documentFragments: `
 // Document fragments for efficient DOM manipulation
 const fragment = document.createDocumentFragment();
@@ -715,12 +715,12 @@ while (parent.firstChild) {
 parent.replaceChildren();
     `
   },
-  
+
   exercises: [
     {
-      id: "dynamic_list",
-      question: "Create a function that generates a shopping list from an array of items",
-      hint: "Use createElement to make ul/li elements and appendChild to build the structure"
+      id: 'dynamic_list',
+      question: 'Create a function that generates a shopping list from an array of items',
+      hint: 'Use createElement to make ul/li elements and appendChild to build the structure'
     }
   ]
 };
@@ -728,9 +728,9 @@ parent.replaceChildren();
 // Interactive exercises
 export const interactiveExercises = [
   {
-    id: "dom_selector_challenge",
-    title: "DOM Selector Challenge",
-    description: "Practice different ways to select DOM elements",
+    id: 'dom_selector_challenge',
+    title: 'DOM Selector Challenge',
+    description: 'Practice different ways to select DOM elements',
     template: `
 // Given this HTML structure:
 /*
@@ -764,16 +764,16 @@ const allLinks = // Select all links in navigation
     `,
     tests: [
       {
-        description: "Should select header element",
-        check: (code) => code.includes('getElementById') || code.includes('#main-header')
+        description: 'Should select header element',
+        check: code => code.includes('getElementById') || code.includes('#main-header')
       }
     ]
   },
-  
+
   {
-    id: "event_handler_practice",
-    title: "Event Handler Practice",
-    description: "Create interactive elements with event handling",
+    id: 'event_handler_practice',
+    title: 'Event Handler Practice',
+    description: 'Create interactive elements with event handling',
     template: `
 // Create an interactive counter
 const counter = document.querySelector('.counter');
@@ -791,8 +791,8 @@ let count = 0;
     `,
     tests: [
       {
-        description: "Should add event listeners",
-        check: (code) => code.includes('addEventListener')
+        description: 'Should add event listeners',
+        check: code => code.includes('addEventListener')
       }
     ]
   }
@@ -806,18 +806,19 @@ export const progressConfig = {
     total: 6,
     completed: 0
   },
-  
+
   updateProgress(conceptId, exerciseId = null) {
     if (exerciseId) {
       this.exercises.completed++;
     } else {
       this.conceptsCompleted++;
     }
-    
+
     return {
       conceptProgress: (this.conceptsCompleted / this.totalConcepts) * 100,
       exerciseProgress: (this.exercises.completed / this.exercises.total) * 100,
-      overallProgress: ((this.conceptsCompleted + this.exercises.completed) / (this.totalConcepts + this.exercises.total)) * 100
+      overallProgress:
+        ((this.conceptsCompleted + this.exercises.completed) / (this.totalConcepts + this.exercises.total)) * 100
     };
   }
 };

@@ -5,12 +5,12 @@
  * Content Security Policy
  */
 export const contentSecurityPolicy = {
-  title: "Content Security Policy (CSP)",
+  title: 'Content Security Policy (CSP)',
   explanation: `
     CSP is a security standard that helps prevent XSS, clickjacking, and other attacks.
     Set via HTTP headers to restrict resource loading.
   `,
-  
+
   code: `
 // Basic CSP header (server-side)
 app.use((req, res) => {
@@ -66,9 +66,9 @@ app.post('/csp-report', (req, res) => {
  * Secure Coding Patterns
  */
 export const secureCodePatterns = {
-  title: "Secure Coding Patterns",
-  explanation: "Common patterns for writing secure code",
-  
+  title: 'Secure Coding Patterns',
+  explanation: 'Common patterns for writing secure code',
+
   code: `
 // 1. Input Validation Pattern
 class InputValidator {
@@ -182,9 +182,9 @@ app.use((err, req, res, next) => {
  * Rate Limiting
  */
 export const rateLimiting = {
-  title: "Rate Limiting",
-  explanation: "Prevent brute force and DDoS attacks",
-  
+  title: 'Rate Limiting',
+  explanation: 'Prevent brute force and DDoS attacks',
+
   code: `
 // Simple in-memory rate limiter
 class RateLimiter {
@@ -252,9 +252,9 @@ const limiter = new RedisStore({
  * Dependency Security
  */
 export const dependencySecurity = {
-  title: "Dependency Security",
-  explanation: "Keep dependencies safe and updated",
-  
+  title: 'Dependency Security',
+  explanation: 'Keep dependencies safe and updated',
+
   code: `
 // Check for vulnerabilities
 // npm audit - check for known vulnerabilities
@@ -320,9 +320,9 @@ auditDependencies();
  * HTTPS and TLS
  */
 export const httpsSecurity = {
-  title: "HTTPS and TLS",
-  explanation: "Always use HTTPS for secure communication",
-  
+  title: 'HTTPS and TLS',
+  explanation: 'Always use HTTPS for secure communication',
+
   code: `
 // Enforce HTTPS
 const http = require('http');

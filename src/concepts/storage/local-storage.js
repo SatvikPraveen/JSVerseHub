@@ -2,9 +2,9 @@
 // Browser Storage - Local Storage in JavaScript
 
 export const localStorageContent = {
-  title: "Local Storage",
-  description: "Master browser local storage for persistent client-side data management",
-  
+  title: 'Local Storage',
+  description: 'Master browser local storage for persistent client-side data management',
+
   theory: {
     introduction: `
       Local Storage is a web storage API that allows you to store data in a user's browser 
@@ -12,11 +12,11 @@ export const localStorageContent = {
       by the user or your application. It provides a simple key-value storage mechanism with 
       a larger storage capacity than cookies (typically 5-10MB per origin).
     `,
-    
+
     concepts: [
       {
-        name: "Basic Local Storage Operations",
-        explanation: "Fundamental operations for storing and retrieving data",
+        name: 'Basic Local Storage Operations',
+        explanation: 'Fundamental operations for storing and retrieving data',
         example: `
 // Check if localStorage is available
 function isLocalStorageAvailable() {
@@ -126,10 +126,10 @@ function displayAllStorageItems() {
 displayAllStorageItems();
         `
       },
-      
+
       {
-        name: "LocalStorage Utility Functions",
-        explanation: "Helper functions for safer and more convenient localStorage usage",
+        name: 'LocalStorage Utility Functions',
+        explanation: 'Helper functions for safer and more convenient localStorage usage',
         example: `
 // LocalStorage utility class
 class LocalStorageUtils {
@@ -624,10 +624,10 @@ console.log('Settings:', settingsStorage.getAll());
 console.log('Total storage size:', LocalStorageUtils.getStorageSizeFormatted());
         `
       },
-      
+
       {
-        name: "Storage Quotas and Error Handling",
-        explanation: "Managing storage limits and handling quota exceeded errors",
+        name: 'Storage Quotas and Error Handling',
+        explanation: 'Managing storage limits and handling quota exceeded errors',
         example: `
 // Storage quota management
 class StorageQuotaManager {
@@ -937,11 +937,11 @@ console.log('Current storage size:', SafeLocalStorage.getCurrentStorageSize(), '
       }
     ]
   },
-  
+
   practicalExamples: [
     {
-      title: "User Preferences Management System",
-      description: "Complete user preferences system with localStorage persistence",
+      title: 'User Preferences Management System',
+      description: 'Complete user preferences system with localStorage persistence',
       code: `
 // User Preferences Management System
 class UserPreferencesManager {
@@ -1313,13 +1313,13 @@ console.log('Preferences storage size:', preferences.getStorageSize(), 'bytes');
       `
     }
   ],
-  
+
   exercises: [
     {
-      id: "localstorage-basic",
-      title: "Shopping Cart Storage",
-      difficulty: "easy",
-      prompt: "Create a shopping cart that persists items in localStorage with add, remove, and clear functionality.",
+      id: 'localstorage-basic',
+      title: 'Shopping Cart Storage',
+      difficulty: 'easy',
+      prompt: 'Create a shopping cart that persists items in localStorage with add, remove, and clear functionality.',
       solution: `
 class ShoppingCart {
   constructor() {
@@ -1414,42 +1414,35 @@ console.log('Item count:', cart.getItemCount());
       `
     }
   ],
-  
+
   quiz: [
     {
-      question: "What is the storage limit for localStorage in most browsers?",
-      options: [
-        "1MB per origin",
-        "5-10MB per origin", 
-        "50MB per origin",
-        "No limit"
-      ],
+      question: 'What is the storage limit for localStorage in most browsers?',
+      options: ['1MB per origin', '5-10MB per origin', '50MB per origin', 'No limit'],
       correct: 1,
-      explanation: "Most browsers provide 5-10MB of localStorage per origin, which is much larger than cookies but still has limits."
+      explanation:
+        'Most browsers provide 5-10MB of localStorage per origin, which is much larger than cookies but still has limits.'
     },
-    
+
     {
-      question: "What happens to localStorage data when the browser is closed?",
+      question: 'What happens to localStorage data when the browser is closed?',
       options: [
-        "Data is automatically deleted",
-        "Data persists until manually cleared", 
-        "Data expires after 24 hours",
-        "Data is moved to sessionStorage"
+        'Data is automatically deleted',
+        'Data persists until manually cleared',
+        'Data expires after 24 hours',
+        'Data is moved to sessionStorage'
       ],
       correct: 1,
-      explanation: "localStorage data persists even after the browser is closed, until it's manually cleared by the user or your application."
+      explanation:
+        "localStorage data persists even after the browser is closed, until it's manually cleared by the user or your application."
     },
-    
+
     {
-      question: "What exception is thrown when localStorage quota is exceeded?",
-      options: [
-        "StorageLimitError",
-        "QuotaExceededError",
-        "DOMException", 
-        "SecurityError"
-      ],
+      question: 'What exception is thrown when localStorage quota is exceeded?',
+      options: ['StorageLimitError', 'QuotaExceededError', 'DOMException', 'SecurityError'],
       correct: 1,
-      explanation: "When localStorage quota is exceeded, a QuotaExceededError (or DOMException with name 'QuotaExceededError') is thrown."
+      explanation:
+        "When localStorage quota is exceeded, a QuotaExceededError (or DOMException with name 'QuotaExceededError') is thrown."
     }
   ]
 };

@@ -15,14 +15,15 @@ const {
 } = require('../src/concepts/canvas/index.js');
 
 describe('Canvas Graphics Concept', () => {
-  let canvas, ctx;
+  let canvas;
+  let ctx;
 
   beforeEach(() => {
     // Mock canvas element
     canvas = {
       width: 800,
       height: 600,
-      getContext: jest.fn((type) => {
+      getContext: jest.fn(type => {
         if (type !== '2d') throw new Error('Invalid context type');
         return {
           clearRect: jest.fn(),

@@ -6,7 +6,7 @@
  * Centralized API interaction
  */
 export const apiClientPattern = {
-  title: "API Client Pattern",
+  title: 'API Client Pattern',
   explanation: `
     Create a centralized API client to:
     - Avoid repeating headers and base URL
@@ -15,7 +15,7 @@ export const apiClientPattern = {
     - Add request/response interceptors
     - Manage retries and timeouts
   `,
-  
+
   code: `
 class APIClient {
   constructor(baseURL, options = {}) {
@@ -107,7 +107,7 @@ const newUser = await apiClient.post('/users', { name: 'John' });
  * Normalize API responses
  */
 export const responseMapper = {
-  title: "Response Mapper Pattern",
+  title: 'Response Mapper Pattern',
   explanation: `
     Map API responses to consistent app format:
     - Different APIs have different formats
@@ -115,7 +115,7 @@ export const responseMapper = {
     - Make app independent of API changes
     - Easy to switch APIs
   `,
-  
+
   code: `
 class ResponseMapper {
   // Map single item
@@ -166,7 +166,7 @@ const user = ResponseMapper.mapUser(rawUser);
  * Cache and Invalidation
  */
 export const cachePattern = {
-  title: "Cache and Invalidation Pattern",
+  title: 'Cache and Invalidation Pattern',
   explanation: `
     Efficient caching strategy:
     - Cache GET requests
@@ -174,7 +174,7 @@ export const cachePattern = {
     - Set appropriate TTL
     - Allow manual cache clear
   `,
-  
+
   code: `
 class CachedAPIClient {
   constructor(baseURL) {
@@ -243,7 +243,7 @@ class CachedAPIClient {
  * Error Handling Middleware
  */
 export const errorMiddleware = {
-  title: "Error Handling Middleware",
+  title: 'Error Handling Middleware',
   explanation: `
     Centralize error handling:
     - Consistent error responses
@@ -251,7 +251,7 @@ export const errorMiddleware = {
     - Automatic retry on transient errors
     - Error logging
   `,
-  
+
   code: `
 class APIErrorHandler {
   static handle(error, context = {}) {

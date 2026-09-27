@@ -2,9 +2,9 @@
 // Browser Storage - IndexedDB in JavaScript
 
 export const indexedDBContent = {
-  title: "IndexedDB",
-  description: "Master IndexedDB for client-side database storage and complex data management",
-  
+  title: 'IndexedDB',
+  description: 'Master IndexedDB for client-side database storage and complex data management',
+
   theory: {
     introduction: `
       IndexedDB is a powerful client-side database that allows you to store large amounts 
@@ -13,11 +13,11 @@ export const indexedDBContent = {
       for transactions, indexes, and complex queries. It's asynchronous and provides much 
       larger storage capacity (typically hundreds of MB to GB).
     `,
-    
+
     concepts: [
       {
-        name: "Basic IndexedDB Operations",
-        explanation: "Opening databases, creating object stores, and basic CRUD operations",
+        name: 'Basic IndexedDB Operations',
+        explanation: 'Opening databases, creating object stores, and basic CRUD operations',
         example: `
 // Basic IndexedDB wrapper class
 class IndexedDBManager {
@@ -316,10 +316,10 @@ async function basicIndexedDBExample() {
 basicIndexedDBExample();
         `
       },
-      
+
       {
-        name: "Advanced IndexedDB Features",
-        explanation: "Complex queries, transactions, and database design patterns",
+        name: 'Advanced IndexedDB Features',
+        explanation: 'Complex queries, transactions, and database design patterns',
         example: `
 // Advanced IndexedDB class with complex operations
 class AdvancedIndexedDB {
@@ -753,10 +753,10 @@ async function advancedIndexedDBExample() {
 advancedIndexedDBExample();
         `
       },
-      
+
       {
-        name: "File and Blob Storage",
-        explanation: "Storing files, images, and binary data in IndexedDB",
+        name: 'File and Blob Storage',
+        explanation: 'Storing files, images, and binary data in IndexedDB',
         example: `
 // File storage manager using IndexedDB
 class FileStorageManager {
@@ -1205,11 +1205,11 @@ fileStorageExample();
       }
     ]
   },
-  
+
   practicalExamples: [
     {
-      title: "Offline-First Task Management App",
-      description: "Complete task management system with offline support using IndexedDB",
+      title: 'Offline-First Task Management App',
+      description: 'Complete task management system with offline support using IndexedDB',
       code: `
 // Offline-First Task Management System
 class OfflineTaskManager {
@@ -1832,13 +1832,14 @@ taskManagerExample();
       `
     }
   ],
-  
+
   exercises: [
     {
-      id: "indexeddb-basic",
-      title: "Simple Note Taking App",
-      difficulty: "easy",
-      prompt: "Create a simple note-taking app using IndexedDB with the ability to add, edit, delete, and search notes.",
+      id: 'indexeddb-basic',
+      title: 'Simple Note Taking App',
+      difficulty: 'easy',
+      prompt:
+        'Create a simple note-taking app using IndexedDB with the ability to add, edit, delete, and search notes.',
       solution: `
 class SimpleNoteApp {
   constructor() {
@@ -1995,12 +1996,12 @@ async function testNoteApp() {
 testNoteApp();
       `
     },
-    
+
     {
-      id: "indexeddb-advanced",
-      title: "Personal Finance Tracker",
-      difficulty: "hard",
-      prompt: "Build a personal finance tracker with categories, transactions, budgets, and reporting using IndexedDB.",
+      id: 'indexeddb-advanced',
+      title: 'Personal Finance Tracker',
+      difficulty: 'hard',
+      prompt: 'Build a personal finance tracker with categories, transactions, budgets, and reporting using IndexedDB.',
       solution: `
 class FinanceTracker {
   constructor() {
@@ -2345,54 +2346,58 @@ financeTrackerDemo();
       `
     }
   ],
-  
+
   quiz: [
     {
-      question: "What is the main advantage of IndexedDB over localStorage?",
+      question: 'What is the main advantage of IndexedDB over localStorage?',
       options: [
-        "IndexedDB is synchronous",
-        "IndexedDB can store much larger amounts of data and supports complex queries",
-        "IndexedDB is available in all browsers",
-        "IndexedDB is easier to use"
+        'IndexedDB is synchronous',
+        'IndexedDB can store much larger amounts of data and supports complex queries',
+        'IndexedDB is available in all browsers',
+        'IndexedDB is easier to use'
       ],
       correct: 1,
-      explanation: "IndexedDB can store much larger amounts of data (hundreds of MB to GB) and supports complex operations like transactions, indexes, and queries, unlike the simple key-value storage of localStorage."
+      explanation:
+        'IndexedDB can store much larger amounts of data (hundreds of MB to GB) and supports complex operations like transactions, indexes, and queries, unlike the simple key-value storage of localStorage.'
     },
-    
+
     {
-      question: "What is a transaction in IndexedDB?",
+      question: 'What is a transaction in IndexedDB?',
       options: [
-        "A single database operation",
-        "A way to group multiple database operations that either all succeed or all fail",
-        "A method to delete data",
-        "A type of index"
+        'A single database operation',
+        'A way to group multiple database operations that either all succeed or all fail',
+        'A method to delete data',
+        'A type of index'
       ],
       correct: 1,
-      explanation: "A transaction in IndexedDB groups multiple database operations together, ensuring that either all operations succeed or all fail (atomicity), maintaining database consistency."
+      explanation:
+        'A transaction in IndexedDB groups multiple database operations together, ensuring that either all operations succeed or all fail (atomicity), maintaining database consistency.'
     },
-    
+
     {
-      question: "What is the purpose of indexes in IndexedDB?",
+      question: 'What is the purpose of indexes in IndexedDB?',
       options: [
-        "To make the database smaller",
-        "To improve query performance and enable searching by non-key fields",
-        "To encrypt the data",
-        "To backup the data"
+        'To make the database smaller',
+        'To improve query performance and enable searching by non-key fields',
+        'To encrypt the data',
+        'To backup the data'
       ],
       correct: 1,
-      explanation: "Indexes in IndexedDB improve query performance by creating alternative access paths to data, allowing you to efficiently search and sort by fields other than the primary key."
+      explanation:
+        'Indexes in IndexedDB improve query performance by creating alternative access paths to data, allowing you to efficiently search and sort by fields other than the primary key.'
     },
-    
+
     {
-      question: "How do you handle the asynchronous nature of IndexedDB operations?",
+      question: 'How do you handle the asynchronous nature of IndexedDB operations?',
       options: [
-        "IndexedDB operations are synchronous",
-        "Using callbacks and event handlers or Promises/async-await",
-        "Using setTimeout",
-        "IndexedDB operations are automatic"
+        'IndexedDB operations are synchronous',
+        'Using callbacks and event handlers or Promises/async-await',
+        'Using setTimeout',
+        'IndexedDB operations are automatic'
       ],
       correct: 1,
-      explanation: "IndexedDB operations are asynchronous and use event handlers (onsuccess, onerror) or can be wrapped in Promises to handle the asynchronous nature using async/await syntax."
+      explanation:
+        'IndexedDB operations are asynchronous and use event handlers (onsuccess, onerror) or can be wrapped in Promises to handle the asynchronous nature using async/await syntax.'
     }
   ]
 };

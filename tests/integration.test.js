@@ -7,12 +7,12 @@ describe('Application Initialization Flow', () => {
     const stateManager = { init: jest.fn() };
     const conceptLoader = { init: jest.fn() };
     const navigation = { init: jest.fn() };
-    
+
     // Initialize all systems
     stateManager.init();
     conceptLoader.init();
     navigation.init();
-    
+
     expect(stateManager.init).toHaveBeenCalled();
     expect(conceptLoader.init).toHaveBeenCalled();
     expect(navigation.init).toHaveBeenCalled();
@@ -24,10 +24,10 @@ describe('Application Initialization Flow', () => {
       galaxyMap: { render: jest.fn() },
       modal: { show: jest.fn() }
     };
-    
+
     app.navbar.render();
     app.galaxyMap.render();
-    
+
     expect(app.navbar.render).toHaveBeenCalled();
     expect(app.galaxyMap.render).toHaveBeenCalled();
   });
@@ -35,13 +35,13 @@ describe('Application Initialization Flow', () => {
   test('should handle initialization errors gracefully', () => {
     const errorHandler = jest.fn();
     const mockError = new Error('Initialization failed');
-    
+
     try {
       throw mockError;
     } catch (error) {
       errorHandler(error);
     }
-    
+
     expect(errorHandler).toHaveBeenCalledWith(mockError);
   });
 });
@@ -62,7 +62,7 @@ describe('Concept Learning Flow', () => {
     // User clicks on planet in galaxy
     app.galaxyMap.selectPlanet('basics');
     expect(app.galaxyMap.selectPlanet).toHaveBeenCalledWith('basics');
-    
+
     // Concept should load
     app.conceptViewer.showConcept('basics');
     expect(app.conceptViewer.showConcept).toHaveBeenCalledWith('basics');
@@ -71,7 +71,7 @@ describe('Concept Learning Flow', () => {
   test('should open concept in modal', () => {
     app.conceptViewer.showConcept('async');
     app.modal.show();
-    
+
     expect(app.conceptViewer.showConcept).toHaveBeenCalledWith('async');
     expect(app.modal.show).toHaveBeenCalled();
   });
@@ -79,7 +79,7 @@ describe('Concept Learning Flow', () => {
   test('should save progress after completing concept', () => {
     app.conceptViewer.showConcept('basics');
     app.stateManager.saveConcept('basics');
-    
+
     expect(app.stateManager.saveConcept).toHaveBeenCalledWith('basics');
   });
 
@@ -96,7 +96,7 @@ describe('Exercise Workflow', () => {
   beforeEach(() => {
     app = {
       conceptViewer: {
-        submitExercise: jest.fn((code) => ({ passed: true })),
+        submitExercise: jest.fn(code => ({ passed: true })),
         getExercises: jest.fn(() => [
           { id: 'ex1', title: 'Exercise 1' },
           { id: 'ex2', title: 'Exercise 2' }
@@ -116,7 +116,7 @@ describe('Exercise Workflow', () => {
   test('should submit exercise code', () => {
     const code = 'console.log("hello")';
     const result = app.conceptViewer.submitExercise(code);
-    
+
     expect(app.conceptViewer.submitExercise).toHaveBeenCalledWith(code);
     expect(result.passed).toBe(true);
   });
@@ -124,14 +124,14 @@ describe('Exercise Workflow', () => {
   test('should save completed exercise', () => {
     app.conceptViewer.submitExercise('const x = 5;');
     app.stateManager.saveExercise('ex1');
-    
+
     expect(app.stateManager.saveExercise).toHaveBeenCalledWith('ex1');
   });
 
   test('should handle exercise errors', () => {
     const failedResult = { passed: false, error: 'Syntax error' };
     app.conceptViewer.submitExercise = jest.fn(() => failedResult);
-    
+
     const result = app.conceptViewer.submitExercise('invalid code');
     expect(result.passed).toBe(false);
     expect(result.error).toBeDefined();
@@ -232,7 +232,7 @@ describe('Concept Loader Integration', () => {
   beforeEach(() => {
     app = {
       conceptLoader: {
-        loadConcept: jest.fn(async (id) => ({
+        loadConcept: jest.fn(async id => ({
           id,
           title: 'Concept',
           content: {}
@@ -264,7 +264,7 @@ describe('Concept Loader Integration', () => {
     app.conceptLoader.loadConcept = jest.fn(async () => {
       throw new Error('Failed to load');
     });
-    
+
     try {
       await app.conceptLoader.loadConcept('invalid');
     } catch (error) {
@@ -295,7 +295,7 @@ describe('User Interaction Flows', () => {
   test('should show modal on concept selection', () => {
     app.ui.showModal('concept');
     app.events.onConceptSelected('basics');
-    
+
     expect(app.ui.showModal).toHaveBeenCalledWith('concept');
     expect(app.events.onConceptSelected).toHaveBeenCalledWith('basics');
   });
@@ -303,7 +303,7 @@ describe('User Interaction Flows', () => {
   test('should show feedback on exercise submission', () => {
     app.events.onExerciseSubmitted('ex1');
     app.ui.showToast('Exercise submitted!');
-    
+
     expect(app.events.onExerciseSubmitted).toHaveBeenCalledWith('ex1');
     expect(app.ui.showToast).toHaveBeenCalled();
   });
@@ -312,7 +312,7 @@ describe('User Interaction Flows', () => {
     // User action 1
     app.events.onConceptSelected('basics');
     expect(app.events.onConceptSelected).toHaveBeenCalled();
-    
+
     // User action 2
     app.events.onExerciseSubmitted('ex1');
     expect(app.events.onExerciseSubmitted).toHaveBeenCalled();
@@ -359,7 +359,7 @@ describe('Error Handling & Recovery', () => {
       if (attempt < 3) throw new Error('Temporary failure');
       return 'Success';
     });
-    
+
     expect(() => retryableAction()).toThrow();
   });
 });

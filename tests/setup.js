@@ -3,14 +3,19 @@
 // Mock browser APIs that aren't available in jsdom
 global.ResizeObserver = class ResizeObserver {
   observe() {}
+
   unobserve() {}
+
   disconnect() {}
 };
 
 global.IntersectionObserver = class IntersectionObserver {
   constructor() {}
+
   observe() {}
+
   unobserve() {}
+
   disconnect() {}
 };
 
@@ -19,7 +24,7 @@ const localStorageMock = {
   getItem: jest.fn(),
   setItem: jest.fn(),
   removeItem: jest.fn(),
-  clear: jest.fn(),
+  clear: jest.fn()
 };
 global.localStorage = localStorageMock;
 
@@ -28,7 +33,7 @@ const sessionStorageMock = {
   getItem: jest.fn(),
   setItem: jest.fn(),
   removeItem: jest.fn(),
-  clear: jest.fn(),
+  clear: jest.fn()
 };
 global.sessionStorage = sessionStorageMock;
 
@@ -55,13 +60,13 @@ HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
   setTransform: jest.fn(),
   resetTransform: jest.fn(),
   createLinearGradient: jest.fn(() => ({
-    addColorStop: jest.fn(),
+    addColorStop: jest.fn()
   })),
   createRadialGradient: jest.fn(() => ({
-    addColorStop: jest.fn(),
+    addColorStop: jest.fn()
   })),
   measureText: jest.fn(() => ({ width: 0 })),
-  drawImage: jest.fn(),
+  drawImage: jest.fn()
 }));
 
 // Minimal User Timing (mark/measure) polyfill - jsdom's performance object
@@ -78,7 +83,7 @@ HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
     duration,
     toJSON() {
       return { name, entryType, startTime, duration };
-    },
+    }
   });
   const lastByName = (name, entryType) => {
     for (let i = entries.length - 1; i >= 0; i--) {
@@ -96,7 +101,7 @@ HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
     }
   };
 
-  perf.mark = (name) => {
+  perf.mark = name => {
     const entry = makeEntry(name, 'mark', perf.now(), 0);
     entries.push(entry);
     return entry;
@@ -113,12 +118,12 @@ HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
     entries.push(entry);
     return entry;
   };
-  perf.clearMarks = (name) => remove('mark', name);
-  perf.clearMeasures = (name) => remove('measure', name);
+  perf.clearMarks = name => remove('mark', name);
+  perf.clearMeasures = name => remove('measure', name);
   perf.getEntries = () => entries.slice();
-  perf.getEntriesByType = (type) => entries.filter((e) => e.entryType === type);
+  perf.getEntriesByType = type => entries.filter(e => e.entryType === type);
   perf.getEntriesByName = (name, type) =>
-    entries.filter((e) => e.name === name && (type === undefined || e.entryType === type));
+    entries.filter(e => e.name === name && (type === undefined || e.entryType === type));
 })();
 
 // Minimal PerformanceObserver mock (jsdom does not provide one)
@@ -127,11 +132,15 @@ if (typeof global.PerformanceObserver === 'undefined') {
     static get supportedEntryTypes() {
       return ['mark', 'measure'];
     }
+
     constructor(callback) {
       this.callback = callback;
     }
+
     observe() {}
+
     disconnect() {}
+
     takeRecords() {
       return [];
     }
@@ -139,8 +148,8 @@ if (typeof global.PerformanceObserver === 'undefined') {
 }
 
 // Mock requestAnimationFrame
-global.requestAnimationFrame = jest.fn((cb) => setTimeout(cb, 16));
-global.cancelAnimationFrame = jest.fn((id) => clearTimeout(id));
+global.requestAnimationFrame = jest.fn(cb => setTimeout(cb, 16));
+global.cancelAnimationFrame = jest.fn(id => clearTimeout(id));
 
 // Mock Audio
 global.Audio = jest.fn().mockImplementation(() => ({
@@ -150,14 +159,14 @@ global.Audio = jest.fn().mockImplementation(() => ({
   addEventListener: jest.fn(),
   removeEventListener: jest.fn(),
   currentTime: 0,
-  volume: 1,
+  volume: 1
 }));
 
 // Suppress console warnings during tests
 global.console = {
   ...console,
   warn: jest.fn(),
-  error: jest.fn(),
+  error: jest.fn()
 };
 
 // Setup custom matchers if needed
@@ -166,16 +175,14 @@ expect.extend({
     const pass = received >= floor && received <= ceiling;
     if (pass) {
       return {
-        message: () =>
-          `expected ${received} not to be within range ${floor} - ${ceiling}`,
-        pass: true,
+        message: () => `expected ${received} not to be within range ${floor} - ${ceiling}`,
+        pass: true
       };
     } else {
       return {
-        message: () =>
-          `expected ${received} to be within range ${floor} - ${ceiling}`,
-        pass: false,
+        message: () => `expected ${received} to be within range ${floor} - ${ceiling}`,
+        pass: false
       };
     }
-  },
+  }
 });

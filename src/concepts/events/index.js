@@ -6,25 +6,25 @@
  * Comprehensive guide to JavaScript event systems
  */
 export const eventsConfig = {
-  title: "Event Systems & Delegation",
-  description: "Master event-driven programming in JavaScript with events, delegation, and custom event creation",
-  difficulty: "beginner-intermediate",
-  estimatedTime: "120 minutes",
+  title: 'Event Systems & Delegation',
+  description: 'Master event-driven programming in JavaScript with events, delegation, and custom event creation',
+  difficulty: 'beginner-intermediate',
+  estimatedTime: '120 minutes',
   topics: [
-    "Event Fundamentals",
-    "Event Bubbling & Capturing",
-    "Event Delegation",
-    "Event Object & Methods",
-    "Custom Events",
-    "Event Performance"
+    'Event Fundamentals',
+    'Event Bubbling & Capturing',
+    'Event Delegation',
+    'Event Object & Methods',
+    'Custom Events',
+    'Event Performance'
   ],
-  prerequisites: ["JavaScript Basics", "DOM Manipulation"],
+  prerequisites: ['JavaScript Basics', 'DOM Manipulation'],
   learningObjectives: [
-    "Understand event flow and propagation",
-    "Implement event delegation for performance",
-    "Create and dispatch custom events",
-    "Manage event listeners efficiently",
-    "Optimize event handling performance"
+    'Understand event flow and propagation',
+    'Implement event delegation for performance',
+    'Create and dispatch custom events',
+    'Manage event listeners efficiently',
+    'Optimize event handling performance'
   ]
 };
 
@@ -36,7 +36,7 @@ export const eventsConfig = {
  * Event Fundamentals - Understanding JavaScript events
  */
 export const eventFundamentals = {
-  concept: "Event Fundamentals",
+  concept: 'Event Fundamentals',
   explanation: `
     Events are actions or occurrences that happen in the browser that the JavaScript code can react to.
     Events can be triggered by user actions (clicks, keyboard input, mouse movements) or by the browser
@@ -49,7 +49,7 @@ export const eventFundamentals = {
     - Event Listener: Code that listens for specific events
     - Event Flow: How events propagate through the DOM
   `,
-  
+
   examples: {
     basicEventHandling: `
 // 1. Inline event handling (not recommended)
@@ -79,7 +79,7 @@ function handleClick() {
 button.addEventListener('click', handleClick);
 button.removeEventListener('click', handleClick);
     `,
-    
+
     commonEvents: `
 // Mouse Events
 element.addEventListener('click', handler);      // Single click
@@ -117,7 +117,7 @@ element.addEventListener('touchmove', handler);  // Touch moves
 element.addEventListener('touchend', handler);   // Touch ends
 element.addEventListener('touchcancel', handler); // Touch cancelled
     `,
-    
+
     eventObject: `
 // The Event Object contains information about the event
 element.addEventListener('click', function(event) {
@@ -297,30 +297,11 @@ document.querySelector('.toolbar').addEventListener('click', (event) => {
       'wheel'
     ],
 
-    keyboardEvents: [
-      'keydown',
-      'keyup',
-      'keypress'
-    ],
+    keyboardEvents: ['keydown', 'keyup', 'keypress'],
 
-    formEvents: [
-      'submit',
-      'reset',
-      'change',
-      'input',
-      'focus',
-      'blur',
-      'focusin',
-      'focusout',
-      'invalid'
-    ],
+    formEvents: ['submit', 'reset', 'change', 'input', 'focus', 'blur', 'focusin', 'focusout', 'invalid'],
 
-    touchEvents: [
-      'touchstart',
-      'touchmove',
-      'touchend',
-      'touchcancel'
-    ],
+    touchEvents: ['touchstart', 'touchmove', 'touchend', 'touchcancel'],
 
     removalExample: `
 // removeEventListener needs the SAME function reference that was added.
@@ -441,14 +422,14 @@ document.addEventListener('keydown', (event) => {
 });
     `
   },
-  
+
   keyPoints: [
-    "Events are triggered by user actions or browser",
-    "Use addEventListener() for modern event handling",
-    "Each event has a type (click, keydown, etc.)",
-    "Event object contains details about what happened",
-    "preventDefault() stops default behavior",
-    "stopPropagation() prevents event bubbling"
+    'Events are triggered by user actions or browser',
+    'Use addEventListener() for modern event handling',
+    'Each event has a type (click, keydown, etc.)',
+    'Event object contains details about what happened',
+    'preventDefault() stops default behavior',
+    'stopPropagation() prevents event bubbling'
   ]
 };
 
@@ -460,7 +441,7 @@ document.addEventListener('keydown', (event) => {
  * Event Bubbling & Capturing - Event propagation through the DOM
  */
 export const eventFlow = {
-  concept: "Event Bubbling & Capturing Phases",
+  concept: 'Event Bubbling & Capturing Phases',
   explanation: `
     When an event occurs on an element, it doesn't just happen on that element. The event has a propagation
     flow through the DOM hierarchy:
@@ -474,7 +455,7 @@ export const eventFlow = {
     
     Not all events bubble (e.g., focus, blur, scroll) - check the bubbles property.
   `,
-  
+
   examples: {
     eventPropagation: `
 // HTML Structure:
@@ -500,7 +481,7 @@ outer.addEventListener('click', (e) => console.log('Outer clicked - BUBBLING'));
 
 // Event bubbles UP from innermost to outermost element
     `,
-    
+
     capturingPhase: `
 // CAPTURING PHASE (third parameter true)
 outer.addEventListener('click', (e) => console.log('Outer clicked - CAPTURING'), true);
@@ -526,7 +507,7 @@ inner.addEventListener('click', () => console.log('Inner BUBBLING'), false);
 // Inner BUBBLING   (bubbling phase)
 // Outer BUBBLING   (bubbling phase)
     `,
-    
+
     stoppingPropagation: `
 // stopPropagation() stops event from propagating further
 middle.addEventListener('click', (e) => {
@@ -554,7 +535,7 @@ link.addEventListener('click', (e) => {
   // Event still bubbles up!
 });
     `,
-    
+
     nonBubblingEvents: `
 // Some events don't bubble:
 // - focus, blur
@@ -764,16 +745,16 @@ const proceed = element.dispatchEvent(cancelable);
 if (!proceed) console.log('Save was vetoed by a listener');
     `
   },
-  
+
   keyPoints: [
-    "Events propagate through DOM in two phases: capturing and bubbling",
-    "Capturing phase travels DOWN the DOM tree (document → target)",
-    "Bubbling phase travels UP the DOM tree (target → document)",
-    "addEventListener() fires during bubbling by default",
-    "Use true as third parameter to listen during capturing phase",
-    "stopPropagation() prevents further propagation",
+    'Events propagate through DOM in two phases: capturing and bubbling',
+    'Capturing phase travels DOWN the DOM tree (document → target)',
+    'Bubbling phase travels UP the DOM tree (target → document)',
+    'addEventListener() fires during bubbling by default',
+    'Use true as third parameter to listen during capturing phase',
+    'stopPropagation() prevents further propagation',
     "preventDefault() stops default action but doesn't stop propagation",
-    "Not all events bubble - check the bubbles property"
+    'Not all events bubble - check the bubbles property'
   ]
 };
 
@@ -785,7 +766,7 @@ if (!proceed) console.log('Save was vetoed by a listener');
  * Event Delegation - Efficient event handling with bubbling
  */
 export const eventDelegation = {
-  concept: "Event Delegation Pattern",
+  concept: 'Event Delegation Pattern',
   explanation: `
     Event delegation is a technique where instead of attaching event listeners to individual elements,
     you attach a single listener to a parent element and use event.target to determine which child
@@ -800,7 +781,7 @@ export const eventDelegation = {
     The technique relies on event bubbling - the event bubbles up to the parent where the listener
     is attached, allowing you to handle events for all child elements.
   `,
-  
+
   examples: {
     basicDelegation: `
 // WITHOUT Delegation (inefficient for many items)
@@ -831,7 +812,7 @@ function handleItemClick(e) {
 //   <li class="list-item">Item 3</li>
 // </ul>
     `,
-    
+
     dynamicElements: `
 // Event delegation is powerful for dynamic content
 const container = document.querySelector('.container');
@@ -868,7 +849,7 @@ function addItem(text) {
 //   <!-- More items added dynamically -->
 // </div>
     `,
-    
+
     delegationPatterns: `
 // Pattern 1: Using matches() method
 parent.addEventListener('click', (e) => {
@@ -928,7 +909,7 @@ app.addEventListener('click', (e) => {
   }
 });
     `,
-    
+
     performanceComparison: `
 // Performance test: 1000 items
 
@@ -1168,16 +1149,16 @@ document.addEventListener('click', (event) => {
 });
     `
   },
-  
+
   keyPoints: [
-    "Attach listener to parent, not individual children",
-    "Use event.target or event.currentTarget to identify clicked element",
-    "Rely on event bubbling to propagate events up",
-    "Use matches() to check if element matches selector",
-    "Use closest() to find matching ancestor element",
-    "Works automatically with dynamically created elements",
-    "Better performance for many elements",
-    "Reduces memory footprint significantly"
+    'Attach listener to parent, not individual children',
+    'Use event.target or event.currentTarget to identify clicked element',
+    'Rely on event bubbling to propagate events up',
+    'Use matches() to check if element matches selector',
+    'Use closest() to find matching ancestor element',
+    'Works automatically with dynamically created elements',
+    'Better performance for many elements',
+    'Reduces memory footprint significantly'
   ]
 };
 
@@ -1189,7 +1170,7 @@ document.addEventListener('click', (event) => {
  * Custom Events - Creating and dispatching custom events
  */
 export const customEvents = {
-  concept: "Custom Events & EventTarget API",
+  concept: 'Custom Events & EventTarget API',
   explanation: `
     JavaScript allows you to create and dispatch custom events. This is useful for:
     - Communication between components
@@ -1202,7 +1183,7 @@ export const customEvents = {
     1. Event constructor (basic)
     2. CustomEvent constructor (with data)
   `,
-  
+
   examples: {
     basicCustomEvent: `
 // Create and dispatch a simple custom event
@@ -1223,7 +1204,7 @@ element.addEventListener('dataLoaded', () => {
   render();
 });
     `,
-    
+
     customEventWithData: `
 // CustomEvent allows passing data
 const event = new CustomEvent('dataLoaded', {
@@ -1270,7 +1251,7 @@ input.addEventListener('validationSuccess', (e) => {
   console.log('Valid:', e.detail.value);
 });
     `,
-    
+
     eventTargetInterface: `
 // Extend EventTarget for custom objects
 class DataStore extends EventTarget {
@@ -1317,7 +1298,7 @@ store.addData('first');     // Fires dataAdded event
 store.addData('second');    // Fires dataAdded event
 store.clearData();          // Fires dataCleared event
     `,
-    
+
     pubSubPattern: `
 // Simple Pub/Sub system using custom events
 class EventBus extends EventTarget {
@@ -1662,16 +1643,16 @@ app.addEventListener('search', async (event) => {
 });
     `
   },
-  
+
   keyPoints: [
-    "Use Event constructor for simple custom events",
-    "Use CustomEvent constructor to pass data",
-    "Dispatch custom events with dispatchEvent()",
-    "Listen for custom events with addEventListener()",
-    "Extend EventTarget for custom objects",
-    "Great for component communication",
-    "Useful for decoupling components",
-    "Can implement pub/sub patterns"
+    'Use Event constructor for simple custom events',
+    'Use CustomEvent constructor to pass data',
+    'Dispatch custom events with dispatchEvent()',
+    'Listen for custom events with addEventListener()',
+    'Extend EventTarget for custom objects',
+    'Great for component communication',
+    'Useful for decoupling components',
+    'Can implement pub/sub patterns'
   ]
 };
 
@@ -1684,10 +1665,10 @@ app.addEventListener('search', async (event) => {
  */
 export const exercises = [
   {
-    id: "events_fundamentals",
-    title: "Event Basics Challenge",
-    difficulty: "easy",
-    description: "Create a button that tracks how many times it was clicked",
+    id: 'events_fundamentals',
+    title: 'Event Basics Challenge',
+    difficulty: 'easy',
+    description: 'Create a button that tracks how many times it was clicked',
     template: `
 // Create a button and track clicks
 const button = document.createElement('button');
@@ -1700,33 +1681,36 @@ document.body.appendChild(button);
     `,
     tests: [
       {
-        description: "Should have an event listener attached",
-        assertion: "Solution calls addEventListener on the button",
-        check: (code) => code.includes('addEventListener')
+        description: 'Should have an event listener attached',
+        assertion: 'Solution calls addEventListener on the button',
+        check: code => code.includes('addEventListener')
       },
       {
-        description: "Should increment click count",
-        assertion: "The click handler increases clickCount by one on every click",
-        check: (code) => code.includes('clickCount++') || code.includes('clickCount +=') || code.includes('clickCount = clickCount + 1')
+        description: 'Should increment click count',
+        assertion: 'The click handler increases clickCount by one on every click',
+        check: code =>
+          code.includes('clickCount++') ||
+          code.includes('clickCount +=') ||
+          code.includes('clickCount = clickCount + 1')
       },
       {
         description: "Should listen for 'click' event",
         assertion: "The listener is registered for the 'click' event type",
-        check: (code) => code.includes("'click'") || code.includes('"click"')
+        check: code => code.includes("'click'") || code.includes('"click"')
       }
     ],
     hints: [
-      "Use addEventListener to attach a click listener",
-      "Inside the handler, increment clickCount",
-      "Update the button text to show the count"
+      'Use addEventListener to attach a click listener',
+      'Inside the handler, increment clickCount',
+      'Update the button text to show the count'
     ]
   },
-  
+
   {
-    id: "events_form_handling",
-    title: "Form Validation Events",
-    difficulty: "easy",
-    description: "Validate email input and show error/success messages",
+    id: 'events_form_handling',
+    title: 'Form Validation Events',
+    difficulty: 'easy',
+    description: 'Validate email input and show error/success messages',
     template: `
 // Create form with email validation
 const form = document.createElement('form');
@@ -1744,28 +1728,28 @@ document.body.appendChild(form);
     `,
     tests: [
       {
-        description: "Should have event listeners",
-        assertion: "Solution registers at least one listener with addEventListener",
-        check: (code) => code.includes('addEventListener')
+        description: 'Should have event listeners',
+        assertion: 'Solution registers at least one listener with addEventListener',
+        check: code => code.includes('addEventListener')
       },
       {
-        description: "Should validate email format",
+        description: 'Should validate email format',
         assertion: "The handler checks that the value contains an '@' before accepting it",
-        check: (code) => code.includes('@') || code.includes('includes')
+        check: code => code.includes('@') || code.includes('includes')
       }
     ],
     hints: [
       "Listen to the 'input' event on the email field",
-      "Check if email contains @ symbol",
-      "Show appropriate message based on validation"
+      'Check if email contains @ symbol',
+      'Show appropriate message based on validation'
     ]
   },
-  
+
   {
-    id: "events_delegation",
-    title: "Event Delegation Challenge",
-    difficulty: "medium",
-    description: "Implement a to-do list with delete buttons using event delegation",
+    id: 'events_delegation',
+    title: 'Event Delegation Challenge',
+    difficulty: 'medium',
+    description: 'Implement a to-do list with delete buttons using event delegation',
     template: `
 // To-do list with event delegation
 const list = document.createElement('ul');
@@ -1792,28 +1776,28 @@ document.body.appendChild(list);
     `,
     tests: [
       {
-        description: "Should use event delegation",
-        assertion: "A single listener on the list element handles clicks for all items",
-        check: (code) => code.includes('addEventListener') && code.includes('list')
+        description: 'Should use event delegation',
+        assertion: 'A single listener on the list element handles clicks for all items',
+        check: code => code.includes('addEventListener') && code.includes('list')
       },
       {
-        description: "Should handle delete button clicks",
-        assertion: "Clicking a delete button removes its parent list item",
-        check: (code) => code.includes('delete') || code.includes('remove')
+        description: 'Should handle delete button clicks',
+        assertion: 'Clicking a delete button removes its parent list item',
+        check: code => code.includes('delete') || code.includes('remove')
       }
     ],
     hints: [
-      "Attach listener to the list element",
-      "Use matches() or closest() to identify the delete button",
-      "Remove the item when delete is clicked"
+      'Attach listener to the list element',
+      'Use matches() or closest() to identify the delete button',
+      'Remove the item when delete is clicked'
     ]
   },
-  
+
   {
-    id: "events_custom",
-    title: "Custom Event Publisher",
-    difficulty: "medium",
-    description: "Create a simple pub/sub system with custom events",
+    id: 'events_custom',
+    title: 'Custom Event Publisher',
+    difficulty: 'medium',
+    description: 'Create a simple pub/sub system with custom events',
     template: `
 // Simple event publisher
 class Publisher extends EventTarget {
@@ -1834,28 +1818,28 @@ pub.publish('greet', { message: 'Hello!' });
     `,
     tests: [
       {
-        description: "Should use CustomEvent",
-        assertion: "Publisher creates events with the CustomEvent constructor",
-        check: (code) => code.includes('CustomEvent')
+        description: 'Should use CustomEvent',
+        assertion: 'Publisher creates events with the CustomEvent constructor',
+        check: code => code.includes('CustomEvent')
       },
       {
-        description: "Should dispatch events",
-        assertion: "Publisher notifies subscribers with dispatchEvent",
-        check: (code) => code.includes('dispatchEvent')
+        description: 'Should dispatch events',
+        assertion: 'Publisher notifies subscribers with dispatchEvent',
+        check: code => code.includes('dispatchEvent')
       }
     ],
     hints: [
-      "Use CustomEvent constructor with detail property",
-      "Use dispatchEvent() to trigger the event",
-      "The subscriber should receive the data in event.detail"
+      'Use CustomEvent constructor with detail property',
+      'Use dispatchEvent() to trigger the event',
+      'The subscriber should receive the data in event.detail'
     ]
   },
-  
+
   {
-    id: "events_stopPropagation",
-    title: "Event Propagation Control",
-    difficulty: "medium",
-    description: "Create nested elements and control event propagation",
+    id: 'events_stopPropagation',
+    title: 'Event Propagation Control',
+    difficulty: 'medium',
+    description: 'Create nested elements and control event propagation',
     template: `
 // Nested elements with event propagation
 const outer = document.createElement('div');
@@ -1878,28 +1862,28 @@ document.body.appendChild(outer);
     `,
     tests: [
       {
-        description: "Should have event listeners",
-        assertion: "Solution registers at least one listener with addEventListener",
-        check: (code) => code.includes('addEventListener')
+        description: 'Should have event listeners',
+        assertion: 'Solution registers at least one listener with addEventListener',
+        check: code => code.includes('addEventListener')
       },
       {
-        description: "Should use stopPropagation",
-        assertion: "The middle handler calls event.stopPropagation() so outer never fires",
-        check: (code) => code.includes('stopPropagation')
+        description: 'Should use stopPropagation',
+        assertion: 'The middle handler calls event.stopPropagation() so outer never fires',
+        check: code => code.includes('stopPropagation')
       }
     ],
     hints: [
-      "Add click listeners to outer, middle, and inner",
-      "Use stopPropagation() to prevent bubbling",
-      "Test by clicking inner button and see what gets logged"
+      'Add click listeners to outer, middle, and inner',
+      'Use stopPropagation() to prevent bubbling',
+      'Test by clicking inner button and see what gets logged'
     ]
   },
-  
+
   {
-    id: "events_keyboard",
-    title: "Keyboard Event Handling",
-    difficulty: "medium",
-    description: "Create a keyboard shortcut handler",
+    id: 'events_keyboard',
+    title: 'Keyboard Event Handling',
+    difficulty: 'medium',
+    description: 'Create a keyboard shortcut handler',
     template: `
 // Keyboard shortcut handler
 const shortcuts = {};
@@ -1917,28 +1901,28 @@ registerShortcut('Space', () => console.log('Space pressed'));
     `,
     tests: [
       {
-        description: "Should listen to keyboard events",
-        assertion: "A keydown, keyup or keypress listener is registered",
-        check: (code) => code.includes('keydown') || code.includes('keyup') || code.includes('keypress')
+        description: 'Should listen to keyboard events',
+        assertion: 'A keydown, keyup or keypress listener is registered',
+        check: code => code.includes('keydown') || code.includes('keyup') || code.includes('keypress')
       },
       {
-        description: "Should check event.key",
-        assertion: "The handler reads event.key to identify the pressed key",
-        check: (code) => code.includes('event.key') || code.includes('e.key')
+        description: 'Should check event.key',
+        assertion: 'The handler reads event.key to identify the pressed key',
+        check: code => code.includes('event.key') || code.includes('e.key')
       }
     ],
     hints: [
-      "Listen to keydown or keyup event on document",
-      "Check event.key to identify which key was pressed",
-      "Call the registered callback for that key"
+      'Listen to keydown or keyup event on document',
+      'Check event.key to identify which key was pressed',
+      'Call the registered callback for that key'
     ]
   },
-  
+
   {
-    id: "events_debounce",
-    title: "Debounce Event Handler",
-    difficulty: "hard",
-    description: "Implement a debounced scroll event handler",
+    id: 'events_debounce',
+    title: 'Debounce Event Handler',
+    difficulty: 'hard',
+    description: 'Implement a debounced scroll event handler',
     template: `
 // Debounce function and scroll handler
 function debounce(func, wait) {
@@ -1957,39 +1941,39 @@ const debouncedScroll = debounce(handleScroll, 500);
     `,
     tests: [
       {
-        description: "Should have debounce function",
-        assertion: "A debounce(func, wait) function is defined and used",
-        check: (code) => code.includes('debounce')
+        description: 'Should have debounce function',
+        assertion: 'A debounce(func, wait) function is defined and used',
+        check: code => code.includes('debounce')
       },
       {
-        description: "Should use setTimeout",
-        assertion: "The debounced function schedules the call with setTimeout",
-        check: (code) => code.includes('setTimeout')
+        description: 'Should use setTimeout',
+        assertion: 'The debounced function schedules the call with setTimeout',
+        check: code => code.includes('setTimeout')
       },
       {
-        description: "Should clear the pending timeout on each call",
-        assertion: "Each new call cancels the previous timer with clearTimeout",
-        check: (code) => code.includes('clearTimeout')
+        description: 'Should clear the pending timeout on each call',
+        assertion: 'Each new call cancels the previous timer with clearTimeout',
+        check: code => code.includes('clearTimeout')
       },
       {
-        description: "Should attach the debounced handler to the scroll event",
+        description: 'Should attach the debounced handler to the scroll event',
         assertion: "The debounced function is registered as a 'scroll' listener",
-        check: (code) => code.includes("'scroll'") || code.includes('"scroll"')
+        check: code => code.includes("'scroll'") || code.includes('"scroll"')
       }
     ],
     hints: [
-      "Clear previous timeout on each call",
-      "Set new timeout for the function call",
-      "Return a debounced version of the function",
-      "Attach the debounced function to scroll event"
+      'Clear previous timeout on each call',
+      'Set new timeout for the function call',
+      'Return a debounced version of the function',
+      'Attach the debounced function to scroll event'
     ]
   },
-  
+
   {
-    id: "events_event_object",
-    title: "Working with Event Object",
-    difficulty: "medium",
-    description: "Create a mouse tracking system that logs mouse position",
+    id: 'events_event_object',
+    title: 'Working with Event Object',
+    difficulty: 'medium',
+    description: 'Create a mouse tracking system that logs mouse position',
     template: `
 // Mouse position tracker
 const tracker = document.createElement('div');
@@ -2009,28 +1993,29 @@ document.body.appendChild(tracker);
     `,
     tests: [
       {
-        description: "Should listen to mousemove event",
-        assertion: "A mousemove listener is attached to the tracker element",
-        check: (code) => code.includes('mousemove')
+        description: 'Should listen to mousemove event',
+        assertion: 'A mousemove listener is attached to the tracker element',
+        check: code => code.includes('mousemove')
       },
       {
-        description: "Should use event.clientX and event.clientY",
-        assertion: "The handler reads the pointer coordinates from the event object",
-        check: (code) => (code.includes('clientX') || code.includes('pageX')) && (code.includes('clientY') || code.includes('pageY'))
+        description: 'Should use event.clientX and event.clientY',
+        assertion: 'The handler reads the pointer coordinates from the event object',
+        check: code =>
+          (code.includes('clientX') || code.includes('pageX')) && (code.includes('clientY') || code.includes('pageY'))
       }
     ],
     hints: [
-      "Listen to mousemove event on the tracker element",
-      "Access event.clientX and event.clientY",
-      "Update the position display in real-time"
+      'Listen to mousemove event on the tracker element',
+      'Access event.clientX and event.clientY',
+      'Update the position display in real-time'
     ]
   },
-  
+
   {
-    id: "events_final_challenge",
-    title: "Interactive Event System",
-    difficulty: "hard",
-    description: "Build a complete todo app with event delegation, custom events, and proper cleanup",
+    id: 'events_final_challenge',
+    title: 'Interactive Event System',
+    difficulty: 'hard',
+    description: 'Build a complete todo app with event delegation, custom events, and proper cleanup',
     template: `
 // Complete todo application with events
 class TodoApp {
@@ -2062,36 +2047,36 @@ const app = new TodoApp('.container');
     `,
     tests: [
       {
-        description: "Should have addEventListener",
-        assertion: "The app attaches its listeners with addEventListener",
-        check: (code) => code.includes('addEventListener')
+        description: 'Should have addEventListener',
+        assertion: 'The app attaches its listeners with addEventListener',
+        check: code => code.includes('addEventListener')
       },
       {
-        description: "Should handle add and remove",
-        assertion: "TodoApp implements both addTodo and removeTodo",
-        check: (code) => code.includes('addTodo') && code.includes('removeTodo')
+        description: 'Should handle add and remove',
+        assertion: 'TodoApp implements both addTodo and removeTodo',
+        check: code => code.includes('addTodo') && code.includes('removeTodo')
       },
       {
-        description: "Should use event delegation for list items",
-        assertion: "One listener on the list identifies items with matches() or closest()",
-        check: (code) => code.includes('closest') || code.includes('matches')
+        description: 'Should use event delegation for list items',
+        assertion: 'One listener on the list identifies items with matches() or closest()',
+        check: code => code.includes('closest') || code.includes('matches')
       },
       {
-        description: "Should dispatch custom events on add and remove",
-        assertion: "addTodo and removeTodo dispatch a CustomEvent describing the change",
-        check: (code) => code.includes('CustomEvent') && code.includes('dispatchEvent')
+        description: 'Should dispatch custom events on add and remove',
+        assertion: 'addTodo and removeTodo dispatch a CustomEvent describing the change',
+        check: code => code.includes('CustomEvent') && code.includes('dispatchEvent')
       },
       {
-        description: "Should clean up listeners",
-        assertion: "A destroy/cleanup step removes listeners with removeEventListener or an AbortController",
-        check: (code) => code.includes('removeEventListener') || code.includes('AbortController')
+        description: 'Should clean up listeners',
+        assertion: 'A destroy/cleanup step removes listeners with removeEventListener or an AbortController',
+        check: code => code.includes('removeEventListener') || code.includes('AbortController')
       }
     ],
     hints: [
-      "Use event delegation for the todo list",
-      "Dispatch custom events for add/remove actions",
-      "Keep todo array in sync with DOM",
-      "Implement proper cleanup and organization"
+      'Use event delegation for the todo list',
+      'Dispatch custom events for add/remove actions',
+      'Keep todo array in sync with DOM',
+      'Implement proper cleanup and organization'
     ]
   }
 ];

@@ -130,7 +130,13 @@ describe('SM-2 spaced repetition', () => {
   describe('SpacedRepetitionScheduler', () => {
     const makeStore = () => {
       let data = null;
-      return { load: () => data, save: d => { data = JSON.parse(JSON.stringify(d)); }, get: () => data };
+      return {
+        load: () => data,
+        save: d => {
+          data = JSON.parse(JSON.stringify(d));
+        },
+        get: () => data
+      };
     };
 
     test('persists reviews through the store and reports due counts', () => {

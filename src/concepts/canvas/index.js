@@ -1,7 +1,7 @@
 /**
  * Canvas Graphics Concept
  * Learn HTML5 Canvas API for drawing, animations, and interactive graphics
- * 
+ *
  * Topics Covered:
  * 1. Canvas Basics - Setup and 2D context
  * 2. Drawing Shapes - Rectangles, circles, lines, polygons
@@ -31,13 +31,13 @@ const canvasBasics = {
   getContext(elementId, width, height) {
     const canvas = document.getElementById(elementId);
     if (!canvas) throw new Error(`Canvas element with id "${elementId}" not found`);
-    
+
     canvas.width = width;
     canvas.height = height;
-    
+
     const ctx = canvas.getContext('2d');
     if (!ctx) throw new Error('Could not get 2D context from canvas');
-    
+
     return ctx;
   },
 
@@ -62,10 +62,10 @@ const canvasBasics = {
   fillWindow(canvas, dpr = window.devicePixelRatio) {
     canvas.width = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
-    
+
     const ctx = canvas.getContext('2d');
     ctx.scale(dpr, dpr);
-    
+
     return ctx;
   },
 
@@ -96,13 +96,7 @@ const drawingShapes = {
    * @param {Object} options - Drawing options
    */
   rectangle(ctx, x, y, width, height, options = {}) {
-    const {
-      fill = true,
-      stroke = false,
-      fillColor = '#000',
-      strokeColor = '#000',
-      lineWidth = 1
-    } = options;
+    const { fill = true, stroke = false, fillColor = '#000', strokeColor = '#000', lineWidth = 1 } = options;
 
     if (fill) {
       ctx.fillStyle = fillColor;
@@ -125,13 +119,7 @@ const drawingShapes = {
    * @param {Object} options - Drawing options
    */
   circle(ctx, x, y, radius, options = {}) {
-    const {
-      fill = true,
-      stroke = false,
-      fillColor = '#000',
-      strokeColor = '#000',
-      lineWidth = 1
-    } = options;
+    const { fill = true, stroke = false, fillColor = '#000', strokeColor = '#000', lineWidth = 1 } = options;
 
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, Math.PI * 2);
@@ -158,12 +146,7 @@ const drawingShapes = {
    * @param {Object} options - Line options
    */
   line(ctx, x1, y1, x2, y2, options = {}) {
-    const {
-      strokeColor = '#000',
-      lineWidth = 1,
-      lineCap = 'round',
-      lineJoin = 'round'
-    } = options;
+    const { strokeColor = '#000', lineWidth = 1, lineCap = 'round', lineJoin = 'round' } = options;
 
     ctx.strokeStyle = strokeColor;
     ctx.lineWidth = lineWidth;
@@ -200,7 +183,7 @@ const drawingShapes = {
       const angle = (i * 2 * Math.PI) / sides + rotation;
       const px = x + Math.cos(angle) * radius;
       const py = y + Math.sin(angle) * radius;
-      
+
       if (i === 0) ctx.moveTo(px, py);
       else ctx.lineTo(px, py);
     }
@@ -399,12 +382,7 @@ const styling = {
    * @param {Object} options - Shadow options
    */
   shadow(ctx, options = {}) {
-    const {
-      offsetX = 2,
-      offsetY = 2,
-      blur = 4,
-      color = 'rgba(0, 0, 0, 0.3)'
-    } = options;
+    const { offsetX = 2, offsetY = 2, blur = 4, color = 'rgba(0, 0, 0, 0.3)' } = options;
 
     ctx.shadowOffsetX = offsetX;
     ctx.shadowOffsetY = offsetY;
@@ -500,7 +478,7 @@ const textRendering = {
     const lines = text.split('\n');
     let currentY = y;
 
-    lines.forEach((line) => {
+    lines.forEach(line => {
       this.drawText(ctx, line, x, currentY, options);
       currentY += lineHeight;
     });
@@ -554,7 +532,7 @@ const animations = {
         this.frameCount++;
 
         const now = Date.now();
-        this.animations = this.animations.filter((anim) => {
+        this.animations = this.animations.filter(anim => {
           if (anim.isComplete) return false;
 
           const elapsed = now - anim.startTime;
@@ -610,18 +588,18 @@ const animations = {
    * Easing functions for smooth animations
    */
   easing: {
-    linear: (t) => t,
-    easeInQuad: (t) => t * t,
-    easeOutQuad: (t) => t * (2 - t),
-    easeInOutQuad: (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t,
-    easeInCubic: (t) => t * t * t,
-    easeOutCubic: (t) => (t - 1) * (t - 1) * (t - 1) + 1,
-    easeInOutCubic: (t) => t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1,
-    easeOutElastic: (t) => {
+    linear: t => t,
+    easeInQuad: t => t * t,
+    easeOutQuad: t => t * (2 - t),
+    easeInOutQuad: t => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t),
+    easeInCubic: t => t * t * t,
+    easeOutCubic: t => (t - 1) * (t - 1) * (t - 1) + 1,
+    easeInOutCubic: t => (t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1),
+    easeOutElastic: t => {
       const c5 = (2 * Math.PI) / 4.5;
-      return t === 0 ? 0 : t === 1 ? 1 : Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c5) + 1;
+      return t === 0 ? 0 : t === 1 ? 1 : 2 ** (-10 * t) * Math.sin((t * 10 - 0.75) * c5) + 1;
     },
-    easeOutBounce: (t) => {
+    easeOutBounce: t => {
       const n1 = 7.5625;
       const d1 = 2.75;
       if (t < 1 / d1) return n1 * t * t;
@@ -652,7 +630,7 @@ const interactive = {
       this.lastX = 0;
       this.lastY = 0;
 
-      canvas.addEventListener('mousemove', (e) => {
+      canvas.addEventListener('mousemove', e => {
         const rect = canvas.getBoundingClientRect();
         this.lastX = this.x;
         this.lastY = this.y;
@@ -724,10 +702,12 @@ const interactive = {
      * @returns {boolean} Whether rectangles collide
      */
     rectToRect(rect1, rect2) {
-      return !(rect1.x + rect1.width < rect2.x ||
-               rect2.x + rect2.width < rect1.x ||
-               rect1.y + rect1.height < rect2.y ||
-               rect2.y + rect2.height < rect1.y);
+      return !(
+        rect1.x + rect1.width < rect2.x ||
+        rect2.x + rect2.width < rect1.x ||
+        rect1.y + rect1.height < rect2.y ||
+        rect2.y + rect2.height < rect1.y
+      );
     },
 
     /**
@@ -751,8 +731,7 @@ const interactive = {
      * @returns {boolean} Whether point is in rectangle
      */
     pointInRect(x, y, rect) {
-      return x >= rect.x && x <= rect.x + rect.width &&
-             y >= rect.y && y <= rect.y + rect.height;
+      return x >= rect.x && x <= rect.x + rect.width && y >= rect.y && y <= rect.y + rect.height;
     },
 
     /**
@@ -793,19 +772,18 @@ const advanced = {
      * @param {Object} options - Particle options
      */
     addParticle(options = {}) {
-      const {
-        x = 0,
-        y = 0,
-        vx = 0,
-        vy = 0,
-        size = 5,
-        color = '#000',
-        life = 1000,
-        decay = true
-      } = options;
+      const { x = 0, y = 0, vx = 0, vy = 0, size = 5, color = '#000', life = 1000, decay = true } = options;
 
       this.particles.push({
-        x, y, vx, vy, size, color, life, maxLife: life, decay
+        x,
+        y,
+        vx,
+        vy,
+        size,
+        color,
+        life,
+        maxLife: life,
+        decay
       });
     }
 
@@ -924,7 +902,8 @@ const exercises = [
   {
     id: 'canvas-draw-scene',
     title: 'Draw a Scene',
-    description: 'Create a scene with at least 5 different shapes (rectangles, circles, lines, polygons). Use different colors and transformations.',
+    description:
+      'Create a scene with at least 5 different shapes (rectangles, circles, lines, polygons). Use different colors and transformations.',
     difficulty: 'beginner',
     hints: [
       'Use drawingShapes module for drawing shapes',
@@ -960,23 +939,13 @@ const quiz = [
   {
     id: 'q1',
     question: 'What method is used to get the 2D drawing context from a canvas element?',
-    options: [
-      'canvas.draw2D()',
-      'canvas.getContext("2d")',
-      'canvas.createContext("2d")',
-      'canvas.render2D()'
-    ],
+    options: ['canvas.draw2D()', 'canvas.getContext("2d")', 'canvas.createContext("2d")', 'canvas.render2D()'],
     correct: 1
   },
   {
     id: 'q2',
     question: 'Which easing function provides the smoothest acceleration?',
-    options: [
-      'linear',
-      'easeInCubic',
-      'easeOutBounce',
-      'easeInOutQuad'
-    ],
+    options: ['linear', 'easeInCubic', 'easeOutBounce', 'easeInOutQuad'],
     correct: 1
   },
   {
@@ -1021,7 +990,8 @@ const quiz = [
 const conceptConfig = {
   id: 'canvas',
   title: 'Canvas Graphics',
-  description: 'Master HTML5 Canvas API for drawing, animations, and interactive graphics. Learn to create games, visualizations, and dynamic content.',
+  description:
+    'Master HTML5 Canvas API for drawing, animations, and interactive graphics. Learn to create games, visualizations, and dynamic content.',
   icon: 'palette',
   level: 'advanced',
   estimatedTime: '6-8 hours',

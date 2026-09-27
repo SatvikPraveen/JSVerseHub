@@ -15,12 +15,12 @@ class JSVLogger {
 
     // Log levels with priorities
     this.levels = {
-      DEBUG: { priority: 0, color: "#6c757d", emoji: "🔍" },
-      INFO: { priority: 1, color: "#17a2b8", emoji: "📘" },
-      SUCCESS: { priority: 2, color: "#28a745", emoji: "✅" },
-      WARN: { priority: 3, color: "#ffc107", emoji: "⚠️" },
-      ERROR: { priority: 4, color: "#dc3545", emoji: "❌" },
-      CRITICAL: { priority: 5, color: "#6f42c1", emoji: "🚨" },
+      DEBUG: { priority: 0, color: '#6c757d', emoji: '🔍' },
+      INFO: { priority: 1, color: '#17a2b8', emoji: '📘' },
+      SUCCESS: { priority: 2, color: '#28a745', emoji: '✅' },
+      WARN: { priority: 3, color: '#ffc107', emoji: '⚠️' },
+      ERROR: { priority: 4, color: '#dc3545', emoji: '❌' },
+      CRITICAL: { priority: 5, color: '#6f42c1', emoji: '🚨' }
     };
 
     this.init();
@@ -34,15 +34,15 @@ class JSVLogger {
     // this.setupConsoleInterception();
     this.loadStoredLogs();
     this.isInitialized = true;
-    this.info("🚀 JSVLogger initialized");
+    this.info('🚀 JSVLogger initialized');
   }
 
   /**
    * Get current log level from localStorage or default
    */
   getLogLevel() {
-    const stored = localStorage.getItem("jsversehub-log-level");
-    return stored || (this.isProduction() ? "WARN" : "DEBUG");
+    const stored = localStorage.getItem('jsversehub-log-level');
+    return stored || (this.isProduction() ? 'WARN' : 'DEBUG');
   }
 
   /**
@@ -55,7 +55,7 @@ class JSVLogger {
     }
 
     this.logLevel = level;
-    localStorage.setItem("jsversehub-log-level", level);
+    localStorage.setItem('jsversehub-log-level', level);
     this.info(`Log level set to: ${level}`);
     return true;
   }
@@ -65,9 +65,9 @@ class JSVLogger {
    */
   isProduction() {
     return (
-      window.location.protocol === "https:" &&
-      !window.location.hostname.includes("localhost") &&
-      !window.location.hostname.includes("127.0.0.1")
+      window.location.protocol === 'https:' &&
+      !window.location.hostname.includes('localhost') &&
+      !window.location.hostname.includes('127.0.0.1')
     );
   }
 
@@ -77,7 +77,7 @@ class JSVLogger {
   log(level, message, ...args) {
     const levelConfig = this.levels[level];
     if (!levelConfig) {
-      console.error("Invalid log level:", level);
+      console.error('Invalid log level:', level);
       return;
     }
 
@@ -93,10 +93,9 @@ class JSVLogger {
       level,
       message,
       args,
-      stack:
-        level === "ERROR" || level === "CRITICAL" ? this.getStackTrace() : null,
+      stack: level === 'ERROR' || level === 'CRITICAL' ? this.getStackTrace() : null,
       url: window.location.href,
-      userAgent: navigator.userAgent,
+      userAgent: navigator.userAgent
     };
 
     // Add to internal log storage
@@ -118,42 +117,42 @@ class JSVLogger {
    * Debug level logging
    */
   debug(message, ...args) {
-    this.log("DEBUG", message, ...args);
+    this.log('DEBUG', message, ...args);
   }
 
   /**
    * Info level logging
    */
   info(message, ...args) {
-    this.log("INFO", message, ...args);
+    this.log('INFO', message, ...args);
   }
 
   /**
    * Success level logging
    */
   success(message, ...args) {
-    this.log("SUCCESS", message, ...args);
+    this.log('SUCCESS', message, ...args);
   }
 
   /**
    * Warning level logging
    */
   warn(message, ...args) {
-    this.log("WARN", message, ...args);
+    this.log('WARN', message, ...args);
   }
 
   /**
    * Error level logging
    */
   error(message, ...args) {
-    this.log("ERROR", message, ...args);
+    this.log('ERROR', message, ...args);
   }
 
   /**
    * Critical level logging
    */
   critical(message, ...args) {
-    this.log("CRITICAL", message, ...args);
+    this.log('CRITICAL', message, ...args);
   }
 
   /**
@@ -175,14 +174,12 @@ class JSVLogger {
     const { timestamp, level, message, args } = logEntry;
     const levelConfig = this.levels[level];
 
-    const timeStr = timestamp.toISOString().split("T")[1].slice(0, 8);
+    const timeStr = timestamp.toISOString().split('T')[1].slice(0, 8);
     const prefix = `[${timeStr}] ${levelConfig.emoji} ${level}:`;
 
     const style = `
             color: ${levelConfig.color};
-            font-weight: ${
-              level === "ERROR" || level === "CRITICAL" ? "bold" : "normal"
-            };
+            font-weight: ${level === 'ERROR' || level === 'CRITICAL' ? 'bold' : 'normal'};
         `;
 
     if (args.length > 0) {
@@ -191,7 +188,7 @@ class JSVLogger {
         console.log(`Arg ${index + 1}:`, arg);
       });
       if (logEntry.stack) {
-        console.log("Stack trace:", logEntry.stack);
+        console.log('Stack trace:', logEntry.stack);
       }
       console.groupEnd();
     } else {
@@ -222,30 +219,30 @@ class JSVLogger {
    */
   setupConsoleInterception() {
     // Intercept unhandled errors
-    window.addEventListener("error", (event) => {
+    window.addEventListener('error', event => {
       try {
-        this.error("Unhandled error:", {
+        this.error('Unhandled error:', {
           message: event.message,
           filename: event.filename,
           lineno: event.lineno,
           colno: event.colno,
-          errorType: event.error ? event.error.constructor.name : 'Unknown',
+          errorType: event.error ? event.error.constructor.name : 'Unknown'
         });
       } catch (e) {
         // Fallback to console if logger fails
-        console.error("Logger error handler failed:", e);
-        console.error("Original error:", event.message);
+        console.error('Logger error handler failed:', e);
+        console.error('Original error:', event.message);
       }
     });
 
     // Intercept unhandled promise rejections
-    window.addEventListener("unhandledrejection", (event) => {
+    window.addEventListener('unhandledrejection', event => {
       try {
-        this.error("Unhandled promise rejection:", event.reason);
+        this.error('Unhandled promise rejection:', event.reason);
       } catch (e) {
         // Fallback to console if logger fails
-        console.error("Logger rejection handler failed:", e);
-        console.error("Original rejection:", event.reason);
+        console.error('Logger rejection handler failed:', e);
+        console.error('Original rejection:', event.reason);
       }
     });
 
@@ -254,14 +251,14 @@ class JSVLogger {
       log: console.log.bind(console),
       warn: console.warn.bind(console),
       error: console.error.bind(console),
-      debug: console.debug.bind(console),
+      debug: console.debug.bind(console)
     };
 
     console.log = (...args) => {
       originalMethods.log(...args);
       try {
-        if (args[0] && typeof args[0].toString === 'function' && !args[0].toString().includes("JSVLogger")) {
-          this.debug("Console.log:", ...args);
+        if (args[0] && typeof args[0].toString === 'function' && !args[0].toString().includes('JSVLogger')) {
+          this.debug('Console.log:', ...args);
         }
       } catch (e) {
         // Silently ignore logging failures
@@ -271,8 +268,8 @@ class JSVLogger {
     console.warn = (...args) => {
       originalMethods.warn(...args);
       try {
-        if (args[0] && typeof args[0].toString === 'function' && !args[0].toString().includes("JSVLogger")) {
-          this.warn("Console.warn:", ...args);
+        if (args[0] && typeof args[0].toString === 'function' && !args[0].toString().includes('JSVLogger')) {
+          this.warn('Console.warn:', ...args);
         }
       } catch (e) {
         // Silently ignore logging failures
@@ -282,8 +279,8 @@ class JSVLogger {
     console.error = (...args) => {
       originalMethods.error(...args);
       try {
-        if (args[0] && typeof args[0].toString === 'function' && !args[0].toString().includes("JSVLogger")) {
-          this.error("Console.error:", ...args);
+        if (args[0] && typeof args[0].toString === 'function' && !args[0].toString().includes('JSVLogger')) {
+          this.error('Console.error:', ...args);
         }
       } catch (e) {
         // Silently ignore logging failures
@@ -296,20 +293,15 @@ class JSVLogger {
    */
   persistLog(logEntry) {
     try {
-      const storedLogs = JSON.parse(
-        localStorage.getItem("jsversehub-error-logs") || "[]"
-      );
+      const storedLogs = JSON.parse(localStorage.getItem('jsversehub-error-logs') || '[]');
       storedLogs.unshift({
         ...logEntry,
-        args: this.serializeArgs(logEntry.args),
+        args: this.serializeArgs(logEntry.args)
       });
 
       // Keep only last 50 error logs
       const trimmedLogs = storedLogs.slice(0, 50);
-      localStorage.setItem(
-        "jsversehub-error-logs",
-        JSON.stringify(trimmedLogs)
-      );
+      localStorage.setItem('jsversehub-error-logs', JSON.stringify(trimmedLogs));
     } catch (error) {
       // Ignore localStorage errors
     }
@@ -320,12 +312,10 @@ class JSVLogger {
    */
   loadStoredLogs() {
     try {
-      const storedLogs = JSON.parse(
-        localStorage.getItem("jsversehub-error-logs") || "[]"
-      );
+      const storedLogs = JSON.parse(localStorage.getItem('jsversehub-error-logs') || '[]');
       this.info(`Loaded ${storedLogs.length} stored error logs`);
     } catch (error) {
-      this.warn("Failed to load stored logs:", error);
+      this.warn('Failed to load stored logs:', error);
     }
   }
 
@@ -333,14 +323,14 @@ class JSVLogger {
    * Serialize arguments for storage
    */
   serializeArgs(args) {
-    return args.map((arg) => {
+    return args.map(arg => {
       try {
-        if (typeof arg === "object" && arg !== null) {
+        if (typeof arg === 'object' && arg !== null) {
           return JSON.stringify(arg, null, 2);
         }
         return String(arg);
       } catch (error) {
-        return "[Unserializable Object]";
+        return '[Unserializable Object]';
       }
     });
   }
@@ -352,19 +342,17 @@ class JSVLogger {
     let filteredLogs = [...this.logs];
 
     if (filter.level) {
-      filteredLogs = filteredLogs.filter((log) => log.level === filter.level);
+      filteredLogs = filteredLogs.filter(log => log.level === filter.level);
     }
 
     if (filter.since) {
       const since = new Date(filter.since);
-      filteredLogs = filteredLogs.filter((log) => log.timestamp >= since);
+      filteredLogs = filteredLogs.filter(log => log.timestamp >= since);
     }
 
     if (filter.message) {
       const searchTerm = filter.message.toLowerCase();
-      filteredLogs = filteredLogs.filter((log) =>
-        log.message.toLowerCase().includes(searchTerm)
-      );
+      filteredLogs = filteredLogs.filter(log => log.message.toLowerCase().includes(searchTerm));
     }
 
     if (filter.limit) {
@@ -379,8 +367,8 @@ class JSVLogger {
    */
   clearLogs() {
     this.logs = [];
-    localStorage.removeItem("jsversehub-error-logs");
-    this.info("All logs cleared");
+    localStorage.removeItem('jsversehub-error-logs');
+    this.info('All logs cleared');
   }
 
   /**
@@ -393,27 +381,25 @@ class JSVLogger {
         totalLogs: this.logs.length,
         logLevel: this.logLevel,
         userAgent: navigator.userAgent,
-        url: window.location.href,
+        url: window.location.href
       },
-      logs: this.logs,
+      logs: this.logs
     };
 
     const blob = new Blob([JSON.stringify(exportData, null, 2)], {
-      type: "application/json",
+      type: 'application/json'
     });
 
     const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
+    const a = document.createElement('a');
     a.href = url;
-    a.download =
-      filename ||
-      `jsversehub-logs-${new Date().toISOString().split("T")[0]}.json`;
+    a.download = filename || `jsversehub-logs-${new Date().toISOString().split('T')[0]}.json`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 
-    this.info("Logs exported to file");
+    this.info('Logs exported to file');
   }
 
   /**
@@ -427,7 +413,7 @@ class JSVLogger {
         const duration = endTime - startTime;
         this.debug(`Timer "${label}": ${duration.toFixed(2)}ms`);
         return duration;
-      },
+      }
     };
   }
 
@@ -448,7 +434,7 @@ class JSVLogger {
    */
   groupEnd() {
     console.groupEnd();
-    this.debug("Group ended");
+    this.debug('Group ended');
   }
 
   /**
@@ -456,7 +442,7 @@ class JSVLogger {
    */
   table(data, columns = null) {
     console.table(data, columns);
-    this.debug("Table logged", { data, columns });
+    this.debug('Table logged', { data, columns });
   }
 
   /**
@@ -465,7 +451,7 @@ class JSVLogger {
   addListener(callback) {
     this.listeners.push(callback);
     return () => {
-      this.listeners = this.listeners.filter((l) => l !== callback);
+      this.listeners = this.listeners.filter(l => l !== callback);
     };
   }
 
@@ -473,12 +459,12 @@ class JSVLogger {
    * Notify listeners of new log entries
    */
   notifyListeners(logEntry) {
-    this.listeners.forEach((callback) => {
+    this.listeners.forEach(callback => {
       try {
         callback(logEntry);
       } catch (error) {
         // Avoid infinite loop
-        console.error("Logger listener error:", error);
+        console.error('Logger listener error:', error);
       }
     });
   }
@@ -490,14 +476,12 @@ class JSVLogger {
     const stats = {
       totalLogs: this.logs.length,
       logLevel: this.logLevel,
-      levelCounts: {},
+      levelCounts: {}
     };
 
     // Count logs by level
-    Object.keys(this.levels).forEach((level) => {
-      stats.levelCounts[level] = this.logs.filter(
-        (log) => log.level === level
-      ).length;
+    Object.keys(this.levels).forEach(level => {
+      stats.levelCounts[level] = this.logs.filter(log => log.level === level).length;
     });
 
     return stats;
@@ -522,9 +506,9 @@ class JSVLogger {
    */
   setEnabled(enabled) {
     if (enabled) {
-      this.setLogLevel("DEBUG");
+      this.setLogLevel('DEBUG');
     } else {
-      this.setLogLevel("CRITICAL");
+      this.setLogLevel('CRITICAL');
     }
   }
 
@@ -543,6 +527,6 @@ class JSVLogger {
 const loggerInstance = JSVLogger.getInstance();
 
 // Export for use in other modules
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
   window.JSVLogger = loggerInstance;
 }

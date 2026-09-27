@@ -5,26 +5,26 @@
  * Security Configuration
  */
 export const securityConfig = {
-  title: "Web Security Fundamentals",
-  description: "Learn to protect JavaScript applications from common vulnerabilities",
-  difficulty: "intermediate-advanced",
-  estimatedTime: "120 minutes",
+  title: 'Web Security Fundamentals',
+  description: 'Learn to protect JavaScript applications from common vulnerabilities',
+  difficulty: 'intermediate-advanced',
+  estimatedTime: '120 minutes',
   topics: [
-    "Security Principles",
-    "XSS Prevention",
-    "CSRF Protection",
-    "Input Validation",
-    "Authentication Security",
-    "Data Protection"
+    'Security Principles',
+    'XSS Prevention',
+    'CSRF Protection',
+    'Input Validation',
+    'Authentication Security',
+    'Data Protection'
   ],
-  prerequisites: ["JavaScript Basics", "DOM", "HTTP/API"],
+  prerequisites: ['JavaScript Basics', 'DOM', 'HTTP/API'],
   learningObjectives: [
-    "Understand common web vulnerabilities",
-    "Prevent cross-site scripting attacks",
-    "Protect against CSRF attacks",
-    "Validate and sanitize user input",
-    "Implement secure authentication",
-    "Protect sensitive data"
+    'Understand common web vulnerabilities',
+    'Prevent cross-site scripting attacks',
+    'Protect against CSRF attacks',
+    'Validate and sanitize user input',
+    'Implement secure authentication',
+    'Protect sensitive data'
   ]
 };
 
@@ -32,7 +32,7 @@ export const securityConfig = {
  * Security Principles
  */
 export const securityPrinciples = {
-  concept: "Security Principles",
+  concept: 'Security Principles',
   explanation: `
     Key security principles for web applications:
     
@@ -52,7 +52,7 @@ export const securityPrinciples = {
     - Malware: Malicious software
     - DDoS: Overwhelming server with requests
   `,
-  
+
   examples: {
     threatTypes: `
 // Common security threats
@@ -87,7 +87,7 @@ export const securityPrinciples = {
    Impact: Steal data, modify requests
    Prevention: Use HTTPS always
     `,
-    
+
     securityByDesign: `
 // Security best practices
 
@@ -126,7 +126,7 @@ const isValid = await bcrypt.compare('secret123', hashedPassword);
  * XSS Prevention
  */
 export const xssPrevention = {
-  concept: "XSS (Cross-Site Scripting) Prevention",
+  concept: 'XSS (Cross-Site Scripting) Prevention',
   explanation: `
     XSS vulnerabilities allow attackers to inject malicious scripts.
     
@@ -142,7 +142,7 @@ export const xssPrevention = {
     - Use Content Security Policy (CSP)
     - Validate input format
   `,
-  
+
   examples: {
     xssVulnerability: `
 // VULNERABLE: XSS Attack
@@ -183,7 +183,7 @@ function sanitizeHTML(html) {
   return doc.body.innerHTML;
 }
     `,
-    
+
     escapeHtml: `
 // Escape HTML special characters
 function escapeHtml(text) {
@@ -208,7 +208,7 @@ element.innerHTML = safe; // Safe, shows as text
 // Or even better:
 element.textContent = safe; // Always safe for text
     `,
-    
+
     cspHeaders: `
 // Content Security Policy (CSP) - Server-side
 // Add to HTTP headers to prevent XSS
@@ -242,7 +242,7 @@ Content-Security-Policy:
  * CSRF Prevention
  */
 export const csrfPrevention = {
-  concept: "CSRF (Cross-Site Request Forgery) Prevention",
+  concept: 'CSRF (Cross-Site Request Forgery) Prevention',
   explanation: `
     CSRF tricks authenticated users into performing unwanted actions.
     
@@ -259,7 +259,7 @@ export const csrfPrevention = {
     - Require explicit confirmation
     - Implement CORS properly
   `,
-  
+
   examples: {
     csrfToken: `
 // Generate CSRF token (server)
@@ -314,7 +314,7 @@ app.post('/api/action', (req, res) => {
   // Process request...
 });
     `,
-    
+
     samesite: `
 // SameSite Cookie Attribute (modern approach)
 // Server sets cookie with SameSite attribute
@@ -333,7 +333,7 @@ Set-Cookie: sessionId=abc123; Path=/; SameSite=None; Secure
 // - No need for tokens (but still recommended)
 // - Browser enforces the policy
     `,
-    
+
     headerValidation: `
 // Validate request origin and referer
 function validateOrigin(req, allowedOrigins) {
@@ -369,7 +369,7 @@ app.post('/api/sensitive', (req, res) => {
  * Input Validation & Sanitization
  */
 export const inputValidation = {
-  concept: "Input Validation & Sanitization",
+  concept: 'Input Validation & Sanitization',
   explanation: `
     Never trust user input. Always validate and sanitize.
     
@@ -388,7 +388,7 @@ export const inputValidation = {
     - Remove null bytes
     - Normalize whitespace
   `,
-  
+
   examples: {
     emailValidation: `
 // Validate email address
@@ -425,7 +425,7 @@ const response = await fetch('/api/validate-email', {
   headers: { 'Content-Type': 'application/json' }
 });
     `,
-    
+
     sanitizeInput: `
 // Sanitize user input
 function sanitizeInput(input) {
@@ -468,7 +468,7 @@ function escapeSql(str) {
 // Better: Use parameterized queries (server-side)
 db.query('SELECT * FROM users WHERE email = ?', [email]);
     `,
-    
+
     formValidation: `
 // Comprehensive form validation
 class FormValidator {
@@ -575,7 +575,7 @@ form.addEventListener('submit', (e) => {
  * Authentication Security
  */
 export const authSecurity = {
-  concept: "Authentication Security",
+  concept: 'Authentication Security',
   explanation: `
     Secure authentication protects user accounts.
     
@@ -595,7 +595,7 @@ export const authSecurity = {
     - API keys for services
     - JWT tokens
   `,
-  
+
   examples: {
     passwordHashing: `
 // Password hashing (server-side)
@@ -633,7 +633,7 @@ const response = await fetch('https://api.example.com/login', {
 // 2. Client signs challenge with password
 // 3. Server verifies signature
     `,
-    
+
     sessionManagement: `
 // Secure session management
 const sessions = new Map();
@@ -690,7 +690,7 @@ function logout(sessionId) {
   });
 }
     `,
-    
+
     mfa: `
 // Multi-Factor Authentication (MFA)
 const speakeasy = require('speakeasy');
@@ -743,7 +743,7 @@ async function loginWithMFA(username, password, mfaToken) {
  * Data Protection
  */
 export const dataProtection = {
-  concept: "Data Protection",
+  concept: 'Data Protection',
   explanation: `
     Protect sensitive data from unauthorized access.
     
@@ -762,7 +762,7 @@ export const dataProtection = {
     - Health records
     - Financial data
   `,
-  
+
   examples: {
     dataEncryption: `
 // Encrypt sensitive data
@@ -798,7 +798,7 @@ const key = crypto.randomBytes(32); // 256-bit key
 const encryptedSSN = encryptData('123-45-6789', key);
 const decryptedSSN = decryptData(encryptedSSN, key);
     `,
-    
+
     secureLoacalStorage: `
 // Secure local storage practices
 
@@ -841,7 +841,7 @@ store.set('apiToken', token); // Cleared on page reload
 // Never do this:
 window.apiToken = token; // Visible in console, persistent
     `,
-    
+
     dataMinimization: `
 // Collect only necessary data
 function registerUser(data) {
@@ -894,10 +894,10 @@ async function deleteOldSessions() {
  */
 export const exercises = [
   {
-    id: "sec_ex1",
-    title: "Prevent XSS Attack",
-    difficulty: "easy",
-    description: "Fix XSS vulnerability in code",
+    id: 'sec_ex1',
+    title: 'Prevent XSS Attack',
+    difficulty: 'easy',
+    description: 'Fix XSS vulnerability in code',
     template: `
 // VULNERABLE: User input displayed unsafely
 const userComment = document.getElementById('userComment').value;
@@ -917,25 +917,25 @@ document.getElementById('output').innerHTML = userComment;
     `,
     tests: [
       {
-        description: "Should not use innerHTML with user input",
-        check: (code) => !code.includes('innerHTML = userComment')
+        description: 'Should not use innerHTML with user input',
+        check: code => !code.includes('innerHTML = userComment')
       },
       {
-        description: "Should use textContent or escapeHtml",
-        check: (code) => code.includes('textContent') || code.includes('escapeHtml')
+        description: 'Should use textContent or escapeHtml',
+        check: code => code.includes('textContent') || code.includes('escapeHtml')
       }
     ],
     hints: [
-      "Use textContent for plain text display",
-      "Use escapeHtml() function to safely display HTML",
-      "Never use innerHTML with unsanitized user input"
+      'Use textContent for plain text display',
+      'Use escapeHtml() function to safely display HTML',
+      'Never use innerHTML with unsanitized user input'
     ]
   },
   {
-    id: "sec_ex2",
-    title: "Validate Email Input",
-    difficulty: "medium",
-    description: "Create email validation function",
+    id: 'sec_ex2',
+    title: 'Validate Email Input',
+    difficulty: 'medium',
+    description: 'Create email validation function',
     template: `
 // Validate email address
 function validateEmail(email) {
@@ -959,28 +959,28 @@ function validateEmail(email) {
     tests: [
       {
         description: "Should check if it's a string",
-        check: (code) => code.includes('typeof') || code.includes('String')
+        check: code => code.includes('typeof') || code.includes('String')
       },
       {
-        description: "Should use regex pattern",
-        check: (code) => code.includes('/')
+        description: 'Should use regex pattern',
+        check: code => code.includes('/')
       },
       {
-        description: "Should validate length",
-        check: (code) => code.includes('length')
+        description: 'Should validate length',
+        check: code => code.includes('length')
       }
     ],
     hints: [
-      "Use typeof to check if input is string",
-      "Use regex pattern: /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/",
-      "Check email length is reasonable (< 254 chars)"
+      'Use typeof to check if input is string',
+      'Use regex pattern: /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/',
+      'Check email length is reasonable (< 254 chars)'
     ]
   },
   {
-    id: "sec_ex3",
-    title: "Implement CSRF Protection",
-    difficulty: "hard",
-    description: "Add CSRF token to form",
+    id: 'sec_ex3',
+    title: 'Implement CSRF Protection',
+    difficulty: 'hard',
+    description: 'Add CSRF token to form',
     template: `
 // HTML form needs CSRF token
 <form id="submitForm" method="POST">
@@ -1006,18 +1006,18 @@ document.getElementById('submitForm').addEventListener('submit', async (e) => {
     `,
     tests: [
       {
-        description: "Should have hidden CSRF token input",
-        check: (code) => code.includes('csrf') && code.includes('hidden')
+        description: 'Should have hidden CSRF token input',
+        check: code => code.includes('csrf') && code.includes('hidden')
       },
       {
-        description: "Should send token in header",
-        check: (code) => code.includes('header') || code.includes('X-CSRF')
+        description: 'Should send token in header',
+        check: code => code.includes('header') || code.includes('X-CSRF')
       }
     ],
     hints: [
-      "Add hidden input with csrf_token from server",
-      "Extract token in JavaScript",
-      "Send token in X-CSRF-Token header with AJAX"
+      'Add hidden input with csrf_token from server',
+      'Extract token in JavaScript',
+      'Send token in X-CSRF-Token header with AJAX'
     ]
   }
 ];
@@ -1027,52 +1027,32 @@ document.getElementById('submitForm').addEventListener('submit', async (e) => {
  */
 export const quiz = [
   {
-    id: "sq1",
-    question: "What does XSS stand for?",
-    options: [
-      "Extra Script Storage",
-      "Cross-Site Scripting",
-      "XML Syntax Structure",
-      "Explicit Script Security"
-    ],
+    id: 'sq1',
+    question: 'What does XSS stand for?',
+    options: ['Extra Script Storage', 'Cross-Site Scripting', 'XML Syntax Structure', 'Explicit Script Security'],
     correct: 1,
-    explanation: "XSS (Cross-Site Scripting) is an attack that injects malicious scripts"
+    explanation: 'XSS (Cross-Site Scripting) is an attack that injects malicious scripts'
   },
   {
-    id: "sq2",
-    question: "Which is safer for displaying user-generated content?",
-    options: [
-      "innerHTML",
-      "textContent",
-      "outerHTML",
-      "insertAdjacentHTML"
-    ],
+    id: 'sq2',
+    question: 'Which is safer for displaying user-generated content?',
+    options: ['innerHTML', 'textContent', 'outerHTML', 'insertAdjacentHTML'],
     correct: 1,
-    explanation: "textContent is safer because it treats content as plain text, not HTML"
+    explanation: 'textContent is safer because it treats content as plain text, not HTML'
   },
   {
-    id: "sq3",
-    question: "What protects against CSRF attacks?",
-    options: [
-      "HTTPS encryption",
-      "CSRF tokens and SameSite cookies",
-      "Password hashing",
-      "API rate limiting"
-    ],
+    id: 'sq3',
+    question: 'What protects against CSRF attacks?',
+    options: ['HTTPS encryption', 'CSRF tokens and SameSite cookies', 'Password hashing', 'API rate limiting'],
     correct: 1,
-    explanation: "CSRF tokens and SameSite cookies are designed to prevent CSRF attacks"
+    explanation: 'CSRF tokens and SameSite cookies are designed to prevent CSRF attacks'
   },
   {
-    id: "sq4",
-    question: "Should you store plain passwords?",
-    options: [
-      "Yes, it's faster",
-      "No, always hash with bcrypt",
-      "Only for admin accounts",
-      "Yes, with encryption"
-    ],
+    id: 'sq4',
+    question: 'Should you store plain passwords?',
+    options: ["Yes, it's faster", 'No, always hash with bcrypt', 'Only for admin accounts', 'Yes, with encryption'],
     correct: 1,
-    explanation: "Passwords should always be hashed with bcrypt or similar, never stored plain"
+    explanation: 'Passwords should always be hashed with bcrypt or similar, never stored plain'
   }
 ];
 

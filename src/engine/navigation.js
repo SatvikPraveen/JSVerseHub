@@ -24,7 +24,7 @@ class Navigation {
     this.setupEventListeners();
     this.handleInitialRoute();
     this.isInitialized = true;
-    JSVLogger.info("🧭 Navigation system initialized");
+    JSVLogger.info('🧭 Navigation system initialized');
   }
 
   /**
@@ -32,72 +32,72 @@ class Navigation {
    */
   defineRoutes() {
     // Main routes
-    this.routes.set("/", {
-      name: "galaxy",
-      title: "Galaxy Map",
+    this.routes.set('/', {
+      name: 'galaxy',
+      title: 'Galaxy Map',
       handler: this.showGalaxyMap.bind(this),
-      requiresAuth: false,
+      requiresAuth: false
     });
 
-    this.routes.set("/planet/:planetId", {
-      name: "planet",
-      title: "Planet View",
+    this.routes.set('/planet/:planetId', {
+      name: 'planet',
+      title: 'Planet View',
       handler: this.showPlanet.bind(this),
       requiresAuth: false,
-      params: ["planetId"],
+      params: ['planetId']
     });
 
-    this.routes.set("/concept/:conceptId", {
-      name: "concept",
-      title: "Concept Details",
+    this.routes.set('/concept/:conceptId', {
+      name: 'concept',
+      title: 'Concept Details',
       handler: this.showConcept.bind(this),
       requiresAuth: false,
-      params: ["conceptId"],
+      params: ['conceptId']
     });
 
-    this.routes.set("/exercise/:conceptId/:exerciseId", {
-      name: "exercise",
-      title: "Exercise",
+    this.routes.set('/exercise/:conceptId/:exerciseId', {
+      name: 'exercise',
+      title: 'Exercise',
       handler: this.showExercise.bind(this),
       requiresAuth: false,
-      params: ["conceptId", "exerciseId"],
+      params: ['conceptId', 'exerciseId']
     });
 
-    this.routes.set("/quiz/:conceptId", {
-      name: "quiz",
-      title: "Quiz",
+    this.routes.set('/quiz/:conceptId', {
+      name: 'quiz',
+      title: 'Quiz',
       handler: this.showQuiz.bind(this),
       requiresAuth: false,
-      params: ["conceptId"],
+      params: ['conceptId']
     });
 
-    this.routes.set("/progress", {
-      name: "progress",
-      title: "Progress Dashboard",
+    this.routes.set('/progress', {
+      name: 'progress',
+      title: 'Progress Dashboard',
       handler: this.showProgress.bind(this),
-      requiresAuth: false,
+      requiresAuth: false
     });
 
-    this.routes.set("/achievements", {
-      name: "achievements",
-      title: "Achievements",
+    this.routes.set('/achievements', {
+      name: 'achievements',
+      title: 'Achievements',
       handler: this.showAchievements.bind(this),
-      requiresAuth: false,
+      requiresAuth: false
     });
 
-    this.routes.set("/settings", {
-      name: "settings",
-      title: "Settings",
+    this.routes.set('/settings', {
+      name: 'settings',
+      title: 'Settings',
       handler: this.showSettings.bind(this),
-      requiresAuth: false,
+      requiresAuth: false
     });
 
     // 404 route
-    this.routes.set("/404", {
-      name: "notFound",
-      title: "Page Not Found",
+    this.routes.set('/404', {
+      name: 'notFound',
+      title: 'Page Not Found',
       handler: this.show404.bind(this),
-      requiresAuth: false,
+      requiresAuth: false
     });
   }
 
@@ -106,17 +106,17 @@ class Navigation {
    */
   setupEventListeners() {
     // Handle browser back/forward buttons
-    window.addEventListener("popstate", (e) => {
+    window.addEventListener('popstate', e => {
       this.handlePopState(e);
     });
 
     // Handle link clicks
-    document.addEventListener("click", (e) => {
+    document.addEventListener('click', e => {
       this.handleLinkClick(e);
     });
 
     // Handle keyboard navigation
-    document.addEventListener("keydown", (e) => {
+    document.addEventListener('keydown', e => {
       this.handleKeyboardNavigation(e);
     });
   }
@@ -136,23 +136,19 @@ class Navigation {
     try {
       const route = this.matchRoute(path);
       if (!route) {
-        this.navigateTo("/404");
+        this.navigateTo('/404');
         return false;
       }
 
       // Check authentication if required
       if (route.config.requiresAuth && !this.isAuthenticated()) {
-        JSVLogger.warn("🔐 Route requires authentication");
+        JSVLogger.warn('🔐 Route requires authentication');
         return false;
       }
 
       // Add to browser history
       if (addToHistory) {
-        window.history.pushState(
-          { path, timestamp: Date.now() },
-          route.config.title,
-          path
-        );
+        window.history.pushState({ path, timestamp: Date.now() }, route.config.title, path);
       }
 
       // Update current route
@@ -160,14 +156,14 @@ class Navigation {
         path,
         config: route.config,
         params: route.params,
-        query: route.query,
+        query: route.query
       };
 
       // Add to internal history
       this.history.push({
         path,
         timestamp: Date.now(),
-        title: route.config.title,
+        title: route.config.title
       });
 
       // Update document title
@@ -177,13 +173,13 @@ class Navigation {
       route.config.handler(route.params, route.query);
 
       // Notify listeners
-      this.notifyNavigationListeners("navigate", this.currentRoute);
+      this.notifyNavigationListeners('navigate', this.currentRoute);
 
       JSVLogger.info(`🧭 Navigated to: ${path}`);
       return true;
     } catch (error) {
-      JSVLogger.error("❌ Navigation error:", error);
-      this.navigateTo("/404");
+      JSVLogger.error('❌ Navigation error:', error);
+      this.navigateTo('/404');
       return false;
     }
   }
@@ -192,8 +188,8 @@ class Navigation {
    * Match current path against defined routes
    */
   matchRoute(path) {
-    const [pathname, search] = path.split("?");
-    const query = this.parseQueryString(search || "");
+    const [pathname, search] = path.split('?');
+    const query = this.parseQueryString(search || '');
 
     for (const [pattern, config] of this.routes) {
       const match = this.matchPattern(pathname, pattern);
@@ -201,7 +197,7 @@ class Navigation {
         return {
           config,
           params: match.params,
-          query,
+          query
         };
       }
     }
@@ -217,8 +213,8 @@ class Navigation {
       return { params: {} };
     }
 
-    const patternParts = pattern.split("/");
-    const pathParts = path.split("/");
+    const patternParts = pattern.split('/');
+    const pathParts = path.split('/');
 
     if (patternParts.length !== pathParts.length) {
       return null;
@@ -230,7 +226,7 @@ class Navigation {
       const patternPart = patternParts[i];
       const pathPart = pathParts[i];
 
-      if (patternPart.startsWith(":")) {
+      if (patternPart.startsWith(':')) {
         // Parameter
         const paramName = patternPart.slice(1);
         params[paramName] = decodeURIComponent(pathPart);
@@ -248,15 +244,13 @@ class Navigation {
    */
   parseQueryString(queryString) {
     const params = {};
-    const pairs = queryString.split("&");
+    const pairs = queryString.split('&');
 
-    pairs.forEach((pair) => {
+    pairs.forEach(pair => {
       if (pair.trim()) {
-        const [key, value] = pair.split("=");
+        const [key, value] = pair.split('=');
         if (key) {
-          params[decodeURIComponent(key)] = value
-            ? decodeURIComponent(value.replace(/\+/g, " "))
-            : "";
+          params[decodeURIComponent(key)] = value ? decodeURIComponent(value.replace(/\+/g, ' ')) : '';
         }
       }
     });
@@ -267,7 +261,7 @@ class Navigation {
   /**
    * Handle browser back/forward navigation
    */
-  handlePopState(event) {
+  handlePopState(_event) {
     const path = window.location.pathname + window.location.search;
     this.navigateTo(path, false);
   }
@@ -276,24 +270,24 @@ class Navigation {
    * Handle clicks on navigation links
    */
   handleLinkClick(event) {
-    const link = event.target.closest("a[href]");
+    const link = event.target.closest('a[href]');
     if (!link) return;
 
-    const href = link.getAttribute("href");
+    const href = link.getAttribute('href');
 
     // Skip external links and special protocols
     if (
       !href ||
-      href.startsWith("http") ||
-      href.startsWith("mailto:") ||
-      href.startsWith("tel:") ||
-      href.startsWith("#")
+      href.startsWith('http') ||
+      href.startsWith('mailto:') ||
+      href.startsWith('tel:') ||
+      href.startsWith('#')
     ) {
       return;
     }
 
     // Skip links with target="_blank" or download attribute
-    if (link.target === "_blank" || link.hasAttribute("download")) {
+    if (link.target === '_blank' || link.hasAttribute('download')) {
       return;
     }
 
@@ -313,24 +307,24 @@ class Navigation {
     // Alt + Arrow keys for navigation
     if (event.altKey) {
       switch (event.key) {
-        case "ArrowLeft":
+        case 'ArrowLeft':
           event.preventDefault();
           this.goBack();
           break;
-        case "ArrowRight":
+        case 'ArrowRight':
           event.preventDefault();
           this.goForward();
           break;
-        case "Home":
+        case 'Home':
           event.preventDefault();
-          this.navigateTo("/");
+          this.navigateTo('/');
           break;
       }
     }
 
     // Number keys for quick navigation
-    if (event.ctrlKey && event.key >= "1" && event.key <= "9") {
-      const planetIndex = parseInt(event.key) - 1;
+    if (event.ctrlKey && event.key >= '1' && event.key <= '9') {
+      const planetIndex = parseInt(event.key, 10) - 1;
       const planets = StateManager.getProgress().unlockedPlanets;
       if (planets[planetIndex]) {
         event.preventDefault();
@@ -346,7 +340,7 @@ class Navigation {
     if (window.history.length > 1) {
       window.history.back();
     } else {
-      this.navigateTo("/");
+      this.navigateTo('/');
     }
   }
 
@@ -361,7 +355,7 @@ class Navigation {
    * Route handlers
    */
   showGalaxyMap(params, query) {
-    this.setActiveView("galaxy-map");
+    this.setActiveView('galaxy-map');
 
     // Close any open modals
     this.closeAllModals();
@@ -374,14 +368,14 @@ class Navigation {
     }
   }
 
-  showPlanet(params, query) {
+  showPlanet(params, _query) {
     const { planetId } = params;
 
     // Verify planet exists and is unlocked
     const progress = StateManager.getProgress();
     if (!progress.unlockedPlanets.includes(planetId)) {
       JSVLogger.warn(`🔒 Planet ${planetId} is locked`);
-      this.navigateTo("/");
+      this.navigateTo('/');
       return;
     }
 
@@ -392,7 +386,7 @@ class Navigation {
     this.showPlanetDetails(planetId);
   }
 
-  showConcept(params, query) {
+  showConcept(params, _query) {
     const { conceptId } = params;
 
     // Load and display concept
@@ -401,7 +395,7 @@ class Navigation {
     }
   }
 
-  showExercise(params, query) {
+  showExercise(params, _query) {
     const { conceptId, exerciseId } = params;
 
     // Load and display exercise
@@ -410,7 +404,7 @@ class Navigation {
     }
   }
 
-  showQuiz(params, query) {
+  showQuiz(params, _query) {
     const { conceptId } = params;
 
     // Load and display quiz
@@ -419,23 +413,23 @@ class Navigation {
     }
   }
 
-  showProgress(params, query) {
-    this.setActiveView("progress");
+  showProgress(_params, _query) {
+    this.setActiveView('progress');
     // Implementation would show progress dashboard
   }
 
-  showAchievements(params, query) {
-    this.setActiveView("achievements");
+  showAchievements(_params, _query) {
+    this.setActiveView('achievements');
     // Implementation would show achievements page
   }
 
-  showSettings(params, query) {
-    this.setActiveView("settings");
+  showSettings(_params, _query) {
+    this.setActiveView('settings');
     // Implementation would show settings page
   }
 
-  show404(params, query) {
-    this.setActiveView("404");
+  show404(_params, _query) {
+    this.setActiveView('404');
     this.showNotFoundMessage();
   }
 
@@ -444,14 +438,14 @@ class Navigation {
    */
   setActiveView(viewName) {
     // Hide all views
-    document.querySelectorAll("[data-view]").forEach((view) => {
-      view.classList.add("hidden");
+    document.querySelectorAll('[data-view]').forEach(view => {
+      view.classList.add('hidden');
     });
 
     // Show target view
     const targetView = document.querySelector(`[data-view="${viewName}"]`);
     if (targetView) {
-      targetView.classList.remove("hidden");
+      targetView.classList.remove('hidden');
     }
 
     // Update navigation state
@@ -463,13 +457,13 @@ class Navigation {
    */
   updateNavigationUI(activeView) {
     // Update navigation highlights
-    document.querySelectorAll(".nav-item").forEach((item) => {
-      item.classList.remove("active");
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.classList.remove('active');
     });
 
     const activeNavItem = document.querySelector(`[data-nav="${activeView}"]`);
     if (activeNavItem) {
-      activeNavItem.classList.add("active");
+      activeNavItem.classList.add('active');
     }
   }
 
@@ -477,8 +471,8 @@ class Navigation {
    * Close all open modals
    */
   closeAllModals() {
-    document.querySelectorAll(".modal.show").forEach((modal) => {
-      modal.classList.remove("show");
+    document.querySelectorAll('.modal.show').forEach(modal => {
+      modal.classList.remove('show');
     });
   }
 
@@ -488,11 +482,11 @@ class Navigation {
   focusOnPlanet(planetId) {
     const planet = document.querySelector(`[data-planet-id="${planetId}"]`);
     if (planet) {
-      planet.scrollIntoView({ behavior: "smooth", block: "center" });
-      planet.classList.add("highlighted");
+      planet.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      planet.classList.add('highlighted');
 
       setTimeout(() => {
-        planet.classList.remove("highlighted");
+        planet.classList.remove('highlighted');
       }, 2000);
     }
   }
@@ -511,12 +505,12 @@ class Navigation {
    */
   showNotFoundMessage() {
     // Create or show 404 message
-    let notFoundElement = document.getElementById("not-found-message");
+    let notFoundElement = document.getElementById('not-found-message');
 
     if (!notFoundElement) {
-      notFoundElement = document.createElement("div");
-      notFoundElement.id = "not-found-message";
-      notFoundElement.className = "not-found-container";
+      notFoundElement = document.createElement('div');
+      notFoundElement.id = 'not-found-message';
+      notFoundElement.className = 'not-found-container';
       notFoundElement.innerHTML = `
                 <div class="not-found-content">
                     <h2>🌌 Lost in Space?</h2>
@@ -529,7 +523,7 @@ class Navigation {
       document.body.appendChild(notFoundElement);
     }
 
-    notFoundElement.classList.remove("hidden");
+    notFoundElement.classList.remove('hidden');
   }
 
   /**
@@ -548,7 +542,7 @@ class Navigation {
 
     if (!pattern) {
       JSVLogger.warn(`🔍 Route not found: ${routeName}`);
-      return "/";
+      return '/';
     }
 
     // Replace parameters in pattern (including optional `:param?` markers)
@@ -558,15 +552,12 @@ class Navigation {
     });
 
     // Drop optional segments that were not supplied
-    url = url.replace(/\/:[^/]+\?/g, "");
+    url = url.replace(/\/:[^/]+\?/g, '');
 
     // Add query string
     const queryString = Object.entries(query)
-      .map(
-        ([key, value]) =>
-          `${encodeURIComponent(key)}=${encodeURIComponent(value)}`
-      )
-      .join("&");
+      .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+      .join('&');
 
     if (queryString) {
       url += `?${queryString}`;
@@ -603,9 +594,7 @@ class Navigation {
   addNavigationListener(callback) {
     this.navigationListeners.push(callback);
     return () => {
-      this.navigationListeners = this.navigationListeners.filter(
-        (l) => l !== callback
-      );
+      this.navigationListeners = this.navigationListeners.filter(l => l !== callback);
     };
   }
 
@@ -613,11 +602,11 @@ class Navigation {
    * Notify navigation listeners
    */
   notifyNavigationListeners(event, data) {
-    this.navigationListeners.forEach((callback) => {
+    this.navigationListeners.forEach(callback => {
       try {
         callback(event, data);
       } catch (error) {
-        JSVLogger.error("❌ Navigation listener error:", error);
+        JSVLogger.error('❌ Navigation listener error:', error);
       }
     });
   }
@@ -627,7 +616,7 @@ class Navigation {
    */
   clearHistory() {
     this.history = [];
-    JSVLogger.info("🗑️ Navigation history cleared");
+    JSVLogger.info('🗑️ Navigation history cleared');
   }
 
   /**
@@ -645,12 +634,12 @@ class Navigation {
 const navigationInstance = Navigation.getInstance();
 
 // Export for use in other modules
-if (typeof window !== "undefined") {
+if (typeof window !== 'undefined') {
   window.Navigation = navigationInstance;
 }
 
 // Add CSS for navigation elements
-const navigationStyles = document.createElement("style");
+const navigationStyles = document.createElement('style');
 navigationStyles.textContent = `
     .not-found-container {
         position: fixed;

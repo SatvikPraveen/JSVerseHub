@@ -2,9 +2,9 @@
 // Design Patterns - Observer Pattern in JavaScript
 
 export const observerContent = {
-  title: "Observer Pattern",
-  description: "Learn to implement the Observer pattern for event-driven programming and reactive systems",
-  
+  title: 'Observer Pattern',
+  description: 'Learn to implement the Observer pattern for event-driven programming and reactive systems',
+
   theory: {
     introduction: `
       The Observer pattern defines a one-to-many dependency between objects so that when one 
@@ -13,11 +13,11 @@ export const observerContent = {
       and implementing the Model-View architecture. It promotes loose coupling between the 
       subject and its observers.
     `,
-    
+
     concepts: [
       {
-        name: "Basic Observer Implementation",
-        explanation: "Simple subject-observer relationship with subscription management",
+        name: 'Basic Observer Implementation',
+        explanation: 'Simple subject-observer relationship with subscription management',
         example: `
 // Basic Observer Pattern Implementation
 class Subject {
@@ -208,10 +208,10 @@ appleStock.setPrice(138); // Triggers buy-low bot
 appleStock.setPrice(152); // Triggers sell-high bot and alert
         `
       },
-      
+
       {
-        name: "Event Emitter Pattern",
-        explanation: "More flexible observer pattern with named events",
+        name: 'Event Emitter Pattern',
+        explanation: 'More flexible observer pattern with named events',
         example: `
 // Advanced Event Emitter with named events
 class EventEmitter {
@@ -432,10 +432,10 @@ setTimeout(() => {
 }, 2000);
         `
       },
-      
+
       {
-        name: "Model-View Observer Pattern",
-        explanation: "Observer pattern in Model-View architecture for reactive UIs",
+        name: 'Model-View Observer Pattern',
+        explanation: 'Observer pattern in Model-View architecture for reactive UIs',
         example: `
 // Model-View Observer Pattern
 class Model extends EventEmitter {
@@ -715,10 +715,10 @@ userModel.undo();
 console.log('After undo - Age:', userModel.get('age'));
         `
       },
-      
+
       {
-        name: "Reactive Observer Pattern",
-        explanation: "Advanced observer pattern with data streams and reactive programming",
+        name: 'Reactive Observer Pattern',
+        explanation: 'Advanced observer pattern with data streams and reactive programming',
         example: `
 // Reactive Observer Pattern with Streams
 class Observable {
@@ -1036,11 +1036,11 @@ setTimeout(() => {
       }
     ]
   },
-  
+
   practicalExamples: [
     {
-      title: "Real-time Dashboard System",
-      description: "Complete dashboard system using observer pattern for real-time updates",
+      title: 'Real-time Dashboard System',
+      description: 'Complete dashboard system using observer pattern for real-time updates',
       code: `
 // Real-time Dashboard System using Observer Pattern
 class DashboardModel extends EventEmitter {
@@ -1453,13 +1453,14 @@ setTimeout(() => {
       `
     }
   ],
-  
+
   exercises: [
     {
-      id: "observer-basic",
-      title: "Create a News Subscription System",
-      difficulty: "easy",
-      prompt: "Create a news publisher that notifies subscribers when new articles are published. Include different types of subscribers (email, SMS, app notification).",
+      id: 'observer-basic',
+      title: 'Create a News Subscription System',
+      difficulty: 'easy',
+      prompt:
+        'Create a news publisher that notifies subscribers when new articles are published. Include different types of subscribers (email, SMS, app notification).',
       solution: `
 class NewsPublisher {
   constructor() {
@@ -1565,12 +1566,13 @@ newsPublisher.publishArticle(
 );
       `
     },
-    
+
     {
-      id: "observer-advanced",
-      title: "Create a Stock Trading System",
-      difficulty: "hard",
-      prompt: "Build a stock trading system with price monitoring, automatic trading strategies, and portfolio tracking using the observer pattern.",
+      id: 'observer-advanced',
+      title: 'Create a Stock Trading System',
+      difficulty: 'hard',
+      prompt:
+        'Build a stock trading system with price monitoring, automatic trading strategies, and portfolio tracking using the observer pattern.',
       solution: `
 class Stock {
   constructor(symbol, initialPrice) {
@@ -1891,54 +1893,53 @@ setTimeout(() => {
       `
     }
   ],
-  
+
   quiz: [
     {
-      question: "What is the main purpose of the Observer pattern?",
+      question: 'What is the main purpose of the Observer pattern?',
       options: [
-        "To create objects without specifying their exact classes",
-        "To define a one-to-many dependency between objects",
-        "To provide a way to access elements sequentially",
-        "To encapsulate algorithms and make them interchangeable"
+        'To create objects without specifying their exact classes',
+        'To define a one-to-many dependency between objects',
+        'To provide a way to access elements sequentially',
+        'To encapsulate algorithms and make them interchangeable'
       ],
       correct: 1,
-      explanation: "The Observer pattern defines a one-to-many dependency between objects so that when one object changes state, all its dependents are notified automatically."
+      explanation:
+        'The Observer pattern defines a one-to-many dependency between objects so that when one object changes state, all its dependents are notified automatically.'
     },
-    
+
     {
-      question: "In the Observer pattern, what are the two main roles?",
-      options: [
-        "Publisher and Subscriber",
-        "Subject and Observer", 
-        "Model and View",
-        "All of the above"
-      ],
+      question: 'In the Observer pattern, what are the two main roles?',
+      options: ['Publisher and Subscriber', 'Subject and Observer', 'Model and View', 'All of the above'],
       correct: 3,
-      explanation: "All these terms refer to the same concepts in the Observer pattern. The Subject (Publisher/Model) maintains observers and notifies them, while Observer (Subscriber/View) receives notifications."
+      explanation:
+        'All these terms refer to the same concepts in the Observer pattern. The Subject (Publisher/Model) maintains observers and notifies them, while Observer (Subscriber/View) receives notifications.'
     },
-    
+
     {
-      question: "What is a key benefit of using the Observer pattern?",
+      question: 'What is a key benefit of using the Observer pattern?',
       options: [
-        "Faster execution speed",
-        "Reduced memory usage",
-        "Loose coupling between subject and observers",
-        "Better error handling"
+        'Faster execution speed',
+        'Reduced memory usage',
+        'Loose coupling between subject and observers',
+        'Better error handling'
       ],
       correct: 2,
-      explanation: "The Observer pattern promotes loose coupling - the subject only knows that observers implement a specific interface, but doesn't need to know their concrete classes."
+      explanation:
+        "The Observer pattern promotes loose coupling - the subject only knows that observers implement a specific interface, but doesn't need to know their concrete classes."
     },
-    
+
     {
-      question: "What should happen if an observer throws an error during notification?",
+      question: 'What should happen if an observer throws an error during notification?',
       options: [
-        "Stop notifying all other observers",
-        "Automatically remove the problematic observer",
-        "Continue notifying other observers after handling the error",
-        "Restart the notification process"
+        'Stop notifying all other observers',
+        'Automatically remove the problematic observer',
+        'Continue notifying other observers after handling the error',
+        'Restart the notification process'
       ],
       correct: 2,
-      explanation: "Best practice is to catch errors from individual observers and continue notifying the remaining observers, preventing one faulty observer from breaking the entire notification system."
+      explanation:
+        'Best practice is to catch errors from individual observers and continue notifying the remaining observers, preventing one faulty observer from breaking the entire notification system.'
     }
   ]
 };

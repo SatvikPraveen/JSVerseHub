@@ -5,26 +5,26 @@
  * Testing Concept Configuration
  */
 export const testingConfig = {
-  title: "Testing Fundamentals",
-  description: "Master testing strategies, Jest framework, and test-driven development",
-  difficulty: "intermediate-advanced",
-  estimatedTime: "90 minutes",
+  title: 'Testing Fundamentals',
+  description: 'Master testing strategies, Jest framework, and test-driven development',
+  difficulty: 'intermediate-advanced',
+  estimatedTime: '90 minutes',
   topics: [
-    "Testing Principles",
-    "Jest Basics & Syntax",
-    "Unit Testing",
-    "Mocking & Spying",
-    "Async Testing",
-    "Test-Driven Development"
+    'Testing Principles',
+    'Jest Basics & Syntax',
+    'Unit Testing',
+    'Mocking & Spying',
+    'Async Testing',
+    'Test-Driven Development'
   ],
-  prerequisites: ["JavaScript Basics", "Functions", "Async/Await"],
+  prerequisites: ['JavaScript Basics', 'Functions', 'Async/Await'],
   learningObjectives: [
-    "Write effective unit tests",
-    "Understand Jest testing framework",
-    "Mock and spy on functions",
-    "Test async code",
-    "Apply TDD principles",
-    "Achieve high code coverage"
+    'Write effective unit tests',
+    'Understand Jest testing framework',
+    'Mock and spy on functions',
+    'Test async code',
+    'Apply TDD principles',
+    'Achieve high code coverage'
   ]
 };
 
@@ -32,7 +32,7 @@ export const testingConfig = {
  * Testing Principles
  */
 export const testingPrinciples = {
-  concept: "Testing Principles",
+  concept: 'Testing Principles',
   explanation: `
     Testing is critical for building reliable software. Key testing principles:
     
@@ -59,7 +59,7 @@ export const testingPrinciples = {
        - Act: Execute the code being tested
        - Assert: Verify the results
   `,
-  
+
   examples: {
     whyTesting: `
 // Why testing matters
@@ -93,7 +93,7 @@ test('should reject negative prices', () => {
   }).toThrow('Price cannot be negative');
 });
     `,
-    
+
     testingBenefits: `
 // Testing provides multiple benefits
 
@@ -137,7 +137,7 @@ function getUserAge(user) {
   return age < 0 ? 0 : age; // More robust
 }
     `,
-    
+
     testStructure: `
 // Proper test structure (Arrange-Act-Assert)
 
@@ -186,7 +186,7 @@ describe('calculateDiscount function', () => {
  * Jest Basics
  */
 export const jestBasics = {
-  concept: "Jest Framework Basics",
+  concept: 'Jest Framework Basics',
   explanation: `
     Jest is a popular JavaScript testing framework with:
     - Built-in test runner
@@ -204,7 +204,7 @@ export const jestBasics = {
     - beforeAll(): Setup once before all
     - afterAll(): Cleanup after all tests
   `,
-  
+
   examples: {
     jestSyntax: `
 // Jest basic syntax
@@ -248,7 +248,7 @@ describe('String utilities', () => {
   });
 });
     `,
-    
+
     setupTeardown: `
 // Setup and teardown
 
@@ -290,7 +290,7 @@ describe('Database operations', () => {
   });
 });
     `,
-    
+
     testMatchers: `
 // Jest matchers (assertions)
 
@@ -358,7 +358,7 @@ describe('Jest matchers', () => {
  * Unit Testing
  */
 export const unitTesting = {
-  concept: "Unit Testing",
+  concept: 'Unit Testing',
   explanation: `
     Unit tests focus on testing individual functions in isolation.
     
@@ -370,7 +370,7 @@ export const unitTesting = {
     5. Keep tests small and fast
     6. Test public API, not implementation details
   `,
-  
+
   examples: {
     unitTestExample: `
 // Unit test example
@@ -429,7 +429,7 @@ describe('validateEmail function', () => {
   });
 });
     `,
-    
+
     testingClassMethods: `
 // Testing class methods
 
@@ -495,7 +495,7 @@ describe('Calculator class', () => {
  * Mocking and Spying
  */
 export const mockingAndSpying = {
-  concept: "Mocking & Spying",
+  concept: 'Mocking & Spying',
   explanation: `
     Mocking: Replace a function/module with a fake version for testing
     Spying: Track calls to a function without replacing it
@@ -513,7 +513,7 @@ export const mockingAndSpying = {
     - Date/time
     - Random numbers
   `,
-  
+
   examples: {
     basicMocking: `
 // Basic mocking
@@ -544,7 +544,7 @@ describe('fetchUser', () => {
   });
 });
     `,
-    
+
     spyingOnMethods: `
 // Spying on object methods
 
@@ -585,7 +585,7 @@ describe('user object spying', () => {
   });
 });
     `,
-    
+
     mockImplementation: `
 // Mock with custom implementation
 
@@ -624,7 +624,7 @@ describe('processData with mocks', () => {
  * Async Testing
  */
 export const asyncTesting = {
-  concept: "Testing Async Code",
+  concept: 'Testing Async Code',
   explanation: `
     Testing asynchronous code requires special handling:
     
@@ -640,7 +640,7 @@ export const asyncTesting = {
     - Fetch API calls
     - Database operations
   `,
-  
+
   examples: {
     testingPromises: `
 // Testing Promises
@@ -689,7 +689,7 @@ describe('Error handling', () => {
   });
 });
     `,
-    
+
     testingAsyncAwait: `
 // Testing async/await functions
 
@@ -726,7 +726,7 @@ describe('async/await testing', () => {
   });
 });
     `,
-    
+
     testingTimers: `
 // Testing timer-based code
 
@@ -770,7 +770,7 @@ describe('Timers', () => {
  * Test-Driven Development (TDD)
  */
 export const tdd = {
-  concept: "Test-Driven Development",
+  concept: 'Test-Driven Development',
   explanation: `
     TDD is a development approach: Red → Green → Refactor
     
@@ -785,7 +785,7 @@ export const tdd = {
     - Catches bugs early
     - Easier refactoring
   `,
-  
+
   examples: {
     tddExample: `
 // TDD Example: Building a todo app
@@ -884,10 +884,10 @@ class TodoList {
  */
 export const exercises = [
   {
-    id: "testing_ex1",
-    title: "Write First Unit Test",
-    difficulty: "easy",
-    description: "Write a simple unit test using Jest",
+    id: 'testing_ex1',
+    title: 'Write First Unit Test',
+    difficulty: 'easy',
+    description: 'Write a simple unit test using Jest',
     template: `
 // Function to test
 function greet(name) {
@@ -901,29 +901,29 @@ describe('greet function', () => {
     `,
     tests: [
       {
-        description: "Should use describe block",
-        check: (code) => code.includes('describe')
+        description: 'Should use describe block',
+        check: code => code.includes('describe')
       },
       {
-        description: "Should use test or it",
-        check: (code) => code.includes('test') || code.includes('it(')
+        description: 'Should use test or it',
+        check: code => code.includes('test') || code.includes('it(')
       },
       {
-        description: "Should use expect",
-        check: (code) => code.includes('expect')
+        description: 'Should use expect',
+        check: code => code.includes('expect')
       }
     ],
     hints: [
-      "Use describe() to group tests",
-      "Use test() to define individual test",
-      "Use expect() and matchers like toBe()"
+      'Use describe() to group tests',
+      'Use test() to define individual test',
+      'Use expect() and matchers like toBe()'
     ]
   },
   {
-    id: "testing_ex2",
-    title: "Test Edge Cases",
-    difficulty: "medium",
-    description: "Write tests for edge cases",
+    id: 'testing_ex2',
+    title: 'Test Edge Cases',
+    difficulty: 'medium',
+    description: 'Write tests for edge cases',
     template: `
 function divide(a, b) {
   return a / b;
@@ -933,29 +933,25 @@ function divide(a, b) {
     `,
     tests: [
       {
-        description: "Should test normal division",
-        check: (code) => code.includes('divide') && code.includes('test')
+        description: 'Should test normal division',
+        check: code => code.includes('divide') && code.includes('test')
       },
       {
-        description: "Should test division by zero",
-        check: (code) => code.includes('0')
+        description: 'Should test division by zero',
+        check: code => code.includes('0')
       },
       {
-        description: "Should test with negative numbers",
-        check: (code) => code.includes('-')
+        description: 'Should test with negative numbers',
+        check: code => code.includes('-')
       }
     ],
-    hints: [
-      "Test normal cases first",
-      "Test boundary conditions",
-      "Test error cases (like division by zero)"
-    ]
+    hints: ['Test normal cases first', 'Test boundary conditions', 'Test error cases (like division by zero)']
   },
   {
-    id: "testing_ex3",
-    title: "Mock an API Call",
-    difficulty: "hard",
-    description: "Write test with mocked fetch",
+    id: 'testing_ex3',
+    title: 'Mock an API Call',
+    difficulty: 'hard',
+    description: 'Write test with mocked fetch',
     template: `
 function fetchUser(id) {
   return fetch(\`/api/users/\${id}\`).then(r => r.json());
@@ -965,18 +961,18 @@ function fetchUser(id) {
     `,
     tests: [
       {
-        description: "Should mock fetch",
-        check: (code) => code.includes('jest.fn') || code.includes('mock')
+        description: 'Should mock fetch',
+        check: code => code.includes('jest.fn') || code.includes('mock')
       },
       {
-        description: "Should return mock data",
-        check: (code) => code.includes('toHaveBeenCalled') || code.includes('json')
+        description: 'Should return mock data',
+        check: code => code.includes('toHaveBeenCalled') || code.includes('json')
       }
     ],
     hints: [
-      "Use jest.fn() to create mock",
-      "Use mockResolvedValueOnce for promises",
-      "Verify mock was called with expect()"
+      'Use jest.fn() to create mock',
+      'Use mockResolvedValueOnce for promises',
+      'Verify mock was called with expect()'
     ]
   }
 ];
@@ -986,40 +982,40 @@ function fetchUser(id) {
  */
 export const quiz = [
   {
-    id: "tq1",
-    question: "What does the Red-Green-Refactor cycle mean in TDD?",
+    id: 'tq1',
+    question: 'What does the Red-Green-Refactor cycle mean in TDD?',
     options: [
-      "Three colors used in testing",
-      "Red=failing test, Green=passing test, Refactor=improve code",
-      "Three test categories",
-      "Three types of assertions"
+      'Three colors used in testing',
+      'Red=failing test, Green=passing test, Refactor=improve code',
+      'Three test categories',
+      'Three types of assertions'
     ],
     correct: 1,
-    explanation: "TDD follows: Write failing test (Red), make it pass (Green), improve code (Refactor)"
+    explanation: 'TDD follows: Write failing test (Red), make it pass (Green), improve code (Refactor)'
   },
   {
-    id: "tq2",
-    question: "What is the FIRST principle in testing?",
+    id: 'tq2',
+    question: 'What is the FIRST principle in testing?',
     options: [
-      "First test always",
-      "Fast, Independent, Repeatable, Self-Checking, Timely",
-      "Focus, Isolate, Run, Search, Track",
-      "Framework, Input, Response, Setup, Time"
+      'First test always',
+      'Fast, Independent, Repeatable, Self-Checking, Timely',
+      'Focus, Isolate, Run, Search, Track',
+      'Framework, Input, Response, Setup, Time'
     ],
     correct: 1,
-    explanation: "FIRST principles ensure tests are effective and maintainable"
+    explanation: 'FIRST principles ensure tests are effective and maintainable'
   },
   {
-    id: "tq3",
-    question: "When should you use mocking?",
+    id: 'tq3',
+    question: 'When should you use mocking?',
     options: [
-      "Always",
-      "Never, mock is bad practice",
-      "When testing code that depends on external services or complex dependencies",
-      "Only for unit tests"
+      'Always',
+      'Never, mock is bad practice',
+      'When testing code that depends on external services or complex dependencies',
+      'Only for unit tests'
     ],
     correct: 2,
-    explanation: "Mocking isolates code from external dependencies like APIs or databases"
+    explanation: 'Mocking isolates code from external dependencies like APIs or databases'
   }
 ];
 

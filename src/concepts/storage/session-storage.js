@@ -2,9 +2,9 @@
 // Browser Storage - Session Storage in JavaScript
 
 export const sessionStorageContent = {
-  title: "Session Storage",
-  description: "Learn to use session storage for temporary, tab-specific data persistence",
-  
+  title: 'Session Storage',
+  description: 'Learn to use session storage for temporary, tab-specific data persistence',
+
   theory: {
     introduction: `
       Session Storage is a web storage API similar to localStorage but with key differences: 
@@ -13,11 +13,11 @@ export const sessionStorageContent = {
       for storing temporary data, form states, or tab-specific information that shouldn't 
       persist between browser sessions.
     `,
-    
+
     concepts: [
       {
-        name: "Basic Session Storage Operations",
-        explanation: "Fundamental operations for temporary data storage per browser tab",
+        name: 'Basic Session Storage Operations',
+        explanation: 'Fundamental operations for temporary data storage per browser tab',
         example: `
 // Check if sessionStorage is available
 function isSessionStorageAvailable() {
@@ -128,10 +128,10 @@ const tabData = {
 sessionStorage.setItem('tabData', JSON.stringify(tabData));
         `
       },
-      
+
       {
-        name: "Session Storage Utilities",
-        explanation: "Helper functions for safer session storage operations",
+        name: 'Session Storage Utilities',
+        explanation: 'Helper functions for safer session storage operations',
         example: `
 // Session Storage utility class
 class SessionStorageUtils {
@@ -371,10 +371,10 @@ if (SessionStorageUtils.isSupported()) {
 }
         `
       },
-      
+
       {
-        name: "Form State Management",
-        explanation: "Using session storage to preserve form data across page reloads",
+        name: 'Form State Management',
+        explanation: 'Using session storage to preserve form data across page reloads',
         example: `
 // Form State Manager using sessionStorage
 class FormStateManager {
@@ -868,11 +868,11 @@ console.log('Total session storage size:', SessionStorageUtils.getStorageSize(),
       }
     ]
   },
-  
+
   practicalExamples: [
     {
-      title: "Shopping Session Manager",
-      description: "Complete shopping session with cart, filters, and temporary user preferences",
+      title: 'Shopping Session Manager',
+      description: 'Complete shopping session with cart, filters, and temporary user preferences',
       code: `
 // Shopping Session Manager
 class ShoppingSessionManager {
@@ -1323,13 +1323,13 @@ setTimeout(() => {
       `
     }
   ],
-  
+
   exercises: [
     {
-      id: "session-basic",
-      title: "Tab-specific Counter",
-      difficulty: "easy",
-      prompt: "Create a counter that maintains separate counts for each browser tab using sessionStorage.",
+      id: 'session-basic',
+      title: 'Tab-specific Counter',
+      difficulty: 'easy',
+      prompt: 'Create a counter that maintains separate counts for each browser tab using sessionStorage.',
       solution: `
 class TabCounter {
   constructor() {
@@ -1404,12 +1404,13 @@ tabCounter.decrement();
 console.log('Tab info:', tabCounter.getTabInfo());
       `
     },
-    
+
     {
-      id: "session-intermediate", 
-      title: "Multi-step Form with Session Persistence",
-      difficulty: "medium",
-      prompt: "Create a multi-step form that saves progress in sessionStorage and can resume from where the user left off.",
+      id: 'session-intermediate',
+      title: 'Multi-step Form with Session Persistence',
+      difficulty: 'medium',
+      prompt:
+        'Create a multi-step form that saves progress in sessionStorage and can resume from where the user left off.',
       solution: `
 class MultiStepForm {
   constructor(formId) {
@@ -1772,42 +1773,45 @@ if (submissionResult.success) {
       `
     }
   ],
-  
+
   quiz: [
     {
-      question: "When is sessionStorage data automatically cleared?",
+      question: 'When is sessionStorage data automatically cleared?',
       options: [
-        "When the browser is closed",
-        "When the tab is closed", 
-        "After 24 hours",
-        "When localStorage quota is exceeded"
+        'When the browser is closed',
+        'When the tab is closed',
+        'After 24 hours',
+        'When localStorage quota is exceeded'
       ],
       correct: 1,
-      explanation: "sessionStorage data is automatically cleared when the tab (or window) is closed, making it perfect for temporary, tab-specific data."
+      explanation:
+        'sessionStorage data is automatically cleared when the tab (or window) is closed, making it perfect for temporary, tab-specific data.'
     },
-    
+
     {
-      question: "What is the main difference between localStorage and sessionStorage?",
+      question: 'What is the main difference between localStorage and sessionStorage?',
       options: [
-        "sessionStorage has a smaller storage limit",
-        "sessionStorage data is tab-specific and temporary",
-        "sessionStorage only stores strings",
+        'sessionStorage has a smaller storage limit',
+        'sessionStorage data is tab-specific and temporary',
+        'sessionStorage only stores strings',
         "sessionStorage doesn't support JSON"
       ],
       correct: 1,
-      explanation: "The main difference is that sessionStorage data is isolated per tab and cleared when the tab closes, while localStorage persists across browser sessions."
+      explanation:
+        'The main difference is that sessionStorage data is isolated per tab and cleared when the tab closes, while localStorage persists across browser sessions.'
     },
-    
+
     {
-      question: "Do sessionStorage changes trigger storage events?",
+      question: 'Do sessionStorage changes trigger storage events?',
       options: [
-        "Yes, like localStorage",
+        'Yes, like localStorage',
         "No, sessionStorage doesn't trigger storage events",
-        "Only in the same tab",
-        "Only when the tab is closed"
+        'Only in the same tab',
+        'Only when the tab is closed'
       ],
       correct: 1,
-      explanation: "sessionStorage changes do not trigger storage events. Storage events only fire for localStorage changes from other tabs/windows."
+      explanation:
+        'sessionStorage changes do not trigger storage events. Storage events only fire for localStorage changes from other tabs/windows.'
     }
   ]
 };

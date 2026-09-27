@@ -2,30 +2,30 @@
 // JavaScript Basics - Core concepts and fundamentals
 
 export const basicsConfig = {
-  title: "JavaScript Basics",
-  description: "Master the fundamental building blocks of JavaScript",
-  difficulty: "beginner",
-  estimatedTime: "30 minutes",
+  title: 'JavaScript Basics',
+  description: 'Master the fundamental building blocks of JavaScript',
+  difficulty: 'beginner',
+  estimatedTime: '30 minutes',
   topics: [
-    "Variables and Data Types",
-    "Operators",
-    "Control Flow",
-    "Functions",
-    "Scope and Hoisting",
-    "Error Handling",
-    "Regular Expressions"
+    'Variables and Data Types',
+    'Operators',
+    'Control Flow',
+    'Functions',
+    'Scope and Hoisting',
+    'Error Handling',
+    'Regular Expressions'
   ]
 };
 
 // Variables and Data Types
 export const variablesAndTypes = {
-  concept: "Variables and Data Types",
+  concept: 'Variables and Data Types',
   explanation: `
     Variables are containers for storing data values. JavaScript has several data types:
     - Primitive: string, number, boolean, undefined, null, symbol, bigint
     - Non-primitive: object, array, function
   `,
-  
+
   examples: {
     variables: `
 // Variable declarations
@@ -42,7 +42,7 @@ value = true;           // Boolean
 
 console.log(typeof value); // "boolean"
     `,
-    
+
     dataTypes: `
 // Primitive types
 const name = "Alice";                    // String
@@ -66,25 +66,25 @@ console.log(typeof person);      // "object"
 console.log(Array.isArray(colors)); // true
     `
   },
-  
+
   exercises: [
     {
-      id: "var_declaration",
-      question: "Declare three variables: userName (string), userAge (number), and isLoggedIn (boolean)",
+      id: 'var_declaration',
+      question: 'Declare three variables: userName (string), userAge (number), and isLoggedIn (boolean)',
       solution: `let userName = "JohnDoe";\nconst userAge = 28;\nlet isLoggedIn = false;`,
-      hint: "Use let for variables that might change, const for constants"
+      hint: 'Use let for variables that might change, const for constants'
     }
   ]
 };
 
 // Operators
 export const operators = {
-  concept: "Operators",
+  concept: 'Operators',
   explanation: `
     Operators are symbols that perform operations on operands.
     JavaScript has arithmetic, assignment, comparison, logical, and more.
   `,
-  
+
   examples: {
     arithmetic: `
 // Arithmetic operators
@@ -104,7 +104,7 @@ console.log(count++); // Post-increment: 6, then count becomes 7
 console.log(--count); // Pre-decrement: 6
 console.log(count--); // Post-decrement: 6, then count becomes 5
     `,
-    
+
     comparison: `
 // Comparison operators
 let x = 5, y = "5";
@@ -118,7 +118,7 @@ console.log(x < 10);   // Less than: true
 console.log(x >= 5);   // Greater than or equal: true
 console.log(x <= 4);   // Less than or equal: false
     `,
-    
+
     logical: `
 // Logical operators
 let p = true, q = false;
@@ -137,25 +137,25 @@ let config = null;
 let defaultConfig = config ?? { theme: "dark" }; // { theme: "dark" }
     `
   },
-  
+
   exercises: [
     {
-      id: "operator_usage",
+      id: 'operator_usage',
       question: "Calculate the area of a circle with radius 5, then check if it's greater than 70",
       solution: `const radius = 5;\nconst area = Math.PI * radius ** 2;\nconst isLarge = area > 70;\nconsole.log(isLarge);`,
-      hint: "Use Math.PI for π and ** for exponentiation"
+      hint: 'Use Math.PI for π and ** for exponentiation'
     }
   ]
 };
 
 // Control Flow
 export const controlFlow = {
-  concept: "Control Flow",
+  concept: 'Control Flow',
   explanation: `
     Control flow statements determine the order of execution in your program.
     Includes conditionals (if/else, switch) and loops (for, while).
   `,
-  
+
   examples: {
     conditionals: `
 // If-else statements
@@ -192,7 +192,7 @@ switch (day) {
     console.log("Midweek");
 }
     `,
-    
+
     loops: `
 // For loop
 for (let i = 0; i < 5; i++) {
@@ -226,25 +226,25 @@ do {
 } while (num < 3);
     `
   },
-  
+
   exercises: [
     {
-      id: "fizzbuzz",
-      question: "Write a FizzBuzz program for numbers 1-15",
+      id: 'fizzbuzz',
+      question: 'Write a FizzBuzz program for numbers 1-15',
       solution: `for (let i = 1; i <= 15; i++) {\n  if (i % 15 === 0) console.log("FizzBuzz");\n  else if (i % 3 === 0) console.log("Fizz");\n  else if (i % 5 === 0) console.log("Buzz");\n  else console.log(i);\n}`,
-      hint: "Check divisibility by 15 first, then 3, then 5"
+      hint: 'Check divisibility by 15 first, then 3, then 5'
     }
   ]
 };
 
 // Functions
 export const functions = {
-  concept: "Functions",
+  concept: 'Functions',
   explanation: `
     Functions are reusable blocks of code that perform specific tasks.
     They can accept parameters and return values.
   `,
-  
+
   examples: {
     declaration: `
 // Function declaration
@@ -277,7 +277,7 @@ console.log(welcome("Charlie"));    // "Welcome, Charlie!"
 console.log(add(5, 3));            // 8
 console.log(calculate(4, 6));      // { sum: 10, product: 24 }
     `,
-    
+
     parameters: `
 // Default parameters
 function createUser(name, role = "user", active = true) {
@@ -304,25 +304,25 @@ const user = { name: "Diana", age: 28, city: "Paris" };
 displayUser(user); // "Diana is 28 years old and lives in Paris"
     `
   },
-  
+
   exercises: [
     {
-      id: "function_creation",
-      question: "Create a function that calculates the factorial of a number",
+      id: 'function_creation',
+      question: 'Create a function that calculates the factorial of a number',
       solution: `function factorial(n) {\n  if (n <= 1) return 1;\n  return n * factorial(n - 1);\n}\n\n// Or iterative version:\nfunction factorial(n) {\n  let result = 1;\n  for (let i = 2; i <= n; i++) {\n    result *= i;\n  }\n  return result;\n}`,
-      hint: "Think about base case (n <= 1) and recursive case"
+      hint: 'Think about base case (n <= 1) and recursive case'
     }
   ]
 };
 
 // Scope and Hoisting
 export const scopeAndHoisting = {
-  concept: "Scope and Hoisting",
+  concept: 'Scope and Hoisting',
   explanation: `
     Scope determines where variables can be accessed in your code.
     Hoisting moves variable and function declarations to the top of their scope.
   `,
-  
+
   examples: {
     scope: `
 // Global scope
@@ -360,7 +360,7 @@ if (true) {
 // console.log(alsoBlockScoped); // Error: not accessible
 console.log(functionScoped);     // Accessible (function scoped)
     `,
-    
+
     hoisting: `
 // Variable hoisting
 console.log(hoistedVar); // undefined (not error)
@@ -393,30 +393,30 @@ var notHoisted = function() {
 };
     `
   },
-  
+
   exercises: [
     {
-      id: "scope_challenge",
-      question: "Predict the output of the following code and explain why",
+      id: 'scope_challenge',
+      question: 'Predict the output of the following code and explain why',
       code: `
 for (var i = 0; i < 3; i++) {
   setTimeout(() => console.log(i), 100);
 }
       `,
       solution: `// Output: 3, 3, 3\n// Reason: var is function-scoped, so all setTimeout callbacks reference the same variable i\n// Fix with let: for (let i = 0; i < 3; i++) {...} would output 0, 1, 2`,
-      hint: "Consider the difference between var and let in loops"
+      hint: 'Consider the difference between var and let in loops'
     }
   ]
 };
 
 // Error Handling
 export const errorHandling = {
-  concept: "Error Handling",
+  concept: 'Error Handling',
   explanation: `
     Error handling allows your program to gracefully handle unexpected situations.
     JavaScript provides try-catch-finally blocks and the ability to throw custom errors.
   `,
-  
+
   examples: {
     tryCatch: `
 // Basic try-catch
@@ -457,7 +457,7 @@ try {
   }
 }
     `,
-    
+
     throwingErrors: `
 // Throwing errors
 function divide(a, b) {
@@ -503,7 +503,7 @@ try {
   }
 }
     `,
-    
+
     errorBestPractices: `
 // Error handling best practices
 
@@ -557,11 +557,11 @@ window.addEventListener('unhandledrejection', (event) => {
 });
     `
   },
-  
+
   exercises: [
     {
-      id: "error_handling_practice",
-      question: "Create a function that safely parses JSON and returns an object with {success, data, error}",
+      id: 'error_handling_practice',
+      question: 'Create a function that safely parses JSON and returns an object with {success, data, error}',
       solution: `function safeJSONParse(jsonString) {
   try {
     const data = JSON.parse(jsonString);
@@ -570,19 +570,19 @@ window.addEventListener('unhandledrejection', (event) => {
     return { success: false, data: null, error: error.message };
   }
 }`,
-      hint: "Use try-catch and return an object with status information"
+      hint: 'Use try-catch and return an object with status information'
     }
   ]
 };
 
 // Regular Expressions
 export const regularExpressions = {
-  concept: "Regular Expressions",
+  concept: 'Regular Expressions',
   explanation: `
     Regular expressions (regex) are patterns used for matching character combinations in strings.
     They're powerful tools for text search, validation, and manipulation.
   `,
-  
+
   examples: {
     basicPatterns: `
 // Creating regex patterns
@@ -604,7 +604,7 @@ const urlPattern = /^https?:\\/\\/[^\\s]+$/;
 console.log(emailPattern.test("user@example.com"));  // true
 console.log(phonePattern.test("123-456-7890"));      // true
     `,
-    
+
     regexMethods: `
 // String methods with regex
 
@@ -631,7 +631,7 @@ console.log(formatted); // "03/08/2024"
 const words = "one,two;three four".split(/[,;\\s]+/);
 console.log(words); // ["one", "two", "three", "four"]
     `,
-    
+
     practicalExamples: `
 // Validation functions using regex
 
@@ -665,15 +665,16 @@ console.log(validatePassword("SecureP@ss123"));      // true
 console.log(formatPhoneNumber("1234567890"));        // "(123) 456-7890"
     `
   },
-  
+
   exercises: [
     {
-      id: "regex_practice",
-      question: "Create a regex pattern to validate a username: 3-20 characters, letters and numbers only, must start with a letter",
+      id: 'regex_practice',
+      question:
+        'Create a regex pattern to validate a username: 3-20 characters, letters and numbers only, must start with a letter',
       solution: `const usernamePattern = /^[a-zA-Z][a-zA-Z0-9]{2,19}$/;
 console.log(usernamePattern.test("user123"));    // true
 console.log(usernamePattern.test("123user"));    // false`,
-      hint: "Use ^ for start, [a-zA-Z] for first letter, then {n,m} for count"
+      hint: 'Use ^ for start, [a-zA-Z] for first letter, then {n,m} for count'
     }
   ]
 };
@@ -681,9 +682,9 @@ console.log(usernamePattern.test("123user"));    // false`,
 // Interactive exercises
 export const interactiveExercises = [
   {
-    id: "variable_playground",
-    title: "Variable Playground",
-    description: "Experiment with different variable declarations and types",
+    id: 'variable_playground',
+    title: 'Variable Playground',
+    description: 'Experiment with different variable declarations and types',
     template: `
 // Try declaring variables with different types
 let myString = "";
@@ -694,16 +695,16 @@ var myBoolean = false;
     `,
     tests: [
       {
-        description: "Should declare a string variable",
-        check: (code) => code.includes('let') || code.includes('const') || code.includes('var')
+        description: 'Should declare a string variable',
+        check: code => code.includes('let') || code.includes('const') || code.includes('var')
       }
     ]
   },
-  
+
   {
-    id: "function_builder",
-    title: "Function Builder",
-    description: "Create functions with different syntaxes",
+    id: 'function_builder',
+    title: 'Function Builder',
+    description: 'Create functions with different syntaxes',
     template: `
 // Create a function that takes two numbers and returns their sum
 // Try different function syntaxes: declaration, expression, arrow
@@ -712,7 +713,7 @@ var myBoolean = false;
     `,
     tests: [
       {
-        description: "Should create a function that adds two numbers",
+        description: 'Should create a function that adds two numbers',
         check: (code, testFn) => {
           try {
             return testFn(2, 3) === 5;
@@ -733,18 +734,19 @@ export const progressConfig = {
     total: 6,
     completed: 0
   },
-  
+
   updateProgress(conceptId, exerciseId = null) {
     if (exerciseId) {
       this.exercises.completed++;
     } else {
       this.conceptsCompleted++;
     }
-    
+
     return {
       conceptProgress: (this.conceptsCompleted / this.totalConcepts) * 100,
       exerciseProgress: (this.exercises.completed / this.exercises.total) * 100,
-      overallProgress: ((this.conceptsCompleted + this.exercises.completed) / (this.totalConcepts + this.exercises.total)) * 100
+      overallProgress:
+        ((this.conceptsCompleted + this.exercises.completed) / (this.totalConcepts + this.exercises.total)) * 100
     };
   }
 };
