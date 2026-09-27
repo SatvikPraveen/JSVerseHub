@@ -506,7 +506,7 @@ async function batchProcessingExample() {
     return \`processed-\${item}\`;
   });
   
-  console.log(\`Processed \${results.length} items:`, results);
+  console.log(\`Processed \${results.length} items:\`, results);
 }
 
 // Smart concurrency based on system resources

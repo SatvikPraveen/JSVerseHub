@@ -1110,10 +1110,10 @@ function analyzeEmployeeSalaries(employees) {
       employeeCount: dept.count,
       averageSalary: Math.round(dept.totalSalary / dept.count),
       employees: dept.employees,
-      formattedSalary: `${(dept.totalSalary / dept.count).toLocaleString('en-US', {
+      formattedSalary: \`\${(dept.totalSalary / dept.count).toLocaleString('en-US', {
         minimumFractionDigits: 0,
         maximumFractionDigits: 0
-      })}`
+      })}\`
     }))
     .sort((a, b) => b.averageSalary - a.averageSalary);
 }
@@ -1130,8 +1130,8 @@ const employees = [
 const analysis = analyzeEmployeeSalaries(employees);
 console.log("Department Analysis (Age > 25):");
 analysis.forEach(dept => {
-  console.log(`${dept.department}: ${dept.formattedSalary} avg (${dept.employeeCount} employees)`);
-  console.log(`  Employees: ${dept.employees.join(', ')}`);
+  console.log(\`\${dept.department}: \${dept.formattedSalary} avg (\${dept.employeeCount} employees)\`);
+  console.log(\`  Employees: \${dept.employees.join(', ')}\`);
 });
       `
     }

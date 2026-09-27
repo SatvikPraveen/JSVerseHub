@@ -457,15 +457,15 @@ const chatRoom = new ChatRoom("General");
 
 // Set up event listeners
 chatRoom.on('userJoined', (username, userCount) => {
-  console.log(`${username} joined the chat. Users online: ${userCount}`);
+  console.log(\`\${username} joined the chat. Users online: \${userCount}\`);
 });
 
 chatRoom.on('userLeft', (username, userCount) => {
-  console.log(`${username} left the chat. Users online: ${userCount}`);
+  console.log(\`\${username} left the chat. Users online: \${userCount}\`);
 });
 
 chatRoom.on('message', (messageObj) => {
-  console.log(`[${messageObj.timestamp.toLocaleTimeString()}] ${messageObj.username}: ${messageObj.message}`);
+  console.log(\`[\${messageObj.timestamp.toLocaleTimeString()}] \${messageObj.username}: \${messageObj.message}\`);
 });
 
 // Simulate chat activity
@@ -494,7 +494,7 @@ Plugin.prototype.enable = function() {
   if (this.checkDependencies()) {
     this.isEnabled = true;
     this.onEnable();
-    console.log(`Plugin "${this.name}" v${this.version} enabled`);
+    console.log(\`Plugin "\${this.name}" v\${this.version} enabled\`);
     return true;
   }
   return false;
@@ -503,7 +503,7 @@ Plugin.prototype.enable = function() {
 Plugin.prototype.disable = function() {
   this.isEnabled = false;
   this.onDisable();
-  console.log(`Plugin "${this.name}" disabled`);
+  console.log(\`Plugin "\${this.name}" disabled\`);
 };
 
 Plugin.prototype.checkDependencies = function() {
@@ -548,13 +548,13 @@ SecurityPlugin.prototype.constructor = SecurityPlugin;
 SecurityPlugin.prototype.blockIP = function(ip) {
   if (!this.blockedIPs.includes(ip)) {
     this.blockedIPs.push(ip);
-    console.log(`IP ${ip} blocked by ${this.name}`);
+    console.log(\`IP \${ip} blocked by \${this.name}\`);
   }
 };
 
 SecurityPlugin.prototype.setRateLimit = function(endpoint, limit) {
   this.rateLimits[endpoint] = limit;
-  console.log(`Rate limit set for ${endpoint}: ${limit} requests/minute`);
+  console.log(\`Rate limit set for \${endpoint}: \${limit} requests/minute\`);
 };
 
 // Analytics Plugin
@@ -575,7 +575,7 @@ AnalyticsPlugin.prototype.trackEvent = function(eventName, data) {
     sessionId: this.getCurrentSessionId()
   };
   this.events.push(event);
-  console.log(`Event tracked: ${eventName}`, data);
+  console.log(\`Event tracked: \${eventName}\`, data);
 };
 
 AnalyticsPlugin.prototype.getCurrentSessionId = function() {
@@ -595,7 +595,7 @@ function PluginManager() {
 PluginManager.prototype.register = function(plugin) {
   if (plugin instanceof Plugin) {
     this.plugins.set(plugin.name, plugin);
-    console.log(`Plugin "${plugin.name}" registered`);
+    console.log(\`Plugin "\${plugin.name}" registered\`);
     return true;
   }
   throw new Error('Invalid plugin object');
@@ -678,7 +678,7 @@ Counter.prototype.getValue = function() {
 };
 
 Counter.prototype.toString = function() {
-  return `Counter: ${this.value}`;
+  return \`Counter: \${this.value}\`;
 };
 
 // Usage
@@ -729,7 +729,7 @@ Book.prototype.return = function() {
 };
 
 Book.prototype.getInfo = function() {
-  return `"${this.title}" by ${this.author} (${this.year}) - ${this.isAvailable ? 'Available' : 'Borrowed'}`;
+  return \`"\${this.title}" by \${this.author} (\${this.year}) - \${this.isAvailable ? 'Available' : 'Borrowed'}\`;
 };
 
 function Library(name) {

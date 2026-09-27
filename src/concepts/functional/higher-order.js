@@ -642,15 +642,15 @@ emitter.use((eventName, data, next) => {
 
 // Register event handlers with decorators
 const handleUserLogin = withLogging((user) => {
-  console.log(`User ${user.name} logged in`);
+  console.log(\`User \${user.name} logged in\`);
 });
 
 const handleUserLogout = withOnce(withDelay((user) => {
-  console.log(`User ${user.name} logged out`);
+  console.log(\`User \${user.name} logged out\`);
 }, 1000));
 
 const handleAdminAction = withCondition(
-  (action) => console.log(`Admin action: ${action}`),
+  (action) => console.log(\`Admin action: \${action}\`),
   (action) => action.startsWith('admin.')
 );
 
