@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use JSVerseHub in research or teaching, please cite it using the metadata in this file."
+title: "JSVerseHub: A Research-Grade Interactive JavaScript Learning Platform"
+type: software
+authors:
+  - family-names: Praveen
+    given-names: Satvik
+    email: satvikpraveen707@gmail.com
+repository-code: "https://github.com/SatvikPraveen/JSVerseHub"
+license: MIT
+version: 2.0.0
+date-released: 2026-09-27
+keywords:
+  - javascript
+  - educational-technology
+  - spaced-repetition
+  - knowledge-tracing
+  - learning-analytics
+  - gamification
+abstract: >-
+  JSVerseHub is an open-source, browser-based platform for learning JavaScript, organised as a galaxy of
+  fifteen concept modules with authored explanations, runnable examples, exercises and quizzes. It is written
+  in framework-free ES2022 JavaScript and bundles each concept as a lazily loaded chunk. The platform includes
+  an SM-2 spaced-repetition scheduler, a Bayesian Knowledge Tracing learner model and an xAPI-inspired
+  learning-analytics log, all of which run entirely on the learner's device with an anonymous actor
+  identifier and can be exported as JSON or CSV for offline analysis.

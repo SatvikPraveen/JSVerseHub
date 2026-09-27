@@ -8,27 +8,55 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+- Fit BKT/SM-2 parameters from study data (see docs/research/EVALUATION_PROTOCOL.md).
+- Finer-grained skill tags on quiz questions.
+
+## [2.0.0] - 2026-09-27
+
+Research-grade release. See docs/research and docs/adr for rationale.
+
 ### Added
-- Interactive code playground integration
-- Real-time syntax highlighting
-- Community challenge system
-- Advanced analytics dashboard
-- Mobile app companion planning
+
+- Learner models: SM-2 spaced repetition (`src/engine/spacedRepetition.js`), Bayesian Knowledge Tracing
+  (`src/engine/knowledgeTracing.js`) and an on-device xAPI-inspired analytics log
+  (`src/engine/learningAnalytics.js`), composed by `src/engine/learningModel.js`.
+- Progress modal panel with per-concept mastery estimates, review queue, estimated retention and a
+  one-click export of learning data (JSON); "Reviews due" stat on the galaxy view.
+- `ContentRegistry`: authored concept modules are now lazy-loaded as separate chunks and rendered by the
+  viewer instead of templated placeholder text.
+- Missing concept modules for OOP, Functional, Patterns and Storage (their tests previously failed to load).
+- Real unit/integration tests for StateManager, the ConceptLoader pipeline and the learner models
+  (26 suites, 805 tests).
+- GitHub Actions CI (lint, format, test with coverage thresholds on Node 18/20/22, production build).
+- Research documentation: pedagogical framework, evaluation protocol, data schema, references; six ADRs;
+  CONTRIBUTING, CODE_OF_CONDUCT, SECURITY, CITATION.cff.
+- `scripts/optimize-images.js` (sharp) and a multi-stage Dockerfile.
 
 ### Changed
-- Improved galaxy rendering performance
-- Enhanced accessibility features
-- Updated concept progression algorithms
+
+- All 42 historical commits re-attributed to the maintainer's canonical email.
+- Tooling aligned with the codebase: ESLint 2-space baseline with eslint-config-prettier, Prettier and
+  Stylelint configs, husky 9 + lint-staged, committed lockfile, Node >= 18.
+- package.json metadata now points at the real repository and author.
+- PNG assets resized and quantised: 42 MB to 1.9 MB.
+- Coverage thresholds set to measured values (85% on tested engine modules, honest global floor).
+- Legacy v1.0 planning/status documents moved to `docs/archive/`; fictional infrastructure
+  configuration (.env.production etc., Prometheus/Grafana compose services) removed.
 
 ### Fixed
-- Modal keyboard navigation issues
-- Theme persistence bugs
-- Mobile responsive layout problems
+
+- 58 failing tests (events content, performance API feature detection, navigation optional route params,
+  strict-mode test assertions, contradictory mocks).
+- Four content files that did not parse due to unescaped template literals.
+- Two non-existent ESLint rules that produced a bogus error on every file.
+- Docker image build that installed production deps only and then silently skipped the webpack build.
 
 ## [1.2.0] - 2025-08-20
 
 ### Added
-- **New Concepts**: 
+
+- **New Concepts**:
+
   - Events planet with comprehensive event handling
   - Testing planet with Jest integration
   - Security planet with XSS prevention demos
@@ -37,6 +65,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - API Integration planet with real-world examples
 
 - **Features**:
+
   - Progress tracking with local storage
   - Achievement badge system
   - Concept prerequisite checking
@@ -53,6 +82,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - Better error handling and user feedback
 
 ### Changed
+
 - Refactored state management system for better performance
 - Updated concept structure for consistency
 - Improved code organization with better separation of concerns
@@ -60,6 +90,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Optimized asset loading with lazy loading implementation
 
 ### Fixed
+
 - Memory leaks in galaxy rendering
 - Modal focus management issues
 - Responsive layout breaks on certain screen sizes
@@ -67,6 +98,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Navigation state inconsistencies
 
 ### Performance
+
 - Reduced initial bundle size by 40%
 - Implemented code splitting for concept modules
 - Optimized galaxy animation performance
@@ -76,7 +108,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [1.1.0] - 2025-07-15
 
 ### Added
+
 - **Core Concepts**:
+
   - JavaScript Basics planet with interactive examples
   - DOM Manipulation planet with live demos
   - Asynchronous Programming planet with visual explanations
@@ -87,6 +121,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - Local Storage planet with persistent data examples
 
 - **Interactive Features**:
+
   - Live code execution environment
   - Syntax highlighting with Prism.js
   - Interactive demos for each concept
@@ -101,6 +136,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - Keyboard shortcuts for power users
 
 ### Changed
+
 - Redesigned galaxy map for better visual hierarchy
 - Improved concept loading performance
 - Enhanced error handling throughout the application
@@ -108,6 +144,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Refined color scheme and typography
 
 ### Fixed
+
 - Browser compatibility issues with older versions
 - Memory management problems in long sessions
 - Modal z-index conflicts
@@ -117,22 +154,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [1.0.0] - 2025-06-01
 
 ### Added
+
 - **Initial Release**: JSVerseHub interactive JavaScript learning platform
 - **Galaxy Interface**: 3D-style galaxy map with planetary concept representation
-- **Core Architecture**: 
+- **Core Architecture**:
+
   - Modular component system
   - State management with local persistence
   - Dynamic concept loading
   - Responsive design framework
 
 - **Base Components**:
+
   - GalaxyMap.js - Interactive galaxy navigation
-  - PlanetCard.js - Individual concept representation  
+  - PlanetCard.js - Individual concept representation
   - Modal.js - Reusable modal system
   - ConceptViewer.js - Content display component
   - Navbar.js - Navigation and controls
 
 - **Styling System**:
+
   - CSS Grid-based layout system
   - Custom CSS properties for theming
   - Responsive breakpoints
@@ -146,6 +187,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
   - Development server configuration
 
 ### Technical Highlights
+
 - **Zero Dependencies**: Pure vanilla JavaScript implementation
 - **Performance**: Sub-2 second load times
 - **Accessibility**: WCAG 2.1 AA compliance
@@ -155,6 +197,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [0.3.0] - 2025-05-15 - Beta Release
 
 ### Added
+
 - Beta testing program launch
 - User feedback collection system
 - Performance monitoring integration
@@ -162,12 +205,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Documentation website
 
 ### Changed
+
 - Refined user interface based on alpha feedback
 - Optimized concept loading algorithms
 - Improved error handling and logging
 - Enhanced mobile user experience
 
 ### Fixed
+
 - Critical performance issues with large concept sets
 - Accessibility barriers identified in testing
 - Cross-browser compatibility problems
@@ -176,6 +221,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [0.2.0] - 2025-04-01 - Alpha Release
 
 ### Added
+
 - Alpha version with 8 core concepts
 - Basic user progress tracking
 - Simple concept navigation
@@ -183,6 +229,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Core component architecture
 
 ### Known Issues
+
 - Limited mobile optimization
 - Performance issues with complex concepts
 - Basic error handling implementation
@@ -191,6 +238,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [0.1.0] - 2025-03-01 - Development Preview
 
 ### Added
+
 - Project initialization and structure
 - Basic HTML/CSS layout
 - Core JavaScript architecture planning
@@ -198,6 +246,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Development environment setup
 
 ### Technical Foundation
+
 - Webpack configuration
 - ESLint and Prettier setup
 - Basic file structure
@@ -209,6 +258,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## Release Notes Format
 
 ### Categories
+
 - **Added**: New features and content
 - **Changed**: Modifications to existing functionality
 - **Deprecated**: Features marked for removal
@@ -218,13 +268,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - **Performance**: Performance improvements
 
 ### Semantic Versioning
+
 - **Major (X.0.0)**: Breaking changes, major feature additions
 - **Minor (0.X.0)**: New features, backward compatible
 - **Patch (0.0.X)**: Bug fixes, small improvements
 
 ### Changelog Maintenance
+
 - Updated monthly with development progress
-- Major releases documented comprehensively  
+- Major releases documented comprehensively
 - Community contributions acknowledged
 - Breaking changes clearly highlighted
 - Migration guides provided for major updates
@@ -242,8 +294,10 @@ When contributing to JSVerseHub, please:
 5. **Credit Contributors**: Acknowledge community contributions
 
 ### Example Entry
+
 ```markdown
 ### Added
+
 - New concept: Advanced Promises with real-world examples (#123)
 - Interactive debugging tools for async code (@contributor-name)
 - Progress export functionality for educators
@@ -251,4 +305,4 @@ When contributing to JSVerseHub, please:
 
 ---
 
-*For questions about releases or to suggest changelog improvements, please open an issue on the project repository.*
+_For questions about releases or to suggest changelog improvements, please open an issue on the project repository._
