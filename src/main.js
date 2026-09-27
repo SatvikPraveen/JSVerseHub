@@ -152,19 +152,26 @@ class JSVerseHubApp {
    * Initialize UI components
    */
   async initializeComponents() {
+    // Components publish either a ready singleton instance (GalaxyMap,
+    // ConceptViewer) or a class to instantiate once (Navbar, Modal).
+    // PlanetCard is a per-planet class created by the galaxy renderer, so it
+    // is not instantiated here.
     const componentClasses = {
       navbar: 'Navbar',
       modal: 'Modal',
       galaxyMap: 'GalaxyMap',
-      planetCard: 'PlanetCard',
       conceptViewer: 'ConceptViewer'
     };
 
     for (const [name, className] of Object.entries(componentClasses)) {
       try {
-        if (typeof window[className] !== 'undefined') {
-          this.components[name] = new window[className]();
+        const Exported = window[className];
+        if (typeof Exported === 'function') {
+          this.components[name] = new Exported();
           window.JSVLogger.info(`🔧 ${className} component initialized`);
+        } else if (Exported && typeof Exported === 'object') {
+          this.components[name] = Exported;
+          window.JSVLogger.info(`🔧 ${className} component attached`);
         }
       } catch (error) {
         window.JSVLogger.warn(`⚠️ Failed to initialize ${className}:`, error);
@@ -503,18 +510,5 @@ if (typeof window !== 'undefined') {
   window.JSVerseHub = app;
 }
 
-// Service Worker registration (if available)
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker
-    .register('/sw.js')
-    .then(() => {
-      if (window.JSVLogger) {
-        window.JSVLogger.info('🔧 Service Worker registered successfully');
-      }
-    })
-    .catch(error => {
-      if (window.JSVLogger) {
-        window.JSVLogger.warn('⚠️ Service Worker registration failed:', error);
-      }
-    });
-}
+// No service worker is shipped: the app has no offline mode, and registering a
+// missing /sw.js only produced a SecurityError on every page load.
