@@ -196,7 +196,6 @@
   bottom: calc(100% + 15px);
   left: 50%;
   transform: translateX(-50%);
-  word-wrap: break-word;
   overflow-wrap: break-word;
 }
 
@@ -278,8 +277,7 @@
 /* Tooltip Content Styling */
 .tooltip-content {
   line-height: 1.6;
-  word-break: break-word;
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
 }
 
 .tooltip-content strong {
@@ -287,7 +285,7 @@
   color: var(--accent-color);
   display: block;
   margin-bottom: 8px;
-  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .tooltip-meta {
@@ -313,8 +311,7 @@
   border-top: 1px solid rgba(0, 212, 255, 0.2);
   font-size: 0.8rem;
   color: var(--text-secondary);
-  word-break: break-word;
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
 }
 
 /* Specific Planet Themes */
