@@ -670,7 +670,7 @@ img {
 /* ===== ACCESSIBILITY IMPROVEMENTS ===== */
 
 /* High contrast mode support */
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .planet {
     border-width: 3px;
     border-color: currentcolor;

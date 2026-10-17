@@ -638,7 +638,7 @@
 }
 
 /* High contrast mode support */
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   :root {
     --text-secondary: #fff;
     --border-primary: 2px solid var(--accent-color);
